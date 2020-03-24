@@ -1,5 +1,3 @@
-build
-
-bin
-
-output
+/build*
+/bin
+/output

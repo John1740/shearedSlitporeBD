@@ -152,19 +152,19 @@ double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius( int index )
    energyCutOffThreshold = abs( lji.energyOnParticles( 3. ) );
    forceCutOffThreshold = abs( lji.forceOnParticlePerDirection( 3. ) / 3. );
 
+   double cutOffRadius;
+   double currentRadius, currentEnergy, currentForce;
 
-   double rc;
-
-   for( int i = 0; i < 4000; ++i )
-   {
-      if( abs( energyOnParticles( i * rcDelta, index ) ) < energyCutOffThreshold && abs( forceOnParticlePerDirection( i * rcDelta, index ) / ( i * rcDelta ) ) < forceCutOffThreshold )
-      {
-         rc = i * rcDelta;
-         break;
-      }
+   for( int i = 0; i < 4000; ++i ) {
+       currentRadius = i * rcDelta;
+       currentEnergy = energyOnParticles(currentRadius, index);
+       currentForce = forceOnParticlePerDirection(i * rcDelta, index) / (i * rcDelta);
+       if (abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold) {
+           cutOffRadius = i * rcDelta;
+           break;
+       }
    }
-   
-   return rc;
+   return cutOffRadius;
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles( double r, int index )

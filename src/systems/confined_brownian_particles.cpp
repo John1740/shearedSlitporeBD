@@ -10,9 +10,7 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES()
 void CONFINED_BROWNIAN_PARTICLES::printInitilization()
 {
     cout << "Initialized System: "
-         << configurationDir + "configuration" + app_identifier ( "" ) + ".txt"
-         << endl
-         << endl;
+         << configurationDir + "configuration" + app_identifier ( "" ) + ".txt" << endl << endl;
 }
 
 string CONFINED_BROWNIAN_PARTICLES::app_identifier ( string str )
@@ -177,7 +175,7 @@ void CONFINED_BROWNIAN_PARTICLES::read()
 {
    string inputString = configurationDir + "configuration" + app_identifier( "" ) + ".txt";
     readFromString( inputString );
-    printInitilization();
+//    printInitilization(); //unnecessary (done already)
 }
 
 void CONFINED_BROWNIAN_PARTICLES::readFromString ( string str )

@@ -20,7 +20,7 @@ string app_home( string str )
 {
    stringstream output;
 
-   output << "/home/mhuels/CLionProjects/shearedSlitporeBD/output/";
+   output << "/home/mhuels/data/shearedSlitporeBD/output/";
 
    output << str;
    return output.str();

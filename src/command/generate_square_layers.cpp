@@ -47,13 +47,13 @@ void GENERATE_SQUARE_LAYERS::setLatticePeriodicity()
 
 void GENERATE_SQUARE_LAYERS::addLayer( int layerIndex )
 {
-   for( int j = 0; j < numberOfRows; ++j )
+   for( int j = 0; j < numberOfRows; ++j ) //j=index in y-direction
    {
-      for( int k = 0; k < numberOfRows; ++k )
+      for( int k = 0; k < numberOfRows; ++k ) //k=index in x-direction
       {
          CHARGED_PARTICLE newParticle;
-         newParticle.position = CARTESIAN_COORDINATE ( dx * k + layerIndex * dx / 2,
-                                dy * j + layerIndex * dy / 2,
+         newParticle.position = CARTESIAN_COORDINATE ( dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
+                                dy * j + layerIndex * dy / 2, //displaced by dy/2 from lower layer
                                 zMin + layerIndex * dz );
          newParticle.species = 0;
          particleList.push_back( newParticle );

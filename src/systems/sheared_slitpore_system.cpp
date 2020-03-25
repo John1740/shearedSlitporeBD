@@ -224,8 +224,8 @@ double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields ( CHARGED_PAR
 
 void SHEARED_SLITPORE_SYSTEM::setParticleList ( vector< CHARGED_PARTICLE > particleListIn )
 {
-    particle = particleListIn;
-    for ( int i = 0; i < particle.size(); ++i ) {
+    particle = particleListIn; //copy particleList
+    for ( int i = 0; i < particle.size(); ++i ) { //add some more info to each particle
         particle[i].diameter = diameter;
         particle[i].charge = charge;
         particle[i].species = 0;

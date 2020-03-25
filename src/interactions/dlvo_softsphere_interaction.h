@@ -29,7 +29,6 @@ public:
 
    double ssInteractionStrength;
 
-
    DLVO_SOFTSPHERE_INTERACTION();
    void setInteractionParameters ( vector<int> chargeIn,vector<double> diameterIN , vector<double> rhoIn );
    void calculateCutOffThreshold();
@@ -43,6 +42,9 @@ public:
 
 
    double getInteractionStrength ( int Z1, double diameter1, int Z2, double diameter2 );
+
+//   Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
+//   For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
    double getCutOffRadius ( int index );
    double getMaxCutOffRadius();
 

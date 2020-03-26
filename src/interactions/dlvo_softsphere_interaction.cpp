@@ -129,6 +129,7 @@ void DLVO_SOFTSPHERE_INTERACTION::setParametersForAllChargeCompositions()
          diameterSpecies.push_back( 0.5 * ( diameter[i] + diameter[j] ) );
          int currentID = i + j;
          cutOffRadius.push_back( getCutOffRadius( currentID ) );
+         //unclear names!
          shift1.push_back( forceOnParticlePerDirection( cutOffRadius[currentID], currentID ) );
          shift2.push_back( energyOnParticles( cutOffRadius[currentID], currentID ) );
          shift3.push_back( shift1[currentID]*cutOffRadius[currentID] );

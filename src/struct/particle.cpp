@@ -19,6 +19,10 @@ PARTICLE::PARTICLE( const PARTICLE &other )
    boxPosition = other.boxPosition;
 }
 
+CARTESIAN_COORDINATE PARTICLE::getPosition() const {
+    return CARTESIAN_COORDINATE(position.x, position.y, position.z);
+}
+
 double PARTICLE::distanceTo( PARTICLE &other )
 {
     CARTESIAN_COORDINATE difference;

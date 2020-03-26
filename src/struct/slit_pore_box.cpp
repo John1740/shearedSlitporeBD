@@ -62,15 +62,21 @@ CARTESIAN_COORDINATE SLIT_PORE_BOX::getDimensions()
     return dimensions;
 }
 
-
+//Converts coordinates x and y into the scope [-L/2,+L/2] (periodic boundary conditions),
+//where L is the dimension dx or dy respectively.
 CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition( CARTESIAN_COORDINATE &positionIN )
 {
-   CARTESIAN_COORDINATE boxPosition(
-      positionIN.x - round( positionIN.x / dimensions.x ) * dimensions.x,
-      positionIN.y - round( positionIN.y / dimensions.y ) * dimensions.y,
-      positionIN.z );
+    CARTESIAN_COORDINATE boxPosition;
+    //x  = X*L + r (x=positionIN.x, X to be integer, L=dimension.x, r to be remainder ([0,L])
+    //x' = x - round( x / L ) * L  (x'=boxPosition.x)
+    //x' = r - round( r / L ) * L  (r/L is element [0,1] and so either rounded to 0 or 1)
+    //x' = r   , if r <  L/2       (rounded half away from zero)
+    //   = r-L , if r >= L/2
+    boxPosition.x = positionIN.x - round( positionIN.x / dimensions.x ) * dimensions.x;
+    boxPosition.y = positionIN.y - round( positionIN.y / dimensions.y ) * dimensions.y;
+    boxPosition.z = positionIN.z;
 
-   return boxPosition;
+    return boxPosition;
 }
 
 

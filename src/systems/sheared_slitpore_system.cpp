@@ -88,13 +88,13 @@ void SHEARED_SLITPORE_SYSTEM::setNumberOfParticles ( int numberOfParticlesIn )
 
 void SHEARED_SLITPORE_SYSTEM::readFromString ( string str )
 {
-    fstream f;
+    ifstream f;
     f.open ( str.c_str() );
 
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();
 
-    while ( f ) {
+    while(f) {
         double c1, c2, c3, c4, c5, c6;
         f >> c1 >> c2 >> c3 >> c4 >> c5 >> c6;
 
@@ -114,7 +114,6 @@ void SHEARED_SLITPORE_SYSTEM::readFromString ( string str )
 
         particleIn.push_back ( newParticle );
     }
-
 
     if ( particleIn.size() <= 0 ) {
         setInitialConfigurationForLayersWithSides ( getNumberOfParticles() );
@@ -168,36 +167,28 @@ CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce ( int index )
     return shearForce.forceOnParticle ( particle[index] ) * dt;
 }
 
-string SHEARED_SLITPORE_SYSTEM::app_identifier ( string str )
+string SHEARED_SLITPORE_SYSTEM::app_identifier(string str)
 {
     stringstream output;
     output << str;
 
-    output <<  "_shear_" << shearForce.getShearRate() << "__Dwall_" << simBox.getDimensions().z
-           << "_L_" << simBox.getDimensions().x << "_rho_" << density << "_N_" << getNumberOfParticles() << "_Wforce_";
-
-    output << "-0" << "_";
-
-    output << "Zp_";
-    output << charge;
-
+    output << "_shear_" << shearForce.getShearRate()
+           << app_incomplete_identifier(str);
 
     return output.str();
 }
 
-string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier ( string str )
+string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str)
 {
     stringstream output;
     output << str;
 
     output << "__Dwall_" << simBox.getDimensions().z
-           << "_L_" << simBox.getDimensions().x << "_rho_" << density << "_N_" << getNumberOfParticles() << "_Wforce_";
-
-    output << "-0" << "_";
-
-    output << "Zp_";
-    output << charge;
-
+           << "_L_" << simBox.getDimensions().x
+           << "_rho_" << density
+           << "_N_" << getNumberOfParticles()
+           << "_Wforce_" << "-0"
+           << "_Zp_" << charge;
 
     return output.str();
 }
@@ -308,9 +299,11 @@ CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress()
 
 void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem ( int ensembleIndex )
 {
-    string inputString = app_home ( "" ) + "config_ensemble/ensemble_"+app_incomplete_identifier( "" )+"/shear_"+ app_number ( "", shearForce.getShearRate() ) + "/configuration"+ app_identifier ( "" ) + "_ens_" + app_number ( "",ensembleIndex ) + ".txt";
+    string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
+                         + "/shear_" + app_number("", shearForce.getShearRate())
+                         + "/configuration" + app_identifier("" ) + "_ens_" + app_number("", ensembleIndex) + ".txt";
     cout << inputString << endl;
-    readFromString ( inputString );
+    readFromString(inputString);
 }
 
 void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex ( int ensembleIndex )

@@ -9,10 +9,10 @@ class BOX_GEOMETRY
 {
 public:
 
-   virtual CARTESIAN_COORDINATE convertToBoxPosition ( CARTESIAN_COORDINATE& positionIN ) = 0;
+    virtual CARTESIAN_COORDINATE convertToBoxPosition ( CARTESIAN_COORDINATE& positionIN ) = 0;
 //    virtual void setVolume() = 0;
-   virtual double getVolume() = 0;
-   virtual CARTESIAN_COORDINATE getDimensions() = 0;
+    virtual double getVolume() = 0;
+    virtual CARTESIAN_COORDINATE getDimensions() = 0;
 
 };
 

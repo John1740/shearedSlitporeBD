@@ -18,6 +18,8 @@ public:
    PARTICLE ( const CARTESIAN_COORDINATE& positionIN );
    PARTICLE ( const PARTICLE& other );
 
+   CARTESIAN_COORDINATE getPosition() const;
+
    double distanceTo ( PARTICLE& other );
    double distanceTo ( CARTESIAN_COORDINATE& positionIN );
 

@@ -89,41 +89,37 @@ void SHEARED_SLITPORE_SYSTEM::setNumberOfParticles ( int numberOfParticlesIn )
 void SHEARED_SLITPORE_SYSTEM::readFromString ( string str )
 {
     ifstream f;
-    f.open ( str.c_str() );
+    f.open(str.c_str());
 
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();
 
-    while(f) {
-        double c1, c2, c3, c4, c5, c6;
-        f >> c1 >> c2 >> c3 >> c4 >> c5 >> c6;
+    double c1, c2, c3, c4, c5, c6;
+    CHARGED_PARTICLE newParticle;
 
-        CHARGED_PARTICLE newParticle;
-
-        switch ( read_toggle ) {
+    while(f >> c1 >> c2 >> c3 >> c4 >> c5 >> c6){
+        switch(read_toggle) {
         case 0:
-            newParticle.position = CARTESIAN_COORDINATE ( c4, c5, c3 );
+            newParticle.position = CARTESIAN_COORDINATE(c4, c5, c3);
             break;
 
         case 1:
-            newParticle.position = CARTESIAN_COORDINATE ( c1, c2, c3 );
+            newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
             break;
         }
-
         newParticle.species = c6;
 
-        particleIn.push_back ( newParticle );
+        particleIn.push_back(newParticle);
     }
 
-    if ( particleIn.size() <= 0 ) {
-        setInitialConfigurationForLayersWithSides ( getNumberOfParticles() );
+    if(particleIn.size() <= 0){
+        setInitialConfigurationForLayersWithSides(getNumberOfParticles());
     } else {
-        particleIn.pop_back();
-        if ( particleIn.size() != getNumberOfParticles() ) {
+        if(particleIn.size() != getNumberOfParticles()) {
             cout << "Read in configuration number of particles deviates from expected number: "
                  << particleIn.size() << " != " << getNumberOfParticles() << endl;
         }
-        setParticleList ( particleIn );
+        setParticleList(particleIn);
     }
 
 }

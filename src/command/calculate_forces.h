@@ -15,7 +15,7 @@ class CALCULATE_FORCES
    vector<CARTESIAN_COORDINATE> boxPositions;
    BOX_GEOMETRY* simBox;
 
-   unsigned int getBoxIndexFromGridIndizies ( int i, int j );
+   unsigned int getBoxIndexFromGridIndices (int i, int j );
    int getBoxIndexForParticleIndex ( int i );
    int getGridIndexX ( int i );
    int getGridIndexY ( int i );

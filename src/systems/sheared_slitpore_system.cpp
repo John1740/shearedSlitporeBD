@@ -68,6 +68,7 @@ double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale()
     return dlvo.getMaxCutOffRadius();
 }
 
+//reset forces, stresses and energy
 void SHEARED_SLITPORE_SYSTEM::reset()
 {
     force.assign ( getNumberOfParticles(), CARTESIAN_COORDINATE ( 0. ) );

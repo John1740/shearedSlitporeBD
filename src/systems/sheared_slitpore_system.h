@@ -39,7 +39,6 @@ protected:
     virtual void setDlvoSSInteraction ( double ssInteractionStrengthIn );
     virtual double getInteractionLengthScale();
 
-    //reset forces, energies and stresses
     virtual void reset();
     virtual void setNumberOfParticles ( int numberOfParticlesIn );
 

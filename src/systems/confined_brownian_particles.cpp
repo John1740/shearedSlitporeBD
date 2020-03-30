@@ -54,6 +54,7 @@ void CONFINED_BROWNIAN_PARTICLES::calculateForce()
 //     }
 }
 
+//reset forces
 void CONFINED_BROWNIAN_PARTICLES::reset()
 {
    force.assign ( getNumberOfParticles(), CARTESIAN_COORDINATE ( 0. ) );

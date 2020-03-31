@@ -32,4 +32,4 @@ src/tools/parse_arguments.cpp
 
 src/parameters/sheared_slitpore_parameters.cpp
 
-)
+        src/helpers/analysis.cpp src/helpers/analysis.h)

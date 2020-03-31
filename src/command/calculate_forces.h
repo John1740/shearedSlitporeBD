@@ -13,12 +13,12 @@ class CALCULATE_FORCES
    vector<int> firstParticleIndexInBox, nextParticleIndexInBoxOfParticleIndex;
 
    vector<CARTESIAN_COORDINATE> boxPositions;
-   BOX_GEOMETRY* simBox;
+   BOX_GEOMETRY* simBox;    //should be initialized in constructor
 
    unsigned int getBoxIndexFromGridIndices (int i, int j );
-   int getBoxIndexForParticleIndex ( int i );
-   int getGridIndexX ( int i );
-   int getGridIndexY ( int i );
+   int getBoxIndexForParticleIndex ( int particleIndex );
+   int getGridIndexXForParticleIndex (int particleIndex );
+   int getGridIndexYForParticleIndex (int particleIndex );
 
    void initializeContainer();
    void initializeParticleIndexLists ( SYSTEM_INTERFACE& sysIn );

@@ -21,8 +21,9 @@ void GENERATE_SQUARE_LAYERS::doForSystem(CONFINED_BROWNIAN_PARTICLES &sysIn){
     setLatticePeriodicity();
     particleList.clear();
 
-    for(int i = 0; i < numberOfLayers - 1; ++i)
+    for(int i = 0; i < numberOfLayers - 1; ++i) {
         addLayer(i);
+    }
 
     addIncommensurableLayer(numberOfLayers - 1);
 
@@ -64,10 +65,10 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
                     dyAdd * j + layerIndex * dyAdd / 2,
                     zMin + layerIndex * dz
                     );
-                if(SPECIES_TOOGLE) {
+                if(SPECIES_TOOGLE){
                     newParticle.species = 1;
                 }
-                else {
+                else{
                     newParticle.species = 0;
                     particleList.push_back(newParticle);
                 }

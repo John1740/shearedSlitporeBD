@@ -32,7 +32,6 @@ void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
         randomForce = getRandomForce();
 
         particle[i].position += force[i] * D0 * dt / T + randomForce;
-
     }
     setPositionInBox();
 }

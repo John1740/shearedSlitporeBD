@@ -109,8 +109,8 @@ void SHEARED_SLITPORE_SYSTEM::readFromString(string str){
     }
     else{
         if(particleIn.size() != getNumberOfParticles()){
-            cout << "Read in configuration number of particles deviates from expected number: "
-                 << particleIn.size() << " != " << getNumberOfParticles() << endl;
+            cout << "Read in configuration number of particles deviates from expected number: ";
+            cout << particleIn.size() << " != " << getNumberOfParticles() << endl;
         }
         setParticleList(particleIn);
     }
@@ -296,7 +296,7 @@ double SHEARED_SLITPORE_SYSTEM::getShearRate(){
 
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
     for(int i = 0; i < particle.size(); ++i){
-    particle[i].position = particle[i].boxPosition;
+        particle[i].position = particle[i].boxPosition;
     }
 }
 

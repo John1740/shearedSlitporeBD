@@ -23,8 +23,8 @@ public:
 
     string sysIdentifierString;
     
-    void setAsBiLayerWithShearRate( double shearRateIn );
-    void setAsTriLayerWithShearRate( double shearRateIn );
+    void setAsBiLayerWithShearRate(double shearRateIn );
+    void setAsTriLayerWithShearRate(double shearRateIn );
 };
 
 #endif // SHEARED_SLITPORE_PARAMETERS_H

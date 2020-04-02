@@ -16,18 +16,18 @@ class CALCULATE_FORCES
    BOX_GEOMETRY* simBox;    //should be initialized in constructor
 
    unsigned int getBoxIndexFromGridIndices(int i, int j );
-   int getBoxIndexForParticleIndex( int particleIndex );
+   int getBoxIndexForParticleIndex(int particleIndex );
    int getGridIndexXForParticleIndex(int particleIndex );
    int getGridIndexYForParticleIndex(int particleIndex );
 
    void initializeContainer();
-   void initializeParticleIndexLists( SYSTEM_INTERFACE& sysIn );
-   void calculateForce( SYSTEM_INTERFACE& sysIn );
+   void initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn );
+   void calculateForce(SYSTEM_INTERFACE& sysIn );
     
 public:
     CALCULATE_FORCES();
     
-    void doForSystem( SYSTEM_INTERFACE& sysIn );
+    void doForSystem(SYSTEM_INTERFACE& sysIn );
 };
 
 #endif // CALCULATE_FORCES_H

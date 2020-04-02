@@ -36,8 +36,8 @@ protected:
     string configurationDir;
     
 //     Internal File-Handling
-    virtual void readFromString( string str );
-    virtual void printParticlesOfSystem( string str );
+    virtual void readFromString(string str );
+    virtual void printParticlesOfSystem(string str );
     virtual void printInitilization();
     
 //     Allow Children to modify simulation box
@@ -47,27 +47,27 @@ protected:
     virtual void equationOfMotion();
     virtual void calculateForce();
     virtual void reset();
-    virtual void calculateInteractionForce( int i, int j );
-    virtual void calculateExternalForce( int i );
+    virtual void calculateInteractionForce(int i, int j );
+    virtual void calculateExternalForce(int i );
     virtual CARTESIAN_COORDINATE getRandomForce();
     
 //     Non-Public Set-Functions
-    virtual void setParticleList( vector<CHARGED_PARTICLE> particleListIn );
+    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn );
     virtual void setPositionInBox();
 
 
 public:
     CONFINED_BROWNIAN_PARTICLES();
-    virtual void simulateForSteps( int maxSteps );
+    virtual void simulateForSteps(int maxSteps );
 
 //     Two-Body and External Forces
-    virtual CARTESIAN_COORDINATE forceFromParticleOnParticle( CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2 );
-    virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields( CHARGED_PARTICLE& particle );
-    virtual double energyFromParticleOnParticle( CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2 );
-    virtual double energyOfParticleFromExternalFields( CHARGED_PARTICLE& particle );
+    virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2 );
+    virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle );
+    virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2 );
+    virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle );
 
 //     Set-Functions
-    virtual void setTimeStepSize( double timeStepSizeIn );
+    virtual void setTimeStepSize(double timeStepSizeIn );
     
 //     Get-Functions
     virtual int getNumberOfParticles();
@@ -79,11 +79,11 @@ public:
     
 //     File-Handling
     virtual void read();
-    virtual void read( string str );
+    virtual void read(string str );
     virtual void printSystem();
-    virtual void printSystem( string str );
+    virtual void printSystem(string str );
     
-    virtual string app_identifier( string str );
+    virtual string app_identifier(string str );
 
 };
 

@@ -153,7 +153,7 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion()
 
         particle[i].position += force[i] * D0 * dt / T + randomForce + shearForce;
 
-        if( particle[i].position.z > 0.5 * simBox.getDimensions().z || particle[i].position.z < -0.5 * simBox.getDimensions().z ){
+        if(particle[i].position.z > 0.5 * simBox.getDimensions().z || particle[i].position.z < -0.5 * simBox.getDimensions().z ){
             cout << "particle[i].position.z = " << particle[i].position.z << endl;
 
             particle[i].setBoxPosition(simBox);

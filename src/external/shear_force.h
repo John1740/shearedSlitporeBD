@@ -12,10 +12,10 @@ class SHEAR_FORCE :  FORCE<PARTICLE>
 
 public:
     SHEAR_FORCE();
-    void setDirection( CARTESIAN_COORDINATE directionIn );
-    void setShearRate( double shearRateIn );
+    void setDirection(CARTESIAN_COORDINATE directionIn );
+    void setShearRate(double shearRateIn );
     
-    CARTESIAN_COORDINATE forceOnParticle( PARTICLE& particle );
+    CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle );
     
     double getShearRate();
     CARTESIAN_COORDINATE getDirection();

@@ -28,10 +28,10 @@ extern vector<double> arguments;
 //*******************SMALL-FUNCTIONS******************////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-extern string app_home ( string );
+extern string app_home( string );
 
 template<typename T>
-string app_number ( string str, T number )
+string app_number( string str, T number )
 {
    stringstream output;
    output << str << number;
@@ -40,7 +40,7 @@ string app_number ( string str, T number )
 
 inline bool fileExists(const std::string& name) {
   struct stat buffer;   
-  return (stat (name.c_str(), &buffer) == 0); 
+  return (stat(name.c_str(), &buffer) == 0);
 }
 
 #endif

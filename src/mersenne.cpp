@@ -212,14 +212,14 @@ int CRandomMersenne::IRandomX( int min, int max )
    uint32_t iran;                        // Longran / 2^32
    uint32_t remainder;                   // Longran % 2^32
 
-   interval = uint32_t ( max - min + 1 );
+   interval = uint32_t( max - min + 1 );
 
    if( interval != LastInterval )
    {
       // Interval length has changed. Must calculate rejection limit
       // Reject when remainder >= 2^32 / interval * interval
       // RLimit will be 0 if interval is a power of 2. No rejection then
-      RLimit = uint32_t ( ( ( uint64_t ) 1 << 32 ) / interval ) * interval - 1;
+      RLimit = uint32_t( ( ( uint64_t ) 1 << 32 ) / interval ) * interval - 1;
       LastInterval = interval;
    }
 
@@ -241,7 +241,7 @@ int CRandomMersenne::IRandomX( int min, int max )
    uint32_t iran;                        // bran / interval
    uint32_t remainder;                   // bran % interval
 
-   interval = uint32_t ( max - min + 1 );
+   interval = uint32_t( max - min + 1 );
 
    if( interval != LastInterval )
    {

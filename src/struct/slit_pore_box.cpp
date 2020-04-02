@@ -6,12 +6,12 @@ SLIT_PORE_BOX::SLIT_PORE_BOX()
    setVolume();
 }
 
-SLIT_PORE_BOX::SLIT_PORE_BOX ( CARTESIAN_COORDINATE dimensionsIn )
+SLIT_PORE_BOX::SLIT_PORE_BOX( CARTESIAN_COORDINATE dimensionsIn )
 {
     setDimensions(dimensionsIn);
 }
 
-void SLIT_PORE_BOX::setDimensions ( CARTESIAN_COORDINATE dimensionsIn )
+void SLIT_PORE_BOX::setDimensions( CARTESIAN_COORDINATE dimensionsIn )
 {
     dimensions = dimensionsIn;
     setVolume();

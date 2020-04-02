@@ -15,7 +15,7 @@ public:
     void setDirection( CARTESIAN_COORDINATE directionIn );
     void setShearRate( double shearRateIn );
     
-    CARTESIAN_COORDINATE forceOnParticle ( PARTICLE& particle );
+    CARTESIAN_COORDINATE forceOnParticle( PARTICLE& particle );
     
     double getShearRate();
     CARTESIAN_COORDINATE getDirection();

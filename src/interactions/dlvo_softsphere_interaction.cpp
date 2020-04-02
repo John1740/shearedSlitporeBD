@@ -153,7 +153,7 @@ double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius( int index )
         currentRadius = i * rcDelta;
         currentEnergy = energyOnParticles(currentRadius, index);
         currentForce = forceOnParticlePerDirection(i * rcDelta, index) / (i * rcDelta);
-        if (abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold) {
+        if(abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold) {
             cutOffRadius = i * rcDelta;
             break;
         }

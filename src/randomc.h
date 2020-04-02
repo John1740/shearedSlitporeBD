@@ -127,9 +127,9 @@ typedef unsigned long long uint64_t;
 System-specific user interface functions
 ***********************************************************************/
 
-void EndOfProgram ( void );            // System-specific exit code (userintf.cpp)
+void EndOfProgram( void );            // System-specific exit code (userintf.cpp)
 
-void FatalError ( const char* ErrorText ); // System-specific error reporting (userintf.cpp)
+void FatalError( const char* ErrorText ); // System-specific error reporting (userintf.cpp)
 
 #if defined(__cplusplus)               // class definitions only in C++
 /***********************************************************************
@@ -166,15 +166,15 @@ class CRandomMersenne                  // Encapsulate random number generator
 #endif
 
 public:
-   CRandomMersenne ( int seed )        // Constructor
+   CRandomMersenne( int seed )        // Constructor
    {
-      RandomInit ( seed );
+      RandomInit( seed );
       LastInterval = 0;
    }
-   void RandomInit ( int seed );       // Re-seed
-   void RandomInitByArray ( int const seeds[], int NumSeeds ); // Seed by more than 32 bits
-   int IRandom ( int min, int max );   // Output random integer
-   int IRandomX ( int min, int max );  // Output random integer, exact
+   void RandomInit( int seed );       // Re-seed
+   void RandomInitByArray( int const seeds[], int NumSeeds ); // Seed by more than 32 bits
+   int IRandom( int min, int max );   // Output random integer
+   int IRandomX( int min, int max );  // Output random integer, exact
    double Random();                    // Output random float
    uint32_t BRandom();                 // Output random bits
 private:
@@ -189,13 +189,13 @@ private:
 class CRandomMother                    // Encapsulate random number generator
 {
 public:
-   void RandomInit ( int seed );       // Initialization
-   int IRandom ( int min, int max );   // Get integer random number in desired interval
+   void RandomInit( int seed );       // Initialization
+   int IRandom( int min, int max );   // Get integer random number in desired interval
    double Random();                    // Get floating point random number
    uint32_t BRandom();                 // Output random bits
-   CRandomMother ( int seed )          // Constructor
+   CRandomMother( int seed )          // Constructor
    {
-      RandomInit ( seed );
+      RandomInit( seed );
    }
 protected:
    uint32_t x[5];                      // History buffer

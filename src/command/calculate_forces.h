@@ -15,14 +15,14 @@ class CALCULATE_FORCES
    vector<CARTESIAN_COORDINATE> boxPositions;
    BOX_GEOMETRY* simBox;    //should be initialized in constructor
 
-   unsigned int getBoxIndexFromGridIndices (int i, int j );
-   int getBoxIndexForParticleIndex ( int particleIndex );
-   int getGridIndexXForParticleIndex (int particleIndex );
-   int getGridIndexYForParticleIndex (int particleIndex );
+   unsigned int getBoxIndexFromGridIndices(int i, int j );
+   int getBoxIndexForParticleIndex( int particleIndex );
+   int getGridIndexXForParticleIndex(int particleIndex );
+   int getGridIndexYForParticleIndex(int particleIndex );
 
    void initializeContainer();
-   void initializeParticleIndexLists ( SYSTEM_INTERFACE& sysIn );
-   void calculateForce ( SYSTEM_INTERFACE& sysIn );    
+   void initializeParticleIndexLists( SYSTEM_INTERFACE& sysIn );
+   void calculateForce( SYSTEM_INTERFACE& sysIn );
     
 public:
     CALCULATE_FORCES();

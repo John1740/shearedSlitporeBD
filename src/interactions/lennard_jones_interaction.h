@@ -15,15 +15,15 @@ public:
    CARTESIAN_COORDINATE positionDifference;
 
    LENNARD_JONES_INTERACTION();
-   LENNARD_JONES_INTERACTION ( double interactionStrengthIN );
+   LENNARD_JONES_INTERACTION( double interactionStrengthIN );
 
-   CARTESIAN_COORDINATE forceOnParticleFromParticle ( PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox );
-   double energyOnParticleFromParticle ( PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox );
+   CARTESIAN_COORDINATE forceOnParticleFromParticle( PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox );
+   double energyOnParticleFromParticle( PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox );
 
-   double energyOnParticles ( double distance );
-   double forceOnParticlePerDirection ( double distance );
+   double energyOnParticles( double distance );
+   double forceOnParticlePerDirection( double distance );
 
-   void setParametersForParticleFromParticle ( PARTICLE& particle1, PARTICLE& particle2 );
+   void setParametersForParticleFromParticle( PARTICLE& particle1, PARTICLE& particle2 );
 };
 
 #endif // LENNARD_JONES_INTERACTION_H

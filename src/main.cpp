@@ -13,7 +13,7 @@
 
 int main( int argc, char *argv[] )
 {             
-    srand( getpid()*time ( 0 ) );
+    srand( getpid()*time( 0 ) );
     
     PARSE_ARGUMENTS parseArguments;
     arguments = parseArguments.getArgumentList( argc, argv );
@@ -26,7 +26,7 @@ int main( int argc, char *argv[] )
     sysParameters.setAsBiLayerWithShearRate( 0 );
     sysParameters.print();
 
-    SHEARED_SLITPORE_SYSTEM sys ( sysParameters );
+    SHEARED_SLITPORE_SYSTEM sys( sysParameters );
     sys.readEnsembleSystem(0);
     sys.STRESS=true;
     sys.setShearRate(400);

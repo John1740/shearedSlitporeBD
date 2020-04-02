@@ -5,7 +5,7 @@ template<class SYSTEM_T>
 class COMMAND
 {
 public:
-   virtual void doForSystem ( SYSTEM_T& sysIn ) = 0;
+   virtual void doForSystem( SYSTEM_T& sysIn ) = 0;
 };
 
 #endif // COMMAND_H

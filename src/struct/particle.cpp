@@ -2,15 +2,15 @@
 
 PARTICLE::PARTICLE()
 {
-   position = CARTESIAN_COORDINATE ( 0. );
-   boxPosition = CARTESIAN_COORDINATE ( 0. );
+   position = CARTESIAN_COORDINATE( 0. );
+   boxPosition = CARTESIAN_COORDINATE( 0. );
    diameter = 1.;
 }
 
 PARTICLE::PARTICLE( const CARTESIAN_COORDINATE &positionIN )
 {
    position = positionIN;
-   boxPosition = CARTESIAN_COORDINATE ( 0. );
+   boxPosition = CARTESIAN_COORDINATE( 0. );
 }
 
 PARTICLE::PARTICLE( const PARTICLE &other )

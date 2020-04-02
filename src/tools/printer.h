@@ -19,13 +19,13 @@ class PRINTER{
 
 public:
    PRINTER();
-   PRINTER (string outputFileIn );
-   PRINTER (string directoryPathIn, string outputFileIn );
+   PRINTER (string outputFileIn);
+   PRINTER (string directoryPathIn, string outputFileIn);
    ~PRINTER();
    
-   void setFileExtension(string fileExtensionIn );
+   void setFileExtension(string fileExtensionIn);
    
-   void setDirectoryPathAndOutputFile (string directoryPathIn, string outputFileIn );
+   void setDirectoryPathAndOutputFile (string directoryPathIn, string outputFileIn);
    void removeFile();
    void closeFile();
    
@@ -42,17 +42,17 @@ public:
       string column7 = "",
       string column8 = "",
       string column9 = ""
-   );
+  );
 
    template<typename T>
-   void printLine (T t ){
+   void printLine (T t){
       file << t << endl;
    }
 
    template<typename T, typename... Args>
-   void printLine (T t, Args... args ){
+   void printLine (T t, Args... args){
       file << t << "\t";
-      printLine (args... );
+      printLine (args...);
    }
 
 

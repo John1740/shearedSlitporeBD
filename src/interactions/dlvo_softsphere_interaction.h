@@ -29,28 +29,28 @@ public:
    double ssInteractionStrength;
 
    DLVO_SOFTSPHERE_INTERACTION();
-   void setInteractionParameters(vector<int> chargeIn,vector<double> diameterIN , vector<double> rhoIn );
+   void setInteractionParameters(vector<int> chargeIn,vector<double> diameterIN , vector<double> rhoIn);
    void calculateCutOffThreshold();
 
-   CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox );
-   double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox );
+   CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
+   double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
 //FAST:
-   bool isInRangeSetDistanceAndId(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox );
+   bool isInRangeSetDistanceAndId(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
    CARTESIAN_COORDINATE fastForce();
 
 
-   double getInteractionStrength(int Z1, double diameter1, int Z2, double diameter2 );
+   double getInteractionStrength(int Z1, double diameter1, int Z2, double diameter2);
 
 //   Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
 //   For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
-   double getCutOffRadius(int index );
+   double getCutOffRadius(int index);
    double getMaxCutOffRadius();
 
-   double forceOnParticlePerDirection(double r, int index );
-   double energyOnParticles(double r, int index );
+   double forceOnParticlePerDirection(double r, int index);
+   double energyOnParticles(double r, int index);
 
-   void setRcDelta(double length );
+   void setRcDelta(double length);
 };
 
 #endif // DLVO_INTERACTION_H

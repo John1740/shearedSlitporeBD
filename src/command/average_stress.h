@@ -14,7 +14,7 @@ public:
    AVERAGE_STRESS();
    void reset();
 
-   void doForSystem(SHEARED_SLITPORE_SYSTEM& sysIn );
+   void doForSystem(SHEARED_SLITPORE_SYSTEM& sysIn);
 
    CARTESIAN_MATRIX getStress();
 };

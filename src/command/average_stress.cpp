@@ -5,11 +5,11 @@ AVERAGE_STRESS::AVERAGE_STRESS(){
 }
 
 void AVERAGE_STRESS::reset(){
-   stress = CARTESIAN_MATRIX(0. );
+   stress = CARTESIAN_MATRIX(0.);
    count = 0;
 }
 
-void AVERAGE_STRESS::doForSystem(SHEARED_SLITPORE_SYSTEM &sysIn ){
+void AVERAGE_STRESS::doForSystem(SHEARED_SLITPORE_SYSTEM &sysIn){
    stress += sysIn.getMeanStress();
    ++count;
 }

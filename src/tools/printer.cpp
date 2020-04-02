@@ -15,25 +15,25 @@
 
 PRINTER::PRINTER(){
    setFileExtension("txt");
-   setDirectoryPathAndOutputFile("", "" );
+   setDirectoryPathAndOutputFile("", "");
 }
 
-PRINTER::PRINTER(string outputFileIn ){
+PRINTER::PRINTER(string outputFileIn){
    setFileExtension("txt");
-   setDirectoryPathAndOutputFile("", outputFileIn );
+   setDirectoryPathAndOutputFile("", outputFileIn);
 }
 
-PRINTER::PRINTER(string directoryPathIn, string outputFileIn ){
+PRINTER::PRINTER(string directoryPathIn, string outputFileIn){
    setFileExtension("txt");
-   setDirectoryPathAndOutputFile(directoryPathIn, outputFileIn );
+   setDirectoryPathAndOutputFile(directoryPathIn, outputFileIn);
 }
 
 PRINTER::~PRINTER(){
    file.close();
 }
 
-void PRINTER::setFileExtension (string fileExtensionIn ){
-    remove(filePath.c_str() );
+void PRINTER::setFileExtension (string fileExtensionIn){
+    remove(filePath.c_str());
     fileExtension = fileExtensionIn;
     closeFile();
     getFilePath();
@@ -43,13 +43,13 @@ void PRINTER::setFileExtension (string fileExtensionIn ){
 bool PRINTER::fileIsEmpty(){
     file.seekp(0, ios::end); // put the "cursor" at the end of the file
     double length = file.tellp();
-    if(length == 0 )
+    if(length == 0)
 	return true;
     else
 	return false;
 }
 
-void PRINTER::setDirectoryPathAndOutputFile(string directoryPathIn, string outputFileIn ){
+void PRINTER::setDirectoryPathAndOutputFile(string directoryPathIn, string outputFileIn){
    directoryPath = directoryPathIn;
    outputFile = outputFileIn;
    getFilePath();
@@ -58,26 +58,26 @@ void PRINTER::setDirectoryPathAndOutputFile(string directoryPathIn, string outpu
 }
 
 void PRINTER::getFilePath(){
-   filePath = app_home("" ) + directoryPath + "/" + outputFile + "." + fileExtension;
+   filePath = app_home("") + directoryPath + "/" + outputFile + "." + fileExtension;
 }
 
 void PRINTER::openFile(){
    file.close();
-   string cmd = "mkdir -p " + app_home(directoryPath );
-   system(cmd.c_str() );
+   string cmd = "mkdir -p " + app_home(directoryPath);
+   system(cmd.c_str());
 
-   file.open(filePath.c_str(), ios::app );
+   file.open(filePath.c_str(), ios::app);
 }
 
 void PRINTER::removeFile(){
    file.close();
-   remove(filePath.c_str() );
+   remove(filePath.c_str());
    openFile();
 }
 
 
 
-void PRINTER::setDescription(string column0, string column1, string column2, string column3, string column4, string column5, string column6, string column7, string column8, string column9 ){
+void PRINTER::setDescription(string column0, string column1, string column2, string column3, string column4, string column5, string column6, string column7, string column8, string column9){
    file << column0
         << "\t" << column1
         << "\t" << column2

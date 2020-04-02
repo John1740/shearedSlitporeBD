@@ -23,7 +23,7 @@ void SHEARED_SLITPORE_PARAMETERS::print(){
 
 }
 
-void SHEARED_SLITPORE_PARAMETERS::setAsBiLayerWithShearRate(double shearRateIn ){
+void SHEARED_SLITPORE_PARAMETERS::setAsBiLayerWithShearRate(double shearRateIn){
     numberOfParticles = 1058;
 
     shearRate = shearRateIn;
@@ -40,7 +40,7 @@ void SHEARED_SLITPORE_PARAMETERS::setAsBiLayerWithShearRate(double shearRateIn )
     sysIdentifierString = "2layer";
 }
 
-void SHEARED_SLITPORE_PARAMETERS::setAsTriLayerWithShearRate(double shearRateIn ){
+void SHEARED_SLITPORE_PARAMETERS::setAsTriLayerWithShearRate(double shearRateIn){
     numberOfParticles = 1587;
 
     shearRate = shearRateIn;

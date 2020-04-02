@@ -8,8 +8,8 @@
 
 class SYSTEM_INTERFACE{
 public:
-   virtual void calculateInteractionForce(int i, int j )  = 0;
-   virtual void calculateExternalForce(int i ) = 0;
+   virtual void calculateInteractionForce(int i, int j)  = 0;
+   virtual void calculateExternalForce(int i) = 0;
 
    virtual BOX_GEOMETRY* simulationBox() = 0;
    virtual double getInteractionLengthScale() = 0;

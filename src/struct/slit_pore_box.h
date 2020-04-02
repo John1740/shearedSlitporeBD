@@ -8,7 +8,7 @@ struct SLIT_PORE_BOX: public BOX_GEOMETRY{
     SLIT_PORE_BOX();
     SLIT_PORE_BOX(CARTESIAN_COORDINATE dimensionsIn);
     SLIT_PORE_BOX(double lengthIN, double dWallIN);
-    
+
     void setDimensions(CARTESIAN_COORDINATE dimensionsIn);
 
     void setDwall(double dWallIn);
@@ -19,7 +19,7 @@ struct SLIT_PORE_BOX: public BOX_GEOMETRY{
 
     double getVolume();
     CARTESIAN_COORDINATE getDimensions();
-    
+
 private:
     CARTESIAN_COORDINATE dimensions;
     double volume;

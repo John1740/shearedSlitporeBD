@@ -10,16 +10,16 @@
 #include <ctime>
 #include <limits>
 
-int main(int argc, char *argv[]){             
+int main(int argc, char *argv[]){
     srand(getpid()*time(0));
-    
+
     PARSE_ARGUMENTS parseArguments;
     arguments = parseArguments.getArgumentList(argc, argv);
     parseArguments.checkForInvalidArguments(arguments);
     parseArguments.printArgumentList(arguments);
-    
+
  ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
-    
+
     SHEARED_SLITPORE_PARAMETERS sysParameters;
     sysParameters.setAsBiLayerWithShearRate(0);
     sysParameters.print();
@@ -28,20 +28,20 @@ int main(int argc, char *argv[]){
     sys.readEnsembleSystem(0);
     sys.STRESS=true;
     sys.setShearRate(400);
-    
+
     AVERAGE_STRESS averageStress;
-    
+
     for(int i = 0; i < 100000; ++i){
         if(i%100==0)
             cout << i << endl;
-        
+
         sys.simulateForSteps(1);
         averageStress.doForSystem(sys);
         if(i%100==0)
             cout << averageStress.getStress().xz << endl;
          sys.printSystem("test");
     }
-    
+
     return 0;
 }
 

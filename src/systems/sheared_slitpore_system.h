@@ -12,10 +12,10 @@
 #include "../command/generate_square_layers.h"
 
 class SHEARED_SLITPORE_SYSTEM: public  CONFINED_BROWNIAN_PARTICLES{
-   
-    
+
+
 private:
-    
+
 protected:
     DLVO_SOFTSPHERE_INTERACTION dlvo;
     SOFT_WALL_FORCE swf;
@@ -25,10 +25,10 @@ protected:
 
     double density, diameter;
     int charge;
-    
+
     vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
     vector<double> energy;
-    
+
     vector<CARTESIAN_MATRIX> stressPerParticle;
 //     vector<double> absDistancePerParticle;
 //     vector<double> absForcePerParticle;
@@ -48,25 +48,25 @@ protected:
     virtual void equationOfMotion();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
-    
+
     virtual void setInitialConfigurationForLayersWithSides(int numberOfParticlesIn);
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
-    
+
     virtual void addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j);
     virtual void addExternalStress(CARTESIAN_COORDINATE forceIn, int i);
 
 public:
     bool STRESS;
     bool ENERGY;
-    
+
     SHEARED_SLITPORE_SYSTEM();
     SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin);
     virtual void setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin);
     virtual void readEnsembleSystem(int ensembleIndex);
     virtual void printSystemWithEnsembleIndex(int ensembleIndex);
-    
+
     virtual string getIdentifierString();
-    
+
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
@@ -74,10 +74,10 @@ public:
 
     virtual void setShearRate(double shearRateIn);
     virtual double getShearRate();
-    
+
     virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
     virtual CARTESIAN_MATRIX getMeanStress();
-    
+
     vector<double> getEnergyPerParticle();
 
     virtual string app_identifier(string str);

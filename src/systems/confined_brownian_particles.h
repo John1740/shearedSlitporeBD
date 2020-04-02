@@ -23,7 +23,7 @@ class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
 private:
 
-protected:    
+protected:
     CALCULATE_FORCES calculateForces;
 
     vector<CHARGED_PARTICLE> particle;
@@ -33,12 +33,12 @@ protected:
     double D0,T;
 
     string configurationDir;
-    
+
 //     Internal File-Handling
     virtual void readFromString(string str);
     virtual void printParticlesOfSystem(string str);
     virtual void printInitilization();
-    
+
 //     Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
 
@@ -49,7 +49,7 @@ protected:
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
     virtual CARTESIAN_COORDINATE getRandomForce();
-    
+
 //     Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
     virtual void setPositionInBox();
@@ -66,7 +66,7 @@ public:
 
 //     Set-Functions
     virtual void setTimeStepSize(double timeStepSizeIn);
-    
+
 //     Get-Functions
     virtual int getNumberOfParticles();
     virtual double getTimeStepSize();
@@ -74,13 +74,13 @@ public:
     virtual vector<CARTESIAN_COORDINATE> getPositionList();
     virtual vector<CHARGED_PARTICLE> getParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
-    
+
 //     File-Handling
     virtual void read();
     virtual void read(string str);
     virtual void printSystem();
     virtual void printSystem(string str);
-    
+
     virtual string app_identifier(string str);
 
 };

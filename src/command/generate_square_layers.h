@@ -6,7 +6,7 @@
 
 class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
    bool SPECIES_TOOGLE;
-    
+
    vector<CHARGED_PARTICLE> particleList;
 
    int numberOfLayers;

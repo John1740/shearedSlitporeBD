@@ -4,9 +4,9 @@ GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(){
    numberOfLayers = 2;
    numberOfRows = 23;
    numberOfAdditionalRows = 0;
-   
+
    SPECIES_TOOGLE = false;
-   
+
 }
 
 void GENERATE_SQUARE_LAYERS::setNumberOfLayersRowsAdditionalRows(int numberOfLayersIn, int numberOfRowsIn, int numberOfAdditionalRowsIn){

@@ -9,10 +9,10 @@ class PARSE_ARGUMENTS{
 
     double convertToDouble(string strIn);
     bool inputIsValid(string strIn, double argIn);
-    
+
 public:
     PARSE_ARGUMENTS();
-    
+
     vector<double> getArgumentList(int argc, char* argv[]);
     void checkForInvalidArguments(vector<double>& argumentsIn);
     void printArgumentList(vector<double>& argumentsIn);

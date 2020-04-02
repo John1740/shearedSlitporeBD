@@ -21,7 +21,7 @@ public:
     double wallInteractionStrength;
 
     string sysIdentifierString;
-    
+
     void setAsBiLayerWithShearRate(double shearRateIn);
     void setAsTriLayerWithShearRate(double shearRateIn);
 };

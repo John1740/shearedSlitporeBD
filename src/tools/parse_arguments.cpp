@@ -24,7 +24,7 @@ double PARSE_ARGUMENTS::convertToDouble (string strIn){
 	printf ("Parse arguments: input '%s != %s' output! (Expecting a double in standard notation!)\n", strIn.c_str(), app_number("",argDouble).c_str());
 	argDouble = 0./0.;
     }
-    
+
     return argDouble;
 }
 

@@ -22,10 +22,10 @@ class CALCULATE_FORCES{
    void initializeContainer();
    void initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn);
    void calculateForce(SYSTEM_INTERFACE& sysIn);
-    
+
 public:
     CALCULATE_FORCES();
-    
+
     void doForSystem(SYSTEM_INTERFACE& sysIn);
 };
 

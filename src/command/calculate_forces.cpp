@@ -18,7 +18,7 @@ void CALCULATE_FORCES::doForSystem(SYSTEM_INTERFACE& sysIn){
     } else{
         gridSize = gridSizeY;
     }
-    
+
     if(neighborMap.size() == 0 && numberOfBoxes == 0){
         initializeContainer();
     }

@@ -68,7 +68,7 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
     if(STRESS){
         stressPerParticle.assign(getNumberOfParticles(), CARTESIAN_MATRIX(0.));
     }
-    
+
     if(ENERGY){
         energy.assign(getNumberOfParticles(), 0.);
     }
@@ -238,7 +238,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     if(STRESS){
         addExternalStress(tmpForce, i);
     }
-    
+
     if(ENERGY){
         energy[i] += energyOfParticleFromExternalFields(particle[i]);
     }
@@ -286,7 +286,7 @@ void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex){
     string cmd = "mkdir -p " + dir;
     system(cmd.c_str());
     string outputString = dir + "/configuration"+ app_identifier("") + "_ens_" + app_number("",ensembleIndex) + ".txt";
-     
+
     printParticlesOfSystem(outputString);
 }
 

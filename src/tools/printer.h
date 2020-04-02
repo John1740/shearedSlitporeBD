@@ -22,13 +22,13 @@ public:
    PRINTER (string outputFileIn);
    PRINTER (string directoryPathIn, string outputFileIn);
    ~PRINTER();
-   
+
    void setFileExtension(string fileExtensionIn);
-   
+
    void setDirectoryPathAndOutputFile (string directoryPathIn, string outputFileIn);
    void removeFile();
    void closeFile();
-   
+
    bool fileIsEmpty();
 
    void setDescription (

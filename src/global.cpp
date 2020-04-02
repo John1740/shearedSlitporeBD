@@ -16,11 +16,11 @@ char const *pchome = getenv("HOME");
 string home = pchome ? pchome: "";
 
 string app_home(string str){
-   stringstream output;
+    stringstream output;
 
-   output << "/home/mhuels/data/shearedSlitporeBD/output/";
+    output << "/home/mhuels/data/shearedSlitporeBD/output/";
 
-   output << str;
-   return output.str();
+    output << str;
+    return output.str();
 }
 

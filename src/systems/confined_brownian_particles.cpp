@@ -7,8 +7,8 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::printInitilization(){
-    cout << "Initialized System: "
-         << configurationDir + "configuration" + app_identifier("") + ".txt" << endl << endl;
+    cout << "Initialized System: ";
+    cout << configurationDir + "configuration" + app_identifier("") + ".txt" << endl << endl;
 }
 
 string CONFINED_BROWNIAN_PARTICLES::app_identifier(string str){
@@ -50,7 +50,7 @@ void CONFINED_BROWNIAN_PARTICLES::calculateForce(){
 
 //reset forces
 void CONFINED_BROWNIAN_PARTICLES::reset(){
-   force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
+    force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
 }
 
 int CONFINED_BROWNIAN_PARTICLES::getNumberOfParticles(){
@@ -147,7 +147,7 @@ void CONFINED_BROWNIAN_PARTICLES::read(string str){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::read(){
-   string inputString = configurationDir + "configuration" + app_identifier("") + ".txt";
+    string inputString = configurationDir + "configuration" + app_identifier("") + ".txt";
     readFromString(inputString);
 //    printInitilization(); //unnecessary (done already)
 }

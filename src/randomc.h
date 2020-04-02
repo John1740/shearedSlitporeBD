@@ -135,7 +135,8 @@ void FatalError(const char* ErrorText); // System-specific error reporting (user
 Define random number generator classes
 ***********************************************************************/
 
-class CRandomMersenne                  // Encapsulate random number generator{
+// Encapsulate random number generator
+class CRandomMersenne{
 // Choose which version of Mersenne Twister you want:
 #if 0
 // Define constants for type MT11213A:
@@ -164,35 +165,36 @@ class CRandomMersenne                  // Encapsulate random number generator{
 #endif
 
 public:
-   CRandomMersenne(int seed)        // Constructor{
-      RandomInit(seed);
-      LastInterval = 0;
-   }
-   void RandomInit(int seed);       // Re-seed
-   void RandomInitByArray(int const seeds[], int NumSeeds); // Seed by more than 32 bits
-   int IRandom(int min, int max);   // Output random integer
-   int IRandomX(int min, int max);  // Output random integer, exact
-   double Random();                    // Output random float
-   uint32_t BRandom();                 // Output random bits
+    // Constructor
+    CRandomMersenne(int seed){
+        RandomInit(seed);
+        LastInterval = 0;
+    }
+    void RandomInit(int seed);       // Re-seed
+    void RandomInitByArray(int const seeds[], int NumSeeds); // Seed by more than 32 bits
+    int IRandom(int min, int max);   // Output random integer
+    int IRandomX(int min, int max);  // Output random integer, exact
+    double Random();                    // Output random float
+    uint32_t BRandom();                 // Output random bits
 private:
-   void Init0 (int seed);            // Basic initialization procedure
-   uint32_t mt[MERS_N];                // State vector
-   int mti;                            // Index into mt
-   uint32_t LastInterval;              // Last interval length for IRandomX
-   uint32_t RLimit;                    // Rejection limit used by IRandomX
+    void Init0 (int seed);            // Basic initialization procedure
+    uint32_t mt[MERS_N];                // State vector
+    int mti;                            // Index into mt
+    uint32_t LastInterval;              // Last interval length for IRandomX
+    uint32_t RLimit;                    // Rejection limit used by IRandomX
 };
 
-class CRandomMother                    // Encapsulate random number generator{
+class CRandomMother{                    // Encapsulate random number generator
 public:
-   void RandomInit(int seed);       // Initialization
-   int IRandom(int min, int max);   // Get integer random number in desired interval
-   double Random();                    // Get floating point random number
-   uint32_t BRandom();                 // Output random bits
-   CRandomMother(int seed)          // Constructor{
-      RandomInit(seed);
-   }
+    void RandomInit(int seed);       // Initialization
+    int IRandom(int min, int max);   // Get integer random number in desired interval
+    double Random();                    // Get floating point random number
+    uint32_t BRandom();                 // Output random bits
+    CRandomMother(int seed){          // Constructor
+        RandomInit(seed);
+    }
 protected:
-   uint32_t x[5];                      // History buffer
+    uint32_t x[5];                      // History buffer
 };
 
 #endif // __cplusplus

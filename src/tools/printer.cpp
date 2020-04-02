@@ -14,22 +14,22 @@
 // }
 
 PRINTER::PRINTER(){
-   setFileExtension("txt");
-   setDirectoryPathAndOutputFile("", "");
+    setFileExtension("txt");
+    setDirectoryPathAndOutputFile("", "");
 }
 
 PRINTER::PRINTER(string outputFileIn){
-   setFileExtension("txt");
-   setDirectoryPathAndOutputFile("", outputFileIn);
+    setFileExtension("txt");
+    setDirectoryPathAndOutputFile("", outputFileIn);
 }
 
 PRINTER::PRINTER(string directoryPathIn, string outputFileIn){
-   setFileExtension("txt");
-   setDirectoryPathAndOutputFile(directoryPathIn, outputFileIn);
+    setFileExtension("txt");
+    setDirectoryPathAndOutputFile(directoryPathIn, outputFileIn);
 }
 
 PRINTER::~PRINTER(){
-   file.close();
+    file.close();
 }
 
 void PRINTER::setFileExtension (string fileExtensionIn){
@@ -50,33 +50,33 @@ bool PRINTER::fileIsEmpty(){
 }
 
 void PRINTER::setDirectoryPathAndOutputFile(string directoryPathIn, string outputFileIn){
-   directoryPath = directoryPathIn;
-   outputFile = outputFileIn;
-   getFilePath();
+    directoryPath = directoryPathIn;
+    outputFile = outputFileIn;
+    getFilePath();
 
-   openFile();
+    openFile();
 }
 
 void PRINTER::getFilePath(){
-   filePath = app_home("") + directoryPath + "/" + outputFile + "." + fileExtension;
+    filePath = app_home("") + directoryPath + "/" + outputFile + "." + fileExtension;
 }
 
 void PRINTER::openFile(){
-   file.close();
-   string cmd = "mkdir -p " + app_home(directoryPath);
-   system(cmd.c_str());
+    file.close();
+    string cmd = "mkdir -p " + app_home(directoryPath);
+    system(cmd.c_str());
 
-   file.open(filePath.c_str(), ios::app);
+    file.open(filePath.c_str(), ios::app);
 }
 
 void PRINTER::removeFile(){
-   file.close();
-   remove(filePath.c_str());
-   openFile();
+    file.close();
+    remove(filePath.c_str());
+    openFile();
 }
 
 void PRINTER::setDescription(string column0, string column1, string column2, string column3, string column4, string column5, string column6, string column7, string column8, string column9){
-   file << column0
+    file << column0
         << "\t" << column1
         << "\t" << column2
         << "\t" << column3
@@ -90,6 +90,6 @@ void PRINTER::setDescription(string column0, string column1, string column2, str
 }
 
 void PRINTER::closeFile(){
-   file.close();
+    file.close();
 }
 

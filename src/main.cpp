@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
     parseArguments.checkForInvalidArguments(arguments);
     parseArguments.printArgumentList(arguments);
 
- ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
+    ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
 
     SHEARED_SLITPORE_PARAMETERS sysParameters;
     sysParameters.setAsBiLayerWithShearRate(0);
@@ -32,14 +32,15 @@ int main(int argc, char *argv[]){
     AVERAGE_STRESS averageStress;
 
     for(int i = 0; i < 100000; ++i){
-        if(i%100==0)
+        if(i%100==0) {
             cout << i << endl;
-
+        }
         sys.simulateForSteps(1);
         averageStress.doForSystem(sys);
-        if(i%100==0)
+        if(i%100==0) {
             cout << averageStress.getStress().xz << endl;
-         sys.printSystem("test");
+            sys.printSystem("test");
+        }
     }
 
     return 0;

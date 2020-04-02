@@ -6,27 +6,27 @@
 
 class PARTICLE{
 public:
-   CARTESIAN_COORDINATE position;
-   CARTESIAN_COORDINATE boxPosition;
+    CARTESIAN_COORDINATE position;
+    CARTESIAN_COORDINATE boxPosition;
 
-   double diameter;
-   int species;
+    double diameter;
+    int species;
 
-   PARTICLE();
-   PARTICLE(const CARTESIAN_COORDINATE& positionIN);
-   PARTICLE(const PARTICLE& other);
+    PARTICLE();
+    PARTICLE(const CARTESIAN_COORDINATE& positionIN);
+    PARTICLE(const PARTICLE& other);
 
-   CARTESIAN_COORDINATE getPosition() const;
+    CARTESIAN_COORDINATE getPosition() const;
 
-   double distanceTo(PARTICLE& other);
-   double distanceTo(CARTESIAN_COORDINATE& positionIN);
+    double distanceTo(PARTICLE& other);
+    double distanceTo(CARTESIAN_COORDINATE& positionIN);
 
-   double boxDistanceTo(PARTICLE& other);
-   double boxDistanceTo(CARTESIAN_COORDINATE& positionIN);
+    double boxDistanceTo(PARTICLE& other);
+    double boxDistanceTo(CARTESIAN_COORDINATE& positionIN);
 
-   void setBoxPosition(BOX_GEOMETRY& boxGeom);
+    void setBoxPosition(BOX_GEOMETRY& boxGeom);
 
-   double getVolume();
+    double getVolume();
 
 };
 

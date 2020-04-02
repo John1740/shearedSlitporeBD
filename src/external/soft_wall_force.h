@@ -8,19 +8,19 @@
 class SOFT_WALL_FORCE: public CONSERVATIVE_FORCE<PARTICLE>{
 
 public:
-   double wallInteractionStrength;
-   double zPosition;
-   double diameter;
-   double dWall;
+    double wallInteractionStrength;
+    double zPosition;
+    double diameter;
+    double dWall;
 
-   SOFT_WALL_FORCE();
+    SOFT_WALL_FORCE();
 
-   void setInteractionParameters(double dWallIN, double wallInteractionStrengthIN);
+    void setInteractionParameters(double dWallIN, double wallInteractionStrengthIN);
 
-   CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle);
-   double energyOnParticle(PARTICLE& particle);
+    CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle);
+    double energyOnParticle(PARTICLE& particle);
 
-   double forceInZDirection(double zPositionIn, double diameterIn);
+    double forceInZDirection(double zPositionIn, double diameterIn);
 
 };
 

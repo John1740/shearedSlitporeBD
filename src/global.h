@@ -31,14 +31,14 @@ extern string app_home(string);
 
 template<typename T>
 string app_number(string str, T number){
-   stringstream output;
-   output << str << number;
-   return output.str();
+    stringstream output;
+    output << str << number;
+    return output.str();
 };
 
 inline bool fileExists(const std::string& name){
-  struct stat buffer;
-  return (stat(name.c_str(), &buffer) == 0);
+    struct stat buffer;
+    return (stat(name.c_str(), &buffer) == 0);
 }
 
 #endif

@@ -158,8 +158,8 @@ string SHEARED_SLITPORE_SYSTEM::app_identifier(string str){
     stringstream output;
     output << str;
 
-    output << "_shear_" << shearForce.getShearRate()
-           << app_incomplete_identifier(str);
+    output << "_shear_" << shearForce.getShearRate();
+    output << app_incomplete_identifier(str);
 
     return output.str();
 }
@@ -168,12 +168,12 @@ string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str){
     stringstream output;
     output << str;
 
-    output << "__Dwall_" << simBox.getDimensions().z
-           << "_L_" << simBox.getDimensions().x
-           << "_rho_" << density
-           << "_N_" << getNumberOfParticles()
-           << "_Wforce_" << "-0"
-           << "_Zp_" << charge;
+    output << "__Dwall_" << simBox.getDimensions().z;
+    output << "_L_" << simBox.getDimensions().x;
+    output << "_rho_" << density;
+    output << "_N_" << getNumberOfParticles();
+    output << "_Wforce_" << "-0";
+    output << "_Zp_" << charge;
 
     return output.str();
 }

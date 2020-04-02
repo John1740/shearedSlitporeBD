@@ -71,8 +71,10 @@ double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICL
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::setInteractionParameters(std::vector<int> chargeIn, std::vector<double> diameterIn, std::vector<double> rhoIn){
-    if(chargeIn.size() > 2 || diameterIn.size() > 2 || rhoIn.size() > 2)
-        cout << "chargeIn.size(): " << chargeIn.size() << "\t" << "diameterIn.size(): " << diameterIn.size() << "\t" << "rhoIn.size(): " << rhoIn.size() << endl;
+    if(chargeIn.size() > 2 || diameterIn.size() > 2 || rhoIn.size() > 2) {
+        cout << "chargeIn.size(): " << chargeIn.size() << "\t" << "diameterIn.size(): " << diameterIn.size() << "\t";
+        cout << "rhoIn.size(): " << rhoIn.size() << endl;
+    }
 
     charge = chargeIn;
     diameter = diameterIn;
@@ -102,14 +104,14 @@ void DLVO_SOFTSPHERE_INTERACTION::setParametersForAllChargeCompositions(){
 
     for(int i = 0; i < charge.size(); ++i){
         for(int j = i; j < charge.size(); ++j){
-         interactionStrength.push_back(getInteractionStrength(charge[i], diameter[i], charge[j], diameter[j]));
-         diameterSpecies.push_back(0.5 * (diameter[i] + diameter[j]));
-         int currentID = i + j;
-         cutOffRadius.push_back(getCutOffRadius(currentID));
-         //unclear names!
-         shift1.push_back(forceOnParticlePerDirection(cutOffRadius[currentID], currentID));
-         shift2.push_back(energyOnParticles(cutOffRadius[currentID], currentID));
-         shift3.push_back(shift1[currentID]*cutOffRadius[currentID]);
+            interactionStrength.push_back(getInteractionStrength(charge[i], diameter[i], charge[j], diameter[j]));
+            diameterSpecies.push_back(0.5 * (diameter[i] + diameter[j]));
+            int currentID = i + j;
+            cutOffRadius.push_back(getCutOffRadius(currentID));
+            //unclear names!
+            shift1.push_back(forceOnParticlePerDirection(cutOffRadius[currentID], currentID));
+            shift2.push_back(energyOnParticles(cutOffRadius[currentID], currentID));
+            shift3.push_back(shift1[currentID]*cutOffRadius[currentID]);
         }
     }
 }
@@ -163,7 +165,7 @@ double DLVO_SOFTSPHERE_INTERACTION::getMaxCutOffRadius(){
 
     for(int i = 0; i < cutOffRadius.size(); ++i){
         if(cutOffRadius[i] > maxRC){
-             maxRC = cutOffRadius[i];
+            maxRC = cutOffRadius[i];
         }
     }
 

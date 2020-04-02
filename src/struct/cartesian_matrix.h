@@ -36,7 +36,6 @@ struct CARTESIAN_MATRIX{
       return *this /= CARTESIAN_MATRIX(doubleIN);
    };
 
-
    friend CARTESIAN_MATRIX operator+ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx + rhs.xx;
@@ -69,7 +68,6 @@ struct CARTESIAN_MATRIX{
       return result;
    };
 
-
    friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx - rhs.xx;
@@ -101,7 +99,6 @@ struct CARTESIAN_MATRIX{
       result = -1*rhs + lhs;
       return result;
    };
-
 
    friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
       CARTESIAN_MATRIX result;
@@ -183,7 +180,6 @@ struct CARTESIAN_MATRIX{
    friend bool operator!= (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
       return ! (lhs == rhs);
    };
-
 
 };
 

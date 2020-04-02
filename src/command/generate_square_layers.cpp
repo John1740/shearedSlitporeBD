@@ -40,7 +40,6 @@ void GENERATE_SQUARE_LAYERS::setLatticePeriodicity(){
    dyAdd = dxAdd;
 }
 
-
 void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
    for(int j = 0; j < numberOfRows; ++j) //j=index in y-direction{
       for(int k = 0; k < numberOfRows; ++k) //k=index in x-direction{
@@ -69,6 +68,4 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
       }
    }
 }
-
-
 

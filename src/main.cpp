@@ -4,7 +4,6 @@
 #include "tools/printer.h"
 #include "tools/parse_arguments.h"
 
-
 #include "systems/sheared_slitpore_system.h"
 #include "command/average_stress.h"
 
@@ -45,8 +44,4 @@ int main(int argc, char *argv[]){
     
     return 0;
 }
-
-
-
-
 

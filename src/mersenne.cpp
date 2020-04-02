@@ -44,7 +44,6 @@ void CRandomMersenne::RandomInit(int seed){
    }
 }
 
-
 void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds){
    // Seed by more than 32 bits
    int i, j, k;
@@ -95,7 +94,6 @@ void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds){
    }
 }
 
-
 uint32_t CRandomMersenne::BRandom(){
    // Generate 32 random bits
    uint32_t y;
@@ -134,13 +132,11 @@ uint32_t CRandomMersenne::BRandom(){
    return y;
 }
 
-
 double CRandomMersenne::Random(){
    // Output random float number in the interval 0 <= x < 1
    // Multiply by 2^(-32)
    return (double) BRandom() * (1. / (65536.*65536.));
 }
-
 
 int CRandomMersenne::IRandom(int min, int max){
    // Output random integer in the interval min <= x <= max
@@ -163,7 +159,6 @@ int CRandomMersenne::IRandom(int min, int max){
 
    return r;
 }
-
 
 int CRandomMersenne::IRandomX(int min, int max){
    // Output random integer in the interval min <= x <= max

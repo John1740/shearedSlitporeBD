@@ -4,7 +4,6 @@ double CARTESIAN_MATRIX::getDeterminante(){
    return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
-
 // CARTASIAN_MATRIX CARTASIAN_MATRIX::getInverseMatrix()
 // {
 //     CARTASIAN_MATRIX invertedMatrix;

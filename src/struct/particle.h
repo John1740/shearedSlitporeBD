@@ -4,7 +4,6 @@
 #include "cartesian_coordinate.h"
 #include "../interfaces/box_geometry.h"
 
-
 class PARTICLE{
 public:
    CARTESIAN_COORDINATE position;

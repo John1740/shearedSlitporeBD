@@ -57,7 +57,6 @@ CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::fastForce(){
     return posDifference * (forceOnParticlePerDirection(distance, id) - shift1[id]) / distance;
 }
 
-
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
     id = particle1.species + particle2.species;
     posDifference = particle1.boxPosition - particle2.boxPosition;

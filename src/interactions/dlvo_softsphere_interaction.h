@@ -39,7 +39,6 @@ public:
    bool isInRangeSetDistanceAndId(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
    CARTESIAN_COORDINATE fastForce();
 
-
    double getInteractionStrength(int Z1, double diameter1, int Z2, double diameter2);
 
 //   Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.

@@ -54,7 +54,6 @@ protected:
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
     virtual void setPositionInBox();
 
-
 public:
     CONFINED_BROWNIAN_PARTICLES();
     virtual void simulateForSteps(int maxSteps);

@@ -1,6 +1,5 @@
 #include "sheared_slitpore_parameters.h"
 
-
 SHEARED_SLITPORE_PARAMETERS::SHEARED_SLITPORE_PARAMETERS(){
     shearRate = 0.;
 

@@ -138,7 +138,6 @@ void CALCULATE_FORCES::calculateForce(SYSTEM_INTERFACE& sysIn){
         }
     }
 
-
 // Exernal Force:--------------------------------------------
 
     for(int i = 0; i < boxPositions.size(); ++i){

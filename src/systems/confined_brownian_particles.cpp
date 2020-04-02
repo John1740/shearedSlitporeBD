@@ -53,7 +53,6 @@ void CONFINED_BROWNIAN_PARTICLES::reset(){
    force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
 }
 
-
 int CONFINED_BROWNIAN_PARTICLES::getNumberOfParticles(){
     return particle.size();
 }
@@ -169,7 +168,4 @@ void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn){
     cout << "Set dt = " << dt << " to " << timeStepSizeIn << endl;
     dt = timeStepSizeIn;
 }
-
-
-
 

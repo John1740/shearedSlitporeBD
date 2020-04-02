@@ -55,7 +55,6 @@ public:
       printLine (args...);
    }
 
-
 };
 
 #endif // PRINTER_H

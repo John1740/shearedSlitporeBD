@@ -1,6 +1,5 @@
 #include "lennard_jones_interaction.h"
 
-
 LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(){
    interactionStrength = 1.;
    diameter = 1.;
@@ -37,5 +36,4 @@ void LENNARD_JONES_INTERACTION::setParametersForParticleFromParticle(PARTICLE &p
    distance = positionDifference.getAbs();
    diameter = 0.5 * (particle1.diameter + particle2.diameter);
 }
-
 

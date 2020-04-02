@@ -23,7 +23,6 @@ void SLIT_PORE_BOX::setDwall(double dWallIn){
     dimensions.z = dWallIn;
 }
 
-
 void SLIT_PORE_BOX::setLengthAndDWall(double lengthIN, double dWallIN){
    dimensions.x = lengthIN;
    dimensions.y = dimensions.x;
@@ -37,8 +36,6 @@ void SLIT_PORE_BOX::setVolumeAndDWall(double volumeIN, double dWallIN){
    dimensions.x = sqrt(volume / dimensions.z); //A = V/Z, X=Y=sqrt(A)
    dimensions.y = dimensions.x;
 }
-
-
 
 double SLIT_PORE_BOX::getVolume(){
    return volume;
@@ -67,5 +64,4 @@ CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition(CARTESIAN_COORDINATE &p
 
     return boxPosition;
 }
-
 

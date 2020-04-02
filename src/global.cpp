@@ -15,7 +15,6 @@ int read_toggle = 0; // 0: read periodic values; 1: read absolute values
 char const *pchome = getenv("HOME");
 string home = pchome ? pchome : "";
 
-
 string app_home(string str){
    stringstream output;
 
@@ -24,6 +23,4 @@ string app_home(string str){
    output << str;
    return output.str();
 }
-
-
 

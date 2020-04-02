@@ -31,5 +31,3 @@ double SOFT_WALL_FORCE::forceInZDirection(double zPositionIn, double diameterIn)
    return  - (4 * 9 * M_PI / 5) * wallInteractionStrength * (pow(diameterIn / (dWall / 2 - zPositionIn), 10) -  pow(diameterIn / (dWall / 2 + zPositionIn), 10)) / diameterIn;
 }
 
-
-

@@ -36,7 +36,6 @@ struct CARTESIAN_COORDINATE{
       return *this /= CARTESIAN_COORDINATE(doubleIN);
    };
 
-
    friend CARTESIAN_COORDINATE operator+ (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs){
       CARTESIAN_COORDINATE result(lhs.x+rhs.x,lhs.y+rhs.y, lhs.z+rhs.z);
       return result;
@@ -49,7 +48,6 @@ struct CARTESIAN_COORDINATE{
       CARTESIAN_COORDINATE result(lhs.x+rhs,lhs.y+rhs, lhs.z+rhs);
       return result;
    };
-
 
    friend CARTESIAN_COORDINATE operator- (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs){
       CARTESIAN_COORDINATE result(lhs.x-rhs.x,lhs.y-rhs.y, lhs.z-rhs.z);

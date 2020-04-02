@@ -44,7 +44,6 @@ double PARTICLE::boxDistanceTo(CARTESIAN_COORDINATE &positionIN){
    return difference.getAbs();
 }
 
-
 void PARTICLE::setBoxPosition(BOX_GEOMETRY &boxGeom){
    boxPosition = boxGeom.convertToBoxPosition(position);
 }

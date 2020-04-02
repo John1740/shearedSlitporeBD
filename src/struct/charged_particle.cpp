@@ -14,7 +14,6 @@ CHARGED_PARTICLE::CHARGED_PARTICLE(const CARTESIAN_COORDINATE &positionIN){
    setChargeAndDiameter(1, 1.);
 }
 
-
 CHARGED_PARTICLE::CHARGED_PARTICLE(const CHARGED_PARTICLE &other){
    species = other.species;
    position = other.position;
@@ -26,5 +25,4 @@ void CHARGED_PARTICLE::setChargeAndDiameter(int chargeIN, double diameterIN){
    charge = chargeIN;
    diameter = diameterIN;
 }
-
 

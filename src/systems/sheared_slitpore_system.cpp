@@ -308,6 +308,3 @@ vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;
 }
 
-
-
-

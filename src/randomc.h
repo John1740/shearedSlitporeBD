@@ -122,7 +122,6 @@ typedef unsigned long long uint64_t;
 #define INT64_SUPPORTED // Remove this if the compiler doesn't support 64-bit integers
 #endif
 
-
 /***********************************************************************
 System-specific user interface functions
 ***********************************************************************/
@@ -182,7 +181,6 @@ private:
    uint32_t LastInterval;              // Last interval length for IRandomX
    uint32_t RLimit;                    // Rejection limit used by IRandomX
 };
-
 
 class CRandomMother                    // Encapsulate random number generator{
 public:

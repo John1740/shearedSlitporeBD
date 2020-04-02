@@ -17,8 +17,6 @@ public:
    virtual vector<CARTESIAN_COORDINATE> getPositionList() = 0;
    virtual vector<CHARGED_PARTICLE> getParticleList() = 0;
 
-
-
 };
 
 #endif // SYSTEM_INTERFACE_H

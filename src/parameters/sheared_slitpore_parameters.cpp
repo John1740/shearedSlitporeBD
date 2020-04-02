@@ -54,6 +54,6 @@ void SHEARED_SLITPORE_PARAMETERS::setAsTriLayerWithShearRate(double shearRateIn)
     ssInteractionStrength = 1.;
     wallInteractionStrength = 1.;
 
-    sysIdentifierString = "3layer";    
+    sysIdentifierString = "3layer";
 }
 

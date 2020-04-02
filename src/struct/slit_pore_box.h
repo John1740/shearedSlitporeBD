@@ -3,7 +3,7 @@
 
 #include "../interfaces/box_geometry.h"
 
-struct SLIT_PORE_BOX: public BOX_GEOMETRY {
+struct SLIT_PORE_BOX: public BOX_GEOMETRY{
 
     SLIT_PORE_BOX();
     SLIT_PORE_BOX(CARTESIAN_COORDINATE dimensionsIn);

@@ -16,7 +16,7 @@ PARTICLE::PARTICLE(const PARTICLE &other){
    boxPosition = other.boxPosition;
 }
 
-CARTESIAN_COORDINATE PARTICLE::getPosition() const {
+CARTESIAN_COORDINATE PARTICLE::getPosition() const{
     return CARTESIAN_COORDINATE(position.x, position.y, position.z);
 }
 

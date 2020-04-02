@@ -69,7 +69,7 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
         stressPerParticle.assign(getNumberOfParticles(), CARTESIAN_MATRIX(0.));
     }
     
-    if(ENERGY) {
+    if(ENERGY){
         energy.assign(getNumberOfParticles(), 0.);
     }
 }
@@ -239,7 +239,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
         addExternalStress(tmpForce, i);
     }
     
-    if(ENERGY) {
+    if(ENERGY){
         energy[i] += energyOfParticleFromExternalFields(particle[i]);
     }
 }

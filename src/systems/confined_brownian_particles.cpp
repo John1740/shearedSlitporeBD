@@ -19,7 +19,7 @@ string CONFINED_BROWNIAN_PARTICLES::app_identifier(string str){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
-    for(int i = 0; i < maxSteps; ++i) {
+    for(int i = 0; i < maxSteps; ++i){
         equationOfMotion();
     }
 }
@@ -28,7 +28,7 @@ void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     calculateForce();
     CARTESIAN_COORDINATE randomForce;
 
-    for(int i = 0; i < particle.size(); ++i) {
+    for(int i = 0; i < particle.size(); ++i){
         randomForce = getRandomForce();
 
         particle[i].position += force[i] * D0 * dt / T + randomForce;
@@ -75,7 +75,7 @@ vector< CARTESIAN_COORDINATE > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
     setPositionInBox();
     vector<CARTESIAN_COORDINATE> positionList(particle.size());
 
-    for(int i = 0; i < particle.size(); ++i) {
+    for(int i = 0; i < particle.size(); ++i){
         positionList[i] = particle[i].boxPosition;
     }
 
@@ -83,7 +83,7 @@ vector< CARTESIAN_COORDINATE > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setPositionInBox(){
-    for(int i = 0; i < particle.size(); ++i) {
+    for(int i = 0; i < particle.size(); ++i){
         particle[i].setBoxPosition(simBox);
     }
 }

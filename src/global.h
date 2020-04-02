@@ -36,7 +36,7 @@ string app_number(string str, T number){
    return output.str();
 };
 
-inline bool fileExists(const std::string& name) {
+inline bool fileExists(const std::string& name){
   struct stat buffer;
   return (stat(name.c_str(), &buffer) == 0);
 }

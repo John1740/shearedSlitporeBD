@@ -10,6 +10,6 @@
 #include <iostream>
 #ifndef  boxmueller_h
 #define  boxmueller_h
-double  boxmueller(double , double);
+double  boxmueller(double, double);
 #endif
 

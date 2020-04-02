@@ -29,7 +29,7 @@ public:
    double ssInteractionStrength;
 
    DLVO_SOFTSPHERE_INTERACTION();
-   void setInteractionParameters(vector<int> chargeIn,vector<double> diameterIN , vector<double> rhoIn);
+   void setInteractionParameters(vector<int> chargeIn,vector<double> diameterIN, vector<double> rhoIn);
    void calculateCutOffThreshold();
 
    CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);

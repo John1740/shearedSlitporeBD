@@ -70,7 +70,7 @@ double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICL
     }
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::setInteractionParameters(std::vector< int > chargeIn, std::vector< double > diameterIn, std::vector< double > rhoIn){
+void DLVO_SOFTSPHERE_INTERACTION::setInteractionParameters(std::vector<int> chargeIn, std::vector<double> diameterIn, std::vector<double> rhoIn){
     if(chargeIn.size() > 2 || diameterIn.size() > 2 || rhoIn.size() > 2)
         cout << "chargeIn.size(): " << chargeIn.size() << "\t" << "diameterIn.size(): " << diameterIn.size() << "\t" << "rhoIn.size(): " << rhoIn.size() << endl;
 

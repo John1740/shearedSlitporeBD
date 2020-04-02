@@ -4,7 +4,7 @@ PARSE_ARGUMENTS::PARSE_ARGUMENTS(){
 
 }
 
-vector< double > PARSE_ARGUMENTS::getArgumentList (int argc, char* argv[]){
+vector<double> PARSE_ARGUMENTS::getArgumentList (int argc, char* argv[]){
     arg.clear();
     arg.resize(argc-1);
     for(int i = 0; i < arg.size(); ++i){
@@ -37,7 +37,7 @@ bool PARSE_ARGUMENTS::inputIsValid (string strIn, double argIn){
     return isValid;
 }
 
-void PARSE_ARGUMENTS::checkForInvalidArguments (vector< double >& argumentsIn){
+void PARSE_ARGUMENTS::checkForInvalidArguments (vector<double>& argumentsIn){
     for(int i = 0; i < argumentsIn.size(); ++i){
 	if(argumentsIn[i] != argumentsIn[i]){
 	    cout << "Invalid argument, exit!" << endl;
@@ -46,7 +46,7 @@ void PARSE_ARGUMENTS::checkForInvalidArguments (vector< double >& argumentsIn){
     }
 }
 
-void PARSE_ARGUMENTS::printArgumentList (vector< double >& argumentsIn){
+void PARSE_ARGUMENTS::printArgumentList (vector<double>& argumentsIn){
     cout << "Argument list: " << endl;
     for(int i = 0; i < argumentsIn.size(); ++i){
 	cout << "arguments[" << i << "] = " << argumentsIn[i] << endl;

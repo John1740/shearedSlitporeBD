@@ -17,4 +17,3 @@ void AVERAGE_STRESS::doForSystem(SHEARED_SLITPORE_SYSTEM &sysIn){
 CARTESIAN_MATRIX AVERAGE_STRESS::getStress(){
    return stress / count;
 }
-

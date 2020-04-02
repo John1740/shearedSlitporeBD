@@ -2,8 +2,7 @@
 #define COMMAND_H
 
 template<class SYSTEM_T>
-class COMMAND
-{
+class COMMAND{
 public:
    virtual void doForSystem(SYSTEM_T& sysIn ) = 0;
 };

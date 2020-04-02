@@ -1,13 +1,11 @@
 #include "calculate_forces.h"
 
-CALCULATE_FORCES::CALCULATE_FORCES()
-{
+CALCULATE_FORCES::CALCULATE_FORCES(){
     numberOfBoxes = 0;
     neighborMap.clear();
 }
 
-void CALCULATE_FORCES::doForSystem(SYSTEM_INTERFACE& sysIn)
-{
+void CALCULATE_FORCES::doForSystem(SYSTEM_INTERFACE& sysIn){
     BOX_GEOMETRY* simBox = sysIn.simulationBox();
     double cutoffRadius = sysIn.getInteractionLengthScale();
 
@@ -39,8 +37,7 @@ void CALCULATE_FORCES::doForSystem(SYSTEM_INTERFACE& sysIn)
 //Here, neighbor relationships are treated one-way-directional, meaning that if box A is a neighbor of box B,
 //box B is not a neighbor of box A. This way, all neighbor relationships are covered:
 //All boxes of type A are neighbors of box B and box B is a neighbor of all boxes of type C.
-void CALCULATE_FORCES::initializeContainer()
-{
+void CALCULATE_FORCES::initializeContainer(){
     int mapIndex;
     numberOfBoxes = gridSize * gridSize;
     neighborMap.resize(4 * numberOfBoxes);
@@ -70,8 +67,7 @@ void CALCULATE_FORCES::initializeContainer()
 // j/i |  0   1   2   3
 //
 //Negative indices up to -gridSize^2 are allowed (i=j=-16 in the example).
-unsigned int CALCULATE_FORCES::getBoxIndexFromGridIndices(int i, int j)
-{
+unsigned int CALCULATE_FORCES::getBoxIndexFromGridIndices(int i, int j){
     unsigned int boxIndex = (i + gridSize * gridSize) % gridSize + (j + gridSize * gridSize) % gridSize * gridSize;
     return boxIndex;
 }
@@ -80,8 +76,7 @@ unsigned int CALCULATE_FORCES::getBoxIndexFromGridIndices(int i, int j)
 //The last called particle per box during initialization will be the first particle in that box.
 //This particle will point to the next particle via nextParticleIndexInBoxOfParticleIndex and so on.
 //The last particle in each box will point to nothing (particleIndex -1).
-void CALCULATE_FORCES::initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn)
-{
+void CALCULATE_FORCES::initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn){
     boxPositions = sysIn.getPositionList();
     simBox = sysIn.simulationBox();
 
@@ -99,15 +94,13 @@ void CALCULATE_FORCES::initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn)
     }
 }
 
-int CALCULATE_FORCES::getBoxIndexForParticleIndex(int particleIndex)
-{
+int CALCULATE_FORCES::getBoxIndexForParticleIndex(int particleIndex){
     int gridIndexX = getGridIndexXForParticleIndex(particleIndex);
     int gridIndexY = getGridIndexYForParticleIndex(particleIndex);
     return getBoxIndexFromGridIndices(gridIndexX, gridIndexY);
 }
 
-int CALCULATE_FORCES::getGridIndexXForParticleIndex(int particleIndex)
-{
+int CALCULATE_FORCES::getGridIndexXForParticleIndex(int particleIndex){
     //+0.5*simBox.dimensions.x converts back to particle positions???
     double scaledX = boxPositions[particleIndex].x / simBox->getDimensions().x * gridSize;
     double offset = 0.5 * gridSize;
@@ -115,16 +108,14 @@ int CALCULATE_FORCES::getGridIndexXForParticleIndex(int particleIndex)
     return gridIndexX;
 }
 
-int CALCULATE_FORCES::getGridIndexYForParticleIndex(int particleIndex)
-{
+int CALCULATE_FORCES::getGridIndexYForParticleIndex(int particleIndex){
     double scaledY = boxPositions[particleIndex].y / simBox->getDimensions().y * gridSize;
     double offset = 0.5 * gridSize;
     int gridIndexY = (int)floor(scaledY + offset);
     return gridIndexY;
 }
 
-void CALCULATE_FORCES::calculateForce(SYSTEM_INTERFACE& sysIn)
-{
+void CALCULATE_FORCES::calculateForce(SYSTEM_INTERFACE& sysIn){
     //Particle-Particle Force: -------------------------------------
     for(boxIndex = 0; boxIndex < numberOfBoxes; ++boxIndex){       // 13 Alle Zellen durchgehen
         int i = firstParticleIndexInBox[boxIndex];           // Startelement waehlen

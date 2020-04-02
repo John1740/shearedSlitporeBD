@@ -16,8 +16,7 @@ char const *pchome = getenv("HOME" );
 string home = pchome ? pchome : "";
 
 
-string app_home(string str )
-{
+string app_home(string str ){
    stringstream output;
 
    output << "/home/mhuels/data/shearedSlitporeBD/output/";

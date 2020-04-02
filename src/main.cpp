@@ -11,8 +11,7 @@
 #include <ctime>
 #include <limits>
 
-int main(int argc, char *argv[] )
-{             
+int main(int argc, char *argv[] ){             
     srand(getpid()*time(0 ) );
     
     PARSE_ARGUMENTS parseArguments;

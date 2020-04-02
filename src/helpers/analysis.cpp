@@ -4,8 +4,7 @@
 
 #include "analysis.h"
 
-CARTESIAN_COORDINATE getMinCoordinate(vector<CARTESIAN_COORDINATE> coordinateList)
-{
+CARTESIAN_COORDINATE getMinCoordinate(vector<CARTESIAN_COORDINATE> coordinateList){
     CARTESIAN_COORDINATE minCoordinate;
     for(int i=0; i < coordinateList.size(); i++){
         if(coordinateList[i].x < minCoordinate.x){

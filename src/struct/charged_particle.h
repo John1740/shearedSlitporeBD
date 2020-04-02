@@ -3,8 +3,7 @@
 
 #include "particle.h"
 
-class CHARGED_PARTICLE : public PARTICLE
-{
+class CHARGED_PARTICLE : public PARTICLE{
 
 public:
    int charge;

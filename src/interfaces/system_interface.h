@@ -6,8 +6,7 @@
 #include "../interfaces/box_geometry.h"
 #include "../struct/charged_particle.h"
 
-class SYSTEM_INTERFACE
-{
+class SYSTEM_INTERFACE{
 public:
    virtual void calculateInteractionForce(int i, int j )  = 0;
    virtual void calculateExternalForce(int i ) = 0;

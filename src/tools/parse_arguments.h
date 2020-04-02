@@ -4,8 +4,7 @@
 #include "../global.h"
 #include <stdio.h>
 
-class PARSE_ARGUMENTS
-{
+class PARSE_ARGUMENTS{
     vector<double> arg;
 
     double convertToDouble(string strIn );

@@ -5,8 +5,7 @@
 #include <math.h>
 using namespace std;
 
-struct CARTESIAN_COORDINATE
-{
+struct CARTESIAN_COORDINATE{
 
    double x,y,z;
 
@@ -18,114 +17,93 @@ struct CARTESIAN_COORDINATE
    double getAbs();
 
    CARTESIAN_COORDINATE& operator+= (CARTESIAN_COORDINATE const& cCoordIN );
-   CARTESIAN_COORDINATE& operator+= (double const& doubleIN )
-   {
+   CARTESIAN_COORDINATE& operator+= (double const& doubleIN ){
       return *this += CARTESIAN_COORDINATE(doubleIN );
    };
 
    CARTESIAN_COORDINATE& operator-= (CARTESIAN_COORDINATE const& cCoordIN );
-   CARTESIAN_COORDINATE& operator-= (double const& doubleIN )
-   {
+   CARTESIAN_COORDINATE& operator-= (double const& doubleIN ){
       return *this -= CARTESIAN_COORDINATE(doubleIN );
    };
 
    CARTESIAN_COORDINATE& operator*= (CARTESIAN_COORDINATE const& cCoordIN );
-   CARTESIAN_COORDINATE& operator*= (double const& doubleIN )
-   {
+   CARTESIAN_COORDINATE& operator*= (double const& doubleIN ){
       return *this *= CARTESIAN_COORDINATE(doubleIN );
    };
 
    CARTESIAN_COORDINATE& operator/= (CARTESIAN_COORDINATE const& cCoordIN );
-   CARTESIAN_COORDINATE& operator/= (double const& doubleIN )
-   {
+   CARTESIAN_COORDINATE& operator/= (double const& doubleIN ){
       return *this /= CARTESIAN_COORDINATE(doubleIN );
    };
 
 
-   friend CARTESIAN_COORDINATE operator+ (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator+ (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x+rhs.x,lhs.y+rhs.y, lhs.z+rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator+ (double const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator+ (double const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs+rhs.x,lhs+rhs.y, lhs+rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator+ (CARTESIAN_COORDINATE const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator+ (CARTESIAN_COORDINATE const& lhs, double const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x+rhs,lhs.y+rhs, lhs.z+rhs );
       return result;
    };
 
 
-   friend CARTESIAN_COORDINATE operator- (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator- (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x-rhs.x,lhs.y-rhs.y, lhs.z-rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator- (double const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator- (double const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs-rhs.x,lhs-rhs.y, lhs-rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator- (CARTESIAN_COORDINATE const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator- (CARTESIAN_COORDINATE const& lhs, double const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x-rhs,lhs.y-rhs, lhs.z-rhs );
       return result;
    };
 
-   friend CARTESIAN_COORDINATE operator* (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator* (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x*rhs.x,lhs.y*rhs.y, lhs.z*rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator* (double const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator* (double const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs*rhs.x,lhs*rhs.y, lhs*rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator* (CARTESIAN_COORDINATE const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator* (CARTESIAN_COORDINATE const& lhs, double const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x*rhs,lhs.y*rhs, lhs.z*rhs );
       return result;
    };
 
-   friend CARTESIAN_COORDINATE operator/ (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator/ (CARTESIAN_COORDINATE const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x/rhs.x,lhs.y/rhs.y, lhs.z/rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator/ (double const& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator/ (double const& lhs, CARTESIAN_COORDINATE const& rhs ){
       CARTESIAN_COORDINATE result(lhs/rhs.x,lhs/rhs.y, lhs/rhs.z );
       return result;
    };
-   friend CARTESIAN_COORDINATE operator/ (CARTESIAN_COORDINATE const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_COORDINATE operator/ (CARTESIAN_COORDINATE const& lhs, double const& rhs ){
       CARTESIAN_COORDINATE result(lhs.x/rhs,lhs.y/rhs, lhs.z/rhs );
       return result;
    };
 
-   friend ostream& operator<< (ostream& lhs, CARTESIAN_COORDINATE const& rhs )
-   {
+   friend ostream& operator<< (ostream& lhs, CARTESIAN_COORDINATE const& rhs ){
       return lhs << rhs.x << "\t" << rhs.y << "\t" << rhs.z;
    }
 
-   friend bool operator== (const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs )
-   {
-      if(lhs.x==rhs.x && lhs.y==rhs.y && lhs.z==rhs.z )
-         {
+   friend bool operator== (const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs ){
+      if(lhs.x==rhs.x && lhs.y==rhs.y && lhs.z==rhs.z ){
             return true;
          }
-      else
-         {
+      else{
             return false;
          }
    };
 
-   friend bool operator!= (const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs )
-   {
+   friend bool operator!= (const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs ){
       return ! (lhs == rhs );
    };
 

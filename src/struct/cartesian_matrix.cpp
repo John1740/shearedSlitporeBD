@@ -1,7 +1,6 @@
 #include "cartesian_matrix.h"
 
-double CARTESIAN_MATRIX::getDeterminante()
-{
+double CARTESIAN_MATRIX::getDeterminante(){
    return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
@@ -34,8 +33,7 @@ double CARTESIAN_MATRIX::getDeterminante()
 //     return result;
 // }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN )
-{
+CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN ){
    this->xx += cCoordIN.xx;
    this->xy += cCoordIN.xy;
    this->xz += cCoordIN.xz;
@@ -48,8 +46,7 @@ CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN
    return *this;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator-= (const CARTESIAN_MATRIX &cCoordIN )
-{
+CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator-= (const CARTESIAN_MATRIX &cCoordIN ){
    this->xx -= cCoordIN.xx;
    this->xy -= cCoordIN.xy;
    this->xz -= cCoordIN.xz;
@@ -62,8 +59,7 @@ CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator-= (const CARTESIAN_MATRIX &cCoordIN
    return *this;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator*= (const CARTESIAN_MATRIX &cCoordIN )
-{
+CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator*= (const CARTESIAN_MATRIX &cCoordIN ){
    this->xx *= cCoordIN.xx;
    this->xy *= cCoordIN.xy;
    this->xz *= cCoordIN.xz;
@@ -76,8 +72,7 @@ CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator*= (const CARTESIAN_MATRIX &cCoordIN
    return *this;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator/= (const CARTESIAN_MATRIX &cCoordIN )
-{
+CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator/= (const CARTESIAN_MATRIX &cCoordIN ){
    this->xx /= cCoordIN.xx;
    this->xy /= cCoordIN.xy;
    this->xz /= cCoordIN.xz;

@@ -9,8 +9,7 @@
 extern CRandomMersenne random_event;
 
 
-double  boxmueller(double  mu, double  sigma )
-{
+double  boxmueller(double  mu, double  sigma ){
    const double pi = 3.14159;
    double  u1, u2;
    double  random_variable;

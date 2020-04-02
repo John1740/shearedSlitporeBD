@@ -31,8 +31,7 @@ extern vector<double> arguments;
 extern string app_home(string );
 
 template<typename T>
-string app_number(string str, T number )
-{
+string app_number(string str, T number ){
    stringstream output;
    output << str << number;
    return output.str();

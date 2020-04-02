@@ -3,8 +3,7 @@
 
 #include "../global.h"
 
-struct SHEARED_SLITPORE_PARAMETERS
-{
+struct SHEARED_SLITPORE_PARAMETERS{
 public:
     SHEARED_SLITPORE_PARAMETERS();
 

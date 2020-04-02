@@ -1,15 +1,13 @@
 #include "sheared_slitpore_system.h"
 
-SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM()
-{
+SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
     dt = 1e-5;
     T=1.;
     STRESS = false;
     ENERGY = false;
 }
 
-SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin)
-{
+SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin){
     dt = 1e-5;
     T=1.;
     STRESS = false;
@@ -18,8 +16,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sP
     printInitilization();
 }
 
-void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin)
-{
+void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin){
     setShearRate(sPin.shearRate);
 
     density = sPin.density;
@@ -40,19 +37,16 @@ void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& s
     reset();
 }
 
-void SHEARED_SLITPORE_SYSTEM::setShearRate(double shearRateIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setShearRate(double shearRateIn){
     shearForce.setShearRate(shearRateIn);
     shearForce.setDirection(CARTESIAN_COORDINATE(1.,0.,0.));
 }
 
-void SHEARED_SLITPORE_SYSTEM::setSoftWallInteraction(double softWallStrengthIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setSoftWallInteraction(double softWallStrengthIn){
     swf.setInteractionParameters(simBox.getDimensions().z, softWallStrengthIn);
 }
 
-void SHEARED_SLITPORE_SYSTEM::setDlvoSSInteraction(double ssInteractionStrengthIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setDlvoSSInteraction(double ssInteractionStrengthIn){
     dlvo.setRcDelta(simBox.getDimensions().x);
     dlvo.ssInteractionStrength = ssInteractionStrengthIn;
 
@@ -63,14 +57,12 @@ void SHEARED_SLITPORE_SYSTEM::setDlvoSSInteraction(double ssInteractionStrengthI
     dlvo.setInteractionParameters(charges, diameters, densities);
 }
 
-double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale()
-{
+double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
     return dlvo.getMaxCutOffRadius();
 }
 
 //reset forces, stresses and energy
-void SHEARED_SLITPORE_SYSTEM::reset()
-{
+void SHEARED_SLITPORE_SYSTEM::reset(){
     force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
 
     if(STRESS){
@@ -82,14 +74,12 @@ void SHEARED_SLITPORE_SYSTEM::reset()
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::setNumberOfParticles(int numberOfParticlesIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setNumberOfParticles(int numberOfParticlesIn){
     particle.resize(numberOfParticlesIn);
     simBox.setVolumeAndDWall(numberOfParticlesIn / density, simBox.getDimensions().z);
 }
 
-void SHEARED_SLITPORE_SYSTEM::readFromString(string str)
-{
+void SHEARED_SLITPORE_SYSTEM::readFromString(string str){
     ifstream f;
     f.open(str.c_str());
 
@@ -127,8 +117,7 @@ void SHEARED_SLITPORE_SYSTEM::readFromString(string str)
 
 }
 
-void SHEARED_SLITPORE_SYSTEM::setInitialConfigurationForLayersWithSides(int numberOfParticlesIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setInitialConfigurationForLayersWithSides(int numberOfParticlesIn){
     int numberOfLayers = round(simBox.getDimensions().z);
     int numberOfSides = sqrt(numberOfParticlesIn / numberOfLayers);
 
@@ -139,8 +128,7 @@ void SHEARED_SLITPORE_SYSTEM::setInitialConfigurationForLayersWithSides(int numb
     initialConfiguration.doForSystem(*this);
 }
 
-void SHEARED_SLITPORE_SYSTEM::equationOfMotion()
-{
+void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     // Force calculation
     calculateForce();
 
@@ -162,13 +150,11 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion()
 
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce(int index)
-{
+CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
     return shearForce.forceOnParticle(particle[index]) * dt;
 }
 
-string SHEARED_SLITPORE_SYSTEM::app_identifier(string str)
-{
+string SHEARED_SLITPORE_SYSTEM::app_identifier(string str){
     stringstream output;
     output << str;
 
@@ -178,8 +164,7 @@ string SHEARED_SLITPORE_SYSTEM::app_identifier(string str)
     return output.str();
 }
 
-string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str)
-{
+string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str){
     stringstream output;
     output << str;
 
@@ -193,28 +178,23 @@ string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str)
     return output.str();
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2)
-{
+CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return dlvo.forceOnParticleFromParticle(particle1, particle2, simBox);
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle)
-{
+CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle){
     return swf.forceOnParticle(particle);
 }
 
-double SHEARED_SLITPORE_SYSTEM::energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2)
-{
+double SHEARED_SLITPORE_SYSTEM::energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return dlvo.energyOnParticleFromParticle(particle1, particle2, simBox);
 }
 
-double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle)
-{
+double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle){
     return swf.energyOnParticle(particle);
 }
 
-void SHEARED_SLITPORE_SYSTEM::setParticleList(vector< CHARGED_PARTICLE > particleListIn)
-{
+void SHEARED_SLITPORE_SYSTEM::setParticleList(vector< CHARGED_PARTICLE > particleListIn){
     particle = particleListIn; //copy particleList
     for(int i = 0; i < particle.size(); ++i){ //add some more info to each particle
         particle[i].diameter = diameter;
@@ -228,8 +208,7 @@ void SHEARED_SLITPORE_SYSTEM::setParticleList(vector< CHARGED_PARTICLE > particl
 
 }
 
-void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j)
-{
+void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     CARTESIAN_COORDINATE tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
     force[i] += tmpForce;
     force[j] -= tmpForce;
@@ -244,8 +223,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j)
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j)
-{
+void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j){
     CARTESIAN_COORDINATE posDifference = particle[i].boxPosition - particle[j].boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     CARTESIAN_MATRIX tmpStress(posDifference, forceIn);
@@ -253,8 +231,7 @@ void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(CARTESIAN_COORDINATE forc
     stressPerParticle[j] += 0.5* tmpStress;
 }
 
-void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i)
-{
+void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     CARTESIAN_COORDINATE tmpForce = forceOnParticleFromExternalFields(particle[i]);
     force[i] += tmpForce;
 
@@ -267,8 +244,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i)
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::addExternalStress(CARTESIAN_COORDINATE forceIn, int i)
-{
+void SHEARED_SLITPORE_SYSTEM::addExternalStress(CARTESIAN_COORDINATE forceIn, int i){
     CARTESIAN_MATRIX tmpStress(0.);
 
     if(particle[i].position.z >= 0){
@@ -281,8 +257,7 @@ void SHEARED_SLITPORE_SYSTEM::addExternalStress(CARTESIAN_COORDINATE forceIn, in
     stressPerParticle[i] += tmpStress;
 }
 
-vector< CARTESIAN_MATRIX > SHEARED_SLITPORE_SYSTEM::getStressPerParticle()
-{
+vector< CARTESIAN_MATRIX > SHEARED_SLITPORE_SYSTEM::getStressPerParticle(){
     vector<CARTESIAN_MATRIX> tmp = stressPerParticle;
     for(int i = 0; i < tmp.size(); ++i){
         tmp[i] *= -1/simBox.getVolume();
@@ -290,8 +265,7 @@ vector< CARTESIAN_MATRIX > SHEARED_SLITPORE_SYSTEM::getStressPerParticle()
     return tmp;
 }
 
-CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress()
-{
+CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress(){
     CARTESIAN_MATRIX meanStress(0.);
     for(int i = 0; i < stressPerParticle.size(); ++i){
         meanStress += stressPerParticle[i];
@@ -299,8 +273,7 @@ CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress()
     return -1.*meanStress/simBox.getVolume();
 }
 
-void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex)
-{
+void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex){
     string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
                          + "/shear_" + app_number("", shearForce.getShearRate())
                          + "/configuration" + app_identifier("") + "_ens_" + app_number("", ensembleIndex) + ".txt";
@@ -308,8 +281,7 @@ void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex)
     readFromString(inputString);
 }
 
-void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex)
-{
+void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex){
     string dir = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("") + "/shear_"+ app_number("", shearForce.getShearRate()) ;
     string cmd = "mkdir -p " + dir;
     system(cmd.c_str());
@@ -318,25 +290,21 @@ void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex)
     printParticlesOfSystem(outputString);
 }
 
-double SHEARED_SLITPORE_SYSTEM::getShearRate()
-{
+double SHEARED_SLITPORE_SYSTEM::getShearRate(){
     return shearForce.getShearRate();
 }
 
-void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition()
-{
+void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
     for(int i = 0; i < particle.size(); ++i){
 	particle[i].position = particle[i].boxPosition;
     }
 }
 
-string SHEARED_SLITPORE_SYSTEM::getIdentifierString()
-{
+string SHEARED_SLITPORE_SYSTEM::getIdentifierString(){
     return sysIdentifierString;
 }
 
-vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle()
-{
+vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;
 }
 

@@ -136,8 +136,7 @@ void FatalError(const char* ErrorText ); // System-specific error reporting (use
 Define random number generator classes
 ***********************************************************************/
 
-class CRandomMersenne                  // Encapsulate random number generator
-{
+class CRandomMersenne                  // Encapsulate random number generator{
 // Choose which version of Mersenne Twister you want:
 #if 0
 // Define constants for type MT11213A:
@@ -166,8 +165,7 @@ class CRandomMersenne                  // Encapsulate random number generator
 #endif
 
 public:
-   CRandomMersenne(int seed )        // Constructor
-   {
+   CRandomMersenne(int seed )        // Constructor{
       RandomInit(seed );
       LastInterval = 0;
    }
@@ -186,15 +184,13 @@ private:
 };
 
 
-class CRandomMother                    // Encapsulate random number generator
-{
+class CRandomMother                    // Encapsulate random number generator{
 public:
    void RandomInit(int seed );       // Initialization
    int IRandom(int min, int max );   // Get integer random number in desired interval
    double Random();                    // Get floating point random number
    uint32_t BRandom();                 // Output random bits
-   CRandomMother(int seed )          // Constructor
-   {
+   CRandomMother(int seed )          // Constructor{
       RandomInit(seed );
    }
 protected:

@@ -3,8 +3,7 @@
 
 #include "cartesian_coordinate.h"
 
-struct CARTESIAN_MATRIX
-{
+struct CARTESIAN_MATRIX{
    double xx,xy,xz;
    double yx,yy,yz;
    double zx,zy,zz;
@@ -18,32 +17,27 @@ struct CARTESIAN_MATRIX
    double getDeterminante();
 
    CARTESIAN_MATRIX& operator+= (CARTESIAN_MATRIX const& cCoordIN );
-   CARTESIAN_MATRIX& operator+= (double const& doubleIN )
-   {
+   CARTESIAN_MATRIX& operator+= (double const& doubleIN ){
       return *this += CARTESIAN_MATRIX(doubleIN );
    };
 
    CARTESIAN_MATRIX& operator-= (CARTESIAN_MATRIX const& cCoordIN );
-   CARTESIAN_MATRIX& operator-= (double const& doubleIN )
-   {
+   CARTESIAN_MATRIX& operator-= (double const& doubleIN ){
       return *this -= CARTESIAN_MATRIX(doubleIN );
    };
 
    CARTESIAN_MATRIX& operator*= (CARTESIAN_MATRIX const& cCoordIN );
-   CARTESIAN_MATRIX& operator*= (double const& doubleIN )
-   {
+   CARTESIAN_MATRIX& operator*= (double const& doubleIN ){
       return *this *= CARTESIAN_MATRIX(doubleIN );
    };
 
    CARTESIAN_MATRIX& operator/= (CARTESIAN_MATRIX const& cCoordIN );
-   CARTESIAN_MATRIX& operator/= (double const& doubleIN )
-   {
+   CARTESIAN_MATRIX& operator/= (double const& doubleIN ){
       return *this /= CARTESIAN_MATRIX(doubleIN );
    };
 
 
-   friend CARTESIAN_MATRIX operator+ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator+ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx + rhs.xx;
       result.xy = lhs.xy + rhs.xy;
@@ -56,8 +50,7 @@ struct CARTESIAN_MATRIX
       result.zz = lhs.zz + rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator+ (double const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator+ (double const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs + rhs.xx;
       result.xy = lhs + rhs.xy;
@@ -70,16 +63,14 @@ struct CARTESIAN_MATRIX
       result.zz = lhs + rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator+ (CARTESIAN_MATRIX const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator+ (CARTESIAN_MATRIX const& lhs, double const& rhs ){
       CARTESIAN_MATRIX result;
       result = rhs + lhs;
       return result;
    };
 
 
-   friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx - rhs.xx;
       result.xy = lhs.xy - rhs.xy;
@@ -92,8 +83,7 @@ struct CARTESIAN_MATRIX
       result.zz = lhs.zz - rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator- (double const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator- (double const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs - rhs.xx;
       result.xy = lhs - rhs.xy;
@@ -106,16 +96,14 @@ struct CARTESIAN_MATRIX
       result.zz = lhs - rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, double const& rhs ){
       CARTESIAN_MATRIX result;
       result = -1*rhs + lhs;
       return result;
    };
 
 
-   friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx * rhs.xx;
       result.xy = lhs.xy * rhs.xy;
@@ -128,8 +116,7 @@ struct CARTESIAN_MATRIX
       result.zz = lhs.zz * rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator* (double const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator* (double const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs * rhs.xx;
       result.xy = lhs * rhs.xy;
@@ -142,15 +129,13 @@ struct CARTESIAN_MATRIX
       result.zz = lhs * rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, double const& rhs ){
       CARTESIAN_MATRIX result;
       result = rhs * lhs;
       return result;
    };
 
-   friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs.xx / rhs.xx;
       result.xy = lhs.xy / rhs.xy;
@@ -163,8 +148,7 @@ struct CARTESIAN_MATRIX
       result.zz = lhs.zz / rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator/ (double const& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator/ (double const& lhs, CARTESIAN_MATRIX const& rhs ){
       CARTESIAN_MATRIX result;
       result.xx = lhs / rhs.xx;
       result.xy = lhs / rhs.xy;
@@ -177,32 +161,26 @@ struct CARTESIAN_MATRIX
       result.zz = lhs / rhs.zz;
       return result;
    };
-   friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, double const& rhs )
-   {
+   friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, double const& rhs ){
       CARTESIAN_MATRIX result;
       result = lhs * (1./rhs );
       return result;
    };
 
-   friend ostream& operator<< (ostream& lhs, CARTESIAN_MATRIX const& rhs )
-   {
+   friend ostream& operator<< (ostream& lhs, CARTESIAN_MATRIX const& rhs ){
       return lhs << rhs.xx << "\t" << rhs.xy << "\t" << rhs.xz << "\n" << rhs.yx << "\t" << rhs.yy << "\t" << rhs.yz << "\n" << rhs.zx << "\t" << rhs.zy << "\t" << rhs.zz;
    }
 
-   friend bool operator== (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs )
-   {
-      if(lhs.xx==rhs.xx && lhs.xy==rhs.xy && lhs.xz==rhs.xz && lhs.yx==rhs.yx && lhs.yy==rhs.yy && lhs.yz==rhs.yz && lhs.zx==rhs.zx && lhs.zy==rhs.zy && lhs.zz==rhs.zz )
-         {
+   friend bool operator== (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs ){
+      if(lhs.xx==rhs.xx && lhs.xy==rhs.xy && lhs.xz==rhs.xz && lhs.yx==rhs.yx && lhs.yy==rhs.yy && lhs.yz==rhs.yz && lhs.zx==rhs.zx && lhs.zy==rhs.zy && lhs.zz==rhs.zz ){
             return true;
          }
-      else
-         {
+      else{
             return false;
          }
    };
 
-   friend bool operator!= (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs )
-   {
+   friend bool operator!= (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs ){
       return ! (lhs == rhs );
    };
 

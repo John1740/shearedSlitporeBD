@@ -4,8 +4,7 @@
 #include "../interfaces/force_template_interfaces.h"
 #include "../struct/particle.h"
 
-class LENNARD_JONES_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<PARTICLE>
-{
+class LENNARD_JONES_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<PARTICLE>{
 
 public:
    double interactionStrength;

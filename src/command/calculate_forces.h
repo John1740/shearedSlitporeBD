@@ -3,8 +3,7 @@
 
 #include "../interfaces/system_interface.h"
 
-class CALCULATE_FORCES
-{
+class CALCULATE_FORCES{
 
    int numberOfBoxes;
    int gridSize;

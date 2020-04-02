@@ -6,8 +6,7 @@
 
 #include "../struct/cartesian_matrix.h"
 
-class AVERAGE_STRESS:public COMMAND<SHEARED_SLITPORE_SYSTEM>
-{
+class AVERAGE_STRESS:public COMMAND<SHEARED_SLITPORE_SYSTEM>{
    CARTESIAN_MATRIX stress;
    int count;
 

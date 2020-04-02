@@ -5,8 +5,7 @@
 #include "../interfaces/box_geometry.h"
 
 
-class PARTICLE
-{
+class PARTICLE{
 public:
    CARTESIAN_COORDINATE position;
    CARTESIAN_COORDINATE boxPosition;

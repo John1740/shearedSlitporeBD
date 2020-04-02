@@ -16,8 +16,7 @@
 
 #include "../tools/printer.h"
 
-class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE
-{
+class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class CALCULATE_FORCES;
     friend class GENERATE_SQUARE_LAYERS;

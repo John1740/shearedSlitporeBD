@@ -5,8 +5,7 @@
 #include <vector>
 using namespace std;
 
-class BOX_GEOMETRY
-{
+class BOX_GEOMETRY{
 public:
 
     virtual CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN ) = 0;

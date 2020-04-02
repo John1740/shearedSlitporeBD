@@ -4,8 +4,7 @@
 #include "../interfaces/command.h"
 #include "../systems/confined_brownian_particles.h"
 
-class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>
-{
+class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
    bool SPECIES_TOOGLE;
     
    vector<CHARGED_PARTICLE> particleList;

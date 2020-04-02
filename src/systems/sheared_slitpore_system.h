@@ -11,8 +11,7 @@
 
 #include "../command/generate_square_layers.h"
 
-class SHEARED_SLITPORE_SYSTEM : public  CONFINED_BROWNIAN_PARTICLES
-{
+class SHEARED_SLITPORE_SYSTEM : public  CONFINED_BROWNIAN_PARTICLES{
    
     
 private:

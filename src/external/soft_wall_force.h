@@ -5,8 +5,7 @@
 #include "../struct/particle.h"
 #include "../struct/cartesian_coordinate.h"
 
-class SOFT_WALL_FORCE: public CONSERVATIVE_FORCE<PARTICLE>
-{
+class SOFT_WALL_FORCE: public CONSERVATIVE_FORCE<PARTICLE>{
 
 public:
    double wallInteractionStrength;

@@ -6,8 +6,7 @@
 #include "../struct/charged_particle.h"
 #include "../interfaces/box_geometry.h"
 
-class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>
-{
+class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 
    void setParametersForAllChargeCompositions();
    void setKappa();

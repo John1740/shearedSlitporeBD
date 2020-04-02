@@ -24,41 +24,35 @@
 
 #include "randomc.h"
 
-void CRandomMersenne::Init0(int seed )
-{
+void CRandomMersenne::Init0(int seed ){
    // Seed generator
    const uint32_t factor = 1812433253UL;
    mt[0] = seed;
 
-   for(mti = 1; mti < MERS_N; mti++ )
-   {
+   for(mti = 1; mti < MERS_N; mti++ ){
       mt[mti] = (factor * (mt[mti - 1] ^ (mt[mti - 1] >> 30 ) ) + mti );
    }
 }
 
-void CRandomMersenne::RandomInit(int seed )
-{
+void CRandomMersenne::RandomInit(int seed ){
    // Initialize and seed
    Init0(seed );
 
    // Randomize some more
-   for(int i = 0; i < 37; i++ )
-   {
+   for(int i = 0; i < 37; i++ ){
       BRandom();
    }
 }
 
 
-void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds )
-{
+void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds ){
    // Seed by more than 32 bits
    int i, j, k;
 
    // Initialize
    Init0(19650218 );
 
-   if(NumSeeds <= 0 )
-   {
+   if(NumSeeds <= 0 ){
       return;
    }
 
@@ -67,30 +61,25 @@ void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds )
    j = 0;
    k = (MERS_N > NumSeeds ? MERS_N : NumSeeds );
 
-   for(; k; k-- )
-   {
+   for(; k; k-- ){
       mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30 ) ) * 1664525UL ) ) + (uint32_t ) seeds[j] + j;
       i++;
       j++;
 
-      if(i >= MERS_N )
-      {
+      if(i >= MERS_N ){
          mt[0] = mt[MERS_N - 1];
          i = 1;
       }
 
-      if(j >= NumSeeds )
-      {
+      if(j >= NumSeeds ){
          j = 0;
       }
    }
 
-   for(k = MERS_N - 1; k; k-- )
-   {
+   for(k = MERS_N - 1; k; k-- ){
       mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30 ) ) * 1566083941UL ) ) - i;
 
-      if(++i >= MERS_N )
-      {
+      if(++i >= MERS_N ){
          mt[0] = mt[MERS_N - 1];
          i = 1;
       }
@@ -101,20 +90,17 @@ void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds )
    // Randomize some more
    mti = 0;
 
-   for(int i = 0; i <= MERS_N; i++ )
-   {
+   for(int i = 0; i <= MERS_N; i++ ){
       BRandom();
    }
 }
 
 
-uint32_t CRandomMersenne::BRandom()
-{
+uint32_t CRandomMersenne::BRandom(){
    // Generate 32 random bits
    uint32_t y;
 
-   if(mti >= MERS_N )
-   {
+   if(mti >= MERS_N ){
       // Generate MERS_N words at one time
       const uint32_t LOWER_MASK = (1LU << MERS_R ) - 1;     // Lower MERS_R bits
       const uint32_t UPPER_MASK = 0xFFFFFFFF << MERS_R;      // Upper (32 - MERS_R) bits
@@ -122,14 +108,12 @@ uint32_t CRandomMersenne::BRandom()
 
       int kk;
 
-      for(kk = 0; kk < MERS_N - MERS_M; kk++ )
-      {
+      for(kk = 0; kk < MERS_N - MERS_M; kk++ ){
          y = (mt[kk] & UPPER_MASK ) | (mt[kk + 1] & LOWER_MASK );
          mt[kk] = mt[kk + MERS_M] ^ (y >> 1 ) ^ mag01[y & 1];
       }
 
-      for(; kk < MERS_N - 1; kk++ )
-      {
+      for(; kk < MERS_N - 1; kk++ ){
          y = (mt[kk] & UPPER_MASK ) | (mt[kk + 1] & LOWER_MASK );
          mt[kk] = mt[kk + (MERS_M - MERS_N )] ^ (y >> 1 ) ^ mag01[y & 1];
       }
@@ -151,26 +135,21 @@ uint32_t CRandomMersenne::BRandom()
 }
 
 
-double CRandomMersenne::Random()
-{
+double CRandomMersenne::Random(){
    // Output random float number in the interval 0 <= x < 1
    // Multiply by 2^(-32)
    return (double ) BRandom() * (1. / (65536.*65536. ) );
 }
 
 
-int CRandomMersenne::IRandom(int min, int max )
-{
+int CRandomMersenne::IRandom(int min, int max ){
    // Output random integer in the interval min <= x <= max
    // Relative error on frequencies < 2^-32
-   if(max <= min )
-   {
-      if(max == min )
-      {
+   if(max <= min ){
+      if(max == min ){
          return min;
       }
-      else
-      {
+      else{
          return 0x80000000;
       }
    }
@@ -178,8 +157,7 @@ int CRandomMersenne::IRandom(int min, int max )
    // Multiply interval with random and truncate
    int r = int ((double )(uint32_t )(max - min + 1 ) * Random() + min );
 
-   if(r > max )
-   {
+   if(r > max ){
       r = max;
    }
 
@@ -187,20 +165,16 @@ int CRandomMersenne::IRandom(int min, int max )
 }
 
 
-int CRandomMersenne::IRandomX(int min, int max )
-{
+int CRandomMersenne::IRandomX(int min, int max ){
    // Output random integer in the interval min <= x <= max
    // Each output value has exactly the same probability.
    // This is obtained by rejecting certain bit values so that the number
    // of possible bit values is divisible by the interval length
-   if(max <= min )
-   {
-      if(max == min )
-      {
+   if(max <= min ){
+      if(max == min ){
          return min;
       }
-      else
-      {
+      else{
          return 0x80000000;
       }
    }
@@ -214,8 +188,7 @@ int CRandomMersenne::IRandomX(int min, int max )
 
    interval = uint32_t(max - min + 1 );
 
-   if(interval != LastInterval )
-   {
+   if(interval != LastInterval ){
       // Interval length has changed. Must calculate rejection limit
       // Reject when remainder >= 2^32 / interval * interval
       // RLimit will be 0 if interval is a power of 2. No rejection then
@@ -223,8 +196,7 @@ int CRandomMersenne::IRandomX(int min, int max )
       LastInterval = interval;
    }
 
-   do   // Rejection loop
-   {
+   do   // Rejection loop{
       longran  = (uint64_t ) BRandom() * interval;
       iran = (uint32_t )(longran >> 32 );
       remainder = (uint32_t ) longran;
@@ -243,21 +215,18 @@ int CRandomMersenne::IRandomX(int min, int max )
 
    interval = uint32_t(max - min + 1 );
 
-   if(interval != LastInterval )
-   {
+   if(interval != LastInterval ){
       // Interval length has changed. Must calculate rejection limit
       // Reject when iran = 2^32 / interval
       // We can't make 2^32 so we use 2^32-1 and correct afterwards
       RLimit = (uint32_t ) 0xFFFFFFFF / interval;
 
-      if((uint32_t ) 0xFFFFFFFF % interval == interval - 1 )
-      {
+      if((uint32_t ) 0xFFFFFFFF % interval == interval - 1 ){
          RLimit++;
       }
    }
 
-   do   // Rejection loop
-   {
+   do   // Rejection loop{
       bran = BRandom();
       iran = bran / interval;
       remainder = bran % interval;

@@ -8,8 +8,7 @@
 using namespace std;
 #include "../global.h"
 
-class PRINTER
-{
+class PRINTER{
    string outputFile, filePath,directoryPath;
    ofstream file;
 
@@ -46,14 +45,12 @@ public:
    );
 
    template<typename T>
-   void printLine (T t )
-   {
+   void printLine (T t ){
       file << t << endl;
    }
 
    template<typename T, typename... Args>
-   void printLine (T t, Args... args )
-   {
+   void printLine (T t, Args... args ){
       file << t << "\t";
       printLine (args... );
    }

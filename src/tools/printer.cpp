@@ -43,10 +43,12 @@ void PRINTER::setFileExtension (string fileExtensionIn){
 bool PRINTER::fileIsEmpty(){
     file.seekp(0, ios::end); // put the "cursor" at the end of the file
     double length = file.tellp();
-    if(length == 0)
-	return true;
-    else
-	return false;
+    if(length == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void PRINTER::setDirectoryPathAndOutputFile(string directoryPathIn, string outputFileIn){

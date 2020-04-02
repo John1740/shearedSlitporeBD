@@ -296,7 +296,7 @@ double SHEARED_SLITPORE_SYSTEM::getShearRate(){
 
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
     for(int i = 0; i < particle.size(); ++i){
-	particle[i].position = particle[i].boxPosition;
+    particle[i].position = particle[i].boxPosition;
     }
 }
 

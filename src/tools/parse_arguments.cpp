@@ -21,8 +21,8 @@ double PARSE_ARGUMENTS::convertToDouble (string strIn){
     double argDouble = strtod(strIn.c_str(), NULL);
 
     if(!inputIsValid(strIn, argDouble)){
-	printf ("Parse arguments: input '%s != %s' output! (Expecting a double in standard notation!)\n", strIn.c_str(), app_number("",argDouble).c_str());
-	argDouble = 0./0.;
+    printf ("Parse arguments: input '%s != %s' output! (Expecting a double in standard notation!)\n", strIn.c_str(), app_number("",argDouble).c_str());
+    argDouble = 0./0.;
     }
 
     return argDouble;
@@ -31,24 +31,24 @@ double PARSE_ARGUMENTS::convertToDouble (string strIn){
 bool PARSE_ARGUMENTS::inputIsValid (string strIn, double argIn){
     bool isValid = true;
     string test = app_number("",argIn);
-	if(test != strIn){
-	    isValid = false;
+    if(test != strIn){
+        isValid = false;
     }
     return isValid;
 }
 
 void PARSE_ARGUMENTS::checkForInvalidArguments (vector<double>& argumentsIn){
     for(int i = 0; i < argumentsIn.size(); ++i){
-	if(argumentsIn[i] != argumentsIn[i]){
-	    cout << "Invalid argument, exit!" << endl;
-	    exit(1);
-	}
+    if(argumentsIn[i] != argumentsIn[i]){
+        cout << "Invalid argument, exit!" << endl;
+        exit(1);
+    }
     }
 }
 
 void PARSE_ARGUMENTS::printArgumentList (vector<double>& argumentsIn){
     cout << "Argument list: " << endl;
     for(int i = 0; i < argumentsIn.size(); ++i){
-	cout << "arguments[" << i << "] = " << argumentsIn[i] << endl;
+    cout << "arguments[" << i << "] = " << argumentsIn[i] << endl;
     }
 }

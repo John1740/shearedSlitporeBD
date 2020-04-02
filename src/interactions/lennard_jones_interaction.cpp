@@ -5,7 +5,7 @@ LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(){
    diameter = 1.;
 }
 
-LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(double interactionStrengthIN) : interactionStrength(interactionStrengthIN){
+LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(double interactionStrengthIN): interactionStrength(interactionStrengthIN){
    diameter = 1.;
 }
 

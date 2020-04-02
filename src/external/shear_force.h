@@ -5,7 +5,7 @@
 #include "../struct/particle.h"
 #include "../struct/cartesian_coordinate.h"
 
-class SHEAR_FORCE :  FORCE<PARTICLE>{
+class SHEAR_FORCE:  FORCE<PARTICLE>{
     double shearRate;
     CARTESIAN_COORDINATE direction;
 

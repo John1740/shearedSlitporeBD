@@ -9,10 +9,10 @@ struct CARTESIAN_COORDINATE{
 
    double x,y,z;
 
-   CARTESIAN_COORDINATE() : x(0.), y(0.), z(0.){}
-   CARTESIAN_COORDINATE(double doubleIN) : x(doubleIN), y(doubleIN), z(doubleIN){}
-   CARTESIAN_COORDINATE(double xIN, double yIN, double zIN) : x(xIN),y(yIN),z(zIN){}
-   CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& cCoordIN) : x(cCoordIN.x),y(cCoordIN.y),z(cCoordIN.z){}
+   CARTESIAN_COORDINATE(): x(0.), y(0.), z(0.){}
+   CARTESIAN_COORDINATE(double doubleIN): x(doubleIN), y(doubleIN), z(doubleIN){}
+   CARTESIAN_COORDINATE(double xIN, double yIN, double zIN): x(xIN),y(yIN),z(zIN){}
+   CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& cCoordIN): x(cCoordIN.x),y(cCoordIN.y),z(cCoordIN.z){}
 
    double getAbs();
 

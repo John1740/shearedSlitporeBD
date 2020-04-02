@@ -58,7 +58,7 @@ void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds){
    // Randomize mt[] using whole seeds[] array
    i = 1;
    j = 0;
-   k = (MERS_N > NumSeeds ? MERS_N : NumSeeds);
+   k = (MERS_N > NumSeeds ? MERS_N: NumSeeds);
 
    for(; k; k--){
       mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL)) + (uint32_t) seeds[j] + j;

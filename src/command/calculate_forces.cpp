@@ -15,7 +15,8 @@ void CALCULATE_FORCES::doForSystem(SYSTEM_INTERFACE& sysIn){
     int gridSizeY = floor(simBox->getDimensions().y / cutoffRadius);
     if(gridSizeX < gridSizeY){ //take smaller gridSize
         gridSize = gridSizeX;
-    } else{
+    }
+    else{
         gridSize = gridSizeY;
     }
 

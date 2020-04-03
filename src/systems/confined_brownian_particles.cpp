@@ -26,12 +26,12 @@ void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
 
 void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     calculateForce();
-    CARTESIAN_COORDINATE randomForce;
+    CARTESIAN_COORDINATE randomDisplacement;
 
     for(int i = 0; i < particle.size(); ++i){
-        randomForce = getRandomForce();
+        randomDisplacement = getRandomDisplacement();
 
-        particle[i].position += force[i] * D0 * dt / T + randomForce;
+        particle[i].position += force[i] * D0 * dt / T + randomDisplacement;
     }
     setPositionInBox();
 }
@@ -56,10 +56,12 @@ int CONFINED_BROWNIAN_PARTICLES::getNumberOfParticles(){
     return particle.size();
 }
 
-CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getRandomForce(){
-    return CARTESIAN_COORDINATE(sqrt(2 * D0 * dt) * boxmueller(0, 1),
-                                   sqrt(2 * D0 * dt) * boxmueller(0, 1),
-                                   sqrt(2 * D0 * dt) * boxmueller(0, 1));
+CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
+    CARTESIAN_COORDINATE randomForce;
+    randomForce.x = sqrt(2 * D0 * dt) * boxmueller(0, 1);
+    randomForce.y = sqrt(2 * D0 * dt) * boxmueller(0, 1);
+    randomForce.z = sqrt(2 * D0 * dt) * boxmueller(0, 1);
+    return randomForce;
 }
 
 SLIT_PORE_BOX* CONFINED_BROWNIAN_PARTICLES::simulationBox(){

@@ -15,7 +15,8 @@ void SHEAR_FORCE::setShearRate(double shearRateIn){
 }
 
 CARTESIAN_COORDINATE SHEAR_FORCE::forceOnParticle(PARTICLE& particle){
-    return shearRate * direction * particle.position.z;
+    CARTESIAN_COORDINATE forceOnParticle = shearRate * direction * particle.position.z;
+    return forceOnParticle;
 }
 
 CARTESIAN_COORDINATE SHEAR_FORCE::getDirection(){

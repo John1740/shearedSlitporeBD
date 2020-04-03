@@ -22,12 +22,15 @@ double SOFT_WALL_FORCE::energyOnParticle(PARTICLE &particle){
 CARTESIAN_COORDINATE SOFT_WALL_FORCE::forceOnParticle(PARTICLE &particle){
     zPosition = particle.boxPosition.z;
     diameter = particle.diameter;
-    CARTESIAN_COORDINATE force(0., 0., forceInZDirection(zPosition, diameter));
-    return force;
+    CARTESIAN_COORDINATE forceOnParticle;
+    forceOnParticle.z = forceInZDirection(zPosition, diameter);
+    return forceOnParticle;
 }
 
 double SOFT_WALL_FORCE::forceInZDirection(double zPositionIn, double diameterIn){
-    diameterIn = 0.5 * (1. + diameterIn);
-    return  - (4 * 9 * M_PI / 5) * wallInteractionStrength * (pow(diameterIn / (dWall / 2 - zPositionIn), 10) -  pow(diameterIn / (dWall / 2 + zPositionIn), 10)) / diameterIn;
+    diameterIn = 0.5 * (1. + diameterIn);   //?
+    double prefactor = - (4 * 9 * M_PI / 5) * wallInteractionStrength / diameterIn;
+    double forceZ = prefactor * (pow(diameterIn / (dWall / 2 - zPositionIn), 10) -  pow(diameterIn / (dWall / 2 + zPositionIn), 10));
+    return forceZ;
 }
 

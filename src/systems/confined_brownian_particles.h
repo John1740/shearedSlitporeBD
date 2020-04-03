@@ -48,7 +48,7 @@ protected:
     virtual void reset();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
-    virtual CARTESIAN_COORDINATE getRandomForce();
+    virtual CARTESIAN_COORDINATE getRandomDisplacement();
 
 //     Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);

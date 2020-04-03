@@ -132,26 +132,24 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     // Force calculation
     calculateForce();
 
-    CARTESIAN_COORDINATE randomForce;
+    CARTESIAN_COORDINATE randomDisplacement;
     CARTESIAN_COORDINATE shearForce;
 
     for(int i = 0; i < particle.size(); ++i){
-        randomForce = getRandomForce();
+        randomDisplacement = getRandomDisplacement();
         shearForce = getShearForce(i);
 
-        particle[i].position += force[i] * D0 * dt / T + randomForce + shearForce;
+        particle[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
 
         if(particle[i].position.z > 0.5 * simBox.getDimensions().z || particle[i].position.z < -0.5 * simBox.getDimensions().z){
             cout << "particle[i].position.z = " << particle[i].position.z << endl;
-
-            particle[i].setBoxPosition(simBox);
         }
+        particle[i].setBoxPosition(simBox);
     }
-
 }
 
 CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
-    return shearForce.forceOnParticle(particle[index]) * dt;
+    return shearForce.forceOnParticle(particle[index]);
 }
 
 string SHEARED_SLITPORE_SYSTEM::app_identifier(string str){
@@ -213,7 +211,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     force[i] += tmpForce;
     force[j] -= tmpForce;
 
-    if(STRESS){
+    if(STRESS){ //move somewhere else?
         addConfigurationalStress(tmpForce, i, j);
     }
     if(ENERGY){
@@ -244,14 +242,14 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::addExternalStress(CARTESIAN_COORDINATE forceIn, int i){
+void SHEARED_SLITPORE_SYSTEM::addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i){   //const CARTESIAN_COORDINATE&
     CARTESIAN_MATRIX tmpStress(0.);
 
     if(particle[i].position.z >= 0){
-        tmpStress.zz += forceIn.z *(particle[i].position.z - 0.5 * simBox.getDimensions().z);
+        tmpStress.zz += forceIn.z * (particle[i].position.z - 0.5 * simBox.getDimensions().z);
     }
     else{
-        tmpStress.zz += forceIn.z *(particle[i].position.z + 0.5 * simBox.getDimensions().z);
+        tmpStress.zz += forceIn.z * (particle[i].position.z + 0.5 * simBox.getDimensions().z);
     }
 
     stressPerParticle[i] += tmpStress;

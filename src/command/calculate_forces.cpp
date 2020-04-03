@@ -76,7 +76,7 @@ unsigned int CALCULATE_FORCES::getBoxIndexFromGridIndices(int i, int j){
 //Initialize index lists firstParticleIndexInBox and nextParticleIndexInBoxOfParticleIndex.
 //The last called particle per box during initialization will be the first particle in that box.
 //This particle will point to the next particle via nextParticleIndexInBoxOfParticleIndex and so on.
-//The last particle in each box will point to nothing (particleIndex -1).
+//The last particle in each box will point to nothing (particleIndex = -1).
 void CALCULATE_FORCES::initializeParticleIndexLists(SYSTEM_INTERFACE& sysIn){
     boxPositions = sysIn.getPositionList();
     simBox = sysIn.simulationBox();
@@ -126,7 +126,7 @@ void CALCULATE_FORCES::calculateForce(SYSTEM_INTERFACE& sysIn){
                 sysIn.calculateInteractionForce(i, j);
                 j = nextParticleIndexInBoxOfParticleIndex[j];
             }
-            int firstBoxNeighborIndex = 4 * boxIndex;
+            int firstBoxNeighborIndex = 4 * boxIndex;   //create conversion functions boxIndex <-> neighborIndex
             for(int nextNeighbor = 0; nextNeighbor < 4; ++nextNeighbor){
                 int neighborBoxIndex = neighborMap[firstBoxNeighborIndex + nextNeighbor];
                 j = firstParticleIndexInBox[neighborBoxIndex];         // Das erste Referenzelement aus der benachbarten Zelle waehlen
@@ -139,7 +139,7 @@ void CALCULATE_FORCES::calculateForce(SYSTEM_INTERFACE& sysIn){
         }
     }
 
-// Exernal Force:--------------------------------------------
+    // Exernal Force:--------------------------------------------
 
     for(int i = 0; i < boxPositions.size(); ++i){
         sysIn.calculateExternalForce(i);

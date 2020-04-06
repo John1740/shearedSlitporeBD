@@ -4,7 +4,7 @@
  *  Created on: Jul 10, 2012
  *      Author: tarlan
  */
-#include"global.h"
+#include "global.h"
 
 vector<double> arguments(0);
 
@@ -18,7 +18,7 @@ string home = pchome ? pchome: "";
 string app_home(string str){
     stringstream output;
 
-    output << "/home/mhuels/data/shearedSlitporeBD/output/";
+    output << home << "/data/shearedSlitporeBD/output/";
 
     output << str;
     return output.str();

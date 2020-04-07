@@ -1,22 +1,18 @@
 #include "sheared_slitpore_system.h"
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    dt = 1e-5;
-    T=1.;
-    STRESS = false;
-    ENERGY = false;
+    dt = DELTA_T;
+    T = TEMPERATURE;
 }
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin){
-    dt = 1e-5;
-    T=1.;
-    STRESS = false;
-    ENERGY = false;
     setSystemParameters(sPin);
     printInitilization();
 }
 
 void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin){
+    dt = sPin.dt;
+    T = sPin.temperature;
     setShearRate(sPin.shearRate);
 
     density = sPin.density;
@@ -27,7 +23,7 @@ void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& s
     diameter = sPin.diameter;
     setSoftWallInteraction(sPin.wallInteractionStrength);
 
-    sysIdentifierString = sPin.sysIdentifierString;
+//    sysIdentifierString = sPin.sysIdentifierString;
 
     configurationDir = "config/";
     read();
@@ -298,9 +294,9 @@ void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
     }
 }
 
-string SHEARED_SLITPORE_SYSTEM::getIdentifierString(){
-    return sysIdentifierString;
-}
+//string SHEARED_SLITPORE_SYSTEM::getIdentifierString(){
+//    return sysIdentifierString;
+//}
 
 vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;

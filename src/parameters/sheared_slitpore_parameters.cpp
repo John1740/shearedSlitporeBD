@@ -1,58 +1,72 @@
 #include "sheared_slitpore_parameters.h"
 
 SHEARED_SLITPORE_PARAMETERS::SHEARED_SLITPORE_PARAMETERS(){
-    shearRate = 0.;
 
-    dWall = 3.2;
-    density = 0.85;
-    numberOfParticles = 1587;
+}
 
-    charge = 35;
-    diameter = 1.;
-    ssInteractionStrength = 1.;
-    wallInteractionStrength = 1.;
+SHEARED_SLITPORE_PARAMETERS::SHEARED_SLITPORE_PARAMETERS(const ARGUMENTS &args) {
+    readFromArguments(args);
 }
 
 void SHEARED_SLITPORE_PARAMETERS::print(){
-    cout << "sysId: " + sysIdentifierString << endl;
+//    cout << "sysId: " + sysIdentifierString << endl;
     cout << "dWall = " << dWall << "\t\t" << "density = " << density << "\t\t" << "numberOfParticles = " << numberOfParticles << endl;
     cout << "charge = " << charge << "\t\t" << "diameter = " << diameter << endl;
     cout << "ssIS = " << ssInteractionStrength << "\t\t" << "wallIS = " << wallInteractionStrength << endl;
+    cout << "shearRate = " << shearRate << endl;
     cout << endl;
 
 }
 
-void SHEARED_SLITPORE_PARAMETERS::setAsBiLayerWithShearRate(double shearRateIn){
-    numberOfParticles = 1058;
+void SHEARED_SLITPORE_PARAMETERS::readFromArguments(const ARGUMENTS &args) {
+    numberOfParticles = args.numberOfParticles;
 
-    shearRate = shearRateIn;
-    dWall = 2.2;
-    density = 0.85;
+    shearRate = args.shearRate;
+    dWall = args.dWall;
+    density = args.density;
 
-    charge = 35;
+    charge = args.charge;
 
-    diameter = 1.;
+    diameter = args.diameter;
 
-    ssInteractionStrength = 1.;
-    wallInteractionStrength = 1.;
+    ssInteractionStrength = args.ssInteractionStrength;
+    wallInteractionStrength = args.wallInteractionStrength;
 
-    sysIdentifierString = "2layer";
+    dt = args.dt;
+    temperature = args.temperature;
 }
 
-void SHEARED_SLITPORE_PARAMETERS::setAsTriLayerWithShearRate(double shearRateIn){
-    numberOfParticles = 1587;
-
-    shearRate = shearRateIn;
-    dWall = 3.2;
-    density = 0.85;
-
-    charge = 35;
-
-    diameter = 1.;
-
-    ssInteractionStrength = 1.;
-    wallInteractionStrength = 1.;
-
-    sysIdentifierString = "3layer";
-}
+//void SHEARED_SLITPORE_PARAMETERS::setAsBiLayerWithShearRate(double shearRateIn){
+//    numberOfParticles = 1058;
+//
+//    shearRate = shearRateIn;
+//    dWall = 2.2;
+//    density = 0.85;
+//
+//    charge = 35;
+//
+//    diameter = 1.;
+//
+//    ssInteractionStrength = 1.;
+//    wallInteractionStrength = 1.;
+//
+//    sysIdentifierString = "2layer";
+//}
+//
+//void SHEARED_SLITPORE_PARAMETERS::setAsTriLayerWithShearRate(double shearRateIn){
+//    numberOfParticles = 1587;
+//
+//    shearRate = shearRateIn;
+//    dWall = 3.2;
+//    density = 0.85;
+//
+//    charge = 35;
+//
+//    diameter = 1.;
+//
+//    ssInteractionStrength = 1.;
+//    wallInteractionStrength = 1.;
+//
+//    sysIdentifierString = "3layer";
+//}
 

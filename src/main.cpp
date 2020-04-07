@@ -2,33 +2,30 @@
 
 #include "global.h"
 #include "tools/printer.h"
-#include "tools/parse_arguments.h"
 
 #include "systems/sheared_slitpore_system.h"
 #include "command/average_stress.h"
 
 #include <ctime>
 #include <limits>
+#include "tools/argparse.h"
 
-
-int main(int argc, char *argv[]){
+int main(int argc, const char *argv[]){
     srand(getpid()*time(0));
 
-    PARSE_ARGUMENTS parseArguments;
-    arguments = parseArguments.getArgumentList(argc, argv);
-    parseArguments.checkForInvalidArguments(arguments);
-    parseArguments.printArgumentList(arguments);
+    ARGUMENT_PARSER parser(argc, argv);
+    ARGUMENTS args = parser.parseArgs();
 
     ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
 
-    SHEARED_SLITPORE_PARAMETERS sysParameters;
-    sysParameters.setAsBiLayerWithShearRate(0);
+    SHEARED_SLITPORE_PARAMETERS sysParameters(args);
+//    sysParameters.setAsBiLayerWithShearRate(args.shearRate);
     sysParameters.print();
 
     SHEARED_SLITPORE_SYSTEM sys(sysParameters);
     sys.readEnsembleSystem(0);
-    sys.STRESS=true;
-    sys.setShearRate(200);
+    sys.STRESS = args.printStress;
+    sys.ENERGY = args.printEnergy;
 
     AVERAGE_STRESS averageStress;
 

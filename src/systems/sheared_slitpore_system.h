@@ -8,11 +8,12 @@
 #include "../external/shear_force.h"
 
 #include "../parameters/sheared_slitpore_parameters.h"
+#include "../tools/argparse.h"
 
 #include "../command/generate_square_layers.h"
+#include "../defaults.h"
 
 class SHEARED_SLITPORE_SYSTEM: public  CONFINED_BROWNIAN_PARTICLES{
-
 
 private:
 
@@ -21,10 +22,11 @@ protected:
     SOFT_WALL_FORCE swf;
     SHEAR_FORCE shearForce;
 
-    string sysIdentifierString;
+//    string sysIdentifierString;
 
-    double density, diameter;
-    int charge;
+    double density = DENSITY;
+    double diameter = DIAMETER;
+    int charge = CHARGE;
 
     vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
     vector<double> energy;
@@ -56,16 +58,17 @@ protected:
     virtual void addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i);
 
 public:
-    bool STRESS;
-    bool ENERGY;
+    bool STRESS = PRINT_STRESS;
+    bool ENERGY = PRINT_ENERGY;
 
     SHEARED_SLITPORE_SYSTEM();
     SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin);
+
     virtual void setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin);
     virtual void readEnsembleSystem(int ensembleIndex);
     virtual void printSystemWithEnsembleIndex(int ensembleIndex);
 
-    virtual string getIdentifierString();
+//    virtual string getIdentifierString();
 
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);

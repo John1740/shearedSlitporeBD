@@ -1,9 +1,13 @@
 #include "confined_brownian_particles.h"
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
-    configurationDir = "brownian";
-    D0=1.;
-    T=0.;
+}
+
+CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) {
+    dt = args.dt;
+    T = args.temperature;
+    D0 = args.D0;
+    numberOfParticles = args.numberOfParticles;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::printInitilization(){
@@ -49,11 +53,7 @@ void CONFINED_BROWNIAN_PARTICLES::calculateForce(){
 
 //reset forces
 void CONFINED_BROWNIAN_PARTICLES::reset(){
-    force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
-}
-
-int CONFINED_BROWNIAN_PARTICLES::getNumberOfParticles(){
-    return particle.size();
+    force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
 }
 
 CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
@@ -137,24 +137,22 @@ void CONFINED_BROWNIAN_PARTICLES::printParticlesOfSystem(string str){
     PRINTER printer(configurationDir, str);
     printer.removeFile();
     for(int i = 0; i < particle.size(); ++i){
-        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].species);
+        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].boxPosition.z);
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::read(string str){
+void CONFINED_BROWNIAN_PARTICLES::readConfiguration(string str){
     string inputString = configurationDir + "configuration_" + str + app_identifier("") + ".txt";
-    readFromString(inputString);
-    printInitilization();
+    readConfigurationFromString(inputString);
 }
 
-void CONFINED_BROWNIAN_PARTICLES::read(){
+void CONFINED_BROWNIAN_PARTICLES::readConfiguration(){
     string inputString = configurationDir + "configuration" + app_identifier("") + ".txt";
-    readFromString(inputString);
-//    printInitilization(); //unnecessary (done already)
+    readConfigurationFromString(inputString);
 }
 
-void CONFINED_BROWNIAN_PARTICLES::readFromString(string str){
-    cout << "CONFINED_BROWNIAN_PARTICLES::readFromString is empty!" << endl;
+void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromString(string str){
+    cout << "CONFINED_BROWNIAN_PARTICLES::readConfigurationFromString is empty!" << endl;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector< CHARGED_PARTICLE > particleListIn){

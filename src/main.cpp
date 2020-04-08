@@ -7,26 +7,21 @@
 #include "command/average_stress.h"
 
 #include <ctime>
-#include <limits>
-#include "tools/argparse.h"
+//#include <limits>
 
 int main(int argc, const char *argv[]){
     srand(getpid()*time(0));
 
+    // parse command line inputs
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS args = parser.parseArgs();
+    args.print();
 
-    ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
-
-    SHEARED_SLITPORE_PARAMETERS sysParameters(args);
-//    sysParameters.setAsBiLayerWithShearRate(args.shearRate);
-    sysParameters.print();
-
-    SHEARED_SLITPORE_SYSTEM sys(sysParameters);
+    // initialize Slitpore System
+    SHEARED_SLITPORE_SYSTEM sys(args);
     sys.readEnsembleSystem(0);
-    sys.STRESS = args.printStress;
-    sys.ENERGY = args.printEnergy;
 
+    // create container for stresses
     AVERAGE_STRESS averageStress;
 
     cout << "#i" << "\t";

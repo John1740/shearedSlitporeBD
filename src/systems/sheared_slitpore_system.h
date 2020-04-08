@@ -7,13 +7,12 @@
 #include "../external/soft_wall_force.h"
 #include "../external/shear_force.h"
 
-#include "../parameters/sheared_slitpore_parameters.h"
-#include "../tools/argparse.h"
+#include "../argument_parser/argparse.h"
 
 #include "../command/generate_square_layers.h"
 #include "../defaults.h"
 
-class SHEARED_SLITPORE_SYSTEM: public  CONFINED_BROWNIAN_PARTICLES{
+class SHEARED_SLITPORE_SYSTEM: public CONFINED_BROWNIAN_PARTICLES{
 
 private:
 
@@ -22,28 +21,20 @@ protected:
     SOFT_WALL_FORCE swf;
     SHEAR_FORCE shearForce;
 
-//    string sysIdentifierString;
-
     double density = DENSITY;
-    double diameter = DIAMETER;
+    double dWall = D_WALL;
+
     int charge = CHARGE;
 
     vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
     vector<double> energy;
-
     vector<CARTESIAN_MATRIX> stressPerParticle;
-//     vector<double> absDistancePerParticle;
-//     vector<double> absForcePerParticle;
-//     vector<double> validCountsPerParticle;
 
-    virtual void setSoftWallInteraction(double softWallStrengthIn);
-    virtual void setDlvoSSInteraction(double ssInteractionStrengthIn);
     virtual double getInteractionLengthScale();
 
     virtual void reset();
-    virtual void setNumberOfParticles(int numberOfParticlesIn);
 
-    virtual void readFromString(string str);
+    virtual void readConfigurationFromString(string str);
 
     virtual CARTESIAN_COORDINATE getShearForce(int index);
 
@@ -61,32 +52,30 @@ public:
     bool STRESS = PRINT_STRESS;
     bool ENERGY = PRINT_ENERGY;
 
+    //constructors
     SHEARED_SLITPORE_SYSTEM();
-    SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin);
+    SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args);
 
-    virtual void setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin);
+    virtual void prepareSystem();
     virtual void readEnsembleSystem(int ensembleIndex);
     virtual void printSystemWithEnsembleIndex(int ensembleIndex);
-
-//    virtual string getIdentifierString();
 
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
 
-    virtual void setShearRate(double shearRateIn);
-    virtual double getShearRate();
-
-    virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
-    virtual CARTESIAN_MATRIX getMeanStress();
-
-    vector<double> getEnergyPerParticle();
-
     virtual string app_identifier(string str);
     virtual string app_incomplete_identifier(string str);
     virtual void convertPositionToBoxPosition();
 
+    //setter functions
+
+    //getter functions
+    virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
+    virtual CARTESIAN_MATRIX getMeanStress();
+
+    vector<double> getEnergyPerParticle();
 };
 
 #endif // SHEARED_SLITPORE_SYSTEM_H

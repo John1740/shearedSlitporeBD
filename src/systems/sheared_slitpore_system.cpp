@@ -1,56 +1,41 @@
 #include "sheared_slitpore_system.h"
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    dt = DELTA_T;
-    T = TEMPERATURE;
-}
+    configurationDir = "config/";
 
-SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(SHEARED_SLITPORE_PARAMETERS& sPin){
-    setSystemParameters(sPin);
+    prepareSystem();
     printInitilization();
 }
 
-void SHEARED_SLITPORE_SYSTEM::setSystemParameters(SHEARED_SLITPORE_PARAMETERS& sPin){
-    dt = sPin.dt;
-    T = sPin.temperature;
-    setShearRate(sPin.shearRate);
-
-    density = sPin.density;
-    simBox.setDwall(sPin.dWall);
-    setNumberOfParticles(sPin.numberOfParticles); //also sets volume, dimensions X and Y (Z is set by dWall)
-
-    charge = sPin.charge;
-    diameter = sPin.diameter;
-    setSoftWallInteraction(sPin.wallInteractionStrength);
-
-//    sysIdentifierString = sPin.sysIdentifierString;
-
+SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
     configurationDir = "config/";
-    read();
 
-    setDlvoSSInteraction(sPin.ssInteractionStrength);
+    density = args.density;
+    dWall = args.dWall;
+
+    STRESS = args.printStress;
+    ENERGY = args.printEnergy;
+
+    shearForce = SHEAR_FORCE(args.shearRate);
+    swf = SOFT_WALL_FORCE(args);
+    dlvo = DLVO_SOFTSPHERE_INTERACTION(args);
+
+    prepareSystem();
+    printInitilization();
+}
+
+//needs to be done after input variables have been changed
+void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
+    particle.resize(numberOfParticles);
+    simBox = SLIT_PORE_BOX(numberOfParticles / density, dWall);
+
+    //update rcDelta and then invoke all following setup calculations again
+    dlvo.setRcDelta(simBox.getDimensions().x);
+    dlvo.setInteractionParameters();    //needs to be done anew since rcDelta changed
+
+    readConfiguration(); //readConfiguration particle positions
 
     reset();
-}
-
-void SHEARED_SLITPORE_SYSTEM::setShearRate(double shearRateIn){
-    shearForce.setShearRate(shearRateIn);
-    shearForce.setDirection(CARTESIAN_COORDINATE(1.,0.,0.));
-}
-
-void SHEARED_SLITPORE_SYSTEM::setSoftWallInteraction(double softWallStrengthIn){
-    swf.setInteractionParameters(simBox.getDimensions().z, softWallStrengthIn);
-}
-
-void SHEARED_SLITPORE_SYSTEM::setDlvoSSInteraction(double ssInteractionStrengthIn){
-    dlvo.setRcDelta(simBox.getDimensions().x);
-    dlvo.ssInteractionStrength = ssInteractionStrengthIn;
-
-    vector<int> charges(1,charge);
-    vector<double> diameters(1,diameter);
-    vector<double> densities(1, density);
-
-    dlvo.setInteractionParameters(charges, diameters, densities);
 }
 
 double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
@@ -59,23 +44,18 @@ double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
 
 //reset forces, stresses and energy
 void SHEARED_SLITPORE_SYSTEM::reset(){
-    force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
+    force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
 
     if(STRESS){
-        stressPerParticle.assign(getNumberOfParticles(), CARTESIAN_MATRIX(0.));
+        stressPerParticle.assign(numberOfParticles, CARTESIAN_MATRIX(0.));
     }
 
     if(ENERGY){
-        energy.assign(getNumberOfParticles(), 0.);
+        energy.assign(numberOfParticles, 0.);
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::setNumberOfParticles(int numberOfParticlesIn){
-    particle.resize(numberOfParticlesIn);
-    simBox.setVolumeAndDWall(numberOfParticlesIn / density, simBox.getDimensions().z);
-}
-
-void SHEARED_SLITPORE_SYSTEM::readFromString(string str){
+void SHEARED_SLITPORE_SYSTEM::readConfigurationFromString(string str){
     ifstream f;
     f.open(str.c_str());
 
@@ -88,25 +68,23 @@ void SHEARED_SLITPORE_SYSTEM::readFromString(string str){
     while(f >> c1 >> c2 >> c3 >> c4 >> c5 >> c6){
         switch(read_toggle){
         case 0:
-            newParticle.position = CARTESIAN_COORDINATE(c4, c5, c3);
+            newParticle.position = CARTESIAN_COORDINATE(c4, c5, c6);
             break;
 
         case 1:
             newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
             break;
         }
-        newParticle.species = c6;
-
         particleIn.push_back(newParticle);
     }
 
     if(particleIn.size() <= 0){
-        setInitialConfigurationForLayersWithSides(getNumberOfParticles());
+        setInitialConfigurationForLayersWithSides(numberOfParticles);
     }
     else{
-        if(particleIn.size() != getNumberOfParticles()){
+        if(particleIn.size() != numberOfParticles){
             cout << "Read in configuration number of particles deviates from expected number: ";
-            cout << particleIn.size() << " != " << getNumberOfParticles() << endl;
+            cout << particleIn.size() << " != " << numberOfParticles << endl;
         }
         setParticleList(particleIn);
     }
@@ -152,7 +130,7 @@ string SHEARED_SLITPORE_SYSTEM::app_identifier(string str){
     stringstream output;
     output << str;
 
-    output << "_shear_" << shearForce.getShearRate();
+    output << "_shear_" << shearForce.shearRate;
     output << app_incomplete_identifier(str);
 
     return output.str();
@@ -165,9 +143,9 @@ string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str){
     output << "__Dwall_" << simBox.getDimensions().z;
     output << "_L_" << simBox.getDimensions().x;
     output << "_rho_" << density;
-    output << "_N_" << getNumberOfParticles();
+    output << "_N_" << numberOfParticles;
     output << "_Wforce_" << "-0";
-    output << "_Zp_" << charge;
+    output << "_Zp_" << dlvo.charge;
 
     return output.str();
 }
@@ -188,16 +166,13 @@ double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTI
     return swf.energyOnParticle(particle);
 }
 
-void SHEARED_SLITPORE_SYSTEM::setParticleList(vector< CHARGED_PARTICLE > particleListIn){
+void SHEARED_SLITPORE_SYSTEM::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
     particle = particleListIn; //copy particleList
-    for(int i = 0; i < particle.size(); ++i){ //add some more info to each particle
-        particle[i].diameter = diameter;
-        particle[i].charge = charge;
-        particle[i].species = 0;
+    for(int i = 0; i < numberOfParticles; ++i){ //add some more info to each particle
+        particle[i].diameter = swf.diameter;
+        particle[i].charge = dlvo.charge;
     }
 
-    simBox.setVolumeAndDWall(getNumberOfParticles() / density, simBox.getDimensions().z);
-    setDlvoSSInteraction(dlvo.ssInteractionStrength);
     setPositionInBox();
 
 }
@@ -269,23 +244,19 @@ CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress(){
 
 void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex){
     string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
-                         + "/shear_" + app_number("", shearForce.getShearRate())
+                         + "/shear_" + app_number("", shearForce.shearRate)
                          + "/configuration" + app_identifier("") + "_ens_" + app_number("", ensembleIndex) + ".txt";
     cout << inputString << endl;
-    readFromString(inputString);
+    readConfigurationFromString(inputString);
 }
 
 void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex){
-    string dir = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("") + "/shear_"+ app_number("", shearForce.getShearRate()) ;
+    string dir = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("") + "/shear_"+ app_number("", shearForce.shearRate) ;
     string cmd = "mkdir -p " + dir;
     system(cmd.c_str());
     string outputString = dir + "/configuration"+ app_identifier("") + "_ens_" + app_number("",ensembleIndex) + ".txt";
 
     printParticlesOfSystem(outputString);
-}
-
-double SHEARED_SLITPORE_SYSTEM::getShearRate(){
-    return shearForce.getShearRate();
 }
 
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){

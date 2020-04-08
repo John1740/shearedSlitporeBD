@@ -33,10 +33,8 @@ add_executable(shearedSlitporeBD
 
         src/tools/printer.cpp
 
-        src/parameters/sheared_slitpore_parameters.cpp
-
         src/helpers/analysis.cpp src/helpers/analysis.h
 
-        src/tools/argparse.cpp src/tools/argparse.h src/defaults.h)
+        src/argument_parser/argparse.cpp src/argument_parser/argparse.h src/defaults.h src/argument_parser/arguments.cpp src/argument_parser/arguments.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES})

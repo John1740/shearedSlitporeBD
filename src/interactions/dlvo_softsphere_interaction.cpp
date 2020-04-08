@@ -1,22 +1,23 @@
 #include "dlvo_softsphere_interaction.h"
 
 DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
-    ssInteractionStrength = 1.;
-    distance = 1.;
-    posDifference = CARTESIAN_COORDINATE();
+    calculateCutOffThreshold();
+    setInteractionParameters();
+}
 
-    rcDelta = 10. / 4000.;
-
-    cutOffRadius.clear();
-    shift1.clear();
-    shift2.clear();
-    shift3.clear();
-    interactionStrength.clear();
-    diameter.clear();
-    charge.clear();
-    rho.clear();
+DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS &args) {
+    ssInteractionStrength = args.ssInteractionStrength;
+    charge = args.charge;
+    diameter = args.diameter;
+    rho = args.density;
 
     calculateCutOffThreshold();
+    setInteractionParameters();
+}
+
+void DLVO_SOFTSPHERE_INTERACTION::setInteractionParameters(){
+    setKappa();
+    setParametersForAllChargeCompositions();
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThreshold(){
@@ -27,13 +28,12 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThreshold(){
 
 CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
     CARTESIAN_COORDINATE forceOnParticleFromParticle;
-    id = particle1.species + particle2.species;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     distance = posDifference.getAbs();
 
-    if(distance <= cutOffRadius[id]){
-        forceOnParticleFromParticle = (forceOnParticlePerDirection(distance, id) - shift1[id]) * posDifference / distance;   //shift1???
+    if(distance <= cutOffRadius){
+        forceOnParticleFromParticle = (forceOnParticlePerDirection(distance) - shift1) * posDifference / distance;
     }
     return forceOnParticleFromParticle;
 }
@@ -41,12 +41,11 @@ CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CH
 bool DLVO_SOFTSPHERE_INTERACTION::isInRangeSetDistanceAndId(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
     bool isInRange = false;
 
-    id = particle1.species + particle2.species;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     distance = posDifference.getAbs();
 
-    if(distance <= cutOffRadius[id]){
+    if(distance <= cutOffRadius){
         isInRange = true;
     }
 
@@ -54,66 +53,35 @@ bool DLVO_SOFTSPHERE_INTERACTION::isInRangeSetDistanceAndId(CHARGED_PARTICLE &pa
 }
 
 CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::fastForce(){
-    return posDifference * (forceOnParticlePerDirection(distance, id) - shift1[id]) / distance;
+    return posDifference * (forceOnParticlePerDirection(distance) - shift1) / distance;
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
-    id = particle1.species + particle2.species;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     distance = simBox.convertToBoxPosition(posDifference).getAbs();
 
-    if(distance <= cutOffRadius[id]){
-        return energyOnParticles(distance, id) + distance * shift1[id] - (shift2[id] + shift3[id]);
+    if(distance <= cutOffRadius){
+        return energyOnParticles(distance) + distance * shift1 - (shift2 + shift3);
     }
     else{
         return 0.;
     }
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::setInteractionParameters(std::vector<int> chargeIn, std::vector<double> diameterIn, std::vector<double> rhoIn){
-    if(chargeIn.size() > 2 || diameterIn.size() > 2 || rhoIn.size() > 2){
-        cout << "chargeIn.size(): " << chargeIn.size() << "\t" << "diameterIn.size(): " << diameterIn.size() << "\t";
-        cout << "rhoIn.size(): " << rhoIn.size() << endl;
-    }
-
-    charge = chargeIn;
-    diameter = diameterIn;
-    rho = rhoIn;
-
-    setKappa();
-    setParametersForAllChargeCompositions();
-}
-
 void DLVO_SOFTSPHERE_INTERACTION::setKappa(){
-    double chargeConcentration = 0.;
+    double chargeConcentration = charge * rho;
 
-    for(int i = 0; i < charge.size(); ++i){
-        chargeConcentration += charge[i] * rho[i];
-    }
-
+    //write down parameters somewhere!
     kappa = pow(0.07308561551392402 + 0.34524730769230782857 * chargeConcentration, 0.5);
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::setParametersForAllChargeCompositions(){
-    interactionStrength.clear();
-    cutOffRadius.clear();
-    diameterSpecies.clear();
-    shift1.clear();
-    shift2.clear();
-    shift3.clear();
-
-    for(int i = 0; i < charge.size(); ++i){
-        for(int j = i; j < charge.size(); ++j){
-            interactionStrength.push_back(getInteractionStrength(charge[i], diameter[i], charge[j], diameter[j]));
-            diameterSpecies.push_back(0.5 * (diameter[i] + diameter[j]));
-            int currentID = i + j;
-            cutOffRadius.push_back(getCutOffRadius(currentID));
-            //unclear names!
-            shift1.push_back(forceOnParticlePerDirection(cutOffRadius[currentID], currentID));
-            shift2.push_back(energyOnParticles(cutOffRadius[currentID], currentID));
-            shift3.push_back(shift1[currentID]*cutOffRadius[currentID]);
-        }
-    }
+    interactionStrength = getInteractionStrength(charge, diameter, charge, diameter);
+    cutOffRadius = getCutOffRadius();
+    //unclear names!
+    shift1 = forceOnParticlePerDirection(cutOffRadius);
+    shift2 = energyOnParticles(cutOffRadius);
+    shift3 = shift1 * cutOffRadius;
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::getInteractionStrength(int Z1, double diameter1, int Z2, double diameter2){
@@ -124,9 +92,9 @@ double DLVO_SOFTSPHERE_INTERACTION::getInteractionStrength(int Z1, double diamet
     return Wp1 * Wp2; //why squared? how is alpha defined?
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius(int index){
+double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius(){
     LENNARD_JONES_INTERACTION lji;
-    lji.diameter = diameterSpecies[index];
+    lji.diameter = diameter;
     energyCutOffThreshold = abs(lji.energyOnParticles(3.));
     forceCutOffThreshold = abs(lji.forceOnParticlePerDirection(3.) / 3.);
 
@@ -135,8 +103,8 @@ double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius(int index){
 
     for(int i = 0; i < 4000; ++i){
         currentRadius = i * rcDelta;
-        currentEnergy = energyOnParticles(currentRadius, index);
-        currentForce = forceOnParticlePerDirection(i * rcDelta, index) / (i * rcDelta);
+        currentEnergy = energyOnParticles(currentRadius);
+        currentForce = forceOnParticlePerDirection(i * rcDelta) / (i * rcDelta);
         if(abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold){
             cutOffRadius = i * rcDelta;
             break;
@@ -145,34 +113,34 @@ double DLVO_SOFTSPHERE_INTERACTION::getCutOffRadius(int index){
     return cutOffRadius;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles(double r, int index){
-    double yukawaEnergy = interactionStrength[index] * exp(-kappa * r) / r;
-    double softSphereEnergy = 4 * ssInteractionStrength * pow(diameterSpecies[index] / r, 12);
+double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles(double r){
+    double yukawaEnergy = interactionStrength * exp(-kappa * r) / r;
+    double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter / r, 12);
     double energyOnParticles = yukawaEnergy + softSphereEnergy;
     return energyOnParticles;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirection(double r, int index){
-    double yukawaForceAbs = interactionStrength[index] * exp(-kappa * r) * (1. / (r * r) + kappa / r);
-    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameterSpecies[index] / r, 13) / diameterSpecies[index];
+double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirection(double r){
+    double yukawaForceAbs = interactionStrength * exp(-kappa * r) * (1. / (r * r) + kappa / r);
+    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
     double forceOnParticlePerDirection = yukawaForceAbs + softSphereForceAbs;
     return forceOnParticlePerDirection;
 }
 
+//probably obsolete
 double DLVO_SOFTSPHERE_INTERACTION::getMaxCutOffRadius(){
     //NEEDED: check if cutoff radii have been calculated yet
     double maxRC = 0.;
 
-    for(int i = 0; i < cutOffRadius.size(); ++i){
-        if(cutOffRadius[i] > maxRC){
-            maxRC = cutOffRadius[i];
-        }
+    if(cutOffRadius > maxRC){
+        maxRC = cutOffRadius;
     }
-
     return maxRC;
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::setRcDelta(double length){
     rcDelta = length / 4000.;
 }
+
+
 

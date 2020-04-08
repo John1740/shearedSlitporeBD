@@ -1,4 +1,3 @@
-#include <iostream>
 #include "argparse.h"
 
 ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
@@ -31,6 +30,7 @@ void ARGUMENT_PARSER::addOptions() {
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
             ("dt", po::value<double>()->default_value(DELTA_T), "length of timestep")
             ("temperature,t", po::value<double>()->default_value(TEMPERATURE), "temperature")
+            ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("printStress", po::bool_switch()->default_value(PRINT_STRESS), "print out stresses")
             ("printEnergy", po::bool_switch()->default_value(PRINT_ENERGY), "print out energies")
             ;
@@ -48,6 +48,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
     args.dt = variablesMap["dt"].as<double>();
     args.temperature = variablesMap["temperature"].as<double>();
+    args.D0 = variablesMap["D0"].as<double>();
     args.printStress = variablesMap["printStress"].as<bool>();
     args.printEnergy = variablesMap["printEnergy"].as<bool>();
     return args;

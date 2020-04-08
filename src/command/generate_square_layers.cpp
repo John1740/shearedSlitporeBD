@@ -50,7 +50,6 @@ void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
                     dy * j + layerIndex * dy / 2, //displaced by dy/2 from lower layer
                     zMin + layerIndex * dz
                     );
-            newParticle.species = 0;
             particleList.push_back(newParticle);
         }
     }
@@ -65,13 +64,7 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
                     dyAdd * j + layerIndex * dyAdd / 2,
                     zMin + layerIndex * dz
                     );
-                if(SPECIES_TOOGLE){
-                    newParticle.species = 1;
-                }
-                else{
-                    newParticle.species = 0;
-                    particleList.push_back(newParticle);
-                }
+            particleList.push_back(newParticle);
         }
     }
 }

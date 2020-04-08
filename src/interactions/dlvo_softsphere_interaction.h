@@ -5,6 +5,7 @@
 #include "lennard_jones_interaction.h"
 #include "../struct/charged_particle.h"
 #include "../interfaces/box_geometry.h"
+#include "../argument_parser/arguments.h"
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 
@@ -12,24 +13,26 @@ class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PA
     void setKappa();
 
 public:
-    double distance;
+    double distance = 1.;
     CARTESIAN_COORDINATE posDifference;
-    int id;
 
     double energyCutOffThreshold;
     double forceCutOffThreshold;
 
-    double rcDelta;
+    double rcDelta = 1. / 4000.;
 
     double kappa;
-    vector<int> charge;
-    vector<double> diameter, rho;
-    vector<double> cutOffRadius, shift1, shift2, shift3, interactionStrength, diameterSpecies;
+    int charge = CHARGE;
+    double diameter = DIAMETER;
+    double rho = DENSITY;
+    double cutOffRadius, shift1, shift2, shift3, interactionStrength;
 
-    double ssInteractionStrength;
+    double ssInteractionStrength = SS_INTERACTION_STRENGTH;
 
     DLVO_SOFTSPHERE_INTERACTION();
-    void setInteractionParameters(vector<int> chargeIn,vector<double> diameterIN, vector<double> rhoIn);
+    DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS& args);
+
+    void setInteractionParameters();
     void calculateCutOffThreshold();
 
     CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
@@ -43,11 +46,11 @@ public:
 
 //   Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
 //   For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
-    double getCutOffRadius(int index);
+    double getCutOffRadius();
     double getMaxCutOffRadius();
 
-    double forceOnParticlePerDirection(double r, int index);
-    double energyOnParticles(double r, int index);
+    double forceOnParticlePerDirection(double r);
+    double energyOnParticles(double r);
 
     void setRcDelta(double length);
 };

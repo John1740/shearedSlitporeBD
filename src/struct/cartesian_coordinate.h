@@ -14,7 +14,9 @@ struct CARTESIAN_COORDINATE{
     CARTESIAN_COORDINATE(double xIN, double yIN, double zIN): x(xIN),y(yIN),z(zIN){}
     CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& cCoordIN): x(cCoordIN.x),y(cCoordIN.y),z(cCoordIN.z){}
 
-    double getAbs();
+    double getAbs() const;
+
+    CARTESIAN_COORDINATE& operator= (CARTESIAN_COORDINATE const& cCoordIN);
 
     CARTESIAN_COORDINATE& operator+= (CARTESIAN_COORDINATE const& cCoordIN);
     CARTESIAN_COORDINATE& operator+= (double const& doubleIN){

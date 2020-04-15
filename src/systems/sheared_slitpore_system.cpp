@@ -13,8 +13,8 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     density = args.density;
     dWall = args.dWall;
 
-    STRESS = args.printStress;
-    ENERGY = args.printEnergy;
+    printStress = args.printStress;
+    printEnergy = args.printEnergy;
 
     shearForce = SHEAR_FORCE(args.shearRate);
     swf = SOFT_WALL_FORCE(args);
@@ -29,9 +29,9 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     particle.resize(numberOfParticles);
     simBox = SLIT_PORE_BOX(numberOfParticles / density, dWall);
 
-    //update rcDelta and then invoke all following setup calculations again
-    dlvo.setRcDelta(simBox.getDimensions().x);
-    dlvo.setInteractionParameters();    //needs to be done anew since rcDelta changed
+    //update lengthRange and then invoke all following setup calculations again
+    dlvo.lengthRange = simBox.getDimensions().x;
+    dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
 
     readConfiguration(); //readConfiguration particle positions
 
@@ -39,18 +39,18 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
-    return dlvo.getMaxCutOffRadius();
+    return dlvo.cutOffRadius;
 }
 
 //reset forces, stresses and energy
 void SHEARED_SLITPORE_SYSTEM::reset(){
     force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
 
-    if(STRESS){
+    if(printStress){
         stressPerParticle.assign(numberOfParticles, CARTESIAN_MATRIX(0.));
     }
 
-    if(ENERGY){
+    if(printEnergy){
         energy.assign(numberOfParticles, 0.);
     }
 }
@@ -145,7 +145,7 @@ string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str){
     output << "_rho_" << density;
     output << "_N_" << numberOfParticles;
     output << "_Wforce_" << "-0";
-    output << "_Zp_" << dlvo.charge;
+    output << "_Zp_" << dlvo.charge1;
 
     return output.str();
 }
@@ -170,7 +170,7 @@ void SHEARED_SLITPORE_SYSTEM::setParticleList(vector<CHARGED_PARTICLE> particleL
     particle = particleListIn; //copy particleList
     for(int i = 0; i < numberOfParticles; ++i){ //add some more info to each particle
         particle[i].diameter = swf.diameter;
-        particle[i].charge = dlvo.charge;
+        particle[i].charge = dlvo.charge1;
     }
 
     setPositionInBox();
@@ -182,10 +182,10 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     force[i] += tmpForce;
     force[j] -= tmpForce;
 
-    if(STRESS){ //move somewhere else?
+    if(printStress){ //move somewhere else?
         addConfigurationalStress(tmpForce, i, j);
     }
-    if(ENERGY){
+    if(printEnergy){
         double tmpEnergy = energyFromParticleOnParticle(particle[i],particle[j]);
         energy[i] += tmpEnergy;
         energy[j] += tmpEnergy;
@@ -204,11 +204,11 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     CARTESIAN_COORDINATE tmpForce = forceOnParticleFromExternalFields(particle[i]);
     force[i] += tmpForce;
 
-    if(STRESS){
+    if(printStress){
         addExternalStress(tmpForce, i);
     }
 
-    if(ENERGY){
+    if(printEnergy){
         energy[i] += energyOfParticleFromExternalFields(particle[i]);
     }
 }

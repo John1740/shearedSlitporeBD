@@ -18,6 +18,7 @@ private:
     po::options_description description{"Options"};
     po::variables_map variablesMap;
     void addOptions();
+
 public:
     ARGUMENT_PARSER(int argc, const char* argv[]);
 

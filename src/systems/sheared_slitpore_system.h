@@ -13,7 +13,6 @@
 #include "../defaults.h"
 
 class SHEARED_SLITPORE_SYSTEM: public CONFINED_BROWNIAN_PARTICLES{
-
 private:
 
 protected:
@@ -23,8 +22,6 @@ protected:
 
     double density = DENSITY;
     double dWall = D_WALL;
-
-    int charge = CHARGE;
 
     vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
     vector<double> energy;
@@ -49,12 +46,11 @@ protected:
     virtual void addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i);
 
 public:
-    bool STRESS = PRINT_STRESS;
-    bool ENERGY = PRINT_ENERGY;
-
-    //constructors
     SHEARED_SLITPORE_SYSTEM();
     SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args);
+
+    bool printStress = PRINT_STRESS;
+    bool printEnergy = PRINT_ENERGY;
 
     virtual void prepareSystem();
     virtual void readEnsembleSystem(int ensembleIndex);

@@ -8,51 +8,48 @@
 #include "../argument_parser/arguments.h"
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
+private:
+    void calculateKappa();
+    void calculateInteractionStrength();
+    void calculateCutOffThresholds();
 
-    void setParametersForAllChargeCompositions();
-    void setKappa();
+    //Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
+    //For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
+    void calculateCutOffRadius();
 
 public:
-    double distance = 1.;
-    CARTESIAN_COORDINATE posDifference;
-
-    double energyCutOffThreshold;
-    double forceCutOffThreshold;
-
-    double rcDelta = 1. / 4000.;
-
-    double kappa;
-    int charge = CHARGE;
-    double diameter = DIAMETER;
-    double rho = DENSITY;
-    double cutOffRadius, shift1, shift2, shift3, interactionStrength;
-
-    double ssInteractionStrength = SS_INTERACTION_STRENGTH;
-
     DLVO_SOFTSPHERE_INTERACTION();
     DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS& args);
 
-    void setInteractionParameters();
-    void calculateCutOffThreshold();
+    double lengthRange = 10;    //needed for cutOff calculation, default questionable
+
+    int charge1 = CHARGE;
+    int charge2 = charge1;
+    double diameter1 = DIAMETER;
+    double diameter2 = diameter1;
+    double density = DENSITY;
+
+    double ssInteractionStrength = SS_INTERACTION_STRENGTH;
+
+    //might need to make these private and create getters/setters
+    double kappa;
+    double interactionStrength;
+    double energyCutOffThreshold;
+    double forceCutOffThreshold;
+    double cutOffRadius, shift1, shift2, shift3;
+
+    double distance;
+    CARTESIAN_COORDINATE posDifference;
+
+    void calculateInteractionParameters();
+
+    ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
     CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
     double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
-//FAST:
-    bool isInRangeSetDistanceAndId(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
-    CARTESIAN_COORDINATE fastForce();
-
-    double getInteractionStrength(int Z1, double diameter1, int Z2, double diameter2);
-
-//   Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
-//   For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
-    double getCutOffRadius();
-    double getMaxCutOffRadius();
-
     double forceOnParticlePerDirection(double r);
     double energyOnParticles(double r);
-
-    void setRcDelta(double length);
 };
 
 #endif // DLVO_INTERACTION_H

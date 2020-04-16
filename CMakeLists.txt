@@ -35,6 +35,11 @@ add_executable(shearedSlitporeBD
 
         src/helpers/analysis.cpp src/helpers/analysis.h
 
-        src/argument_parser/argparse.cpp src/argument_parser/argparse.h src/defaults.h src/argument_parser/arguments.cpp src/argument_parser/arguments.h)
+        src/argument_parser/argparse.cpp src/argument_parser/argparse.h
+        src/argument_parser/arguments.cpp src/argument_parser/arguments.h
+
+        src/defaults.h
+
+        src/tools/clock.cpp src/tools/clock.h src/helpers/my_vector.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES})

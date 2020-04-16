@@ -7,10 +7,13 @@
 #include "command/average_stress.h"
 
 #include <ctime>
-//#include <limits>
+#include "tools/clock.h"
 
 int main(int argc, const char *argv[]){
-    srand(getpid()*time(0));
+    CLOCK clock;
+    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
+
+    srand(getpid() * time(0));
 
     // parse command line inputs
     ARGUMENT_PARSER parser(argc, argv);
@@ -34,7 +37,7 @@ int main(int argc, const char *argv[]){
     cout << endl;
     const char* format_f = "% .5f\t";
 
-    for(int i = 0; i < 100000; ++i){
+    for(int i = 0; i < 10; ++i){ //100000
         sys.simulateForSteps(1);
         averageStress.doForSystem(sys);
         if(i%1==0){
@@ -52,6 +55,11 @@ int main(int argc, const char *argv[]){
             sys.printSystem("restart");    //rename printSystem -> writeToFile (or something more meaningful)
         }
     }
+
+    clock.addTimePoint();
+    cout << endl;
+    cout << "Task finished at " << clock.readTimePoint(-1) << endl;
+    printf("Task finished in %.3f seconds (%s)", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
 
     return 0;
 }

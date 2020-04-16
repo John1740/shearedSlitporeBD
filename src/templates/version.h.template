@@ -1,0 +1,13 @@
+//
+// Created by mhuels on 4/16/20.
+//
+
+#ifndef VERSION_H
+#define VERSION_H
+
+#define VERSION "@PROJECT_VERSION@"
+#define GIT_BRANCH "@GIT_BRANCH@"
+#define GIT_COMMIT_HASH "@GIT_COMMIT_HASH@"
+#define GIT_VERSION "@GIT_VERSION@"
+
+#endif //VERSION_H

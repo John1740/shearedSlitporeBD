@@ -8,17 +8,37 @@
 
 #include <ctime>
 #include "tools/clock.h"
+#include "version.h"
 
 int main(int argc, const char *argv[]){
     CLOCK clock;
-    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
-
-    srand(getpid() * time(0));
 
     // parse command line inputs
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS args = parser.parseArgs();
+
+    if(args.printVersion){
+        cout << VERSION << endl;
+        exit(0);
+    }
+
+    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
+
+    //print version details
+    cout << "Version: " << VERSION << endl;
+    cout << "Git branch: " << GIT_BRANCH << endl;
+    cout << "Git commit: " << GIT_COMMIT_HASH << endl;
+    cout << "Git version: " << GIT_VERSION << endl << endl;
+
+    srand(getpid() * time(0));
+
+    //print parsed arguments
     args.print();
+
+    if(args.dryRun){
+        cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
+        exit(0);
+    }
 
     // initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);

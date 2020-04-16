@@ -1,9 +1,42 @@
-cmake_minimum_required(VERSION 2.6) 
-project (shearedSlitporeBD)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -lboost_program_options")
+cmake_minimum_required(VERSION 3.16.5) #2.6, 3.15
+project (shearedSlitporeBD VERSION 0.1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lboost_program_options")   # -std=c++0x
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+# Get the current working branch
+execute_process(
+        COMMAND git rev-parse --abbrev-ref HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Get the latest abbreviated commit hash of the working branch
+execute_process(
+        COMMAND git rev-parse HEAD #git rev-parse HEAD/git log -1 --format=%h
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT_HASH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Get the git version
+execute_process(
+        COMMAND git --version
+        COMMAND sed "s/git version //"  #remove the text infront of it
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Copy version.h template file and replace GIT_BRANCH and GIT_COMMIT_HASH with their values
+configure_file(
+        ${CMAKE_SOURCE_DIR}/src/templates/version.h.template
+        ${CMAKE_BINARY_DIR}/generated/version.h
+)
 
 add_executable(shearedSlitporeBD
  
@@ -40,6 +73,9 @@ add_executable(shearedSlitporeBD
 
         src/defaults.h
 
-        src/tools/clock.cpp src/tools/clock.h src/helpers/my_vector.h)
+        src/tools/clock.cpp src/tools/clock.h src/helpers/my_vector.h src/templates/version.h.template)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES})
+
+# Enables finding the version number in the code (#include "version.h")
+include_directories(${CMAKE_BINARY_DIR}/generated)

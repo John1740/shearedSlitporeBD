@@ -33,6 +33,8 @@ void ARGUMENT_PARSER::addOptions() {
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("printStress", po::bool_switch()->default_value(PRINT_STRESS), "print out stresses")
             ("printEnergy", po::bool_switch()->default_value(PRINT_ENERGY), "print out energies")
+            ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
+            ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ;
 }
 
@@ -51,5 +53,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.D0 = variablesMap["D0"].as<double>();
     args.printStress = variablesMap["printStress"].as<bool>();
     args.printEnergy = variablesMap["printEnergy"].as<bool>();
+    args.printVersion = variablesMap["version"].as<bool>();
+    args.dryRun = variablesMap["dry"].as<bool>();
     return args;
 }

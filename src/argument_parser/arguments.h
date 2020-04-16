@@ -31,6 +31,9 @@ public:
     bool printStress = PRINT_STRESS;
     bool printEnergy = PRINT_ENERGY;
 
+    bool dryRun = false;
+    bool printVersion = false;
+
     void print();
 
     //void readFromFile(string filename);

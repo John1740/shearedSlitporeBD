@@ -12,6 +12,8 @@ using namespace std;
 
 class ARGUMENTS{
 public:
+    string configurationIn = CONFIGURATION_IN;
+
     double shearRate = SHEAR_RATE;
 
     double dWall = D_WALL;

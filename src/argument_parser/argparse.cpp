@@ -20,11 +20,12 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
 void ARGUMENT_PARSER::addOptions() {
     description.add_options()
             ("help,h", "Help screen")
+            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions)")
             ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "shear Rate")
             ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (z-direction)")
             ("density,d", po::value<double>()->default_value(DENSITY), "density")
             ("numberOfParticles,n", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
-            ("charge,c", po::value<int>()->default_value(CHARGE), "total charge")
+            ("charge,Z", po::value<int>()->default_value(CHARGE), "total charge")
             ("diameter", po::value<double>()->default_value(DIAMETER), "diameter of particles")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "strength of softsphere interaction")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
@@ -40,6 +41,7 @@ void ARGUMENT_PARSER::addOptions() {
 
 ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     ARGUMENTS args;
+    args.configurationIn = variablesMap["configuration"].as<string>();
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.dWall = variablesMap["dWall"].as<double>();
     args.density = variablesMap["density"].as<double>();

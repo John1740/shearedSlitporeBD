@@ -7,6 +7,8 @@
 void ARGUMENTS::print() {
     cout << "Arguments:" << endl;
 
+    cout << "Configuration file: " << configurationIn << endl;
+
     cout << "shearRate = " << shearRate << endl;
 
     cout << "dWall = " << dWall << "\t\t" << "density = " << density << "\t\t" << "numberOfParticles = " << numberOfParticles << endl;

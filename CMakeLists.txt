@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16.5) #2.6, 3.15
 project (shearedSlitporeBD VERSION 0.1)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lboost_program_options")   # -std=c++0x
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lboost_program_options")
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
@@ -73,9 +73,14 @@ add_executable(shearedSlitporeBD
 
         src/defaults.h
 
-        src/tools/clock.cpp src/tools/clock.h src/helpers/my_vector.h src/templates/version.h.template)
+        src/tools/clock.cpp src/tools/clock.h
 
-TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES})
+        src/helpers/my_vector.h
+
+        src/templates/version.h.template
+)
+
+TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

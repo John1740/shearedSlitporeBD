@@ -44,7 +44,6 @@ protected:
 //     Internal File-Handling
     virtual void readConfigurationFromString(string str);
     virtual void printParticlesOfSystem(string str);
-    virtual void printInitilization();
 
 //     Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
@@ -84,10 +83,10 @@ public:
     virtual SLIT_PORE_BOX getSimulationBox();
 
 //     File-Handling
-    virtual void readConfiguration();
-    virtual void readConfiguration(string str);
-    virtual void printSystem();
-    virtual void printSystem(string str);
+    virtual void readConfiguration(string configurationIn);
+//    virtual void readConfiguration(string str);
+    virtual void printConfigurationToFile(string configurationOut);
+//    virtual void printSystem(string str);
 
     virtual string app_identifier(string str);
 

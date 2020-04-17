@@ -20,6 +20,7 @@ protected:
     SOFT_WALL_FORCE swf;
     SHEAR_FORCE shearForce;
 
+    string configurationIn = CONFIGURATION_IN;
     double density = DENSITY;
     double dWall = D_WALL;
 
@@ -53,7 +54,7 @@ public:
     bool printEnergy = PRINT_ENERGY;
 
     virtual void prepareSystem();
-    virtual void readEnsembleSystem(int ensembleIndex);
+//    virtual void readEnsembleSystem(int ensembleIndex);
     virtual void printSystemWithEnsembleIndex(int ensembleIndex);
 
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);

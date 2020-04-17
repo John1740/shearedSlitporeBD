@@ -18,7 +18,8 @@ string home = pchome ? pchome: "";
 string app_home(string str){
     stringstream output;
 
-    output << home << "/data/shearedSlitporeBD/output/";
+//    output << home << "/data/shearedSlitporeBD/output/";
+    output << "";
 
     output << str;
     return output.str();

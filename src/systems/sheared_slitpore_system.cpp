@@ -4,11 +4,11 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
     configurationDir = "config/";
 
     prepareSystem();
-    printInitilization();
 }
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
-    configurationDir = "config/";
+    configurationDir = "config/"; //deprecated
+    configurationIn = args.configurationIn;
 
     density = args.density;
     dWall = args.dWall;
@@ -21,7 +21,6 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     dlvo = DLVO_SOFTSPHERE_INTERACTION(args);
 
     prepareSystem();
-    printInitilization();
 }
 
 //needs to be done after input variables have been changed
@@ -33,7 +32,7 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
 
-    readConfiguration(); //readConfiguration particle positions
+    readConfiguration(configurationIn); //reads (or creates) particle positions
 
     reset();
 }
@@ -79,7 +78,10 @@ void SHEARED_SLITPORE_SYSTEM::readConfigurationFromString(string str){
     }
 
     if(particleIn.size() <= 0){
+        cout << configurationIn << " is either empty or does not exist!" << endl;
         setInitialConfigurationForLayersWithSides(numberOfParticles);
+        printConfigurationToFile(configurationIn);
+        cout << "Set initial configuration and printed to: " << configurationIn << endl;
     }
     else{
         if(particleIn.size() != numberOfParticles){
@@ -242,13 +244,13 @@ CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress(){
     return -1.*meanStress/simBox.getVolume();
 }
 
-void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex){
-    string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
-                         + "/shear_" + app_number("", shearForce.shearRate)
-                         + "/configuration" + app_identifier("") + "_ens_" + app_number("", ensembleIndex) + ".txt";
-    cout << inputString << endl;
-    readConfigurationFromString(inputString);
-}
+//void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex){
+//    string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
+//                         + "/shear_" + app_number("", shearForce.shearRate)
+//                         + "/configuration" + app_identifier("") + "_ens_" + app_number("", ensembleIndex) + ".txt";
+//    cout << inputString << endl;
+//    readConfigurationFromString(inputString);
+//}
 
 void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex){
     string dir = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("") + "/shear_"+ app_number("", shearForce.shearRate) ;

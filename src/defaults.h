@@ -5,6 +5,10 @@
 #ifndef SHEAREDSLITPOREBD_DEFAULTS_H
 #define SHEAREDSLITPOREBD_DEFAULTS_H
 
+#include <string>
+
+const std::string CONFIGURATION_IN = "configuration.in";
+
 const double SHEAR_RATE = 0.0;
 
 const double D_WALL = 2.2;

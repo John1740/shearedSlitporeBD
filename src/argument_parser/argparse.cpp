@@ -32,8 +32,10 @@ void ARGUMENT_PARSER::addOptions() {
             ("dt", po::value<double>()->default_value(DELTA_T), "length of timestep")
             ("temperature,t", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
-            ("printStress", po::bool_switch()->default_value(PRINT_STRESS), "print out stresses")
-            ("printEnergy", po::bool_switch()->default_value(PRINT_ENERGY), "print out energies")
+            ("timesteps,N", po::value<int>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
+            ("printStress", po::value<int>()->default_value(PRINT_STRESS), "print out stresses every x-th timestep; 0 = no print-outs")
+            ("printEnergy", po::value<int>()->default_value(PRINT_ENERGY), "print out energies every x-th timestep; 0 = no print-outs")
+            ("snapshot", po::value<int>()->default_value(PRINT_ENERGY), "Save a configuration snapshot every x-th timestep; 0 = no snapshots")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ;
@@ -53,8 +55,10 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.dt = variablesMap["dt"].as<double>();
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
-    args.printStress = variablesMap["printStress"].as<bool>();
-    args.printEnergy = variablesMap["printEnergy"].as<bool>();
+    args.totalNumberOfTimesteps = variablesMap["timesteps"].as<int>();
+    args.printStress = variablesMap["printStress"].as<int>();
+    args.printEnergy = variablesMap["printEnergy"].as<int>();
+    args.snapshotInterval = variablesMap["snapshot"].as<int>();
     args.printVersion = variablesMap["version"].as<bool>();
     args.dryRun = variablesMap["dry"].as<bool>();
     return args;

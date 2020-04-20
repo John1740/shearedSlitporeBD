@@ -30,11 +30,15 @@ public:
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
-    bool printStress = PRINT_STRESS;
-    bool printEnergy = PRINT_ENERGY;
+    int totalNumberOfTimesteps = TOTAL_NUMBER_OF_TIMESTEPS;
+
+    int printStress = PRINT_STRESS;
+    int printEnergy = PRINT_ENERGY;
 
     bool dryRun = false;
     bool printVersion = false;
+
+    int snapshotInterval = SNAPSHOT_INTERVAL;
 
     void print();
 

@@ -7,7 +7,7 @@
 
 #include <time.h>
 #include <iomanip>
-#include "../helpers/my_vector.h"
+#include "my_vector.h"
 #include <string>
 #include <sstream>
 #include <cmath>

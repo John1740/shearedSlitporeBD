@@ -32,8 +32,6 @@ protected:
 
     virtual void reset();
 
-    virtual void readConfigurationFromString(string str);
-
     virtual CARTESIAN_COORDINATE getShearForce(int index);
 
     virtual void equationOfMotion();
@@ -50,12 +48,10 @@ public:
     SHEARED_SLITPORE_SYSTEM();
     SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args);
 
-    bool printStress = PRINT_STRESS;
-    bool printEnergy = PRINT_ENERGY;
+    int printStress = PRINT_STRESS;
+    int printEnergy = PRINT_ENERGY;
 
     virtual void prepareSystem();
-//    virtual void readEnsembleSystem(int ensembleIndex);
-    virtual void printSystemWithEnsembleIndex(int ensembleIndex);
 
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
@@ -73,6 +69,9 @@ public:
     virtual CARTESIAN_MATRIX getMeanStress();
 
     vector<double> getEnergyPerParticle();
+
+    //file handling
+    virtual void readConfigurationFromFile(string filename);
 };
 
 #endif // SHEARED_SLITPORE_SYSTEM_H

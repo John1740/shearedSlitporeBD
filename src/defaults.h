@@ -25,7 +25,10 @@ const double DELTA_T = 1e-5;
 const double TEMPERATURE = 1.0;
 const double DIFFUSION_CONSTANT = 1.0;
 
-const bool PRINT_STRESS = false;
-const bool PRINT_ENERGY = false;
+const int TOTAL_NUMBER_OF_TIMESTEPS = 10;
+
+const int PRINT_STRESS = 0;
+const int PRINT_ENERGY = 0;
+const int SNAPSHOT_INTERVAL = 0;
 
 #endif //SHEAREDSLITPOREBD_DEFAULTS_H

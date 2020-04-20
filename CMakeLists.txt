@@ -66,7 +66,7 @@ add_executable(shearedSlitporeBD
 
         src/tools/printer.cpp
 
-        src/helpers/analysis.cpp src/helpers/analysis.h
+        src/tools/analysis.cpp src/tools/analysis.h
 
         src/argument_parser/argparse.cpp src/argument_parser/argparse.h
         src/argument_parser/arguments.cpp src/argument_parser/arguments.h
@@ -75,10 +75,10 @@ add_executable(shearedSlitporeBD
 
         src/tools/clock.cpp src/tools/clock.h
 
-        src/helpers/my_vector.h
+        src/tools/my_vector.h
 
         src/templates/version.h.template
-)
+        src/tools/format.cpp src/tools/format.h src/output/stress.cpp src/output/stress.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 

@@ -38,12 +38,6 @@ void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
 void CONFINED_BROWNIAN_PARTICLES::calculateForce(){
     reset();
     calculateForces.doForSystem(*this);
-//     for(int i = 0; i < particle.size(); ++i){
-//         for(int j = i+1; j < particle.size(); ++j){
-//             calculateInteractionForce ( i, j );
-//         }
-//         calculateExternalForce ( i );
-//     }
 }
 
 //reset forces
@@ -118,23 +112,13 @@ double CONFINED_BROWNIAN_PARTICLES::getTimeStepSize(){
     return dt;
 }
 
-//void CONFINED_BROWNIAN_PARTICLES::printSystem(string str){
-//    string outputString =  "configuration_" + str + app_identifier("");
-//    printParticlesOfSystem(outputString);
-//}
-
-void CONFINED_BROWNIAN_PARTICLES::printConfigurationToFile(string configurationOut){
-//    string outputString =  "configuration" + app_identifier("");
-    printParticlesOfSystem(configurationOut);
-}
-
-void CONFINED_BROWNIAN_PARTICLES::printParticlesOfSystem(string configurationOut){
+void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool verbose){
 //    PRINTER printer(configurationOut);
 //    printer.removeFile();
 //    for(int i = 0; i < particle.size(); ++i){
 //        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].boxPosition.z);
 //    }
-    fstream f(configurationOut.c_str(), ofstream::out);
+    fstream f(filename.c_str(), ofstream::out);
     char buffer[20];
     const char* fmt = "% 2.5f\t";
     for(int i = 0; i < numberOfParticles; ++i){
@@ -152,20 +136,13 @@ void CONFINED_BROWNIAN_PARTICLES::printParticlesOfSystem(string configurationOut
         f << buffer << endl;
     }
     f.close();
+    if(verbose){
+        cout << "Wrote configuration to " << filename << endl;
+    }
 }
 
-//void CONFINED_BROWNIAN_PARTICLES::readConfiguration(string str){
-//    string inputString = configurationDir + "configuration_" + str + app_identifier("") + ".txt";
-//    readConfigurationFromString(inputString);
-//}
-
-void CONFINED_BROWNIAN_PARTICLES::readConfiguration(string configurationIn){
-//    string inputString = configurationDir + "configuration" + app_identifier("") + ".txt";
-    readConfigurationFromString(configurationIn);
-}
-
-void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromString(string str){
-    cout << "CONFINED_BROWNIAN_PARTICLES::readConfigurationFromString is empty!" << endl;
+void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string str){
+    cout << "CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile is empty!" << endl;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector< CHARGED_PARTICLE > particleListIn){

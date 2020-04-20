@@ -41,10 +41,6 @@ protected:
 
     string configurationDir = "brownian";
 
-//     Internal File-Handling
-    virtual void readConfigurationFromString(string str);
-    virtual void printParticlesOfSystem(string str);
-
 //     Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
 
@@ -83,10 +79,8 @@ public:
     virtual SLIT_PORE_BOX getSimulationBox();
 
 //     File-Handling
-    virtual void readConfiguration(string configurationIn);
-//    virtual void readConfiguration(string str);
-    virtual void printConfigurationToFile(string configurationOut);
-//    virtual void printSystem(string str);
+    virtual void readConfigurationFromFile(string str);
+    virtual void writeConfigurationToFile(string filename, bool verbose=true);
 
     virtual string app_identifier(string str);
 

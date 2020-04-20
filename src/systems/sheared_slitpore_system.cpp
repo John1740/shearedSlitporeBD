@@ -32,7 +32,7 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
 
-    readConfiguration(configurationIn); //reads (or creates) particle positions
+    readConfigurationFromFile(configurationIn); //reads (or creates) particle positions
 
     reset();
 }
@@ -45,18 +45,18 @@ double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
 void SHEARED_SLITPORE_SYSTEM::reset(){
     force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
 
-    if(printStress){
+    if(printStress > 0){
         stressPerParticle.assign(numberOfParticles, CARTESIAN_MATRIX(0.));
     }
 
-    if(printEnergy){
+    if(printEnergy > 0){
         energy.assign(numberOfParticles, 0.);
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::readConfigurationFromString(string str){
+void SHEARED_SLITPORE_SYSTEM::readConfigurationFromFile(string filename){
     ifstream f;
-    f.open(str.c_str());
+    f.open(filename.c_str());
 
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();
@@ -80,10 +80,11 @@ void SHEARED_SLITPORE_SYSTEM::readConfigurationFromString(string str){
     if(particleIn.size() <= 0){
         cout << configurationIn << " is either empty or does not exist!" << endl;
         setInitialConfigurationForLayersWithSides(numberOfParticles);
-        printConfigurationToFile(configurationIn);
+        writeConfigurationToFile(configurationIn);
         cout << "Set initial configuration and printed to: " << configurationIn << endl;
     }
     else{
+        cout << "Read " << filename << " successfully!" << endl;
         if(particleIn.size() != numberOfParticles){
             cout << "Read in configuration number of particles deviates from expected number: ";
             cout << particleIn.size() << " != " << numberOfParticles << endl;
@@ -174,9 +175,7 @@ void SHEARED_SLITPORE_SYSTEM::setParticleList(vector<CHARGED_PARTICLE> particleL
         particle[i].diameter = swf.diameter;
         particle[i].charge = dlvo.charge1;
     }
-
     setPositionInBox();
-
 }
 
 void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
@@ -184,10 +183,10 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     force[i] += tmpForce;
     force[j] -= tmpForce;
 
-    if(printStress){ //move somewhere else?
+    if(printStress > 0){ //move somewhere else?
         addConfigurationalStress(tmpForce, i, j);
     }
-    if(printEnergy){
+    if(printEnergy > 0){
         double tmpEnergy = energyFromParticleOnParticle(particle[i],particle[j]);
         energy[i] += tmpEnergy;
         energy[j] += tmpEnergy;
@@ -206,11 +205,11 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     CARTESIAN_COORDINATE tmpForce = forceOnParticleFromExternalFields(particle[i]);
     force[i] += tmpForce;
 
-    if(printStress){
+    if(printStress > 0){
         addExternalStress(tmpForce, i);
     }
 
-    if(printEnergy){
+    if(printEnergy > 0){
         energy[i] += energyOfParticleFromExternalFields(particle[i]);
     }
 }
@@ -244,32 +243,11 @@ CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress(){
     return -1.*meanStress/simBox.getVolume();
 }
 
-//void SHEARED_SLITPORE_SYSTEM::readEnsembleSystem(int ensembleIndex){
-//    string inputString = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("")
-//                         + "/shear_" + app_number("", shearForce.shearRate)
-//                         + "/configuration" + app_identifier("") + "_ens_" + app_number("", ensembleIndex) + ".txt";
-//    cout << inputString << endl;
-//    readConfigurationFromString(inputString);
-//}
-
-void SHEARED_SLITPORE_SYSTEM::printSystemWithEnsembleIndex(int ensembleIndex){
-    string dir = app_home("") + "config_ensemble/ensemble_" + app_incomplete_identifier("") + "/shear_"+ app_number("", shearForce.shearRate) ;
-    string cmd = "mkdir -p " + dir;
-    system(cmd.c_str());
-    string outputString = dir + "/configuration"+ app_identifier("") + "_ens_" + app_number("",ensembleIndex) + ".txt";
-
-    printParticlesOfSystem(outputString);
-}
-
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
     for(int i = 0; i < particle.size(); ++i){
         particle[i].position = particle[i].boxPosition;
     }
 }
-
-//string SHEARED_SLITPORE_SYSTEM::getIdentifierString(){
-//    return sysIdentifierString;
-//}
 
 vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;

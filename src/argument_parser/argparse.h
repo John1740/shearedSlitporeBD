@@ -8,7 +8,6 @@
 #include <iostream>
 #include "boost/program_options.hpp"
 #include "arguments.h"
-//#include "../defaults.h"
 
 namespace po = boost::program_options;
 using namespace std;

@@ -54,13 +54,13 @@ string CLOCK::readDuration(int i, int j, const char* format) {
         throw invalid_argument("readDuration format expects 1-4 percent signs ('%')!");
     }
     else if(numberOfPercentSigns == 4){
-        sprintf(buffer, format, days, hours % 24, minutes % 60, remainder(seconds, 60));
+        sprintf(buffer, format, days, hours % 24, minutes % 60, fmod(seconds, 60.0));
     }
     else if(numberOfPercentSigns == 3){
-        sprintf(buffer, format, hours, minutes % 60, remainder(seconds, 60));
+        sprintf(buffer, format, hours, minutes % 60, fmod(seconds, 60));
     }
     else if(numberOfPercentSigns == 2){
-        sprintf(buffer, format, minutes, remainder(seconds, 60));
+        sprintf(buffer, format, minutes, fmod(seconds, 60));
     }
     else if(numberOfPercentSigns == 1){
         sprintf(buffer, format, seconds);

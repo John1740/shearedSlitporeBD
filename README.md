@@ -20,8 +20,10 @@
 ###### You need to install from source
 * download source code from https://www.boost.org/users/download/
 * extract tar.gz (`tar -xvzf <archive>`)
-* `./bootstrap.sh` (might want to define options `--libdir=<DIR>` and `--includedir=<DIR>`) for more control
-* `./b2` to install
+* `./bootstrap.sh --prefix=$HOME/local/boost` 
+    * you might want to define options `--libdir=<DIR>` and `--includedir=<DIR>`) for more control
+* `./b2`
+* `./b2 install` (needs `sudo`?)
 
 ### Compilation
 

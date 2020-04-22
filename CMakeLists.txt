@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 # Get the current working branch
 execute_process(
         COMMAND git rev-parse --abbrev-ref HEAD
@@ -78,7 +79,8 @@ add_executable(shearedSlitporeBD
         src/tools/my_vector.h
 
         src/templates/version.h.template
-        src/tools/format.cpp src/tools/format.h src/output/stress.cpp src/output/stress.h)
+        src/tools/format.cpp src/tools/format.h
+        src/output/stress.cpp src/output/stress.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 

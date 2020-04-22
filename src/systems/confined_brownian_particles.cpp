@@ -1,14 +1,13 @@
 #include "confined_brownian_particles.h"
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
-    configurationDir = "brownian";
-    D0=1.;
-    T=0.;
 }
 
-void CONFINED_BROWNIAN_PARTICLES::printInitilization(){
-    cout << "Initialized System: ";
-    cout << configurationDir + "configuration" + app_identifier("") + ".txt" << endl << endl;
+CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) {
+    dt = args.dt;
+    T = args.temperature;
+    D0 = args.D0;
+    numberOfParticles = args.numberOfParticles;
 }
 
 string CONFINED_BROWNIAN_PARTICLES::app_identifier(string str){
@@ -39,21 +38,11 @@ void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
 void CONFINED_BROWNIAN_PARTICLES::calculateForce(){
     reset();
     calculateForces.doForSystem(*this);
-//     for(int i = 0; i < particle.size(); ++i){
-//         for(int j = i+1; j < particle.size(); ++j){
-//             calculateInteractionForce ( i, j );
-//         }
-//         calculateExternalForce ( i );
-//     }
 }
 
 //reset forces
 void CONFINED_BROWNIAN_PARTICLES::reset(){
-    force.assign(getNumberOfParticles(), CARTESIAN_COORDINATE(0.));
-}
-
-int CONFINED_BROWNIAN_PARTICLES::getNumberOfParticles(){
-    return particle.size();
+    force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
 }
 
 CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
@@ -123,38 +112,37 @@ double CONFINED_BROWNIAN_PARTICLES::getTimeStepSize(){
     return dt;
 }
 
-void CONFINED_BROWNIAN_PARTICLES::printSystem(string str){
-    string outputString =  "configuration_" + str + app_identifier("");
-    printParticlesOfSystem(outputString);
-}
-
-void CONFINED_BROWNIAN_PARTICLES::printSystem(){
-    string outputString =  "configuration" + app_identifier("");
-    printParticlesOfSystem(outputString);
-}
-
-void CONFINED_BROWNIAN_PARTICLES::printParticlesOfSystem(string str){
-    PRINTER printer(configurationDir, str);
-    printer.removeFile();
-    for(int i = 0; i < particle.size(); ++i){
-        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].species);
+void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool verbose){
+//    PRINTER printer(configurationOut);
+//    printer.removeFile();
+//    for(int i = 0; i < particle.size(); ++i){
+//        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].boxPosition.z);
+//    }
+    fstream f(filename.c_str(), ofstream::out);
+    char buffer[20];
+    const char* fmt = "% 2.5f\t";
+    for(int i = 0; i < numberOfParticles; ++i){
+        sprintf(buffer, fmt, particle[i].position.x);
+        f << buffer;
+        sprintf(buffer, fmt, particle[i].position.y);
+        f << buffer;
+        sprintf(buffer, fmt, particle[i].position.z);
+        f << buffer;
+        sprintf(buffer, fmt, particle[i].boxPosition.x);
+        f << buffer;
+        sprintf(buffer, fmt, particle[i].boxPosition.y);
+        f << buffer;
+        sprintf(buffer, fmt, particle[i].boxPosition.z);
+        f << buffer << endl;
+    }
+    f.close();
+    if(verbose){
+        cout << "Wrote configuration to " << filename << endl;
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::read(string str){
-    string inputString = configurationDir + "configuration_" + str + app_identifier("") + ".txt";
-    readFromString(inputString);
-    printInitilization();
-}
-
-void CONFINED_BROWNIAN_PARTICLES::read(){
-    string inputString = configurationDir + "configuration" + app_identifier("") + ".txt";
-    readFromString(inputString);
-//    printInitilization(); //unnecessary (done already)
-}
-
-void CONFINED_BROWNIAN_PARTICLES::readFromString(string str){
-    cout << "CONFINED_BROWNIAN_PARTICLES::readFromString is empty!" << endl;
+void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string str){
+    cout << "CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile is empty!" << endl;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector< CHARGED_PARTICLE > particleListIn){

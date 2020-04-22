@@ -1,15 +1,12 @@
 #include "soft_wall_force.h"
 
 SOFT_WALL_FORCE::SOFT_WALL_FORCE(){
-    wallInteractionStrength =  1.;
-    zPosition = 0.;
-    diameter = 1.;
-    dWall = 1.;
 }
 
-void SOFT_WALL_FORCE::setInteractionParameters(double dWallIN, double wallInteractionStrengthIN){
-    dWall = dWallIN;
-    wallInteractionStrength = wallInteractionStrengthIN;
+SOFT_WALL_FORCE::SOFT_WALL_FORCE(const ARGUMENTS &args) {
+    wallInteractionStrength = args.wallInteractionStrength;
+    diameter = args.diameter;
+    dWall = args.dWall;
 }
 
 double SOFT_WALL_FORCE::energyOnParticle(PARTICLE &particle){

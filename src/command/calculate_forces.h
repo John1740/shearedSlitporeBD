@@ -4,7 +4,7 @@
 #include "../interfaces/system_interface.h"
 
 class CALCULATE_FORCES{
-
+private:
     int numberOfBoxes;
     int gridSize;
     int boxIndex;

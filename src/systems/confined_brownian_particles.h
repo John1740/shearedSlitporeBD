@@ -16,6 +16,9 @@
 
 #include "../tools/printer.h"
 
+#include "../defaults.h"
+#include "../argument_parser/arguments.h"
+
 class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class CALCULATE_FORCES;
@@ -29,15 +32,14 @@ protected:
     vector<CHARGED_PARTICLE> particle;
     vector<CARTESIAN_COORDINATE> force;
     SLIT_PORE_BOX simBox;
-    double dt;
-    double D0,T;
 
-    string configurationDir;
+    int numberOfParticles = NUMBER_OF_PARTICLES;
 
-//     Internal File-Handling
-    virtual void readFromString(string str);
-    virtual void printParticlesOfSystem(string str);
-    virtual void printInitilization();
+    double dt = DELTA_T;
+    double T = TEMPERATURE;
+    double D0 = DIFFUSION_CONSTANT;
+
+    string configurationDir = "brownian";
 
 //     Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
@@ -56,6 +58,8 @@ protected:
 
 public:
     CONFINED_BROWNIAN_PARTICLES();
+    CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS& args);
+
     virtual void simulateForSteps(int maxSteps);
 
 //     Two-Body and External Forces
@@ -68,7 +72,6 @@ public:
     virtual void setTimeStepSize(double timeStepSizeIn);
 
 //     Get-Functions
-    virtual int getNumberOfParticles();
     virtual double getTimeStepSize();
     virtual double getInteractionLengthScale();
     virtual vector<CARTESIAN_COORDINATE> getPositionList();
@@ -76,10 +79,8 @@ public:
     virtual SLIT_PORE_BOX getSimulationBox();
 
 //     File-Handling
-    virtual void read();
-    virtual void read(string str);
-    virtual void printSystem();
-    virtual void printSystem(string str);
+    virtual void readConfigurationFromFile(string str);
+    virtual void writeConfigurationToFile(string filename, bool verbose=true);
 
     virtual string app_identifier(string str);
 

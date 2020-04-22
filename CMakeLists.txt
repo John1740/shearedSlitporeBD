@@ -1,35 +1,86 @@
-cmake_minimum_required(VERSION 2.6) 
-project (shearedSlitporeBD)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x") 
+cmake_minimum_required(VERSION 3.16.5) #2.6, 3.15
+project (shearedSlitporeBD VERSION 0.1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lboost_program_options")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+# Get the current working branch
+execute_process(
+        COMMAND git rev-parse --abbrev-ref HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Get the latest abbreviated commit hash of the working branch
+execute_process(
+        COMMAND git rev-parse HEAD #git rev-parse HEAD/git log -1 --format=%h
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT_HASH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Get the git version
+execute_process(
+        COMMAND git --version
+        COMMAND sed "s/git version //"  #remove the text infront of it
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Copy version.h template file and replace GIT_BRANCH and GIT_COMMIT_HASH with their values
+configure_file(
+        ${CMAKE_SOURCE_DIR}/src/templates/version.h.template
+        ${CMAKE_BINARY_DIR}/generated/version.h
+)
+
 add_executable(shearedSlitporeBD
  
-src/boxmueller.cpp  
-src/main.cpp  
-src/mersenne.cpp 
-src/global.cpp
+        src/boxmueller.cpp
+        src/main.cpp
+        src/mersenne.cpp
+        src/global.cpp
 
-src/interactions/dlvo_softsphere_interaction.cpp
-src/interactions/lennard_jones_interaction.cpp
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
 
-src/external/shear_force.cpp
-src/external/soft_wall_force.cpp
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
 
-src/command/average_stress.cpp
-src/command/calculate_forces.cpp
-src/command/generate_square_layers.cpp 
+        src/command/average_stress.cpp
+        src/command/calculate_forces.cpp
+        src/command/generate_square_layers.cpp
 
-src/struct/charged_particle.cpp
-src/struct/particle.cpp
-src/struct/slit_pore_box.cpp
-src/struct/cartesian_coordinate.cpp 
-src/struct/cartesian_matrix.cpp 
+        src/struct/charged_particle.cpp
+        src/struct/particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/cartesian_coordinate.cpp
+        src/struct/cartesian_matrix.cpp
 
-src/systems/sheared_slitpore_system.cpp
-src/systems/confined_brownian_particles.cpp
- 
-src/tools/printer.cpp 
-src/tools/parse_arguments.cpp
+        src/systems/sheared_slitpore_system.cpp
+        src/systems/confined_brownian_particles.cpp
 
-src/parameters/sheared_slitpore_parameters.cpp
+        src/tools/printer.cpp
 
-        src/helpers/analysis.cpp src/helpers/analysis.h)
+        src/tools/analysis.cpp src/tools/analysis.h
+
+        src/argument_parser/argparse.cpp src/argument_parser/argparse.h
+        src/argument_parser/arguments.cpp src/argument_parser/arguments.h
+
+        src/defaults.h
+
+        src/tools/clock.cpp src/tools/clock.h
+
+        src/tools/my_vector.h
+
+        src/templates/version.h.template
+        src/tools/format.cpp src/tools/format.h src/output/stress.cpp src/output/stress.h)
+
+TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
+
+# Enables finding the version number in the code (#include "version.h")
+include_directories(${CMAKE_BINARY_DIR}/generated)

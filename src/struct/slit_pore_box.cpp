@@ -1,26 +1,25 @@
 #include "slit_pore_box.h"
 
 SLIT_PORE_BOX::SLIT_PORE_BOX(){
-    setLengthAndDWall(1., 1.);
-    setVolume();
+    setLengthAndDWall(1., D_WALL);
 }
 
 SLIT_PORE_BOX::SLIT_PORE_BOX(CARTESIAN_COORDINATE dimensionsIn){
     setDimensions(dimensionsIn);
 }
 
-void SLIT_PORE_BOX::setDimensions(CARTESIAN_COORDINATE dimensionsIn){
-    dimensions = dimensionsIn;
-    setVolume();
-}
-
-SLIT_PORE_BOX::SLIT_PORE_BOX(double lengthIN, double dWallIN){
-    setLengthAndDWall(lengthIN, dWallIN);
-    setVolume();
+SLIT_PORE_BOX::SLIT_PORE_BOX(double volume, double dWallIN){
+    setVolumeAndDWall(volume, dWallIN);
 }
 
 void SLIT_PORE_BOX::setDwall(double dWallIn){
     dimensions.z = dWallIn;
+    setVolume();
+}
+
+void SLIT_PORE_BOX::setDimensions(CARTESIAN_COORDINATE dimensionsIn){
+    dimensions = dimensionsIn;
+    setVolume();
 }
 
 void SLIT_PORE_BOX::setLengthAndDWall(double lengthIN, double dWallIN){
@@ -32,7 +31,7 @@ void SLIT_PORE_BOX::setLengthAndDWall(double lengthIN, double dWallIN){
 
 void SLIT_PORE_BOX::setVolumeAndDWall(double volumeIN, double dWallIN){
     volume = volumeIN;
-    setDwall(dWallIN);
+    dimensions.z = dWallIN;
     dimensions.x = sqrt(volume / dimensions.z); //A = V/Z, X=Y=sqrt(A)
     dimensions.y = dimensions.x;
 }

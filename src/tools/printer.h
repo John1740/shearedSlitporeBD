@@ -1,48 +1,55 @@
 #ifndef PRINTER_H
 #define PRINTER_H
-// #include "../global.h"
 
-#include<stdarg.h>
+#include <stdarg.h>
 #include <fstream>
 #include <string>
+//#include <filesystem>
 using namespace std;
-#include "../global.h"
 
 class PRINTER{
-    string outputFile, filePath,directoryPath;
+    string directoryPath, fileStem, fileExtension;
+    string absolutePath, relativePath;
     ofstream file;
 
-    string fileExtension;
-
-    void getFilePath();
     void openFile();
-
-public:
-    PRINTER();
-    PRINTER (string outputFileIn);
-    PRINTER (string directoryPathIn, string outputFileIn);
-    ~PRINTER();
-
-    void setFileExtension(string fileExtensionIn);
-
-    void setDirectoryPathAndOutputFile (string directoryPathIn, string outputFileIn);
     void removeFile();
     void closeFile();
 
+    void getWorkingDirectory();
+
+public:
+    PRINTER();
+    PRINTER(string relativePathIn);
+//    PRINTER(string directoryPathIn, string outputFileIn);
+    ~PRINTER();
+
+    // setters
+//    void setOutputFile(string outputFileIn);
+//    void setDirectoryPath(string directoryPathIn);
+//    void setFileExtension(string fileExtensionIn);
+//    void setFilePath(string filePathIn);
+
+    // getters
+//    string getOutputFile() const;
+//    string getDirectoryPath() const;
+//    string getFileExtension() const;
+//    string getAbsolutePath() const;
+
     bool fileIsEmpty();
 
-    void setDescription (
-        string column0 = "",
-        string column1 = "",
-        string column2 = "",
-        string column3 = "",
-        string column4 = "",
-        string column5 = "",
-        string column6 = "",
-        string column7 = "",
-        string column8 = "",
-        string column9 = ""
-    );
+//    void setDescription (
+//        string column0 = "",
+//        string column1 = "",
+//        string column2 = "",
+//        string column3 = "",
+//        string column4 = "",
+//        string column5 = "",
+//        string column6 = "",
+//        string column7 = "",
+//        string column8 = "",
+//        string column9 = ""
+//    );
 
     template<typename T>
     void printLine (T t){
@@ -54,7 +61,6 @@ public:
         file << t << "\t";
         printLine (args...);
     }
-
 };
 
 #endif // PRINTER_H

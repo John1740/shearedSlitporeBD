@@ -1,65 +1,79 @@
-
-
 #include "global.h"
 #include "tools/printer.h"
-#include "tools/parse_arguments.h"
 
 #include "systems/sheared_slitpore_system.h"
 #include "command/average_stress.h"
 
 #include <ctime>
-#include <limits>
+#include "tools/clock.h"
+#include "version.h"
+#include <experimental/filesystem>
+#include "tools/format.h"
+#include "output/stress.h"
+namespace fs = experimental::filesystem;
 
+int main(int argc, const char *argv[]){
+    CLOCK clock;
+    srand(getpid() * time(0));
+    ARGUMENT_PARSER parser(argc, argv);
+    ARGUMENTS args = parser.parseArgs();
 
-int main(int argc, char *argv[]){
-    srand(getpid()*time(0));
+    if(args.printVersion){
+        cout << PROJECT_VERSION << endl;
+        exit(0);
+    }
 
-    PARSE_ARGUMENTS parseArguments;
-    arguments = parseArguments.getArgumentList(argc, argv);
-    parseArguments.checkForInvalidArguments(arguments);
-    parseArguments.printArgumentList(arguments);
+    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
-    ///////////////////////// SLIT-PORE SYSTEM ////////////////////////////////////   
+    //print version details
+    cout << surroundWithSeparator("Version Details") << endl;
+    cout << "Version: " << PROJECT_VERSION << endl;
+    cout << "Git branch: " << GIT_BRANCH << endl;
+    cout << "Git commit: " << GIT_COMMIT_HASH << endl;
+    cout << "Git version: " << GIT_VERSION << endl << endl;
 
-    SHEARED_SLITPORE_PARAMETERS sysParameters;
-    sysParameters.setAsBiLayerWithShearRate(0);
-    sysParameters.print();
-
-    SHEARED_SLITPORE_SYSTEM sys(sysParameters);
-    sys.readEnsembleSystem(0);
-    sys.STRESS=true;
-    sys.setShearRate(200);
-
-    AVERAGE_STRESS averageStress;
-
-    cout << "#i" << "\t";
-    cout << "xx" << "\t";
-    cout << "xy" << "\t";
-    cout << "xz" << "\t";
-    cout << "yy" << "\t";
-    cout << "yz" << "\t";
-    cout << "zz" << "\t";
+    //print parsed arguments
+    cout << surroundWithSeparator("Parsed arguments") << endl;
+    args.print();
     cout << endl;
-    const char* format_f = "% .5f\t";
 
-    for(int i = 0; i < 100000; ++i){
+    cout << surroundWithSeparator("System Initialization") << endl;
+
+    // initialize Slitpore System
+    SHEARED_SLITPORE_SYSTEM sys(args);
+//    sys.readEnsembleSystem(0);
+
+    if(args.dryRun){
+        cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
+        exit(0);
+    }
+
+    cout << endl << surroundWithSeparator("Simulation start") << endl;
+    
+    STRESS stress;  //change something here, such that stresses.out does not get written when not wished for
+    if(args.printStress > 0){
+        stress.printHeader();
+    }
+
+    //column description
+    for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
         sys.simulateForSteps(1);
-        averageStress.doForSystem(sys);
-        if(i%1==0){
-            printf("%6d\t", i);
-            printf(format_f, averageStress.getStress().xx);
-            printf(format_f, averageStress.getStress().xy);
-            printf(format_f, averageStress.getStress().xz);
-            printf(format_f, averageStress.getStress().yy);
-            printf(format_f, averageStress.getStress().yz);
-            printf(format_f, averageStress.getStress().zz);
-            cout << endl;
+        if(args.printStress > 0 && i % args.printStress == 0){
+            stress.printLine(sys, i);
         }
-        if(i%100==0){
+        if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
             //save particle positions to file
-            sys.printSystem("restart");    //rename printSystem -> writeToFile (or something more meaningful)
+            fs::create_directory("snapshots");  //implement this within printer class
+            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(i) + ".out");
         }
     }
+    sys.writeConfigurationToFile("configuration.out");
+    
+    cout << endl << surroundWithSeparator("Simulation end") << endl;
+    
+    clock.addTimePoint();
+    cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
+    printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
 
     return 0;
 }

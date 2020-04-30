@@ -44,11 +44,12 @@ void STRESS::printHeader(){
 
 void STRESS::printLine(SHEARED_SLITPORE_SYSTEM& sys, int timeStep){
     fprintf(pFile, "%6d\t", timeStep);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().xx);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().xy);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().xz);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().yy);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().yz);
-    fprintf(pFile, format_l.c_str(), sys.getMeanStress().zz);
+    meanStress = sys.getMeanStress();
+    fprintf(pFile, format_l.c_str(), meanStress.xx);
+    fprintf(pFile, format_l.c_str(), meanStress.xy);
+    fprintf(pFile, format_l.c_str(), meanStress.xz);
+    fprintf(pFile, format_l.c_str(), meanStress.yy);
+    fprintf(pFile, format_l.c_str(), meanStress.yz);
+    fprintf(pFile, format_l.c_str(), meanStress.zz);
     fprintf(pFile, "\n");
 }

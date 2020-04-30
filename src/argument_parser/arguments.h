@@ -32,6 +32,7 @@ public:
 
     int totalNumberOfTimesteps = TOTAL_NUMBER_OF_TIMESTEPS;
 
+    int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
     int printEnergy = PRINT_ENERGY;
 

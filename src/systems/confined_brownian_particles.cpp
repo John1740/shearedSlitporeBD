@@ -26,6 +26,7 @@ void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
 void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     calculateForce();
     CARTESIAN_COORDINATE randomDisplacement;
+    previousParticle = particle;
 
     for(int i = 0; i < particle.size(); ++i){
         randomDisplacement = getRandomDisplacement();
@@ -57,8 +58,12 @@ SLIT_PORE_BOX* CONFINED_BROWNIAN_PARTICLES::simulationBox(){
     return &simBox;
 }
 
-vector< CHARGED_PARTICLE > CONFINED_BROWNIAN_PARTICLES::getParticleList(){
+vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getParticleList(){
     return particle;
+}
+
+vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getPreviousParticleList(){
+    return previousParticle;
 }
 
 vector< CARTESIAN_COORDINATE > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
@@ -157,4 +162,60 @@ void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn){
     cout << "Set dt = " << dt << " to " << timeStepSizeIn << endl;
     dt = timeStepSizeIn;
 }
+
+//Calculate the velocities of the previous time step.
+//v(t-dt) = (r(t) - r(t-dt))/dt
+vector<CARTESIAN_COORDINATE> CONFINED_BROWNIAN_PARTICLES::getVelocities(){
+    vector<CARTESIAN_COORDINATE> velocities;
+    for(int i = 0; i < numberOfParticles; i++){
+        CARTESIAN_COORDINATE positionDifference = particle[i].boxPosition - previousParticle[i].boxPosition;
+        positionDifference = simBox.convertToBoxPosition(positionDifference);
+        velocities.push_back(positionDifference / dt);
+    }
+    return velocities;
+}
+
+CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
+    vector<CARTESIAN_COORDINATE> velocities = getVelocities();
+    CARTESIAN_COORDINATE meanVelocity;
+    for(int i = 0; i < numberOfParticles; i++){
+        meanVelocity += velocities[i];
+    }
+    meanVelocity /= numberOfParticles;
+    return meanVelocity;
+}
+
+//Returns velocity average of each layer. Length of returned vector corresponds to number of layers.
+vector<CARTESIAN_COORDINATE> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
+    int numberOfLayers = round(simBox.getDimensions().z);
+    double zMin = - 0.2 * simBox.getDimensions().z;
+    double dz = - 2 * zMin / (numberOfLayers - 1);   //dz is width of each layer
+    vector<double> layerCenter;
+    for(int i = 0; i < numberOfLayers; i++){
+        layerCenter.push_back((zMin + i * dz));
+    }
+    
+    vector<CARTESIAN_COORDINATE> velocities = getVelocities();
+    vector<CARTESIAN_COORDINATE> meanLayerVelocities(numberOfLayers);
+    vector<int> counter(numberOfLayers);
+    for(int i = 0; i < numberOfParticles; i++){
+        double zCurrent = previousParticle[i].boxPosition.z;
+        for(int j = 0; j < numberOfLayers; j++){
+            if(zCurrent >= layerCenter[j] - dz / 2 && zCurrent < layerCenter[j] + dz / 2){
+                meanLayerVelocities[j] += velocities[i];
+                counter[j]++;
+                break;
+            }
+        }
+        //not optimal
+        if(zCurrent < layerCenter[0] - dz / 2 || zCurrent >= layerCenter[numberOfLayers - 1] + dz / 2){
+            printf("Particle %d can't be assigned to any layer (z=%.2f).\n", i, zCurrent);
+        }
+    }
+    for(int j = 0; j < numberOfLayers; j++){
+        meanLayerVelocities[j] /= counter[j];
+    }
+    return meanLayerVelocities;
+}
+
 

@@ -5,8 +5,6 @@ GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(){
     numberOfRows = 23;
     numberOfAdditionalRows = 0;
 
-    SPECIES_TOOGLE = false;
-
 }
 
 void GENERATE_SQUARE_LAYERS::setNumberOfLayersRowsAdditionalRows(int numberOfLayersIn, int numberOfRowsIn, int numberOfAdditionalRowsIn){
@@ -35,7 +33,7 @@ void GENERATE_SQUARE_LAYERS::setLatticePeriodicity(){
     dx = simBox.getDimensions().x / numberOfRows;
 
     dy = simBox.getDimensions().y / numberOfRows;
-    dz = (0.4 * simBox.getDimensions().z) / (numberOfLayers - 1); //?
+    dz = - 2 * zMin / (numberOfLayers - 1);
 
     dxAdd = simBox.getDimensions().x / (numberOfRows + numberOfAdditionalRows);
     dyAdd = dxAdd;

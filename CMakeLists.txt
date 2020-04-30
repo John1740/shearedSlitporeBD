@@ -80,7 +80,7 @@ add_executable(shearedSlitporeBD
 
         src/templates/version.h.template
         src/tools/format.cpp src/tools/format.h
-        src/output/stress.cpp src/output/stress.h)
+        src/output/stress.cpp src/output/stress.h src/output/velocity.cpp src/output/velocity.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 

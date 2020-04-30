@@ -19,6 +19,9 @@ void ARGUMENTS::print() {
     if(snapshotInterval > 0){
         cout << "snapshotInterval = " << snapshotInterval << endl;
     }
+    if(printVelocity > 0){
+        cout << "printVelocity = " << printVelocity << endl;
+    }
     if(printStress > 0){
         cout << "printStress = " << printStress << endl;
     }

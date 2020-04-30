@@ -111,6 +111,7 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
 
     CARTESIAN_COORDINATE randomDisplacement;
     CARTESIAN_COORDINATE shearForce;
+    previousParticle = particle;
 
     for(int i = 0; i < particle.size(); ++i){
         randomDisplacement = getRandomDisplacement();

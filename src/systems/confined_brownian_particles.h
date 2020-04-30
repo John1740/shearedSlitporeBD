@@ -29,7 +29,7 @@ private:
 protected:
     CALCULATE_FORCES calculateForces;
 
-    vector<CHARGED_PARTICLE> particle;
+    vector<CHARGED_PARTICLE> particle, previousParticle;
     vector<CARTESIAN_COORDINATE> force;
     SLIT_PORE_BOX simBox;
 
@@ -76,7 +76,11 @@ public:
     virtual double getInteractionLengthScale();
     virtual vector<CARTESIAN_COORDINATE> getPositionList();
     virtual vector<CHARGED_PARTICLE> getParticleList();
+    virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
+    vector<CARTESIAN_COORDINATE> getVelocities();
+    CARTESIAN_COORDINATE getMeanVelocity();
+    vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
 
 //     File-Handling
     virtual void readConfigurationFromFile(string str);

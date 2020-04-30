@@ -12,6 +12,7 @@ using namespace std;
 
 class STRESS{
 private:
+    CARTESIAN_MATRIX meanStress;    //ensemble average/mean
     string filename = "stresses.out";
     string format_l = "% 4.5f\t";   //line format
     string format_h = "%8s\t";  //header format

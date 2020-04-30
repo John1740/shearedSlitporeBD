@@ -10,6 +10,7 @@
 #include <experimental/filesystem>
 #include "tools/format.h"
 #include "output/stress.h"
+#include "output/velocity.h"
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
@@ -50,6 +51,7 @@ int main(int argc, const char *argv[]){
 
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
+    VELOCITY velocity;
     STRESS stress;  //change something here, such that stresses.out does not get written when not wished for
     if(args.printStress > 0){
         stress.printHeader();
@@ -57,9 +59,13 @@ int main(int argc, const char *argv[]){
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
+        printf("Progress: %d (%.1f%%)\n", i, 100 * i / float(args.totalNumberOfTimesteps));
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine(sys, i);
+        }
+        if(args.printVelocity > 0 && i % args.printVelocity == 0 && i>0){
+            velocity.printLine(sys, i-1);
         }
         if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
             //save particle positions to file

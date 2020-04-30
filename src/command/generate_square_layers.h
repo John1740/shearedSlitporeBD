@@ -4,9 +4,8 @@
 #include "../interfaces/command.h"
 #include "../systems/confined_brownian_particles.h"
 
+//center of layers (in z-direction) is 0
 class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
-    bool SPECIES_TOOGLE;
-
     vector<CHARGED_PARTICLE> particleList;
 
     int numberOfLayers;
@@ -14,7 +13,7 @@ class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
     int numberOfAdditionalRows;
 
     SLIT_PORE_BOX simBox;
-    double dx,dy,dz,dxAdd,dyAdd;
+    double dx, dy, dz, dxAdd, dyAdd;
     double zMin;
 
     void setLatticePeriodicity();

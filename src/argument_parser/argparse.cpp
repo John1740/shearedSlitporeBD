@@ -33,6 +33,7 @@ void ARGUMENT_PARSER::addOptions() {
             ("temperature,t", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("timesteps,N", po::value<int>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
+            ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
             ("printVelocity", po::value<int>()->default_value(PRINT_VELOCITY), "print out velocities every x-th timestep; 0 = no print-outs")
             ("printStress", po::value<int>()->default_value(PRINT_STRESS), "print out stresses every x-th timestep; 0 = no print-outs")
             ("printEnergy", po::value<int>()->default_value(PRINT_ENERGY), "print out energies every x-th timestep; 0 = no print-outs")
@@ -57,6 +58,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
     args.totalNumberOfTimesteps = variablesMap["timesteps"].as<int>();
+    args.seed = variablesMap["seed"].as<unsigned int>();
     args.printVelocity = variablesMap["printVelocity"].as<int>();
     args.printStress = variablesMap["printStress"].as<int>();
     args.printEnergy = variablesMap["printEnergy"].as<int>();

@@ -15,7 +15,7 @@ namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
     CLOCK clock;
-    srand(getpid() * time(0));
+    
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS args = parser.parseArgs();
 
@@ -32,9 +32,15 @@ int main(int argc, const char *argv[]){
     cout << "Git branch: " << GIT_BRANCH << endl;
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
     cout << "Git version: " << GIT_VERSION << endl << endl;
-
+    
+    //generate or read seed
+    if(args.seed == 0){
+        args.seed = getpid() * time(0);
+    }
+//    srand(args.seed);
+    
     //print parsed arguments
-    cout << surroundWithSeparator("Parsed arguments") << endl;
+    cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
     args.print();
     cout << endl;
 

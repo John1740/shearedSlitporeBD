@@ -12,6 +12,8 @@ using namespace std;
 
 class ARGUMENTS{
 public:
+    unsigned int seed = 0;
+    
     string configurationIn = CONFIGURATION_IN;
 
     double shearRate = SHEAR_RATE;

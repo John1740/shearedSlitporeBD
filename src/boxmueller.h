@@ -4,12 +4,15 @@
  *  Created on: Jul 10, 2012
  *  Author: Tarlan Vezirov
  */
-#include <time.h>
-#include <stdlib.h>
-#include <cmath>
-#include <iostream>
 #ifndef  boxmueller_h
 #define  boxmueller_h
-double  boxmueller(double, double);
+
+#include <cmath>
+#include "randomc.h"
+extern CRandomMersenne random_event;
+
+double boxmueller(double mu, double sigma);
+void initSeed (unsigned int seed);
+
 #endif
 

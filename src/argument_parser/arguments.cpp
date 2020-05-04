@@ -5,6 +5,13 @@
 #include "arguments.h"
 
 void ARGUMENTS::print() {
+    if(seed == 0){
+        cout << "RNG seed: not set yet" << endl << endl;
+    }
+    else{
+        cout << "RNG seed: " << seed << endl << endl;
+    }
+    
     cout << "Configuration file: " << configurationIn << endl << endl;
 
     cout << "shearRate = " << shearRate << endl;

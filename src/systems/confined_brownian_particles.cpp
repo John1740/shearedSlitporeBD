@@ -8,6 +8,7 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) 
     T = args.temperature;
     D0 = args.D0;
     numberOfParticles = args.numberOfParticles;
+    initSeed(args.seed);
 }
 
 string CONFINED_BROWNIAN_PARTICLES::app_identifier(string str){

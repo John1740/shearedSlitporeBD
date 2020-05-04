@@ -64,3 +64,7 @@ CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition(CARTESIAN_COORDINATE &p
     return boxPosition;
 }
 
+CARTESIAN_COORDINATE SLIT_PORE_BOX::getOrigin(){
+    return origin;
+}
+

@@ -15,9 +15,13 @@
 #include "../command/calculate_forces.h"
 
 #include "../tools/printer.h"
+#include "experimental/filesystem"
 
 #include "../defaults.h"
 #include "../argument_parser/arguments.h"
+#include "../struct/configuration.h"
+
+namespace fs = experimental::filesystem;
 
 class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
@@ -28,18 +32,24 @@ private:
 
 protected:
     CALCULATE_FORCES calculateForces;
-
+    
+//    CONFIGURATION cfg;
+    
     vector<CHARGED_PARTICLE> particle, previousParticle;
     vector<CARTESIAN_COORDINATE> force;
     SLIT_PORE_BOX simBox;
+    
+    string configurationIn = CONFIGURATION_IN;
 
     int numberOfParticles = NUMBER_OF_PARTICLES;
+    
+    double density = DENSITY;
+    double dWall = D_WALL;
 
+    long timestep = 0;
     double dt = DELTA_T;
     double T = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
-
-    string configurationDir = "brownian";
 
 //     Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
@@ -70,6 +80,7 @@ public:
 
 //     Set-Functions
     virtual void setTimeStepSize(double timeStepSizeIn);
+    virtual void setInitialConfigurationForLayersWithSides();
 
 //     Get-Functions
     virtual double getTimeStepSize();
@@ -83,11 +94,8 @@ public:
     vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
 
 //     File-Handling
-    virtual void readConfigurationFromFile(string str);
+    virtual void readConfigurationFromFile(string filename, bool createIfMissing=false);
     virtual void writeConfigurationToFile(string filename, bool verbose=true);
-
-    virtual string app_identifier(string str);
-
 };
 
 #endif // BROWNIAN_PARTICLES_H

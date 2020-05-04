@@ -7,6 +7,7 @@
 struct SLIT_PORE_BOX: public BOX_GEOMETRY{
 private:
     CARTESIAN_COORDINATE dimensions;
+    CARTESIAN_COORDINATE origin;
     double volume;
     void setVolume();
 
@@ -25,6 +26,7 @@ public:
     //getter functions
     double getVolume();
     CARTESIAN_COORDINATE getDimensions();
+    CARTESIAN_COORDINATE getOrigin();
 
     CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN);
 };

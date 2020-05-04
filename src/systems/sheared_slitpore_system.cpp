@@ -1,18 +1,10 @@
 #include "sheared_slitpore_system.h"
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    configurationDir = "config/";
-
     prepareSystem();
 }
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
-    configurationDir = "config/"; //deprecated
-    configurationIn = args.configurationIn;
-
-    density = args.density;
-    dWall = args.dWall;
-
     printStress = args.printStress;
     printEnergy = args.printEnergy;
 
@@ -25,15 +17,9 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
 
 //needs to be done after input variables have been changed
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
-    particle.resize(numberOfParticles);
-    simBox = SLIT_PORE_BOX(numberOfParticles / density, dWall);
-
     //update lengthRange and then invoke all following setup calculations again
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
-
-    readConfigurationFromFile(configurationIn); //reads (or creates) particle positions
-
     reset();
 }
 
@@ -52,57 +38,6 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
     if(printEnergy > 0){
         energy.assign(numberOfParticles, 0.);
     }
-}
-
-void SHEARED_SLITPORE_SYSTEM::readConfigurationFromFile(string filename){
-    ifstream f;
-    f.open(filename.c_str());
-
-    vector<CHARGED_PARTICLE> particleIn;
-    particleIn.clear();
-
-    double c1, c2, c3, c4, c5, c6;
-    CHARGED_PARTICLE newParticle;
-
-    while(f >> c1 >> c2 >> c3 >> c4 >> c5 >> c6){
-        switch(read_toggle){
-        case 0:
-            newParticle.position = CARTESIAN_COORDINATE(c4, c5, c6);
-            break;
-
-        case 1:
-            newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
-            break;
-        }
-        particleIn.push_back(newParticle);
-    }
-
-    if(particleIn.size() <= 0){
-        cout << configurationIn << " is either empty or does not exist!" << endl;
-        setInitialConfigurationForLayersWithSides(numberOfParticles);
-        writeConfigurationToFile(configurationIn);
-        cout << "Set initial configuration and printed to: " << configurationIn << endl;
-    }
-    else{
-        cout << "Read " << filename << " successfully!" << endl;
-        if(particleIn.size() != numberOfParticles){
-            cout << "Read in configuration number of particles deviates from expected number: ";
-            cout << particleIn.size() << " != " << numberOfParticles << endl;
-        }
-        setParticleList(particleIn);
-    }
-
-}
-
-void SHEARED_SLITPORE_SYSTEM::setInitialConfigurationForLayersWithSides(int numberOfParticlesIn){
-    int numberOfLayers = round(simBox.getDimensions().z);
-    int numberOfSides = sqrt(numberOfParticlesIn / numberOfLayers);
-
-    cout << "Set particle positions to " << numberOfLayers << " quadratic layers with " << numberOfSides << " sides!" << endl;
-
-    GENERATE_SQUARE_LAYERS initialConfiguration;
-    initialConfiguration.setNumberOfLayersRowsAdditionalRows(numberOfLayers, numberOfSides, 0);
-    initialConfiguration.doForSystem(*this);
 }
 
 void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
@@ -124,34 +59,11 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
         }
         particle[i].setBoxPosition(simBox);
     }
+    timestep++;
 }
 
 CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
     return shearForce.forceOnParticle(particle[index]);
-}
-
-string SHEARED_SLITPORE_SYSTEM::app_identifier(string str){
-    stringstream output;
-    output << str;
-
-    output << "_shear_" << shearForce.shearRate;
-    output << app_incomplete_identifier(str);
-
-    return output.str();
-}
-
-string SHEARED_SLITPORE_SYSTEM::app_incomplete_identifier(string str){
-    stringstream output;
-    output << str;
-
-    output << "__Dwall_" << simBox.getDimensions().z;
-    output << "_L_" << simBox.getDimensions().x;
-    output << "_rho_" << density;
-    output << "_N_" << numberOfParticles;
-    output << "_Wforce_" << "-0";
-    output << "_Zp_" << dlvo.charge1;
-
-    return output.str();
 }
 
 CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){

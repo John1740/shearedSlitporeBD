@@ -48,7 +48,6 @@ int main(int argc, const char *argv[]){
 
     // initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);
-//    sys.readEnsembleSystem(0);
 
     if(args.dryRun){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;

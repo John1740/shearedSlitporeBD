@@ -58,9 +58,6 @@ int main(int argc, const char *argv[]){
     
     VELOCITY velocity;
     STRESS stress;  //change something here, such that stresses.out does not get written when not wished for
-    if(args.printStress > 0){
-        stress.printHeader();
-    }
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; ++i){

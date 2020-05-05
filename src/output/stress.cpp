@@ -6,17 +6,20 @@
 
 STRESS::STRESS(){
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 STRESS::STRESS(string filename){
     this->filename = filename;
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 STRESS::STRESS(string filename, string format_l){
     this->filename = filename;
     this->format_l = format_l;
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 STRESS::STRESS(string filename, string format_l, string format_h){
@@ -24,7 +27,7 @@ STRESS::STRESS(string filename, string format_l, string format_h){
     this->format_l = format_l;
     this->format_h = format_h;
     pFile = fopen(filename.c_str(), "w");
-//    cout << "Writing stresses to " << filename << endl;
+    printHeader();
 }
 
 STRESS::~STRESS(){

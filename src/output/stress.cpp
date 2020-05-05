@@ -42,8 +42,8 @@ void STRESS::printHeader(){
     fprintf(pFile, "\n");
 }
 
-void STRESS::printLine(SHEARED_SLITPORE_SYSTEM& sys, int timeStep){
-    fprintf(pFile, "%6d\t", timeStep);
+void STRESS::printLine(SHEARED_SLITPORE_SYSTEM& sys){
+    fprintf(pFile, "%6ld\t", sys.getTimestep() - 1); //equationOfMotion already incremented timestep by 1
     meanStress = sys.getMeanStress();
     fprintf(pFile, format_l.c_str(), meanStress.xx);
     fprintf(pFile, format_l.c_str(), meanStress.xy);

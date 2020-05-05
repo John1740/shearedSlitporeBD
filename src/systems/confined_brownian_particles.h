@@ -79,10 +79,12 @@ public:
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
 
 //     Set-Functions
-    virtual void setTimeStepSize(double timeStepSizeIn);
+    void setTimestep(long timestepIn);
+    virtual void setTimeStepSize(double timeStepSizeIn, bool verbose=false);
     virtual void setInitialConfigurationForLayersWithSides();
 
 //     Get-Functions
+    long getTimestep() const;
     virtual double getTimeStepSize();
     virtual double getInteractionLengthScale();
     virtual vector<CARTESIAN_COORDINATE> getPositionList();

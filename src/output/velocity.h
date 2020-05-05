@@ -25,7 +25,7 @@ public:
     ~VELOCITY();
     
     void printHeader();
-    void printLine(CONFINED_BROWNIAN_PARTICLES& sys, int timeStep);
+    void printLine(CONFINED_BROWNIAN_PARTICLES& sys);
 };
 
 #endif //SHEAREDSLITPOREBD_VELOCITY_H

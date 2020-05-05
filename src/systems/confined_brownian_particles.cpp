@@ -249,8 +249,10 @@ SLIT_PORE_BOX CONFINED_BROWNIAN_PARTICLES::getSimulationBox(){
     return simBox;
 }
 
-void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn){
-    cout << "Set dt = " << dt << " to " << timeStepSizeIn << endl;
+void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn, bool verbose){
+    if(verbose){
+        cout << "Set dt = " << dt << " to " << timeStepSizeIn << endl;
+    }
     dt = timeStepSizeIn;
 }
 
@@ -319,4 +321,12 @@ void CONFINED_BROWNIAN_PARTICLES::setInitialConfigurationForLayersWithSides(){
     GENERATE_SQUARE_LAYERS initialConfiguration;
     initialConfiguration.setNumberOfLayersRowsAdditionalRows(numberOfLayers, numberOfSides, 0);
     initialConfiguration.doForSystem(*this);
+}
+
+void CONFINED_BROWNIAN_PARTICLES::setTimestep(long timestepIn){
+    timestep = timestepIn;
+}
+
+long CONFINED_BROWNIAN_PARTICLES::getTimestep() const{
+    return timestep;
 }

@@ -6,17 +6,20 @@
 
 VELOCITY::VELOCITY(){
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 VELOCITY::VELOCITY(string filename){
     this->filename = filename;
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 VELOCITY::VELOCITY(string filename, string format_l){
     this->filename = filename;
     this->format_l = format_l;
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 VELOCITY::VELOCITY(string filename, string format_l, string format_h){
@@ -24,6 +27,7 @@ VELOCITY::VELOCITY(string filename, string format_l, string format_h){
     this->format_l = format_l;
     this->format_h = format_h;
     pFile = fopen(filename.c_str(), "w");
+    printHeader();
 }
 
 VELOCITY::~VELOCITY(){
@@ -46,13 +50,11 @@ void VELOCITY::printHeader(){
     fprintf(pFile, "\n");
 }
 
-void VELOCITY::printLine(CONFINED_BROWNIAN_PARTICLES& sys, int timeStep){
+void VELOCITY::printLine(CONFINED_BROWNIAN_PARTICLES& sys){
     meanVelocity = sys.getMeanVelocity();
     meanLayerVelocities = sys.getMeanLayerVelocities();
-    if(timeStep == 0){
-        printHeader();
-    }
-    fprintf(pFile, "%6d\t", timeStep);
+    long timestep = sys.getTimestep() - 2; //skip first step + equationOfMotion already incremented timestep by one
+    fprintf(pFile, "%6ld\t", timestep);
     fprintf(pFile, format_l.c_str(), meanVelocity.x);
     fprintf(pFile, format_l.c_str(), meanVelocity.y);
     fprintf(pFile, format_l.c_str(), meanVelocity.z);

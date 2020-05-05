@@ -26,7 +26,7 @@ public:
     ~STRESS();
 
     void printHeader();
-    void printLine(SHEARED_SLITPORE_SYSTEM& sys, int timeStep);
+    void printLine(SHEARED_SLITPORE_SYSTEM& sys);
 
 };
 

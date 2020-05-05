@@ -64,18 +64,20 @@ int main(int argc, const char *argv[]){
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
-        printf("Progress: %d (%.1f%%)\n", i, 100 * i / float(args.totalNumberOfTimesteps));
+        if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
+            printf("Progress: %.1f%% (timestep %d)\n", 100 * i / float(args.totalNumberOfTimesteps), i);
+        }
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
-            stress.printLine(sys, i);
+            stress.printLine(sys);
         }
-        if(args.printVelocity > 0 && i % args.printVelocity == 0 && i>0){
-            velocity.printLine(sys, i-1);
+        if(args.printVelocity > 0 && i % args.printVelocity == 0 && i > 0){
+            velocity.printLine(sys);
         }
         if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
-            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(i) + ".out");
+            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }
     sys.writeConfigurationToFile("configuration.out");

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.7
 import numpy as np
 from argparse import ArgumentParser
 # from pathlib import Path

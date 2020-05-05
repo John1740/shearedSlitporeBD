@@ -130,11 +130,11 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
 void SHEARED_SLITPORE_SYSTEM::addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i){   //const CARTESIAN_COORDINATE&
     CARTESIAN_MATRIX tmpStress(0.);
 
-    if(particle[i].position.z >= 0){
-        tmpStress.zz += forceIn.z * (particle[i].position.z - 0.5 * simBox.getDimensions().z);
+    if(particle[i].boxPosition.z >= 0){
+        tmpStress.zz += forceIn.z * (particle[i].boxPosition.z - 0.5 * simBox.getDimensions().z);
     }
     else{
-        tmpStress.zz += forceIn.z * (particle[i].position.z + 0.5 * simBox.getDimensions().z);
+        tmpStress.zz += forceIn.z * (particle[i].boxPosition.z + 0.5 * simBox.getDimensions().z);
     }
 
     stressPerParticle[i] += tmpStress;

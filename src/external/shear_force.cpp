@@ -20,7 +20,7 @@ void SHEAR_FORCE::setDirection(const CARTESIAN_COORDINATE& directionIn){
 }
 
 CARTESIAN_COORDINATE SHEAR_FORCE::forceOnParticle(PARTICLE& particle){
-    CARTESIAN_COORDINATE forceOnParticle = shearRate * direction * particle.position.z;
+    CARTESIAN_COORDINATE forceOnParticle = shearRate * direction * particle.boxPosition.z;
     return forceOnParticle;
 }
 

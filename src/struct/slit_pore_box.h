@@ -4,7 +4,7 @@
 #include "../interfaces/box_geometry.h"
 #include "../defaults.h"
 
-struct SLIT_PORE_BOX: public BOX_GEOMETRY{
+class SLIT_PORE_BOX: public BOX_GEOMETRY{
 private:
     CARTESIAN_COORDINATE dimensions;
     CARTESIAN_COORDINATE origin;

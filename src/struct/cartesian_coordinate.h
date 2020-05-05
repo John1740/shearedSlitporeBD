@@ -5,8 +5,8 @@
 #include <math.h>
 using namespace std;
 
-struct CARTESIAN_COORDINATE{
-
+class CARTESIAN_COORDINATE{
+public:
     double x,y,z;
 
     CARTESIAN_COORDINATE(): x(0.), y(0.), z(0.){}

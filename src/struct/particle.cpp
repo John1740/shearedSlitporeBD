@@ -22,13 +22,13 @@ CARTESIAN_COORDINATE PARTICLE::getPosition() const{
 
 double PARTICLE::distanceTo(PARTICLE &other){
     CARTESIAN_COORDINATE difference;
-    difference = position - other.position;
+    difference = position - other.position; //change to boxPosition?
     return difference.getAbs();
 }
 
 double PARTICLE::distanceTo(CARTESIAN_COORDINATE &positionIN){
     CARTESIAN_COORDINATE difference;
-    difference = position - positionIN;
+    difference = position - positionIN;  //change to boxPosition?
     return difference.getAbs();
 }
 
@@ -49,6 +49,6 @@ void PARTICLE::setBoxPosition(BOX_GEOMETRY &boxGeom){
 }
 
 double PARTICLE::getVolume(){
-    return diameter * diameter * diameter / 6.;
+    return diameter * diameter * diameter * M_PI / 6.;
 }
 

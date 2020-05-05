@@ -3,7 +3,8 @@
 
 #include "cartesian_coordinate.h"
 
-struct CARTESIAN_MATRIX{
+class CARTESIAN_MATRIX{
+public:
     double xx,xy,xz;
     double yx,yy,yz;
     double zx,zy,zz;

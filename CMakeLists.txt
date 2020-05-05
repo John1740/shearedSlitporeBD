@@ -61,6 +61,8 @@ add_executable(shearedSlitporeBD
         src/struct/slit_pore_box.cpp
         src/struct/cartesian_coordinate.cpp
         src/struct/cartesian_matrix.cpp
+        src/struct/configuration.cpp src/struct/configuration.h
+        src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
 
         src/systems/sheared_slitpore_system.cpp
         src/systems/confined_brownian_particles.cpp
@@ -80,7 +82,9 @@ add_executable(shearedSlitporeBD
 
         src/templates/version.h.template
         src/tools/format.cpp src/tools/format.h
-        src/output/stress.cpp src/output/stress.h src/output/velocity.cpp src/output/velocity.h src/struct/configuration.cpp src/struct/configuration.h)
+        src/output/stress.cpp src/output/stress.h
+        src/output/velocity.cpp src/output/velocity.h
+        )
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 

@@ -6,22 +6,12 @@
  */
 #include "global.h"
 
-vector<double> arguments(0);
+CRandomMersenne random_event(getpid()*time(0)); //using this somewhere else needs to use 'extern'
 
-CRandomMersenne random_event(getpid()*time(0));
-
-int read_toggle = 0; // 0: read periodic values; 1: read absolute values
-
-char const *pchome = getenv("HOME");
-string home = pchome ? pchome: "";
-
-string app_home(string str){
-    stringstream output;
-
-//    output << home << "/data/shearedSlitporeBD/output/";
-    output << "";
-
-    output << str;
-    return output.str();
+void initSeed(unsigned int seed){
+    random_event.RandomInit(seed);
 }
+
+
+
 

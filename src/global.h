@@ -17,28 +17,6 @@
 #include <iostream>
 using namespace std;
 
-extern int read_toggle;
-
-extern string home;
-
-extern vector<double> arguments;
-
-//////////////////////////////////////////////////////////////////////////////////////
-//*******************SMALL-FUNCTIONS******************////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-
-extern string app_home(string);
-
-template<typename T>
-string app_number(string str, T number){
-    stringstream output;
-    output << str << number;
-    return output.str();
-};
-
-inline bool fileExists(const std::string& name){
-    struct stat buffer;
-    return (stat(name.c_str(), &buffer) == 0);
-}
+void initSeed (unsigned int seed);
 
 #endif

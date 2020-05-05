@@ -8,6 +8,7 @@
 #include "../argument_parser/arguments.h"
 
 class SOFT_WALL_FORCE: public CONSERVATIVE_FORCE<PARTICLE>{
+private:
 
 public:
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;

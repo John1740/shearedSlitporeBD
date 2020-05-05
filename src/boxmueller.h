@@ -9,10 +9,8 @@
 
 #include <cmath>
 #include "randomc.h"
-extern CRandomMersenne random_event;
 
 double boxmueller(double mu, double sigma);
-void initSeed (unsigned int seed);
 
 #endif
 

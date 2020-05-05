@@ -6,6 +6,7 @@
 
 //center of layers (in z-direction) is 0
 class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
+private:
     vector<CHARGED_PARTICLE> particleList;
 
     int numberOfLayers;

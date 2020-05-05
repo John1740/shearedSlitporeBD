@@ -240,7 +240,7 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
         setParticleList(particleIn);
     }
 
-void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector< CHARGED_PARTICLE > particleListIn){
+void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
     particle = particleListIn;
     setPositionInBox();
 }

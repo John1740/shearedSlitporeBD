@@ -5,6 +5,7 @@
 #include "../struct/particle.h"
 
 class LENNARD_JONES_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<PARTICLE>{
+private:
 
 public:
     double interactionStrength;

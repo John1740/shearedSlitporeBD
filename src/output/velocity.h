@@ -11,21 +11,26 @@
 
 class VELOCITY{
 private:
+    CONFINED_BROWNIAN_PARTICLES* sys;
     CARTESIAN_COORDINATE meanVelocity;
+    int numberOfLayers;
     vector<CARTESIAN_COORDINATE> meanLayerVelocities;
     string filename = "velocities.out";
     string format_l = "% 4.5f\t";   //line format
     string format_h = "%8s\t";  //header format
     FILE* pFile;
 public:
-    VELOCITY();
-    VELOCITY(string filename);
-    VELOCITY(string filename, string format_l);
-    VELOCITY(string filename, string format_l, string format_h);
+    VELOCITY(CONFINED_BROWNIAN_PARTICLES* sysIn);
+    VELOCITY(CONFINED_BROWNIAN_PARTICLES* sysIn, string filename);
+    VELOCITY(CONFINED_BROWNIAN_PARTICLES* sysIn, string filename, string format_l);
+    VELOCITY(CONFINED_BROWNIAN_PARTICLES* sysIn, string filename, string format_l, string format_h);
     ~VELOCITY();
     
     void printHeader();
-    void printLine(CONFINED_BROWNIAN_PARTICLES& sys);
+    void printLine();
+    
+    //getter
+    string getFilename() const;
 };
 
 #endif //SHEAREDSLITPOREBD_VELOCITY_H

@@ -56,7 +56,7 @@ int main(int argc, const char *argv[]){
 
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
-    VELOCITY velocity;
+    VELOCITY velocity(&sys);
     STRESS stress;  //change something here, such that stresses.out does not get written when not wished for
 
     //column description
@@ -69,7 +69,7 @@ int main(int argc, const char *argv[]){
             stress.printLine(sys);
         }
         if(args.printVelocity > 0 && i % args.printVelocity == 0 && i > 0){
-            velocity.printLine(sys);
+            velocity.printLine();
         }
         if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
             //save particle positions to file
@@ -78,6 +78,12 @@ int main(int argc, const char *argv[]){
         }
     }
     sys.writeConfigurationToFile("configuration.out");
+    if(args.printStress > 0){
+        printf("Printed stresses to %s\n", stress.getFilename().c_str());
+    }
+    if(args.printVelocity > 0){
+        printf("Printed velocities to %s\n", velocity.getFilename().c_str());
+    }
     
     cout << endl << surroundWithSeparator("Simulation end") << endl;
     

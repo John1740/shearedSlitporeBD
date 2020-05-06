@@ -28,6 +28,8 @@ public:
     void printHeader();
     void printLine(SHEARED_SLITPORE_SYSTEM& sys);
 
+    //getter
+    string getFilename() const;
 };
 
 

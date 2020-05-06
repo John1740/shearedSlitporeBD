@@ -56,3 +56,7 @@ void STRESS::printLine(SHEARED_SLITPORE_SYSTEM& sys){
     fprintf(pFile, format_l.c_str(), meanStress.zz);
     fprintf(pFile, "\n");
 }
+
+string STRESS::getFilename() const{
+    return filename;
+}

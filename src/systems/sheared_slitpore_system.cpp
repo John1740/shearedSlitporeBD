@@ -7,8 +7,10 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
     printStress = args.printStress;
     printEnergy = args.printEnergy;
-
-    shearForce = SHEAR_FORCE(args.shearRate);
+    shearRateAmplitude = args.shearRate;
+    shearRateFrequency = args.frequency;
+    currentShearRate = getCurrentShearRate();
+    
     swf = SOFT_WALL_FORCE(args);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(args);
 
@@ -17,6 +19,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
 
 //needs to be done after input variables have been changed
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
+    shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
@@ -47,6 +50,7 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     CARTESIAN_COORDINATE randomDisplacement;
     CARTESIAN_COORDINATE shearForce;
     previousParticle = particle;
+    this->shearForce.shearRate = calculateCurrentShearRate();
 
     for(int i = 0; i < particle.size(); ++i){
         randomDisplacement = getRandomDisplacement();
@@ -164,5 +168,14 @@ void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
 
 vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;
+}
+
+double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
+    return currentShearRate;
+}
+
+double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
+    currentShearRate = shearRateAmplitude * cos(2 * M_PI * shearRateFrequency * timestep * dt);
+    return currentShearRate;
 }
 

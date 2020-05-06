@@ -1,5 +1,4 @@
 #include "global.h"
-#include "tools/printer.h"
 
 #include "systems/sheared_slitpore_system.h"
 #include "command/average_stress.h"
@@ -9,8 +8,10 @@
 #include "version.h"
 #include <experimental/filesystem>
 #include "tools/format.h"
-#include "output/stress.h"
-#include "output/velocity.h"
+#include "printer/printer.h"
+#include "printer/stress.h"
+#include "printer/velocity.h"
+#include "boost/format.hpp"
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
@@ -56,17 +57,21 @@ int main(int argc, const char *argv[]){
 
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
-    VELOCITY velocity(&sys);
-    STRESS stress;  //change something here, such that stresses.out does not get written when not wished for
+    VELOCITY_PRINTER velocity(&sys);
+    STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
+    PRINTER printer("shearRate.out");
+    printer.removeFile();
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
             printf("Progress: %.1f%% (timestep %d)\n", 100 * i / float(args.totalNumberOfTimesteps), i);
         }
+//        string fmt = "timestep: %ld, shearRate: % 2.5f";
+//        printer.printLine(boost::format(fmt) % sys.getTimestep() % sys.getCurrentShearRate());
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
-            stress.printLine(sys);
+            stress.printLine();
         }
         if(args.printVelocity > 0 && i % args.printVelocity == 0 && i > 0){
             velocity.printLine();
@@ -79,10 +84,10 @@ int main(int argc, const char *argv[]){
     }
     sys.writeConfigurationToFile("configuration.out");
     if(args.printStress > 0){
-        printf("Printed stresses to %s\n", stress.getFilename().c_str());
+        printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
     }
     if(args.printVelocity > 0){
-        printf("Printed velocities to %s\n", velocity.getFilename().c_str());
+        printf("Printed velocities to %s\n", velocity.printer.getFilename().c_str());
     }
     
     cout << endl << surroundWithSeparator("Simulation end") << endl;

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.7
 import numpy as np
 from argparse import ArgumentParser
-# from pathlib import Path
+from pathlib import Path
 import math
 
 def findSettingInString(string, substring):
@@ -36,15 +36,16 @@ def main():
     # parser.add_argument("--outfile", "-o", default="configuration.in", help="output file of new configuration style")
     args = parser.parse_args()
 
-    # print(f"Reading {args.infile}")
-    cfg_old = np.loadtxt(args.infile)
+    infile = Path(args.infile)
+    cfg_old = np.loadtxt(infile)
     xPos = cfg_old[:, 3]
     yPos = cfg_old[:, 4]
     zPos = cfg_old[:, 2]
 
-    dWall = float(findSettingInString(args.infile, "Dwall"))
-    rho = float(findSettingInString(args.infile, "rho"))
-    N = int(findSettingInString(args.infile, "N"))
+    dWall = float(findSettingInString(infile.name, "Dwall"))
+    rho = float(findSettingInString(infile.name, "rho"))
+    N = int(findSettingInString(infile.name, "N"))
+    shear_rate = float(findSettingInString(infile.name, "shear"))
     volume = N / rho
     timestep = 0
     simBox = BoxGeometry(volume, dWall)
@@ -52,6 +53,7 @@ def main():
     fmt = " 2.5f"
 
     #print Header
+    print(f"Relaxed with shearRate: {shear_rate}")
     print("ITEM: TIMESTEP")
     print(f"{timestep}")
     print("ITEM: NUMBER OF ATOMS")

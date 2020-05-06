@@ -22,6 +22,10 @@ protected:
     vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
     vector<double> energy;
     vector<CARTESIAN_MATRIX> stressPerParticle;
+    
+    double shearRateAmplitude = SHEAR_RATE;
+    double shearRateFrequency = FREQUENCY;
+    double currentShearRate;
 
     virtual double getInteractionLengthScale();
 
@@ -37,6 +41,8 @@ protected:
 
     virtual void addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j);
     virtual void addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i);
+    
+    double calculateCurrentShearRate();
 
 public:
     SHEARED_SLITPORE_SYSTEM();
@@ -59,6 +65,7 @@ public:
     //getter functions
     virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
     virtual CARTESIAN_MATRIX getMeanStress();
+    double getCurrentShearRate();
 
     vector<double> getEnergyPerParticle();
 };

@@ -17,6 +17,7 @@ public:
     string configurationIn = CONFIGURATION_IN;
 
     double shearRate = SHEAR_RATE;
+    double frequency = FREQUENCY;
 
     double dWall = D_WALL;
     double density = DENSITY;

@@ -14,7 +14,7 @@
 
 #include "../command/calculate_forces.h"
 
-#include "../tools/printer.h"
+#include "../printer/printer.h"
 #include "experimental/filesystem"
 
 #include "../defaults.h"

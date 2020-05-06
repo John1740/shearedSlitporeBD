@@ -67,7 +67,7 @@ add_executable(shearedSlitporeBD
         src/systems/sheared_slitpore_system.cpp
         src/systems/confined_brownian_particles.cpp
 
-        src/tools/printer.cpp
+        src/printer/printer.cpp
 
         src/tools/analysis.cpp src/tools/analysis.h
 
@@ -82,8 +82,8 @@ add_executable(shearedSlitporeBD
 
         src/templates/version.h.template
         src/tools/format.cpp src/tools/format.h
-        src/output/stress.cpp src/output/stress.h
-        src/output/velocity.cpp src/output/velocity.h
+        src/printer/stress.cpp src/printer/stress.h
+        src/printer/velocity.cpp src/printer/velocity.h
         )
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support

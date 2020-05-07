@@ -8,8 +8,9 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     printStress = args.printStress;
     printEnergy = args.printEnergy;
     shearRateOffset = args.shearRate;
+    shearRateAmplitude = args.amplitude;
     oscillationPeriod = args.oscillationPeriod;
-    currentShearRate = getCurrentShearRate();
+    currentShearRate = calculateCurrentShearRate();
     
     swf = SOFT_WALL_FORCE(args);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(args);
@@ -175,7 +176,7 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateOffset + shearRateAmplitude * sin(2 * M_PI * timestep * dt / oscillationPeriod );
+    currentShearRate = shearRateOffset + shearRateAmplitude * sin(2 * M_PI * timestep * dt / oscillationPeriod);
     return currentShearRate;
 }
 

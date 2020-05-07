@@ -7,14 +7,14 @@
 using namespace boost;
 
 
-VELOCITY_PRINTER::VELOCITY_PRINTER(CONFINED_BROWNIAN_PARTICLES* sysIn){
+VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     sys = sysIn;
     printer.setFilename("velocities.out");
     printer.removeFile();
     printHeader();
 }
 
-VELOCITY_PRINTER::VELOCITY_PRINTER(CONFINED_BROWNIAN_PARTICLES* sysIn, string filename){
+VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename){
     sys = sysIn;
     printer.setFilename(filename);
     printer.removeFile();
@@ -29,6 +29,7 @@ void VELOCITY_PRINTER::printHeader(){
     printer.printLine("#v_i: average velocity of all particles (in direction i=x,y,z)");
     printer.printLine("#v_i(n): average velocity of layer n (in direction i=x,y,z)");
     printer.print(format("#%5s\t") % "i");
+    printer.print(format(format_h.c_str()) % "shearRate");
     numberOfLayers = round(sys->getSimulationBox().getDimensions().z);
     vector<string> dir{"x", "y", "z"};
     for(int j = 0; j < dir.size(); j++){
@@ -47,6 +48,7 @@ void VELOCITY_PRINTER::printLine(){
     meanLayerVelocities = sys->getMeanLayerVelocities();
     long timestep = sys->getTimestep() - 2; //skip first step + equationOfMotion already incremented timestep by one
     printer.print(format("%6ld\t") % timestep);
+    printer.print(format(format_l.c_str()) % sys->getCurrentShearRate());
     printer.print(format(format_l.c_str()) % meanVelocity.x);
     printer.print(format(format_l.c_str()) % meanVelocity.y);
     printer.print(format(format_l.c_str()) % meanVelocity.z);

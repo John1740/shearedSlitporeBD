@@ -6,18 +6,18 @@
 #define SHEAREDSLITPOREBD_VELOCITY_H
 
 #include "../struct/cartesian_coordinate.h"
-#include "../systems/confined_brownian_particles.h"
+#include "../systems/sheared_slitpore_system.h"
 #include <vector>
 
 class VELOCITY_PRINTER{
 private:
-    CONFINED_BROWNIAN_PARTICLES* sys;
+    SHEARED_SLITPORE_SYSTEM* sys;
     CARTESIAN_COORDINATE meanVelocity;
     int numberOfLayers;
     vector<CARTESIAN_COORDINATE> meanLayerVelocities;
 public:
-    VELOCITY_PRINTER(CONFINED_BROWNIAN_PARTICLES* sysIn);
-    VELOCITY_PRINTER(CONFINED_BROWNIAN_PARTICLES* sysIn, string filename);
+    VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
+    VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
     ~VELOCITY_PRINTER();
     
     PRINTER printer;

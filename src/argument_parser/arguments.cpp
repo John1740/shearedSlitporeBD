@@ -15,7 +15,8 @@ void ARGUMENTS::print() {
     cout << "Configuration file: " << configurationIn << endl << endl;
 
     cout << "shearRate = " << shearRate << endl;
-    cout << "frequency = " << frequency << endl;
+    cout << "amplitude = " << amplitude << endl;
+    cout << "oscillationPeriod = " << oscillationPeriod << endl;
     cout << "dWall = " << dWall << "\t\t" << "density = " << density << "\t\t" << "numberOfParticles = " << numberOfParticles << endl;
     cout << "charge = " << charge << "\t\t" << "diameter = " << diameter << endl;
     cout << "dt = " << dt << endl;

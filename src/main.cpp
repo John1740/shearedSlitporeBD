@@ -59,16 +59,12 @@ int main(int argc, const char *argv[]){
     
     VELOCITY_PRINTER velocity(&sys);
     STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
-    PRINTER printer("shearRate.out");
-    printer.removeFile();
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
             printf("Progress: %.1f%% (timestep %d)\n", 100 * i / float(args.totalNumberOfTimesteps), i);
         }
-//        string fmt = "timestep: %ld, shearRate: % 2.5f";
-//        printer.printLine(boost::format(fmt) % sys.getTimestep() % sys.getCurrentShearRate());
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();

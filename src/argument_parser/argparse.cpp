@@ -21,8 +21,9 @@ void ARGUMENT_PARSER::addOptions() {
     description.add_options()
             ("help,h", "Help screen")
             ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions)")
-            ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "shear rate amplitude")
-            ("frequency,f", po::value<double>()->default_value(FREQUENCY), "shear rate frequency")
+            ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset")
+            ("amplitude,a", po::value<double>()->default_value(SHEAR_RATE), "shear rate amplitude")
+            ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD), "shear rate oscillation period (in units of Brownian time)")
             ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (z-direction)")
             ("density,d", po::value<double>()->default_value(DENSITY), "density")
             ("numberOfParticles,n", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
@@ -48,7 +49,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     ARGUMENTS args;
     args.configurationIn = variablesMap["configuration"].as<string>();
     args.shearRate = variablesMap["shearRate"].as<double>();
-    args.frequency = variablesMap["frequency"].as<double>();
+    args.amplitude = variablesMap["amplitude"].as<double>();
+    args.oscillationPeriod = variablesMap["period"].as<double>();
     args.dWall = variablesMap["dWall"].as<double>();
     args.density = variablesMap["density"].as<double>();
     args.numberOfParticles = variablesMap["numberOfParticles"].as<int>();

@@ -23,8 +23,9 @@ protected:
     vector<double> energy;
     vector<CARTESIAN_MATRIX> stressPerParticle;
     
-    double shearRateAmplitude = SHEAR_RATE;
-    double shearRateFrequency = FREQUENCY;
+    double shearRateOffset = SHEAR_RATE;
+    double shearRateAmplitude = AMPLITUDE;
+    double oscillationPeriod = OSCILLATION_PERIOD;
     double currentShearRate;
 
     virtual double getInteractionLengthScale();

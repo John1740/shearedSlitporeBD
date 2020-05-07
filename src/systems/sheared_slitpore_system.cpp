@@ -7,8 +7,8 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
     printStress = args.printStress;
     printEnergy = args.printEnergy;
-    shearRateAmplitude = args.shearRate;
-    shearRateFrequency = args.frequency;
+    shearRateOffset = args.shearRate;
+    oscillationPeriod = args.oscillationPeriod;
     currentShearRate = getCurrentShearRate();
     
     swf = SOFT_WALL_FORCE(args);
@@ -175,7 +175,7 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateAmplitude * cos(2 * M_PI * shearRateFrequency * timestep * dt);
+    currentShearRate = shearRateOffset + shearRateAmplitude * sin(2 * M_PI * timestep * dt / oscillationPeriod );
     return currentShearRate;
 }
 

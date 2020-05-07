@@ -10,7 +10,8 @@
 const std::string CONFIGURATION_IN = "configuration.in";
 
 const double SHEAR_RATE = 0.0;
-const double FREQUENCY = 0.0;
+const double AMPLITUDE = 0.0;
+const double OSCILLATION_PERIOD = 0.0;
 
 const double D_WALL = 2.2;
 const double DENSITY = 0.85;

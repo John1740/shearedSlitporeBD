@@ -13,7 +13,7 @@ STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     printHeader();
 }
 
-STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename){
+STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename){
     sys = sysIn;
     printer.setFilename(filename);
     printer.removeFile();

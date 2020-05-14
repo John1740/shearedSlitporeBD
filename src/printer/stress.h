@@ -17,7 +17,7 @@ private:
 
 public:
     STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
-    STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
+    STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename);
     ~STRESS_PRINTER();
     
     PRINTER printer;

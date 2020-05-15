@@ -80,6 +80,21 @@ char PRINTER::getComment() const{
 }
 
 ostream& operator<<(ostream& os, const PRINTER& printer){
-    os << "hello";
+    os << "PRINTER(";
+    os << printer.getFilename();
+    os << ", '" << printer.getComment() << "'";
+    if(printer.file.is_open()){
+        os << ", 'open'";
+    }
+    else{
+        os << ", 'closed'";
+    }
+    os << ")";
     return os;
+}
+
+std::ifstream::pos_type filesize(const char* filename)
+{
+    std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+    return in.tellg();
 }

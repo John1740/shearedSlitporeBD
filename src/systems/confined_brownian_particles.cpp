@@ -120,7 +120,7 @@ double CONFINED_BROWNIAN_PARTICLES::getTimeStepSize(){
 
 void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool verbose){
 //    PRINTER printer(configurationOut);
-//    printer.removeFile();
+//    printer.reset();
 //    for(int i = 0; i < particle.size(); ++i){
 //        printer.printLine(particle[i].position.x, particle[i].position.y, particle[i].position.z, particle[i].boxPosition.x, particle[i].boxPosition.y, particle[i].boxPosition.z);
 //    }

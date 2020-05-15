@@ -9,14 +9,14 @@ using namespace boost;
 STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     sys = sysIn;
     printer.setFilename("stresses.out");
-    printer.removeFile();
+//    printer.reset();
     printHeader();
 }
 
 STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename){
     sys = sysIn;
     printer.setFilename(filename);
-    printer.removeFile();
+//    printer.reset();
     printHeader();
 }
 
@@ -25,7 +25,8 @@ STRESS_PRINTER::~STRESS_PRINTER(){
 }
 
 void STRESS_PRINTER::printHeader(){
-    printer.print(format("#%5s\t") % "i");
+    printer.print(printer.getComment());
+    printer.print(format("%5s\t") % "i");
     printer.print(format(format_h.c_str()) % "shearRate");
     printer.print(format(format_h.c_str()) % "xx");
     printer.print(format(format_h.c_str()) % "yy");

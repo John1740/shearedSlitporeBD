@@ -58,6 +58,7 @@ int main(int argc, const char *argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
     VELOCITY_PRINTER velocity(&sys);
+    cout << velocity.printer << endl;
     STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
 
     //column description

@@ -1,5 +1,6 @@
 #include "confined_brownian_particles.h"
 #include "../command/generate_square_layers.h"  //can't use in header (circular dependency)
+#include "../struct/layers.h"
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 }
@@ -280,30 +281,17 @@ CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
 
 //Returns velocity average of each layer. Length of returned vector corresponds to number of layers.
 vector<CARTESIAN_COORDINATE> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
-    int numberOfLayers = round(simBox.getDimensions().z);
-    double zMin = - 0.2 * simBox.getDimensions().z;
-    double dz = - 2 * zMin / (numberOfLayers - 1);   //dz is width of each layer
-    vector<double> layerCenter;
-    for(int i = 0; i < numberOfLayers; i++){
-        layerCenter.push_back((zMin + i * dz));
-    }
+    LAYERS layers(simBox);
+    int numberOfLayers = layers.getNumberOfLayers();
     
     vector<CARTESIAN_COORDINATE> velocities = getVelocities();
     vector<CARTESIAN_COORDINATE> meanLayerVelocities(numberOfLayers);
     vector<int> counter(numberOfLayers);
+    int layerNumber;
     for(int i = 0; i < numberOfParticles; i++){
-        double zCurrent = previousParticle[i].boxPosition.z;
-        for(int j = 0; j < numberOfLayers; j++){
-            if(zCurrent >= layerCenter[j] - dz / 2 && zCurrent < layerCenter[j] + dz / 2){
-                meanLayerVelocities[j] += velocities[i];
-                counter[j]++;
-                break;
-            }
-        }
-        //not optimal
-        if(zCurrent < layerCenter[0] - dz / 2 || zCurrent >= layerCenter[numberOfLayers - 1] + dz / 2){
-            printf("Particle %d can't be assigned to any layer (z=%.2f).\n", i, zCurrent);
-        }
+        layerNumber = layers.tellLayerNumber(previousParticle[i]);
+        meanLayerVelocities[layerNumber] += velocities[i];
+        counter[layerNumber]++;
     }
     for(int j = 0; j < numberOfLayers; j++){
         meanLayerVelocities[j] /= counter[j];

@@ -9,6 +9,7 @@ private:
     CARTESIAN_COORDINATE dimensions;
     CARTESIAN_COORDINATE origin;
     double volume;
+    
     void setVolume();
 
 public:
@@ -20,13 +21,15 @@ public:
     //setter functions
     void setDwall(double dWallIn);
     void setDimensions(CARTESIAN_COORDINATE dimensionsIn);
-    void setLengthAndDWall(double lengthIN, double dWallIN);
+    void setOrigin(CARTESIAN_COORDINATE origin);
+    
+    void setLengthAndDWall(double lengthIN, double dWallIN);    //necessary?
     void setVolumeAndDWall(double volumeIN, double dWallIN);
 
     //getter functions
-    double getVolume();
-    CARTESIAN_COORDINATE getDimensions();
+    CARTESIAN_COORDINATE getDimensions() const;
     CARTESIAN_COORDINATE getOrigin();
+    double getVolume() const;
 
     CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN);
 };

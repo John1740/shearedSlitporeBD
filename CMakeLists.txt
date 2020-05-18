@@ -84,7 +84,7 @@ add_executable(shearedSlitporeBD
         src/tools/format.cpp src/tools/format.h
         src/printer/stress.cpp src/printer/stress.h
         src/printer/velocity.cpp src/printer/velocity.h
-        )
+        src/struct/layers.cpp src/struct/layers.h)
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 

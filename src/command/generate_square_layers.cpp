@@ -1,4 +1,5 @@
 #include "generate_square_layers.h"
+#include "../struct/layers.h"
 
 GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(){
     numberOfLayers = 2;
@@ -29,11 +30,12 @@ void GENERATE_SQUARE_LAYERS::doForSystem(CONFINED_BROWNIAN_PARTICLES &sysIn){
 }
 
 void GENERATE_SQUARE_LAYERS::setLatticePeriodicity(){
-    zMin = -0.2 * simBox.getDimensions().z;
+    LAYERS layers(simBox);
+    zMin = layers.getZMin();
     dx = simBox.getDimensions().x / numberOfRows;
 
     dy = simBox.getDimensions().y / numberOfRows;
-    dz = - 2 * zMin / (numberOfLayers - 1);
+    dz = layers.getLayerThickness();
 
     dxAdd = simBox.getDimensions().x / (numberOfRows + numberOfAdditionalRows);
     dyAdd = dxAdd;

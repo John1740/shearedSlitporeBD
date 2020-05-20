@@ -12,6 +12,7 @@ LAYERS::LAYERS(){
 LAYERS::LAYERS(const SLIT_PORE_BOX& simBox){
     setNumberOfLayers(simBox);
     setZMin(simBox);
+    setLayerArea(simBox);
     calculateLayerThickness();
     calculateLayerCenters();
 }
@@ -49,6 +50,7 @@ vector<double> LAYERS::calculateLayerCenters(){
     return layerCenter;
 }
 
+//returns -1 if particle is located outside of layers
 int LAYERS::tellLayerNumber(const PARTICLE& particle){
     double z = particle.boxPosition.z;
     for(int j = 0; j < numberOfLayers; j++){
@@ -60,4 +62,12 @@ int LAYERS::tellLayerNumber(const PARTICLE& particle){
         printf("Particle with z=%.2f can't be assigned to any layer.\n", z);
     }
     return -1;
+}
+
+double LAYERS::getLayerArea() const{
+    return layerArea;
+}
+
+void LAYERS::setLayerArea(const SLIT_PORE_BOX& simBox){
+    layerArea = simBox.getDimensions().x * simBox.getDimensions().y;
 }

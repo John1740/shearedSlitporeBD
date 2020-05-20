@@ -63,6 +63,7 @@ void PRINTER::reset(){
 //should only be used if the filename wasn't set during constructing
 //otherwise, use a new instance of PRINTER instead
 void PRINTER::setFilename(fs::path filename){
+    closeFile();
     this->filename = filename;
     openFile();
 }

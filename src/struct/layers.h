@@ -13,6 +13,7 @@ private:
     int numberOfLayers;
     double zMin;
     double layerThickness;
+    double layerArea;
     vector<double> layerCenter;
     
 public:
@@ -23,10 +24,12 @@ public:
     int getNumberOfLayers() const;
     double getZMin() const;
     double getLayerThickness() const;
+    double getLayerArea() const;
     
     //setter
     void setNumberOfLayers(const SLIT_PORE_BOX& simBox);
     void setZMin(const SLIT_PORE_BOX& simBox);
+    void setLayerArea(const SLIT_PORE_BOX& simBox);
     
     double calculateLayerThickness();
     vector<double> calculateLayerCenters();

@@ -59,9 +59,10 @@ int main(int argc, const char *argv[]){
     
     VELOCITY_PRINTER velocity(&sys);
     STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
+    PRINTER pairCorrelation("pair_correlation.out");
 
     //column description
-    for(int i = 0; i < args.totalNumberOfTimesteps; ++i){
+    for(int i = 0; i < args.totalNumberOfTimesteps; i++){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
             printf("Progress: %.1f%% (timestep %d)\n", 100 * i / float(args.totalNumberOfTimesteps), i);
         }
@@ -76,6 +77,14 @@ int main(int argc, const char *argv[]){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+        }
+        vector<double> pC = sys.calculateRadialPairCorrelationFunction(0.01);
+        string filename = "pair_correlation_" + to_string(i) + ".out";
+        pairCorrelation.setFilename(filename);
+        pairCorrelation << "#i = " << i << endl;
+        for(int k = 0; k < pC.size(); k++){
+            double r = k * 0.01;
+            pairCorrelation << boost::format("%.3f\t%.3f") % r % pC[k] << endl;
         }
     }
     sys.writeConfigurationToFile("configuration.out");

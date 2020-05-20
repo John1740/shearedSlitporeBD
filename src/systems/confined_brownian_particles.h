@@ -1,5 +1,5 @@
-#ifndef BROWNIAN_CHARGED_PARTICLES_H
-#define BROWNIAN_CHARGED_PARTICLES_H
+#ifndef CONFINED_BROWNIAN_PARTICLES_H
+#define CONFINED_BROWNIAN_PARTICLES_H
 
 #include "../global.h"
 #include <fstream>
@@ -91,9 +91,12 @@ public:
     virtual vector<CHARGED_PARTICLE> getParticleList();
     virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
+    
     vector<CARTESIAN_COORDINATE> getVelocities();
     CARTESIAN_COORDINATE getMeanVelocity();
     vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
+    
+    vector<double> calculateRadialPairCorrelationFunction(double dr);
 
 //     File-Handling
     virtual void readConfigurationFromFile(string filename, bool createIfMissing=false);

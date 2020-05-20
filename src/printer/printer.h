@@ -28,10 +28,11 @@ public:
     
     // getters
     fs::path getFilename() const;
+    string getFilenameAsString() const;
     char getComment() const;
     
     bool fileIsEmpty(bool ignoreComments=true);
-    void reset();
+    bool reset();
     
     //don't use this! better use << to write to stream
     template<typename T>

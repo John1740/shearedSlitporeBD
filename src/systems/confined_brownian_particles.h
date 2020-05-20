@@ -27,6 +27,7 @@ class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class CALCULATE_FORCES;
     friend class GENERATE_SQUARE_LAYERS;
+    friend class PAIR_CORRELATION;
 
 private:
 
@@ -69,6 +70,7 @@ protected:
 public:
     CONFINED_BROWNIAN_PARTICLES();
     CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS& args);
+    ~CONFINED_BROWNIAN_PARTICLES();
 
     virtual void simulateForSteps(int maxSteps);
 
@@ -96,10 +98,10 @@ public:
     CARTESIAN_COORDINATE getMeanVelocity();
     vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
     
-    vector<double> calculateRadialPairCorrelationFunction(double dr);
+    vector<double> calculateRadialPairCorrelationFunction(double dr = 0.01);
 
 //     File-Handling
-    virtual void readConfigurationFromFile(string filename, bool createIfMissing=false);
+    virtual void readConfigurationFromFile(string filename, bool createIfMissing=false, bool verbose=true);
     virtual void writeConfigurationToFile(string filename, bool verbose=true);
 };
 

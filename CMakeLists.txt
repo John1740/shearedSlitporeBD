@@ -84,9 +84,60 @@ add_executable(shearedSlitporeBD
         src/tools/format.cpp src/tools/format.h
         src/printer/stress.cpp src/printer/stress.h
         src/printer/velocity.cpp src/printer/velocity.h
-        src/struct/layers.cpp src/struct/layers.h)
+        src/struct/layers.cpp src/struct/layers.h
+        src/order_parameter/pair_correlation.cpp src/order_parameter/pair_correlation.h)
+
+#build a library first if you want to have multiple executable files!
+add_executable(writePairCorrelation
+        scripts/writePairCorrelation.cpp
+        src/boxmueller.cpp
+        src/mersenne.cpp
+        src/global.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+        src/command/average_stress.cpp
+        src/command/calculate_forces.cpp
+        src/command/generate_square_layers.cpp
+
+        src/struct/charged_particle.cpp
+        src/struct/particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/cartesian_coordinate.cpp
+        src/struct/cartesian_matrix.cpp
+        src/struct/configuration.cpp src/struct/configuration.h
+        src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
+
+        src/systems/sheared_slitpore_system.cpp
+        src/systems/confined_brownian_particles.cpp
+
+        src/printer/printer.cpp
+
+        src/tools/analysis.cpp src/tools/analysis.h
+
+        src/argument_parser/argparse.cpp src/argument_parser/argparse.h
+        src/argument_parser/arguments.cpp src/argument_parser/arguments.h
+
+        src/defaults.h
+
+        src/tools/clock.cpp src/tools/clock.h
+
+        src/tools/my_vector.h
+
+        src/templates/version.h.template
+        src/tools/format.cpp src/tools/format.h
+        src/printer/stress.cpp src/printer/stress.h
+        src/printer/velocity.cpp src/printer/velocity.h
+        src/struct/layers.cpp src/struct/layers.h
+        src/order_parameter/pair_correlation.cpp src/order_parameter/pair_correlation.h
+        )
 
 TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
+TARGET_LINK_LIBRARIES(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

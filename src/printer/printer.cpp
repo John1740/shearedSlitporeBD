@@ -16,9 +16,9 @@ void PRINTER::openFile(){
     file.open(filename.c_str(), ios::app);  //app=append
 }
 
+//file is considered empty when it contains only whitespaces (and optionally comment-lines)
 bool PRINTER::fileIsEmpty(bool ignoreComments){
     bool fileIsEmpty = true;
-    file.close();
     ifstream tmpFile;
     tmpFile.open(filename.c_str());
     string line;
@@ -43,7 +43,6 @@ bool PRINTER::fileIsEmpty(bool ignoreComments){
         }
     }
     tmpFile.close();
-    openFile();
     return fileIsEmpty;
 }
 
@@ -54,10 +53,12 @@ void PRINTER::closeFile(){
     }
 }
 
-void PRINTER::reset(){
+//returns true if the file needed to be deleted
+bool PRINTER::reset(){
     closeFile();
-    fs::remove(filename);
+    bool removed = fs::remove(filename);
     openFile();
+    return removed;
 }
 
 //should only be used if the filename wasn't set during constructing
@@ -70,6 +71,10 @@ void PRINTER::setFilename(fs::path filename){
 
 fs::path PRINTER::getFilename() const{
     return filename;
+}
+
+string PRINTER::getFilenameAsString() const{
+    return string(filename);
 }
 
 void PRINTER::setComment(char comment){

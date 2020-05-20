@@ -1,6 +1,7 @@
 #include "confined_brownian_particles.h"
 #include "../command/generate_square_layers.h"  //can't use in header (circular dependency)
 #include "../struct/layers.h"
+#include "../order_parameter/pair_correlation.h"
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 }
@@ -16,6 +17,10 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) 
     T = args.temperature;
     D0 = args.D0;
     initSeed(args.seed);
+}
+
+CONFINED_BROWNIAN_PARTICLES::~CONFINED_BROWNIAN_PARTICLES(){
+
 }
 
 void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
@@ -155,7 +160,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool createIfMissing){
+void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool createIfMissing, bool verbose){
         //check for existance
         if(fs::exists(filename) == false){
             if(createIfMissing){
@@ -233,7 +238,9 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
             particleIn.push_back(newParticle);
         }
         
-        cout << "Read " << filename << " successfully!" << endl;
+        if(verbose){
+            cout << "Read " << filename << " successfully!" << endl;
+        }
         if(particleIn.size() != numberOfParticles){
             cout << "Number of particles deviates from expected number: ";
             cout << particleIn.size() << " != " << numberOfParticles << endl;
@@ -320,36 +327,7 @@ long CONFINED_BROWNIAN_PARTICLES::getTimestep() const{
 }
 
 vector<double> CONFINED_BROWNIAN_PARTICLES::calculateRadialPairCorrelationFunction(double dr){
-    LAYERS layers(simBox);
-    double maximalRadius = (simBox.getDimensions() / 2).getAbs();
-    int length = int(ceil(maximalRadius / dr));    //radii from 0 to 10.
-    vector<double> correlationFunction;
-    correlationFunction.resize(length);
-    vector<double> radius;
-    radius.resize(length);
-    int numberOfLayers = layers.getNumberOfLayers();
-    for(int i = 0; i < numberOfParticles; i++){
-        for(int j = 0; j < numberOfParticles; j++){
-            if(i == j){
-                continue;
-            }
-            CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
-            distance = simBox.convertToBoxPosition(distance);
-            double currentRadius = distance.getAbs();
-            //check if particles are in same layer
-            if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
-                //assign current radius to nearest index (only works for intervals starting at 0)
-                int index = round(currentRadius / dr);
-                correlationFunction[index]++;
-            }
-        }
-    }
-    //add prefactor and set radii
-    for(int i = 0; i < length; i++){
-        radius[i] = i * dr;
-        double annulusArea = 2 * M_PI * radius[i] * dr;
-        double prefactor = pow(numberOfLayers * layers.getLayerArea() / numberOfParticles, 2) / annulusArea;
-        correlationFunction[i] *= prefactor;
-    }
-    return correlationFunction;
+    PAIR_CORRELATION pairCorrelation(this, dr);
+    pairCorrelation.calculate();
+    return pairCorrelation.getPairCorrelations();
 }

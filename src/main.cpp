@@ -1,7 +1,6 @@
 #include "global.h"
 
 #include "systems/sheared_slitpore_system.h"
-#include "command/average_stress.h"
 
 #include <ctime>
 #include "tools/clock.h"
@@ -77,14 +76,6 @@ int main(int argc, const char *argv[]){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
-        }
-        vector<double> pC = sys.calculateRadialPairCorrelationFunction(0.01);
-        string filename = "pair_correlation_" + to_string(i) + ".out";
-        pairCorrelation.setFilename(filename);
-        pairCorrelation << "#i = " << i << endl;
-        for(int k = 0; k < pC.size(); k++){
-            double r = k * 0.01;
-            pairCorrelation << boost::format("%.3f\t%.3f") % r % pC[k] << endl;
         }
     }
     sys.writeConfigurationToFile("configuration.out");

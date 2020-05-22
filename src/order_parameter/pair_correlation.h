@@ -20,8 +20,10 @@ private:
     vector<double> correlationFunction;
     
     double calculateMeanCorrelation();
-    int findNextUpCrossing(int pos, double threshold);
-    int findNextDownCrossing(int pos, double threshold);
+    int findNextUpCrossing(int pos, double threshold, int averageRange);
+    int findNextDownCrossing(int pos, double threshold, int averageRange);
+    int findLastUpCrossing(int pos, double threshold, int posMax);
+    int findLastDownCrossing(int pos, double threshold, int posMax);
 public:
     PAIR_CORRELATION();
     PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys);
@@ -30,7 +32,7 @@ public:
     PAIR_CORRELATION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
     PAIR_CORRELATION& calculate();
-    double findPositionOfMinimum(int n, double lowerBound = 0);
+    double findPositionOfMinimum(int n, int smoothRange = 5, double lowerBound = 0);
     
     //getter
     double getMaximalRadius() const;

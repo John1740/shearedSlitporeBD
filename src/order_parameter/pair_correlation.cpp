@@ -126,14 +126,15 @@ PAIR_CORRELATION& PAIR_CORRELATION::setMaximalRadius(double rMax){
 
 //returns location (radius) of the n-th local minimum
 //only radii above lowerBound are considered
-double PAIR_CORRELATION::findPositionOfMinimum(int n, double lowerBound){
+double PAIR_CORRELATION::findPositionOfMinimum(int n, int smoothRange, double lowerBound){
     double threshold = calculateMeanCorrelation();
     int pos0 = floor(lowerBound / dr);
-    int posUp, posDown;
-    posUp = findNextUpCrossing(pos0, threshold); //find the first up-crossing
+    int posDown, posUp;
+    posUp = findNextUpCrossing(pos0, threshold, smoothRange); //find the first up-crossing
     for(int i = 0; i < n; i++){
-        posDown = findNextDownCrossing(posUp, threshold);
-        posUp = findNextUpCrossing(posDown, threshold);
+        //start looking for next crossing after the smoothRange to avoid posDown > posUp cases
+        posDown = findNextDownCrossing(posUp + smoothRange, threshold, smoothRange);
+        posUp = findNextUpCrossing(posDown + smoothRange, threshold, smoothRange);
     }
     double minimumPosition = (radius[posUp] + radius[posDown]) / 2;
     return minimumPosition;
@@ -154,20 +155,56 @@ double PAIR_CORRELATION::calculateMeanCorrelation(){
 }
 
 //returns -1 if there is no next up-crossing
-int PAIR_CORRELATION::findNextUpCrossing(int pos, double threshold){
+//if there are multiple crossings in quick succession (due to noice), the average value between the first and the last
+//crossing within the range of <averageRange> is returned
+int PAIR_CORRELATION::findNextUpCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
         if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
-            return i;
+            int lastUpCrossing = findLastUpCrossing(i, threshold, i + averageRange);
+            if(lastUpCrossing == -1){
+                return i;
+            }
+            else{
+                return int((lastUpCrossing + i) / 2);
+            }
         }
     }
     return -1;
 }
 
-int PAIR_CORRELATION::findNextDownCrossing(int pos, double threshold){
+int PAIR_CORRELATION::findNextDownCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
-        if(correlationFunction[i] <= threshold && correlationFunction[i-1] > threshold){
-            return i;
+        if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){
+            int lastDownCrossing = findLastDownCrossing(i, threshold, i + averageRange);
+            if(lastDownCrossing == -1){
+                return i;
+            }
+            else{
+                return int((lastDownCrossing + i) / 2);
+            }
         }
     }
     return -1;
+}
+
+//returns -1 if there is no up-crossing within [pos, posMax] at all
+int PAIR_CORRELATION::findLastUpCrossing(int pos, double threshold, int posMax){
+    int lastUpCrossing = -1;
+    for(int i = pos + 1; i < posMax + 1; i++){
+        if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
+            lastUpCrossing = i;
+        }
+    }
+    return lastUpCrossing;
+}
+
+//returns -1 if there is no down-crossing within [pos, posMax] at all
+int PAIR_CORRELATION::findLastDownCrossing(int pos, double threshold, int posMax){
+    int lastDownCrossing = -1;
+    for(int i = pos + 1; i < posMax + 1; i++){
+        if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){
+            lastDownCrossing = i;
+        }
+    }
+    return lastDownCrossing;
 }

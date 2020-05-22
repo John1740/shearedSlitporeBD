@@ -18,24 +18,33 @@ private:
     int length;
     vector<double> radius;
     vector<double> correlationFunction;
+    
+    double calculateMeanCorrelation();
+    int findNextUpCrossing(int pos, double threshold);
+    int findNextDownCrossing(int pos, double threshold);
 public:
     PAIR_CORRELATION();
     PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys);
     PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    void setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
+    PAIR_CORRELATION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    void calculate();
+    PAIR_CORRELATION& calculate();
+    double findPositionOfMinimum(int n, double lowerBound = 0);
     
     //getter
+    double getMaximalRadius() const;
+    double getResolution() const;
+    int getLength() const;
     vector<double> getRadii() const;
     vector<double> getPairCorrelations() const;
     
     //setter
-    void setResolution(double dr);
+    PAIR_CORRELATION& setMaximalRadius(double rMax);
+    PAIR_CORRELATION& setResolution(double dr);
     
     //printer
-    void print(string filename);
+    PAIR_CORRELATION& print(string filename);
     friend ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation);
 };
 

@@ -11,6 +11,8 @@
 #include "printer/stress.h"
 #include "printer/velocity.h"
 #include "boost/format.hpp"
+#include "order_parameter/pair_correlation.h"
+
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
@@ -77,6 +79,9 @@ int main(int argc, const char *argv[]){
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
+        PAIR_CORRELATION g(sys, 0.01);
+        g.calculate();
+        g.findPositionOfMinimum(1);
     }
     sys.writeConfigurationToFile("configuration.out");
     if(args.printStress > 0){

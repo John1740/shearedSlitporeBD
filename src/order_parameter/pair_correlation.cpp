@@ -18,15 +18,16 @@ PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     setup(sys, dr);
 }
 
-void PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+PAIR_CORRELATION& PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     maximalRadius = (simBox.getDimensions() / 2).getAbs();
     setResolution(dr);
     particle = sys.getParticleList();
+    return *this;
 }
 
-void PAIR_CORRELATION::calculate(){
+PAIR_CORRELATION& PAIR_CORRELATION::calculate(){
     int numberOfLayers = layers.getNumberOfLayers();
     int numberOfParticles = particle.size();
     for(int i = 0; i < numberOfParticles; i++){
@@ -49,6 +50,7 @@ void PAIR_CORRELATION::calculate(){
         double prefactor = pow(numberOfLayers  / float(numberOfParticles), 2) * layers.getLayerArea() / annulusArea;
         correlationFunction[i] *= prefactor;
     }
+    return *this;
 }
 
 vector<double> PAIR_CORRELATION::getRadii() const{
@@ -59,16 +61,17 @@ vector<double> PAIR_CORRELATION::getPairCorrelations() const{
     return correlationFunction;
 }
 
-void PAIR_CORRELATION::setResolution(double dr){
+PAIR_CORRELATION& PAIR_CORRELATION::setResolution(double dr){
     this->dr = dr;
     length = int(ceil(maximalRadius / dr));
     radius.clear();
     radius.resize(length);
     correlationFunction.clear();
     correlationFunction.resize(length);
+    return *this;
 }
 
-void PAIR_CORRELATION::print(string filename){
+PAIR_CORRELATION& PAIR_CORRELATION::print(string filename){
     PRINTER printer(filename);
     printer.reset();
     //header
@@ -85,6 +88,7 @@ void PAIR_CORRELATION::print(string filename){
         printer << "\t" << b::format("% 2.5f") % correlationFunction[i];
         printer << "\n";
     }
+    return *this;
 }
 
 ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation){
@@ -101,4 +105,69 @@ ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation){
         cout << "\n";
     }
     return os;
+}
+
+double PAIR_CORRELATION::getMaximalRadius() const{
+    return maximalRadius;
+}
+
+double PAIR_CORRELATION::getResolution() const{
+    return dr;
+}
+
+int PAIR_CORRELATION::getLength() const{
+    return length;
+}
+
+PAIR_CORRELATION& PAIR_CORRELATION::setMaximalRadius(double rMax){
+    this->maximalRadius = rMax;
+    return *this;
+}
+
+//returns location (radius) of the n-th local minimum
+//only radii above lowerBound are considered
+double PAIR_CORRELATION::findPositionOfMinimum(int n, double lowerBound){
+    double threshold = calculateMeanCorrelation();
+    int pos0 = floor(lowerBound / dr);
+    int posUp, posDown;
+    posUp = findNextUpCrossing(pos0, threshold); //find the first up-crossing
+    for(int i = 0; i < n; i++){
+        posDown = findNextDownCrossing(posUp, threshold);
+        posUp = findNextUpCrossing(posDown, threshold);
+    }
+    double minimumPosition = (radius[posUp] + radius[posDown]) / 2;
+    return minimumPosition;
+}
+
+double PAIR_CORRELATION::calculateMeanCorrelation(){
+    double g_avg = 0;
+    int ctr = 0;
+    for(int i = 0; i < length; i++){
+        double currentG = correlationFunction[i];
+        if(isnan(currentG) == false){
+            g_avg += correlationFunction[i];
+            ctr++;
+        }
+    }
+    g_avg /= ctr;
+    return g_avg;
+}
+
+//returns -1 if there is no next up-crossing
+int PAIR_CORRELATION::findNextUpCrossing(int pos, double threshold){
+    for(int i = pos + 1; i < length; i++){
+        if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int PAIR_CORRELATION::findNextDownCrossing(int pos, double threshold){
+    for(int i = pos + 1; i < length; i++){
+        if(correlationFunction[i] <= threshold && correlationFunction[i-1] > threshold){
+            return i;
+        }
+    }
+    return -1;
 }

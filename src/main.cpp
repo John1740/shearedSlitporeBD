@@ -14,6 +14,7 @@
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
+    cout << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
     CLOCK clock;
     
     ARGUMENT_PARSER parser(argc, argv);
@@ -58,7 +59,6 @@ int main(int argc, const char *argv[]){
     
     VELOCITY_PRINTER velocity(&sys);
     STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
-    PRINTER pairCorrelation("pair_correlation.out");
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; i++){
@@ -91,7 +91,8 @@ int main(int argc, const char *argv[]){
     clock.addTimePoint();
     cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
     printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
-
+    cout << endl;
+    
     return 0;
 }
 

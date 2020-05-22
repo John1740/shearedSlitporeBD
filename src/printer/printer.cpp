@@ -13,7 +13,22 @@ PRINTER::~PRINTER(){
 }
 
 void PRINTER::openFile(){
+    if(filename.has_parent_path()){
+        fs::create_directory(filename.parent_path());
+    }
     file.open(filename.c_str(), ios::app);  //app=append
+}
+
+void PRINTER::closeFile(){
+    file.close();
+    if(fs::exists(filename) && fileIsEmpty()){
+        fs::remove(filename);
+        if(filename.has_parent_path()){
+            if(fs::is_empty(filename.parent_path())){
+                fs::remove(filename.parent_path());
+            }
+        }
+    }
 }
 
 //file is considered empty when it contains only whitespaces (and optionally comment-lines)
@@ -44,13 +59,6 @@ bool PRINTER::fileIsEmpty(bool ignoreComments){
     }
     tmpFile.close();
     return fileIsEmpty;
-}
-
-void PRINTER::closeFile(){
-    file.close();
-    if(fs::exists(filename) && fileIsEmpty()){
-        fs::remove(filename);
-    }
 }
 
 //returns true if the file needed to be deleted

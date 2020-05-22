@@ -10,20 +10,20 @@ PAIR_CORRELATION::PAIR_CORRELATION(){
 
 }
 
-PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES* sys){
+PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys){
     setup(sys, 0.01);
 }
 
-PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES* sys, double dr){
+PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     setup(sys, dr);
 }
 
-void PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES* sys, double dr){
-    simBox = sys->getSimulationBox();
+void PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+    simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     maximalRadius = (simBox.getDimensions() / 2).getAbs();
     setResolution(dr);
-    particle = sys->getParticleList();
+    particle = sys.getParticleList();
 }
 
 void PAIR_CORRELATION::calculate(){

@@ -20,10 +20,10 @@ private:
     vector<double> correlationFunction;
 public:
     PAIR_CORRELATION();
-    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES* sys);
-    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES* sys, double dr);
+    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys);
+    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    void setup(CONFINED_BROWNIAN_PARTICLES* sys, double dr);
+    void setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
     void calculate();
     

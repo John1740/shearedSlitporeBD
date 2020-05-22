@@ -326,8 +326,9 @@ long CONFINED_BROWNIAN_PARTICLES::getTimestep() const{
     return timestep;
 }
 
+//probably not necessary
 vector<double> CONFINED_BROWNIAN_PARTICLES::calculateRadialPairCorrelationFunction(double dr){
-    PAIR_CORRELATION pairCorrelation(this, dr);
+    PAIR_CORRELATION pairCorrelation(*this, dr);
     pairCorrelation.calculate();
     return pairCorrelation.getPairCorrelations();
 }

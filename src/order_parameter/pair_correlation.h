@@ -32,7 +32,7 @@ public:
     PAIR_CORRELATION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
     PAIR_CORRELATION& calculate();
-    double findPositionOfMinimum(int n, int smoothRange = 5, double lowerBound = 0);
+    double findPositionOfMinimum(int n, int smoothRange = 0, double lowerBound = 0);
     
     //getter
     double getMaximalRadius() const;

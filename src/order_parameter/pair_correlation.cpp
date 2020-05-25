@@ -124,17 +124,19 @@ PAIR_CORRELATION& PAIR_CORRELATION::setMaximalRadius(double rMax){
     return *this;
 }
 
-//returns location (radius) of the n-th local minimum
+//returns location (radius) of the n-th local minimum based on crossings around the average value
+//smoothens crossings by smoothRange * dr
 //only radii above lowerBound are considered
 double PAIR_CORRELATION::findPositionOfMinimum(int n, int smoothRange, double lowerBound){
     double threshold = calculateMeanCorrelation();
     int pos0 = floor(lowerBound / dr);
+    int skip = ceil(smoothRange / 2.0);    //need to round up, because findNext...Crossing rounds down
     int posDown, posUp;
     posUp = findNextUpCrossing(pos0, threshold, smoothRange); //find the first up-crossing
     for(int i = 0; i < n; i++){
         //start looking for next crossing after the smoothRange to avoid posDown > posUp cases
-        posDown = findNextDownCrossing(posUp + smoothRange, threshold, smoothRange);
-        posUp = findNextUpCrossing(posDown + smoothRange, threshold, smoothRange);
+        posDown = findNextDownCrossing(posUp + skip, threshold, smoothRange);
+        posUp = findNextUpCrossing(posDown + skip, threshold, smoothRange);
     }
     double minimumPosition = (radius[posUp] + radius[posDown]) / 2;
     return minimumPosition;

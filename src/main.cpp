@@ -40,7 +40,6 @@ int main(int argc, const char *argv[]){
     if(args.seed == 0){
         args.seed = getpid() * time(0);
     }
-//    srand(args.seed);
     
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
@@ -81,7 +80,7 @@ int main(int argc, const char *argv[]){
         }
         PAIR_CORRELATION g(sys, 0.01);
         g.calculate();
-        g.findPositionOfMinimum(1);
+        g.findPositionOfMinimum(4, 0);
     }
     sys.writeConfigurationToFile("configuration.out");
     if(args.printStress > 0){

@@ -39,6 +39,7 @@ public:
     int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
     int printEnergy = PRINT_ENERGY;
+    int printAngularBond = PRINT_ANGULAR_BOND;
 
     bool dryRun = false;
     bool printVersion = false;

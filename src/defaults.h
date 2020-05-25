@@ -8,6 +8,7 @@
 #include <string>
 
 const std::string CONFIGURATION_IN = "configuration.in";
+const std::string ANGULAR_BOND_OUT = "angularBond.out";
 
 const double SHEAR_RATE = 0.0;
 const double AMPLITUDE = 0.0;
@@ -32,6 +33,7 @@ const int TOTAL_NUMBER_OF_TIMESTEPS = 10;
 const int PRINT_VELOCITY = 0;
 const int PRINT_STRESS = 0;
 const int PRINT_ENERGY = 0;
+const int PRINT_ANGULAR_BOND = 0;
 const int SNAPSHOT_INTERVAL = 0;
 
 #endif //SHEAREDSLITPOREBD_DEFAULTS_H

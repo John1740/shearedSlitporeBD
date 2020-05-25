@@ -85,7 +85,7 @@ add_executable(shearedSlitporeBD
         src/printer/stress.cpp src/printer/stress.h
         src/printer/velocity.cpp src/printer/velocity.h
         src/struct/layers.cpp src/struct/layers.h
-        src/order_parameter/pair_correlation.cpp src/order_parameter/pair_correlation.h)
+        src/order_parameter/pair_correlation.cpp src/order_parameter/pair_correlation.h src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h src/printer/angular_bond.cpp src/printer/angular_bond.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(writePairCorrelation

@@ -1,17 +1,17 @@
 #include "global.h"
-
-#include "systems/sheared_slitpore_system.h"
-
 #include <ctime>
 #include "tools/clock.h"
 #include "version.h"
 #include <experimental/filesystem>
 #include "tools/format.h"
+#include "boost/format.hpp"
+
+#include "systems/sheared_slitpore_system.h"
+
 #include "printer/printer.h"
 #include "printer/stress.h"
 #include "printer/velocity.h"
-#include "boost/format.hpp"
-#include "order_parameter/pair_correlation.h"
+#include "printer/angular_bond.h"
 
 namespace fs = experimental::filesystem;
 
@@ -59,7 +59,8 @@ int main(int argc, const char *argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
     VELOCITY_PRINTER velocity(&sys);
-    STRESS_PRINTER stress(&sys);  //change something here, such that stresses.out does not get written when not wished for
+    STRESS_PRINTER stress(&sys);
+    ANGULAR_BOND_PRINTER angularBond;
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; i++){
@@ -73,14 +74,14 @@ int main(int argc, const char *argv[]){
         if(args.printVelocity > 0 && i % args.printVelocity == 0 && i > 0){
             velocity.printLine();
         }
+        if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
+            angularBond.printLine(sys);
+        }
         if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
-        PAIR_CORRELATION g(sys, 0.01);
-        g.calculate();
-        g.findPositionOfMinimum(4, 0);
     }
     sys.writeConfigurationToFile("configuration.out");
     if(args.printStress > 0){
@@ -88,6 +89,9 @@ int main(int argc, const char *argv[]){
     }
     if(args.printVelocity > 0){
         printf("Printed velocities to %s\n", velocity.printer.getFilename().c_str());
+    }
+    if(args.printAngularBond > 0){
+        printf("Printed angular bond parameters to %s\n", angularBond.getFilename().c_str());
     }
     
     cout << endl << surroundWithSeparator("Simulation end") << endl;

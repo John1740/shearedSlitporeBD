@@ -37,4 +37,7 @@ void ARGUMENTS::print() {
     if(printEnergy > 0){
         cout << "printEnergy = " << printEnergy << endl;
     }
+    if(printAngularBond > 0){
+        cout << "printAngularBond = " << printAngularBond << endl;
+    }
 }

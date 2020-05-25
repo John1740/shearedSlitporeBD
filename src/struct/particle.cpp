@@ -49,6 +49,5 @@ void PARTICLE::setBoxPosition(BOX_GEOMETRY &boxGeom){
 }
 
 double PARTICLE::getVolume(){
-    return diameter * diameter * diameter * M_PI / 6.;
+    return diameter * diameter * diameter * M_PI / 6.;  //4pi/3 r^3 = 4pi/3 d^3/8 = pi/6
 }
-

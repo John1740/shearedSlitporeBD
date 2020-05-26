@@ -12,7 +12,7 @@ const std::string ANGULAR_BOND_OUT = "angularBond.out";
 
 const double SHEAR_RATE = 0.0;
 const double AMPLITUDE = 0.0;
-const double OSCILLATION_PERIOD = 0.0;
+const double OSCILLATION_PERIOD = 1.0;
 
 const double D_WALL = 2.2;
 const double DENSITY = 0.85;

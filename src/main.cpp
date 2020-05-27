@@ -77,7 +77,7 @@ int main(int argc, const char *argv[]){
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
         }
-        if((i + 1) % args.snapshotInterval == 0){
+        if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);

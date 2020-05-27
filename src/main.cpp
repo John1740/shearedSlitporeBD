@@ -65,7 +65,7 @@ int main(int argc, const char *argv[]){
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; i++){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
-            printf("Progress: %.1f%% (timestep %d)\n", 100 * i / float(args.totalNumberOfTimesteps), i);
+            printf("Progress: %.1f%% (timestep %ld)\n", 100 * i / float(args.totalNumberOfTimesteps), sys.getTimestep());
         }
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
@@ -77,7 +77,7 @@ int main(int argc, const char *argv[]){
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
         }
-        if(args.snapshotInterval != 0 && i % args.snapshotInterval == 0){
+        if((i + 1) % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);

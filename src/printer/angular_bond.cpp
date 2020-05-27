@@ -29,7 +29,7 @@ void ANGULAR_BOND_PRINTER::printHeader(){
 }
 
 void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
-    *this << format(format_li.c_str()) % (sys.getTimestep() - 1);
+    *this << format(format_li.c_str()) % sys.getTimestep();
     *this << format(format_f.c_str()) % sys.getCurrentShearRate();
     ANGULAR_BOND_PARAMETER psi(sys, 4);
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();

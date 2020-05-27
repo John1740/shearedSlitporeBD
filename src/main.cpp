@@ -104,3 +104,4 @@ int main(int argc, const char *argv[]){
     return 0;
 }
 
+//-a 400 -p 1e-3 --seed 3863985048 -N 10 --printAngularBond 1

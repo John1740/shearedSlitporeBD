@@ -51,7 +51,9 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
             continue;
         }
         if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
-            if(particle[i].boxDistanceTo(particle[j]) < minimumPosition){
+            CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
+            distance = simBox.convertToBoxPosition(distance);
+            if(distance.getAbs() < minimumPosition){
                 double angle = angleBetweenParticles(particle[i], particle[j]);
                 psi += exp(I * double(n) * angle);
                 numberOfNeighbors++;
@@ -63,10 +65,19 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
 
 double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
     double average = 0;
+    int counter = 0;
     for(int i = 0; i < particle.size(); i++){
-        average += calculateForSingleParticle(i);
+        double increment = calculateForSingleParticle(i);
+        //ignore particles which have no adjacent particles (should only happen at low densities)
+        if(! isnan(increment)){
+            average += increment;
+            counter++;
+        }
+        else{
+            cout << "Angular bond parameter of particle " << i << " is nan! It appears to have no adjacent particles." << endl;
+        }
     }
-    average /= particle.size();
+    average /= counter;
     return average;
 }
 

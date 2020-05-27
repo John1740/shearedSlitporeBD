@@ -32,6 +32,7 @@ double PARTICLE::distanceTo(CARTESIAN_COORDINATE &positionIN){
     return difference.getAbs();
 }
 
+//needs the simulation box information
 double PARTICLE::boxDistanceTo(PARTICLE &other){
     CARTESIAN_COORDINATE difference;
     difference = boxPosition - other.boxPosition;

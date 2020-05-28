@@ -38,13 +38,13 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     layers = LAYERS(simBox);
     pairCorrelation = PAIR_CORRELATION(sys, 0.01);
     pairCorrelation.calculate();
+    erroneousParticles.clear();
     return *this;
 }
 
 double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
     complex<double> psi = 0;
     complex<double> I(0, 1);
-    double minimumPosition = pairCorrelation.findPositionOfMinimum(1, 5);
     int numberOfNeighbors = 0;
     for(int j = 0; j < particle.size(); j++){
         if(i == j){
@@ -53,7 +53,7 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
         if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
             CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
             distance = simBox.convertToBoxPosition(distance);
-            if(distance.getAbs() < minimumPosition){
+            if(distance.getAbs() < cutoffRadius){
                 double angle = angleBetweenParticles(particle[i], particle[j]);
                 psi += exp(I * double(n) * angle);
                 numberOfNeighbors++;
@@ -66,6 +66,7 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
 double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
     double average = 0;
     int counter = 0;
+    calculateCutoffRadius();
     for(int i = 0; i < particle.size(); i++){
         double increment = calculateForSingleParticle(i);
         //ignore particles which have no adjacent particles (should only happen at low densities)
@@ -74,7 +75,8 @@ double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
             counter++;
         }
         else{
-            cout << "Angular bond parameter of particle " << i << " is nan! It appears to have no adjacent particles." << endl;
+            erroneousParticles.push_back(i);
+//            cout << "Angular bond parameter of particle " << i << " is nan! It appears to have no adjacent particles." << endl;
         }
     }
     average /= counter;
@@ -88,4 +90,21 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setN(int n){
 
 int ANGULAR_BOND_PARAMETER::getN() const{
     return n;
+}
+
+double ANGULAR_BOND_PARAMETER::calculateCutoffRadius(){
+    cutoffRadius = pairCorrelation.findPositionOfMinimum(1, 5);
+    return cutoffRadius;
+}
+
+double ANGULAR_BOND_PARAMETER::getCutoffRadius() const{
+    return cutoffRadius;
+}
+
+PAIR_CORRELATION ANGULAR_BOND_PARAMETER::getPairCorrelation() const{
+    return pairCorrelation;
+}
+
+vector<int> ANGULAR_BOND_PARAMETER::getErroneousParticles() const{
+    return erroneousParticles;
 }

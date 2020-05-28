@@ -17,8 +17,12 @@ private:
     PAIR_CORRELATION pairCorrelation;
     
     int n;  //integer of angular bond symmetry
+    double cutoffRadius;
     
     double angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2);
+    
+    //warnings
+    vector<int> erroneousParticles;
     
 public:
     ANGULAR_BOND_PARAMETER();
@@ -29,12 +33,16 @@ public:
     
     double calculateForSingleParticle(int i);
     double calculateAverageOverAllParticles();
+    double calculateCutoffRadius();
     
     //setter
     ANGULAR_BOND_PARAMETER& setN(int n);
     
     //getter
     int getN() const;
+    double getCutoffRadius() const;
+    PAIR_CORRELATION getPairCorrelation() const;
+    vector<int> getErroneousParticles() const;
 };
 
 

@@ -19,7 +19,6 @@ private:
     vector<double> radius;
     vector<double> correlationFunction;
     
-    double calculateMeanCorrelation();
     int findNextUpCrossing(int pos, double threshold, int averageRange);
     int findNextDownCrossing(int pos, double threshold, int averageRange);
     int findLastUpCrossing(int pos, double threshold, int posMax);
@@ -33,6 +32,8 @@ public:
     
     PAIR_CORRELATION& calculate();
     double findPositionOfMinimum(int n, int smoothRange = 0, double lowerBound = 0);
+    
+    double calculateMeanCorrelation();
     
     //getter
     double getMaximalRadius() const;

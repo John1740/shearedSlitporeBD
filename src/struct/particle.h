@@ -9,7 +9,9 @@ public:
     CARTESIAN_COORDINATE position;
     CARTESIAN_COORDINATE boxPosition;
 
+    int index;
     double diameter;
+    int species;
 
     PARTICLE();
     PARTICLE(const CARTESIAN_COORDINATE& positionIN);

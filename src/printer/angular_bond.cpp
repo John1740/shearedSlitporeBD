@@ -33,7 +33,17 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
     *this << format(format_f.c_str()) % sys.getCurrentShearRate();
     ANGULAR_BOND_PARAMETER psi(sys, 4);
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
+    vector<int> erroneousParticles = psi.getErroneousParticles();
+    if(erroneousParticles.size() > 0){
+        for(int i = 0; i < erroneousParticles.size(); i++){
+            cout << "erroneous particles in timestep " << sys.getTimestep() << ": " << erroneousParticles[i] << endl;
+        }
+        fs::create_directory("snapshots");  //implement this within printer class
+        sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);
+    }
     psi.setN(6);
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
+    *this << format(format_f.c_str()) % psi.getCutoffRadius();
+    *this << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation();
     *this << '\n';
 }

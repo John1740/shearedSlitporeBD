@@ -3,17 +3,25 @@
 PARTICLE::PARTICLE(){
     position = CARTESIAN_COORDINATE(0.);
     boxPosition = CARTESIAN_COORDINATE(0.);
-    diameter = 1.;
+    diameter = 1;
+    species = 0;
+    index = 0;
 }
 
 PARTICLE::PARTICLE(const CARTESIAN_COORDINATE &positionIN){
     position = positionIN;
     boxPosition = CARTESIAN_COORDINATE(0.);
+    diameter = 1;
+    species = 0;
+    index = 0;
 }
 
 PARTICLE::PARTICLE(const PARTICLE &other){
     position = other.position;
     boxPosition = other.boxPosition;
+    diameter = other.diameter;
+    species = other.species;
+    index = other.index;
 }
 
 CARTESIAN_COORDINATE PARTICLE::getPosition() const{

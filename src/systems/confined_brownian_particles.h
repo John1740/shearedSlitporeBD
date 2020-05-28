@@ -44,8 +44,8 @@ protected:
 
     int numberOfParticles = NUMBER_OF_PARTICLES;
     
-    double density = DENSITY;
-    double dWall = D_WALL;
+//    double density = DENSITY;
+//    double dWall = D_WALL;
 
     long timestep = 0;
     double dt = DELTA_T;
@@ -66,6 +66,9 @@ protected:
     // Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
     virtual void setPositionInBox();
+    
+    // Non-Public File-Handling
+    virtual CONFINED_BROWNIAN_PARTICLES& readParticlesFromFile(string filename, bool addMissingInfo = false);
 
 public:
     CONFINED_BROWNIAN_PARTICLES();
@@ -87,6 +90,7 @@ public:
     // getter
     long getTimestep() const;
     virtual double getTimeStepSize();
+    double getDensity() const;
     virtual double getInteractionLengthScale();
     virtual vector<CARTESIAN_COORDINATE> getPositionList();
     virtual vector<CHARGED_PARTICLE> getParticleList();

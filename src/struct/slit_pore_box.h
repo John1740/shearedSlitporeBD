@@ -33,8 +33,9 @@ public:
 
     CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN);
     
-    //file handling
+    //file/stream-handling
     friend ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox);
+    SLIT_PORE_BOX& readFromFile(string filename);
 };
 
 #endif // SLIT_PORE_BOX_H

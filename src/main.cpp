@@ -50,6 +50,7 @@ int main(int argc, const char *argv[]){
 
     // initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);
+    sys.writeConfigurationToFile("configuration.in.new", true);
 
     if(args.dryRun){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
@@ -80,11 +81,10 @@ int main(int argc, const char *argv[]){
         if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
-            sys.writeConfigurationToFileOld("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }
-    sys.writeConfigurationToFileOld("configuration.out");
-    sys.writeConfigurationToFile("configurationNew.out");
+    sys.writeConfigurationToFile("configuration.out");
     if(args.printStress > 0){
         printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
     }

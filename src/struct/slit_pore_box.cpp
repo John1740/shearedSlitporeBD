@@ -1,5 +1,8 @@
 #include "slit_pore_box.h"
 #include <boost/format.hpp>
+#include <fstream>
+#include <experimental/filesystem>
+namespace fs = experimental::filesystem;
 namespace bo = boost;
 
 SLIT_PORE_BOX::SLIT_PORE_BOX(){
@@ -87,4 +90,40 @@ ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox){
     os << bo::format(fmt) % (simBox.getOrigin().z + simBox.getDimensions().z / 2);
     os << '\n';
     return os;
+}
+
+SLIT_PORE_BOX& SLIT_PORE_BOX::readFromFile(string filename){
+    //check for existance
+    if(fs::exists(filename) == false){
+        cout << filename << " is missing!" << endl;
+        exit(0);
+    }
+    
+    ifstream f;
+    f.open(filename.c_str());
+    double c1, c2;  //containers
+    string line;
+    bool success = false;
+    while(getline(f, line)){
+        if(line.find("BOX BOUNDS xx yy zz") != string::npos){
+            f >> c1 >> c2;
+            dimensions.x = c2 - c1;
+            origin.x = (c1 + c2) / 2;
+            f >> c1 >> c2;
+            dimensions.y = c2 - c1;
+            origin.y = (c1 + c2) / 2;
+            f >> c1 >> c2;
+            dimensions.z = c2 - c1;
+            origin.z = (c1 + c2) / 2;
+            setVolume();
+            success = true;
+        }
+    }
+    f.close();
+    if(!success || volume <= 0){
+        cout << "Simulation box boundaries within " + filename + " not valid. Please set accordingly with:" << endl;
+        cout << "ITEM: BOX BOUNDS xx yy zz\nxMin xMax\nyMin yMax\nzMin zMax" << endl;
+        exit(0);
+    }
+    return *this;
 }

@@ -1,4 +1,6 @@
 #include "slit_pore_box.h"
+#include <boost/format.hpp>
+namespace bo = boost;
 
 SLIT_PORE_BOX::SLIT_PORE_BOX(){
     setLengthAndDWall(1., D_WALL);
@@ -64,7 +66,7 @@ CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition(CARTESIAN_COORDINATE &p
     return boxPosition;
 }
 
-CARTESIAN_COORDINATE SLIT_PORE_BOX::getOrigin(){
+CARTESIAN_COORDINATE SLIT_PORE_BOX::getOrigin() const{
     return origin;
 }
 
@@ -72,3 +74,17 @@ void SLIT_PORE_BOX::setOrigin(CARTESIAN_COORDINATE origin){
     this->origin = origin;
 }
 
+ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox){
+    const char* fmt = "% 2.5f\t";
+    os << "ITEM: BOX BOUNDS xx yy zz\n";
+    os << bo::format(fmt) % (simBox.getOrigin().x - simBox.getDimensions().x / 2);
+    os << bo::format(fmt) % (simBox.getOrigin().x + simBox.getDimensions().x / 2);
+    os << '\n';
+    os << bo::format(fmt) % (simBox.getOrigin().y - simBox.getDimensions().y / 2);
+    os << bo::format(fmt) % (simBox.getOrigin().y + simBox.getDimensions().y / 2);
+    os << '\n';
+    os << bo::format(fmt) % (simBox.getOrigin().z - simBox.getDimensions().z / 2);
+    os << bo::format(fmt) % (simBox.getOrigin().z + simBox.getDimensions().z / 2);
+    os << '\n';
+    return os;
+}

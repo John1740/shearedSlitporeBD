@@ -28,10 +28,13 @@ public:
 
     //getter functions
     CARTESIAN_COORDINATE getDimensions() const;
-    CARTESIAN_COORDINATE getOrigin();
+    CARTESIAN_COORDINATE getOrigin() const;
     double getVolume() const;
 
     CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN);
+    
+    //file handling
+    friend ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox);
 };
 
 #endif // SLIT_PORE_BOX_H

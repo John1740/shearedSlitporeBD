@@ -84,6 +84,7 @@ int main(int argc, const char *argv[]){
         }
     }
     sys.writeConfigurationToFileOld("configuration.out");
+    sys.writeConfigurationToFile("configurationNew.out");
     if(args.printStress > 0){
         printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
     }

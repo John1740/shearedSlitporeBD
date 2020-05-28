@@ -22,8 +22,8 @@ public:
     double distanceTo(PARTICLE& other);
     double distanceTo(CARTESIAN_COORDINATE& positionIN);
 
-    double boxDistanceTo(PARTICLE& other);
-    double boxDistanceTo(CARTESIAN_COORDINATE& positionIN);
+    double boxDistanceTo(PARTICLE& other, BOX_GEOMETRY& boxGeom);
+    double boxDistanceTo(CARTESIAN_COORDINATE& positionIN, BOX_GEOMETRY& boxGeom);
 
     void setBoxPosition(BOX_GEOMETRY& boxGeom);
 

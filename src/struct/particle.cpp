@@ -41,15 +41,17 @@ double PARTICLE::distanceTo(CARTESIAN_COORDINATE &positionIN){
 }
 
 //needs the simulation box information
-double PARTICLE::boxDistanceTo(PARTICLE &other){
+double PARTICLE::boxDistanceTo(PARTICLE &other, BOX_GEOMETRY& boxGeom){
     CARTESIAN_COORDINATE difference;
     difference = boxPosition - other.boxPosition;
+    difference = boxGeom.convertToBoxPosition(difference);
     return difference.getAbs();
 }
 
-double PARTICLE::boxDistanceTo(CARTESIAN_COORDINATE &positionIN){
+double PARTICLE::boxDistanceTo(CARTESIAN_COORDINATE &positionIN, BOX_GEOMETRY& boxGeom){
     CARTESIAN_COORDINATE difference;
     difference = boxPosition - positionIN;
+    difference = boxGeom.convertToBoxPosition(difference);
     return difference.getAbs();
 }
 

@@ -5,19 +5,6 @@
 #include "angular_bond_parameter.h"
 #include <complex>
 
-double ANGULAR_BOND_PARAMETER::angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2){
-    CARTESIAN_COORDINATE relative = particle2.boxPosition - particle1.boxPosition;
-    relative = simBox.convertToBoxPosition(relative);
-    double angle;
-    if(relative.y >= 0){
-        angle = acos(relative.x / relative.getAbs());
-    }
-    else{
-        angle = 2 * M_PI - acos(relative.x / relative.getAbs());
-    }
-    return angle;
-}
-
 ANGULAR_BOND_PARAMETER::ANGULAR_BOND_PARAMETER(){
 
 }
@@ -36,7 +23,7 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     particle = sys.getParticleList();
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
-    pairCorrelation = PAIR_CORRELATION(sys, 0.01);
+    pairCorrelation = PAIR_CORRELATION(sys, 0.05);
     pairCorrelation.calculate();
     erroneousParticles.clear();
     return *this;
@@ -66,6 +53,7 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
 double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
     double average = 0;
     int counter = 0;
+    erroneousParticles.clear();
     calculateCutoffRadius();
     for(int i = 0; i < particle.size(); i++){
         double increment = calculateForSingleParticle(i);
@@ -76,11 +64,23 @@ double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
         }
         else{
             erroneousParticles.push_back(i);
-//            cout << "Angular bond parameter of particle " << i << " is nan! It appears to have no adjacent particles." << endl;
         }
     }
     average /= counter;
     return average;
+}
+
+double ANGULAR_BOND_PARAMETER::angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2){
+    CARTESIAN_COORDINATE relative = particle2.boxPosition - particle1.boxPosition;
+    relative = simBox.convertToBoxPosition(relative);
+    double angle;
+    if(relative.y >= 0){
+        angle = acos(relative.x / relative.getAbs());
+    }
+    else{
+        angle = 2 * M_PI - acos(relative.x / relative.getAbs());
+    }
+    return angle;
 }
 
 ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setN(int n){
@@ -93,7 +93,7 @@ int ANGULAR_BOND_PARAMETER::getN() const{
 }
 
 double ANGULAR_BOND_PARAMETER::calculateCutoffRadius(){
-    cutoffRadius = pairCorrelation.findPositionOfMinimum(1, 5);
+    cutoffRadius = pairCorrelation.findPositionOfMinimum(1, 0);
     return cutoffRadius;
 }
 

@@ -1,7 +1,7 @@
 #include "sheared_slitpore_system.h"
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    prepareSystem();
+//    prepareSystem();
 }
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
@@ -12,9 +12,10 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     oscillationPeriod = args.oscillationPeriod;
     currentShearRate = calculateCurrentShearRate();
     
-    swf = SOFT_WALL_FORCE(args);
-    dlvo = DLVO_SOFTSPHERE_INTERACTION(args);
-
+    swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
+    dlvo = DLVO_SOFTSPHERE_INTERACTION();
+    dlvo.ssInteractionStrength = args.ssInteractionStrength;
+    
     prepareSystem();
 }
 
@@ -22,6 +23,12 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
+    
+    dlvo.charge1 = particle[0].charge;
+    dlvo.charge2 = particle[0].charge;
+    dlvo.diameter1 = particle[0].diameter;
+    dlvo.diameter2 = particle[0].diameter;
+    dlvo.density = getDensity();
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
     reset();
@@ -87,14 +94,10 @@ double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTI
     return swf.energyOnParticle(particle);
 }
 
-void SHEARED_SLITPORE_SYSTEM::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
-    particle = particleListIn; //copy particleList
-    for(int i = 0; i < numberOfParticles; ++i){ //add some more info to each particle
-        particle[i].diameter = swf.diameter;
-        particle[i].charge = dlvo.charge1;
-    }
-    setPositionInBox();
-}
+//void SHEARED_SLITPORE_SYSTEM::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
+//    particle = particleListIn; //copy particleList
+//    setPositionInBox();
+//}
 
 void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     CARTESIAN_COORDINATE tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);

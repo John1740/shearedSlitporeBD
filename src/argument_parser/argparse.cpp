@@ -24,11 +24,11 @@ void ARGUMENT_PARSER::addOptions() {
             ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset")
             ("amplitude,a", po::value<double>()->default_value(SHEAR_RATE), "shear rate amplitude")
             ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD), "shear rate oscillation period (in units of Brownian time)")
-            ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (z-direction)")
-            ("density,d", po::value<double>()->default_value(DENSITY), "density")
-            ("numberOfParticles,n", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
-            ("charge,Z", po::value<int>()->default_value(CHARGE), "total charge")
-            ("diameter", po::value<double>()->default_value(DIAMETER), "diameter of particles")
+//            ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (z-direction)")
+//            ("density,d", po::value<double>()->default_value(DENSITY), "density")
+//            ("numberOfParticles,n", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
+//            ("charge,Z", po::value<int>()->default_value(CHARGE), "total charge")
+//            ("diameter", po::value<double>()->default_value(DIAMETER), "diameter of particles")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "strength of softsphere interaction")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
             ("dt", po::value<double>()->default_value(DELTA_T), "length of timestep")
@@ -52,11 +52,11 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.amplitude = variablesMap["amplitude"].as<double>();
     args.oscillationPeriod = variablesMap["period"].as<double>();
-    args.dWall = variablesMap["dWall"].as<double>();
-    args.density = variablesMap["density"].as<double>();
-    args.numberOfParticles = variablesMap["numberOfParticles"].as<int>();
-    args.charge = variablesMap["charge"].as<int>();
-    args.diameter = variablesMap["diameter"].as<double>();
+//    args.dWall = variablesMap["dWall"].as<double>();
+//    args.density = variablesMap["density"].as<double>();
+//    args.numberOfParticles = variablesMap["numberOfParticles"].as<int>();
+//    args.charge = variablesMap["charge"].as<int>();
+//    args.diameter = variablesMap["diameter"].as<double>();
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
     args.dt = variablesMap["dt"].as<double>();

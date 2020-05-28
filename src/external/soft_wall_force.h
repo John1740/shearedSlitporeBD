@@ -13,12 +13,13 @@ private:
 public:
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
     double zPosition = 0.;
-    double diameter = DIAMETER;
+//    double diameter = DIAMETER;
     double dWall = D_WALL;
 
     //constructors
     SOFT_WALL_FORCE();
-    SOFT_WALL_FORCE(const ARGUMENTS& args);
+//    SOFT_WALL_FORCE(const ARGUMENTS& args);
+    SOFT_WALL_FORCE(double wallInteractionStrength, double dWall);
 
     CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle);
     double energyOnParticle(PARTICLE& particle);

@@ -4,11 +4,9 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
     calculateInteractionParameters();
 }
 
+//not needed?
 DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS &args) {
     ssInteractionStrength = args.ssInteractionStrength;
-    charge1 = args.charge;
-    diameter1 = args.diameter;
-    density = args.density;
 
     calculateInteractionParameters();
 }

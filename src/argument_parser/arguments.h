@@ -20,12 +20,12 @@ public:
     double amplitude = AMPLITUDE;
     double oscillationPeriod = OSCILLATION_PERIOD;
 
-    double dWall = D_WALL;
-    double density = DENSITY;
-    int numberOfParticles = NUMBER_OF_PARTICLES;
+//    double dWall = D_WALL;
+//    double density = DENSITY;
+//    int numberOfParticles = NUMBER_OF_PARTICLES;
 
-    int charge = CHARGE;
-    double diameter = DIAMETER;
+//    int charge = CHARGE;
+//    double diameter = DIAMETER;
 
     double dt = DELTA_T;
     double temperature = TEMPERATURE;

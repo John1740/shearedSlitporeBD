@@ -38,7 +38,7 @@ protected:
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
     
-    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
+//    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
 
     virtual void addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j);
     virtual void addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i);

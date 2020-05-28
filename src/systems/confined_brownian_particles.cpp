@@ -12,7 +12,7 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) 
     density = args.density;
     dWall = args.dWall;
     
-    readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
+    readConfigurationFromFileOld(configurationIn, true); //reads (or creates) simBox and particle positions
     dt = args.dt;
     T = args.temperature;
     D0 = args.D0;
@@ -124,7 +124,7 @@ double CONFINED_BROWNIAN_PARTICLES::getTimeStepSize(){
     return dt;
 }
 
-void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool verbose){
+void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFileOld(string filename, bool verbose){
 //    PRINTER printer(configurationOut);
 //    printer.reset();
 //    for(int i = 0; i < particle.size(); ++i){
@@ -160,93 +160,93 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool createIfMissing, bool verbose){
-        //check for existance
-        if(fs::exists(filename) == false){
-            if(createIfMissing){
-                cout << configurationIn << " does not exist!" << endl;
-                setInitialConfigurationForLayersWithSides();
-                writeConfigurationToFile(configurationIn, false);
-                cout << "Set initial configuration and printed to: " << configurationIn << endl;
-                return;
-            }
-            else{
-                cout << configurationIn << " is missing!" << endl;
-                exit(0);
-            }
+void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFileOld(string filename, bool createIfMissing, bool verbose){
+    //check for existance
+    if(fs::exists(filename) == false){
+        if(createIfMissing){
+            cout << configurationIn << " does not exist!" << endl;
+            setInitialConfigurationForLayersWithSides();
+            writeConfigurationToFileOld(configurationIn, false);
+            cout << "Set initial configuration and printed to: " << configurationIn << endl;
+            return;
         }
-        
-        ifstream f;
-        f.open(filename.c_str());
-        
-        vector<CHARGED_PARTICLE> particleIn;
-        SLIT_PORE_BOX simBoxIn;
-        particleIn.clear();
-        
-        double c1, c2, c3;  //containers
-        CHARGED_PARTICLE newParticle;
-        string line;
-        
-        //reset metadata (and throw error if essential data is missing in file)
-        timestep = 0;
-        numberOfParticles = 0;
-        simBox.setDimensions(0);
-        
-        //read header/metadata
-        while(getline(f, line)){
-            if(line.find("TIMESTEP") != string::npos){
-                getline(f, line);
-                timestep = stol(line);
-            }
-            else if(line.find("NUMBER OF ATOMS") != string::npos){
-                getline(f, line);
-                numberOfParticles = stoi(line);
-            }
-            else if(line.find("BOX BOUNDS xx yy zz") != string::npos){
-                CARTESIAN_COORDINATE boxDimensions;
-                f >> c1 >> c2;
-                boxDimensions.x = c2 - c1;
-                f >> c1 >> c2;
-                boxDimensions.y = c2 - c1;
-                f >> c1 >> c2;
-                boxDimensions.z = c2 - c1;
-                simBox.setDimensions(boxDimensions);
-            }
-            else if(line.find("ATOMS x y z") != string::npos){
-                break;
-            }
-        }
-        
-        // error messages (metadata)
-        if(numberOfParticles == 0){
-            cout << "numberOfParticles within " + filename + " not valid. Please set accordingly with:" << endl;
-            cout << "ITEM: NUMBER OF ATOMS\n<numberOfParticles>" << endl;
+        else{
+            cout << configurationIn << " is missing!" << endl;
             exit(0);
         }
-        else if(simBox.getVolume() <= 0){
-            cout << "Simulation box boundaries within " + filename + " not valid. Please set accordingly with:" << endl;
-            cout << "ITEM: BOX BOUNDS xx yy zz\nxMin xMax\nyMin yMax\nzMin zMax" << endl;
-            exit(0);
-        }
-        
-        dWall = simBox.getDimensions().z;
-        density = numberOfParticles / simBox.getVolume();
-        
-        //read particle positions
-        while(f >> c1 >> c2 >> c3){
-            newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
-            particleIn.push_back(newParticle);
-        }
-        
-        if(verbose){
-            cout << "Read " << filename << " successfully!" << endl;
-        }
-        if(particleIn.size() != numberOfParticles){
-            cout << "Number of particles deviates from expected number: ";
-            cout << particleIn.size() << " != " << numberOfParticles << endl;
-        }
-        setParticleList(particleIn);
     }
+    
+    ifstream f;
+    f.open(filename.c_str());
+    
+    vector<CHARGED_PARTICLE> particleIn;
+    SLIT_PORE_BOX simBoxIn;
+    particleIn.clear();
+    
+    double c1, c2, c3;  //containers
+    CHARGED_PARTICLE newParticle;
+    string line;
+    
+    //reset metadata (and throw error if essential data is missing in file)
+    timestep = 0;
+    numberOfParticles = 0;
+    simBox.setDimensions(0);
+    
+    //read header/metadata
+    while(getline(f, line)){
+        if(line.find("TIMESTEP") != string::npos){
+            getline(f, line);
+            timestep = stol(line);
+        }
+        else if(line.find("NUMBER OF ATOMS") != string::npos){
+            getline(f, line);
+            numberOfParticles = stoi(line);
+        }
+        else if(line.find("BOX BOUNDS xx yy zz") != string::npos){
+            CARTESIAN_COORDINATE boxDimensions;
+            f >> c1 >> c2;
+            boxDimensions.x = c2 - c1;
+            f >> c1 >> c2;
+            boxDimensions.y = c2 - c1;
+            f >> c1 >> c2;
+            boxDimensions.z = c2 - c1;
+            simBox.setDimensions(boxDimensions);
+        }
+        else if(line.find("ATOMS x y z") != string::npos){
+            break;
+        }
+    }
+    
+    // error messages (metadata)
+    if(numberOfParticles == 0){
+        cout << "numberOfParticles within " + filename + " not valid. Please set accordingly with:" << endl;
+        cout << "ITEM: NUMBER OF ATOMS\n<numberOfParticles>" << endl;
+        exit(0);
+    }
+    else if(simBox.getVolume() <= 0){
+        cout << "Simulation box boundaries within " + filename + " not valid. Please set accordingly with:" << endl;
+        cout << "ITEM: BOX BOUNDS xx yy zz\nxMin xMax\nyMin yMax\nzMin zMax" << endl;
+        exit(0);
+    }
+    
+    dWall = simBox.getDimensions().z;
+    density = numberOfParticles / simBox.getVolume();
+    
+    //read particle positions
+    while(f >> c1 >> c2 >> c3){
+        newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
+        particleIn.push_back(newParticle);
+    }
+    
+    if(verbose){
+        cout << "Read " << filename << " successfully!" << endl;
+    }
+    if(particleIn.size() != numberOfParticles){
+        cout << "Number of particles deviates from expected number: ";
+        cout << particleIn.size() << " != " << numberOfParticles << endl;
+    }
+    setParticleList(particleIn);
+}
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
     particle = particleListIn;
@@ -324,11 +324,4 @@ void CONFINED_BROWNIAN_PARTICLES::setTimestep(long timestepIn){
 
 long CONFINED_BROWNIAN_PARTICLES::getTimestep() const{
     return timestep;
-}
-
-//probably not necessary
-vector<double> CONFINED_BROWNIAN_PARTICLES::calculateRadialPairCorrelationFunction(double dr){
-    PAIR_CORRELATION pairCorrelation(*this, dr);
-    pairCorrelation.calculate();
-    return pairCorrelation.getPairCorrelations();
 }

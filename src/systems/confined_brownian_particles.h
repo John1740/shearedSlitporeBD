@@ -52,10 +52,10 @@ protected:
     double T = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
 
-//     Allow Children to modify simulation box
+    // Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();
 
-//     Solve Equation of Motion
+    // Solve Equation of Motion
     virtual void equationOfMotion();
     virtual void calculateForce();
     virtual void reset();
@@ -63,7 +63,7 @@ protected:
     virtual void calculateExternalForce(int i);
     virtual CARTESIAN_COORDINATE getRandomDisplacement();
 
-//     Non-Public Set-Functions
+    // Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
     virtual void setPositionInBox();
 
@@ -74,18 +74,17 @@ public:
 
     virtual void simulateForSteps(int maxSteps);
 
-//     Two-Body and External Forces
+    // Two-Body and External Forces
     virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
 
-//     Set-Functions
+    // setter
     void setTimestep(long timestepIn);
     virtual void setTimeStepSize(double timeStepSizeIn, bool verbose=false);
-    virtual void setInitialConfigurationForLayersWithSides();
 
-//     Get-Functions
+    // getter
     long getTimestep() const;
     virtual double getTimeStepSize();
     virtual double getInteractionLengthScale();
@@ -97,12 +96,14 @@ public:
     vector<CARTESIAN_COORDINATE> getVelocities();
     CARTESIAN_COORDINATE getMeanVelocity();
     vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
-    
-    vector<double> calculateRadialPairCorrelationFunction(double dr = 0.01);
 
-//     File-Handling
-    virtual void readConfigurationFromFile(string filename, bool createIfMissing=false, bool verbose=true);
-    virtual void writeConfigurationToFile(string filename, bool verbose=true);
+    // Initial configuration generation
+//    virtual void generateInitialConfiguration();
+    virtual void setInitialConfigurationForLayersWithSides();
+    
+    // File-Handling
+    virtual void readConfigurationFromFileOld(string filename, bool createIfMissing= false, bool verbose= true);
+    virtual void writeConfigurationToFileOld(string filename, bool verbose= true);
 };
 
 #endif // BROWNIAN_PARTICLES_H

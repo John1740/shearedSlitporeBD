@@ -80,10 +80,10 @@ int main(int argc, const char *argv[]){
         if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
             //save particle positions to file
             fs::create_directory("snapshots");  //implement this within printer class
-            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+            sys.writeConfigurationToFileOld("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }
-    sys.writeConfigurationToFile("configuration.out");
+    sys.writeConfigurationToFileOld("configuration.out");
     if(args.printStress > 0){
         printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
     }

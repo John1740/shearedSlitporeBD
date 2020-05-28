@@ -32,7 +32,7 @@ int main(int argc, const char *argv[]){
     cout << "#Generated from: " << filename << endl;
     
     CONFINED_BROWNIAN_PARTICLES sys;
-    sys.readConfigurationFromFile(filename, false, false);
+    sys.readConfigurationFromFileOld(filename, false, false);
     PAIR_CORRELATION pairCorrelation(sys, 0.01);
     pairCorrelation.calculate();
     cout << pairCorrelation;

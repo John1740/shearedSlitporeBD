@@ -68,15 +68,15 @@ int main(int argc, const char *argv[]){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
             printf("Progress: %.1f%% (timestep %ld)\n", 100 * i / float(args.totalNumberOfTimesteps), sys.getTimestep());
         }
+        if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
+            angularBond.printLine(sys);
+        }
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();
         }
         if(args.printVelocity > 0 && i % args.printVelocity == 0 && i > 0){
             velocity.printLine();
-        }
-        if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
-            angularBond.printLine(sys);
         }
         if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
             //save particle positions to file

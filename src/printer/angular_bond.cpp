@@ -47,8 +47,7 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
         cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getCutoffRadius() << "[diameter]" << endl;
         cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation() << "[1/diameter]" << endl;
         cout << endl;
-        fs::create_directory("snapshots");  //implement this within printer class
-        sys.writeConfigurationToFileOld("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);
+        sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);
         psi.getPairCorrelation().print("pairCorrelations/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
     }
     *this << '\n';

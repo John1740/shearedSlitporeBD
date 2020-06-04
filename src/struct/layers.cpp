@@ -39,6 +39,7 @@ void LAYERS::setZMin(const SLIT_PORE_BOX& simBox){
 
 double LAYERS::calculateLayerThickness(){
     layerThickness = - 2 * zMin / (numberOfLayers - 1);
+    return layerThickness;
 }
 
 vector<double> LAYERS::calculateLayerCenters(){

@@ -37,14 +37,14 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
     
     //error outputs
-    vector<int> erroneousParticles = psi.getErroneousParticles();
+    vector<int> erroneousParticles = psi.getIsolatedParticles();
     if(erroneousParticles.size() > 0){
         cout << "erroneous particles in timestep " << sys.getTimestep() << ": ";
         for(int i = 0; i < erroneousParticles.size(); i++){
             cout << erroneousParticles[i] << " ";
         }
         cout << endl;
-        cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getCutoffRadius() << "[diameter]" << endl;
+        cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
         cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation() << "[1/diameter]" << endl;
         cout << endl;
         sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);

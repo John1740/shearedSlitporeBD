@@ -29,4 +29,12 @@
 
 * `cmake .` (use `-B <build_path>` to specify a build directory, `cd <build_path>` after that)
 * `make`
+* an example installation bash script is given in `install.sh` (`chmod +x install.sh` to make it executable)
 * executable lies in folder `bin`, add it to the `PATH`-variable
+
+### Troubleshooting
+
+* `cmake` uses the `cc`-binary, which is not given by newer GCC versions; set the `CC` and `CXX`
+environment variables to solve this issue: `export CC=<path/to/gcc>`, `export CXX=<path/to/g++>`
+(for example in `~/.bashrc`)
+    * remove any files in the `build`-directory before trying to reinstall

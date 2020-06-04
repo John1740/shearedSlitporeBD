@@ -25,14 +25,12 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     layers = LAYERS(simBox);
     pairCorrelation = PAIR_CORRELATION(sys, 0.05);
     pairCorrelation.calculate();
-    erroneousParticles.clear();
+    isolatedParticles.clear();
     return *this;
 }
 
-double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
-    complex<double> psi = 0;
-    complex<double> I(0, 1);
-    int numberOfNeighbors = 0;
+vector<int> ANGULAR_BOND_PARAMETER::getNeighborIndices(int i){
+    vector<int> neighborIndices;
     for(int j = 0; j < particle.size(); j++){
         if(i == j){
             continue;
@@ -40,30 +38,48 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
         if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
             CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
             distance = simBox.convertToBoxPosition(distance);
-            if(distance.getAbs() < cutoffRadius){
-                double angle = angleBetweenParticles(particle[i], particle[j]);
-                psi += exp(I * double(n) * angle);
-                numberOfNeighbors++;
+            if(distance.getAbs() <= nextNeighborShellRadius){
+                neighborIndices.push_back(j);
             }
         }
     }
-    return abs(psi) / numberOfNeighbors;
+    return neighborIndices;
+}
+
+double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
+    complex<double> psi = 0;
+    complex<double> I(0, 1);
+    vector<int> neighborIndices = getNeighborIndices(i);
+    for(int j = 0; j < neighborIndices.size(); j++){
+        double angle = angleBetweenParticles(particle[i], particle[neighborIndices[j]]);
+        psi += exp(I * double(n) * angle);
+    }
+    if(neighborIndices.size() > 0){
+        return abs(psi) / neighborIndices.size();
+    }
+    else{
+        //penalty in case neighbors are too far away ->
+        return 0;
+    }
 }
 
 double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
     double average = 0;
     int counter = 0;
-    erroneousParticles.clear();
-    calculateCutoffRadius();
+    isolatedParticles.clear();
+    calculateNextNeighborShellRadius();
     for(int i = 0; i < particle.size(); i++){
         double increment = calculateForSingleParticle(i);
         //ignore particles which have no adjacent particles (should only happen at low densities)
-        if(! isnan(increment)){
-            average += increment;
-            counter++;
+        if(isnan(increment)){
+            isolatedParticles.push_back(i);
+            cout << "calculateForSingleParticle(" << i << ") = nan" << endl;
+            continue;
         }
-        else{
-            erroneousParticles.push_back(i);
+        average += increment;
+        counter++;
+        if(increment == 0){
+            isolatedParticles.push_back(i);
         }
     }
     average /= counter;
@@ -92,19 +108,19 @@ int ANGULAR_BOND_PARAMETER::getN() const{
     return n;
 }
 
-double ANGULAR_BOND_PARAMETER::calculateCutoffRadius(){
-    cutoffRadius = pairCorrelation.findPositionOfMinimum(1, 0);
-    return cutoffRadius;
+double ANGULAR_BOND_PARAMETER::calculateNextNeighborShellRadius(){
+    nextNeighborShellRadius = pairCorrelation.findPositionOfMinimum(1, 0);
+    return nextNeighborShellRadius;
 }
 
-double ANGULAR_BOND_PARAMETER::getCutoffRadius() const{
-    return cutoffRadius;
+double ANGULAR_BOND_PARAMETER::getNextNeighborShellRadius() const{
+    return nextNeighborShellRadius;
 }
 
 PAIR_CORRELATION ANGULAR_BOND_PARAMETER::getPairCorrelation() const{
     return pairCorrelation;
 }
 
-vector<int> ANGULAR_BOND_PARAMETER::getErroneousParticles() const{
-    return erroneousParticles;
+vector<int> ANGULAR_BOND_PARAMETER::getIsolatedParticles() const{
+    return isolatedParticles;
 }

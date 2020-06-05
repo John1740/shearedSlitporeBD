@@ -79,8 +79,6 @@ int main(int argc, const char *argv[]){
             velocity.printLine();
         }
         if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
-            //save particle positions to file
-            fs::create_directory("snapshots");  //implement this within printer class
             sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }

@@ -6,19 +6,19 @@
 #include "pair_correlation.h"
 namespace b = boost;
 
-PAIR_CORRELATION::PAIR_CORRELATION(){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(){
 
 }
 
-PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys){
     setup(sys, 0.01);
 }
 
-PAIR_CORRELATION::PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     setup(sys, dr);
 }
 
-PAIR_CORRELATION& PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     maximalRadius = (simBox.getDimensions() / 2).getAbs();
@@ -27,14 +27,15 @@ PAIR_CORRELATION& PAIR_CORRELATION::setup(CONFINED_BROWNIAN_PARTICLES& sys, doub
     return *this;
 }
 
-PAIR_CORRELATION& PAIR_CORRELATION::calculate(){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculate(){
     int numberOfLayers = layers.getNumberOfLayers();
     int numberOfParticles = particle.size();
     for(int i = 0; i < numberOfParticles; i++){
         for(int j = i + 1; j < numberOfParticles; j++){
-            CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
-            distance = simBox.convertToBoxPosition(distance);
-            double currentRadius = distance.getAbs();
+            CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
+            relative = simBox.convertToBoxPosition(relative);
+            //distance within layer
+            double currentRadius = sqrt(pow(relative.x, 2.0) + pow(relative.y, 2.0));
             //check if particles are in same layer
             if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
                 //assign current radius to nearest index (only works for intervals starting at 0)
@@ -53,15 +54,15 @@ PAIR_CORRELATION& PAIR_CORRELATION::calculate(){
     return *this;
 }
 
-vector<double> PAIR_CORRELATION::getRadii() const{
+vector<double> INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getRadii() const{
     return radius;
 }
 
-vector<double> PAIR_CORRELATION::getPairCorrelations() const{
+vector<double> INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getPairCorrelations() const{
     return correlationFunction;
 }
 
-PAIR_CORRELATION& PAIR_CORRELATION::setResolution(double dr){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setResolution(double dr){
     this->dr = dr;
     length = int(ceil(maximalRadius / dr));
     radius.clear();
@@ -71,7 +72,7 @@ PAIR_CORRELATION& PAIR_CORRELATION::setResolution(double dr){
     return *this;
 }
 
-PAIR_CORRELATION& PAIR_CORRELATION::print(string filename){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::print(string filename){
     PRINTER printer(filename);
     printer.reset();
     //header
@@ -91,7 +92,7 @@ PAIR_CORRELATION& PAIR_CORRELATION::print(string filename){
     return *this;
 }
 
-ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation){
+ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation){
     cout << "#r: radius [diameter]" << endl;
     cout << "#g(r): in-plane radial pair correlation function [1/diameter]" << endl;
     cout << "#" << b::format("%7s") % "r";
@@ -107,19 +108,19 @@ ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation){
     return os;
 }
 
-double PAIR_CORRELATION::getMaximalRadius() const{
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getMaximalRadius() const{
     return maximalRadius;
 }
 
-double PAIR_CORRELATION::getResolution() const{
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getResolution() const{
     return dr;
 }
 
-int PAIR_CORRELATION::getLength() const{
+int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getLength() const{
     return length;
 }
 
-PAIR_CORRELATION& PAIR_CORRELATION::setMaximalRadius(double rMax){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setMaximalRadius(double rMax){
     this->maximalRadius = rMax;
     return *this;
 }
@@ -127,7 +128,7 @@ PAIR_CORRELATION& PAIR_CORRELATION::setMaximalRadius(double rMax){
 //returns location (radius) of the n-th local minimum based on crossings around the average value
 //smoothens crossings by smoothRange * dr
 //only radii above lowerBound are considered
-double PAIR_CORRELATION::findPositionOfMinimum(int n, int smoothRange, double lowerBound){
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findPositionOfMinimum(int n, int smoothRange, double lowerBound){
     double threshold = calculateMeanCorrelation();
     int pos0 = floor(lowerBound / dr);
     int skip = ceil(smoothRange / 2.0);    //need to round up, because findNext...Crossing rounds down
@@ -142,7 +143,7 @@ double PAIR_CORRELATION::findPositionOfMinimum(int n, int smoothRange, double lo
     return minimumPosition;
 }
 
-double PAIR_CORRELATION::calculateMeanCorrelation(){
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateMeanCorrelation(){
     double g_avg = 0;
     int ctr = 0;
     for(int i = 0; i < length; i++){
@@ -159,7 +160,7 @@ double PAIR_CORRELATION::calculateMeanCorrelation(){
 //returns -1 if there is no next up-crossing
 //if there are multiple crossings in quick succession (due to noice), the average value between the first and the last
 //crossing within the range of <averageRange> is returned
-int PAIR_CORRELATION::findNextUpCrossing(int pos, double threshold, int averageRange){
+int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextUpCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
         if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
             int lastUpCrossing = findLastUpCrossing(i, threshold, i + averageRange);
@@ -174,7 +175,7 @@ int PAIR_CORRELATION::findNextUpCrossing(int pos, double threshold, int averageR
     return -1;
 }
 
-int PAIR_CORRELATION::findNextDownCrossing(int pos, double threshold, int averageRange){
+int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextDownCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
         if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){
             int lastDownCrossing = findLastDownCrossing(i, threshold, i + averageRange);
@@ -190,7 +191,7 @@ int PAIR_CORRELATION::findNextDownCrossing(int pos, double threshold, int averag
 }
 
 //returns -1 if there is no up-crossing within [pos, posMax] at all
-int PAIR_CORRELATION::findLastUpCrossing(int pos, double threshold, int posMax){
+int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findLastUpCrossing(int pos, double threshold, int posMax){
     int lastUpCrossing = -1;
     for(int i = pos + 1; i < posMax + 1; i++){
         if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
@@ -201,7 +202,7 @@ int PAIR_CORRELATION::findLastUpCrossing(int pos, double threshold, int posMax){
 }
 
 //returns -1 if there is no down-crossing within [pos, posMax] at all
-int PAIR_CORRELATION::findLastDownCrossing(int pos, double threshold, int posMax){
+int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findLastDownCrossing(int pos, double threshold, int posMax){
     int lastDownCrossing = -1;
     for(int i = pos + 1; i < posMax + 1; i++){
         if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){

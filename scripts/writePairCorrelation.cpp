@@ -33,7 +33,7 @@ int main(int argc, const char *argv[]){
     
     CONFINED_BROWNIAN_PARTICLES sys;
     sys.readConfigurationFromFileOld(filename, false, false);
-    PAIR_CORRELATION pairCorrelation(sys, 0.01);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation(sys, 0.01);
     pairCorrelation.calculate();
     cout << pairCorrelation;
     return 0;

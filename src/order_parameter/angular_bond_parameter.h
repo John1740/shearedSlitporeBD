@@ -14,7 +14,7 @@ private:
     vector<CHARGED_PARTICLE> particle;
     SLIT_PORE_BOX simBox;
     LAYERS layers;
-    PAIR_CORRELATION pairCorrelation;
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation;
     
     int n;  //integer of angular bond symmetry
     double nextNeighborShellRadius;
@@ -42,7 +42,7 @@ public:
     //getter
     int getN() const;
     double getNextNeighborShellRadius() const;
-    PAIR_CORRELATION getPairCorrelation() const;
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION getPairCorrelation() const;
     vector<int> getIsolatedParticles() const;
 };
 

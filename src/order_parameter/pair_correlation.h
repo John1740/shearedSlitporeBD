@@ -8,7 +8,7 @@
 #include "../struct/layers.h"
 #include "../systems/confined_brownian_particles.h"
 
-class PAIR_CORRELATION{
+class INTRA_LAYER_PAIR_CORRELATION_FUNCTION{
 private:
     LAYERS layers;
     SLIT_PORE_BOX simBox;
@@ -24,13 +24,13 @@ private:
     int findLastUpCrossing(int pos, double threshold, int posMax);
     int findLastDownCrossing(int pos, double threshold, int posMax);
 public:
-    PAIR_CORRELATION();
-    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys);
-    PAIR_CORRELATION(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION();
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    PAIR_CORRELATION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    PAIR_CORRELATION& calculate();
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculate();
     double findPositionOfMinimum(int n, int smoothRange = 0, double lowerBound = 0);
     
     double calculateMeanCorrelation();
@@ -43,12 +43,12 @@ public:
     vector<double> getPairCorrelations() const;
     
     //setter
-    PAIR_CORRELATION& setMaximalRadius(double rMax);
-    PAIR_CORRELATION& setResolution(double dr);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setMaximalRadius(double rMax);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setResolution(double dr);
     
     //printer
-    PAIR_CORRELATION& print(string filename);
-    friend ostream& operator<<(ostream& os, const PAIR_CORRELATION& pairCorrelation);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& print(string filename);
+    friend ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation);
 };
 
 #endif //SHEAREDSLITPOREBD_PAIR_CORRELATION_H

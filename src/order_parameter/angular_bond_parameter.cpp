@@ -23,7 +23,7 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     particle = sys.getParticleList();
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
-    pairCorrelation = PAIR_CORRELATION(sys, 0.05);
+    pairCorrelation = INTRA_LAYER_PAIR_CORRELATION_FUNCTION(sys, 0.05);
     pairCorrelation.calculate();
     isolatedParticles.clear();
     return *this;
@@ -36,9 +36,10 @@ vector<int> ANGULAR_BOND_PARAMETER::getNeighborIndices(int i){
             continue;
         }
         if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
-            CARTESIAN_COORDINATE distance = particle[i].boxPosition - particle[j].boxPosition;
-            distance = simBox.convertToBoxPosition(distance);
-            if(distance.getAbs() <= nextNeighborShellRadius){
+            CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
+            relative = simBox.convertToBoxPosition(relative);
+            double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
+            if(distance <= nextNeighborShellRadius){
                 neighborIndices.push_back(j);
             }
         }
@@ -89,12 +90,13 @@ double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
 double ANGULAR_BOND_PARAMETER::angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2){
     CARTESIAN_COORDINATE relative = particle2.boxPosition - particle1.boxPosition;
     relative = simBox.convertToBoxPosition(relative);
+    double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
     double angle;
     if(relative.y >= 0){
-        angle = acos(relative.x / relative.getAbs());
+        angle = acos(relative.x / distance);
     }
     else{
-        angle = 2 * M_PI - acos(relative.x / relative.getAbs());
+        angle = 2 * M_PI - acos(relative.x / distance);
     }
     return angle;
 }
@@ -117,7 +119,7 @@ double ANGULAR_BOND_PARAMETER::getNextNeighborShellRadius() const{
     return nextNeighborShellRadius;
 }
 
-PAIR_CORRELATION ANGULAR_BOND_PARAMETER::getPairCorrelation() const{
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION ANGULAR_BOND_PARAMETER::getPairCorrelation() const{
     return pairCorrelation;
 }
 

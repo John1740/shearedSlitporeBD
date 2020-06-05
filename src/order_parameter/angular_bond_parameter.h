@@ -7,7 +7,7 @@
 
 #include "../systems/confined_brownian_particles.h"
 #include "../struct/layers.h"
-#include "pair_correlation.h"
+#include "intra_layer_pair_correlation_function.h"
 
 class ANGULAR_BOND_PARAMETER{
 private:

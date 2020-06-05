@@ -3,7 +3,7 @@
 //
 
 #include <boost/format.hpp>
-#include "pair_correlation.h"
+#include "intra_layer_pair_correlation_function.h"
 namespace b = boost;
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(){
@@ -21,13 +21,16 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CON
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
-    maximalRadius = (simBox.getDimensions() / 2).getAbs();
+//    maximalRadius = (simBox.getDimensions() / 2).getAbs();
+    maximalRadius = sqrt(pow(simBox.getDimensions().x / 2, 2) + pow(simBox.getDimensions().y / 2, 2));
     setResolution(dr);
     particle = sys.getParticleList();
     return *this;
 }
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculate(){
+    correlationFunction.clear();
+    correlationFunction.resize(length);
     int numberOfLayers = layers.getNumberOfLayers();
     int numberOfParticles = particle.size();
     for(int i = 0; i < numberOfParticles; i++){

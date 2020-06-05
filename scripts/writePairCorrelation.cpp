@@ -4,7 +4,7 @@
 #include <iostream>
 #include "boost/program_options.hpp"
 #include "../src/systems/confined_brownian_particles.h"
-#include "../src/order_parameter/pair_correlation.h"
+#include "../src/order_parameter/intra_layer_pair_correlation_function.h"
 
 using namespace std;
 namespace po = boost::program_options;

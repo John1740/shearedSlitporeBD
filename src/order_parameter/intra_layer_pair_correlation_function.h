@@ -2,8 +2,8 @@
 // Created by mhuels on 5/20/20.
 //
 
-#ifndef SHEAREDSLITPOREBD_PAIR_CORRELATION_H
-#define SHEAREDSLITPOREBD_PAIR_CORRELATION_H
+#ifndef SHEAREDSLITPOREBD_INTRA_LAYER_PAIR_CORRELATION_FUNCTION_H
+#define SHEAREDSLITPOREBD_INTRA_LAYER_PAIR_CORRELATION_FUNCTION_H
 
 #include "../struct/layers.h"
 #include "../systems/confined_brownian_particles.h"
@@ -51,4 +51,4 @@ public:
     friend ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation);
 };
 
-#endif //SHEAREDSLITPOREBD_PAIR_CORRELATION_H
+#endif //SHEAREDSLITPOREBD_INTRA_LAYER_PAIR_CORRELATION_FUNCTION_H

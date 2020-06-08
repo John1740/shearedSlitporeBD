@@ -16,7 +16,6 @@
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
-    cout << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
     CLOCK clock;
     
     ARGUMENT_PARSER parser(argc, argv);
@@ -26,7 +25,7 @@ int main(int argc, const char *argv[]){
         cout << PROJECT_VERSION << endl;
         exit(0);
     }
-
+    cout << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
     cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
     //print version details
@@ -48,9 +47,19 @@ int main(int argc, const char *argv[]){
 
     cout << surroundWithSeparator("System Initialization") << endl;
 
-    // initialize Slitpore System
+    //initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);
     sys.writeConfigurationToFile("configuration.in.new", true);
+    
+    //clear
+    if(args.clear){
+        fs::remove("configuration.in.new");
+        fs::remove(CONFIGURATION_OUT);
+        fs::remove_all(SNAPSHOTS);
+        fs::remove(STRESSES_OUT);
+        fs::remove(VELOCITIES_OUT);
+        fs::remove(ANGULAR_BOND_OUT);
+    }
 
     if(args.dryRun){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
@@ -79,10 +88,17 @@ int main(int argc, const char *argv[]){
             velocity.printLine();
         }
         if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
-            sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+            sys.writeConfigurationToFile(SNAPSHOTS + "/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }
-    sys.writeConfigurationToFile("configuration.out");
+    sys.writeConfigurationToFile(CONFIGURATION_OUT);
+    
+    //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
+    sys.simulateForSteps(1);
+    if(args.printVelocity > 0 && args.totalNumberOfTimesteps > 0 && (args.totalNumberOfTimesteps - 1) % args.printVelocity == 0){
+        velocity.printLine();
+    }
+    
     if(args.printStress > 0){
         printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
     }

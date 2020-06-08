@@ -20,13 +20,6 @@ public:
     double amplitude = AMPLITUDE;
     double oscillationPeriod = OSCILLATION_PERIOD;
 
-//    double dWall = D_WALL;
-//    double density = DENSITY;
-//    int numberOfParticles = NUMBER_OF_PARTICLES;
-
-//    int charge = CHARGE;
-//    double diameter = DIAMETER;
-
     double dt = DELTA_T;
     double temperature = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
@@ -35,12 +28,14 @@ public:
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
     int totalNumberOfTimesteps = TOTAL_NUMBER_OF_TIMESTEPS;
-
+    
     int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
-
+    int printAll = PRINT_ALL;
+    bool clear = CLEAR;
+    
     bool dryRun = false;
     bool printVersion = false;
 

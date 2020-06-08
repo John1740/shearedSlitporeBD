@@ -9,15 +9,13 @@ using namespace boost;
 
 VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     sys = sysIn;
-    printer.setFilename("velocities.out");
-//    printer.reset();
+    printer.setFilename(VELOCITIES_OUT);
     printHeader();
 }
 
 VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename){
     sys = sysIn;
     printer.setFilename(filename);
-//    printer.reset();
     printHeader();
 }
 

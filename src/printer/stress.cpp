@@ -8,7 +8,7 @@ using namespace boost;
 
 STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     sys = sysIn;
-    printer.setFilename("stresses.out");
+    printer.setFilename(STRESSES_OUT);
 //    printer.reset();
     printHeader();
 }

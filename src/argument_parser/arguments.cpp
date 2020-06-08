@@ -17,8 +17,6 @@ void ARGUMENTS::print() {
     cout << "shearRate = " << shearRate << endl;
     cout << "amplitude = " << amplitude << endl;
     cout << "oscillationPeriod = " << oscillationPeriod << endl;
-//    cout << "dWall = " << dWall << "\t\t" << "density = " << density << "\t\t" << "numberOfParticles = " << numberOfParticles << endl;
-//    cout << "charge = " << charge << "\t\t" << "diameter = " << diameter << endl;
     cout << "dt = " << dt << endl;
     cout << "temperature = " << temperature << endl;
     cout << "D0 = " << D0 << endl;
@@ -36,8 +34,12 @@ void ARGUMENTS::print() {
     }
     if(printEnergy > 0){
         cout << "printEnergy = " << printEnergy << endl;
+        cout << "Energy print-outs not yet implemented!" << endl;
     }
     if(printAngularBond > 0){
         cout << "printAngularBond = " << printAngularBond << endl;
+    }
+    if(clear){
+        cout << "Clearing all existing output-files!" << endl;
     }
 }

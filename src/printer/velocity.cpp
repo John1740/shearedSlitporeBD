@@ -47,7 +47,7 @@ void VELOCITY_PRINTER::printHeader(){
 void VELOCITY_PRINTER::printLine(){
     meanVelocity = sys->getMeanVelocity();
     meanLayerVelocities = sys->getMeanLayerVelocities();
-    long timestep = sys->getTimestep() - 2; //skip first step + equationOfMotion already incremented timestep by one
+    long timestep = sys->getTimestep() - 2; //previous timestep + equationOfMotion already incremented timestep by one
     printer << format("%6ld\t") % timestep;
     printer << format(format_l.c_str()) % sys->getCurrentShearRate();
     printer << format(format_l.c_str()) % meanVelocity.x;

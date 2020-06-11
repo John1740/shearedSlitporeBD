@@ -1,11 +1,18 @@
-cmake_minimum_required(VERSION 3.16.5)
+cmake_minimum_required(VERSION 3.14)
 project (shearedSlitporeBD VERSION 0.2)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lboost_program_options")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-FIND_PACKAGE(Boost COMPONENTS program_options filesystem REQUIRED)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+#Linking Boost library
+find_package(Boost COMPONENTS program_options REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+#link_libraries(${Boost_LIBARIES})
+message("Boost_FOUND is ${Boost_FOUND}")
+message("Boost_INCLUDE_DIRS is ${Boost_INCLUDE_DIRS}")
+message("Boost_LIBRARY_DIRS is ${Boost_LIBRARY_DIRS}")
+message("Boost_LIBRARIES is ${Boost_LIBRARIES}")
+message("Boost_VERSION is ${Boost_VERSION}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 # Get the current working branch
@@ -40,7 +47,6 @@ configure_file(
 )
 
 add_executable(shearedSlitporeBD
- 
         src/boxmueller.cpp
         src/main.cpp
         src/mersenne.cpp
@@ -136,8 +142,8 @@ add_executable(writePairCorrelation
         src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h
         )
 
-TARGET_LINK_LIBRARIES(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
-TARGET_LINK_LIBRARIES(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
+target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

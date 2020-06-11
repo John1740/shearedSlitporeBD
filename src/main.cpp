@@ -87,7 +87,7 @@ int main(int argc, const char *argv[]){
         if(args.printVelocity > 0 && i > 0 && (i - 1) % args.printVelocity == 0){
             velocity.printLine();
         }
-        if(args.snapshotInterval != 0 && (i + 1) % args.snapshotInterval == 0){
+        if(args.snapshotInterval > 0 && (i + 1) % args.snapshotInterval == 0){
             sys.writeConfigurationToFile(SNAPSHOTS + "/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }

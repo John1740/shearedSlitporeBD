@@ -59,6 +59,7 @@ int main(int argc, const char *argv[]){
         fs::remove(STRESSES_OUT);
         fs::remove(VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
+        fs::remove("shearedSlitporeBD.out");
     }
 
     if(args.dryRun){

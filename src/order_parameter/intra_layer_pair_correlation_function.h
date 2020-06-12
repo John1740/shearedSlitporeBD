@@ -17,7 +17,8 @@ private:
     double dr;
     int length;
     vector<double> radius;
-    vector<double> correlationFunction;
+    vector<vector<double>> layerCorrelation;
+    vector<double> averageLayerCorrelation;
     
     int findNextUpCrossing(int pos, double threshold, int averageRange);
     int findNextDownCrossing(int pos, double threshold, int averageRange);

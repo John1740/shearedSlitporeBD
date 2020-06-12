@@ -21,7 +21,6 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CON
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
-//    maximalRadius = (simBox.getDimensions() / 2).getAbs();
     maximalRadius = sqrt(pow(simBox.getDimensions().x / 2, 2) + pow(simBox.getDimensions().y / 2, 2));
     setResolution(dr);
     particle = sys.getParticleList();
@@ -29,8 +28,8 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::se
 }
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculate(){
-    correlationFunction.clear();
-    correlationFunction.resize(length);
+    averageLayerCorrelation.clear();
+    averageLayerCorrelation.resize(length);
     int numberOfLayers = layers.getNumberOfLayers();
     int numberOfParticles = particle.size();
     for(int i = 0; i < numberOfParticles; i++){
@@ -43,13 +42,14 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
             if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
                 //assign current radius to nearest index (only works for intervals starting at 0)
                 int index = round(currentRadius / dr);
-                correlationFunction[index] += 2;    //the pair (i,j) also appears as (j,i)
+                averageLayerCorrelation[index] += 2;    //the pair (i,j) also appears as (j,i)
             }
         }
     }
     //add prefactor and set radii
     for(int i = 0; i < length; i++){
         radius[i] = i * dr;
+        //NEEDED: add correction to radii beyond L/2
         double annulusArea = 2 * M_PI * radius[i] * dr;
         int numberOfParticlesInLayer = numberOfParticles / numberOfLayers;
         double averageParticleDensity = numberOfParticlesInLayer / layers.getLayerArea();
@@ -58,7 +58,7 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
         // average over all particles i (1/numberOfParticlesInLayer)
         // ratio of densityInAnnulus (=numberOfParticlesInAnnulus/annulusArea) to averageParticleDensity
         double normalization = numberOfLayers * numberOfParticlesInLayer * averageParticleDensity * annulusArea;
-        correlationFunction[i] /= normalization;
+        averageLayerCorrelation[i] /= normalization;
     }
     return *this;
 }
@@ -68,7 +68,7 @@ vector<double> INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getRadii() const{
 }
 
 vector<double> INTRA_LAYER_PAIR_CORRELATION_FUNCTION::getPairCorrelations() const{
-    return correlationFunction;
+    return averageLayerCorrelation;
 }
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setResolution(double dr){
@@ -76,8 +76,8 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::se
     length = int(ceil(maximalRadius / dr));
     radius.clear();
     radius.resize(length);
-    correlationFunction.clear();
-    correlationFunction.resize(length);
+    averageLayerCorrelation.clear();
+    averageLayerCorrelation.resize(length);
     return *this;
 }
 
@@ -95,7 +95,7 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::pr
     //data
     for(int i = 0; i < length; i++){
         printer << b::format("% 2.5f") % radius[i];
-        printer << "\t" << b::format("% 2.5f") % correlationFunction[i];
+        printer << "\t" << b::format("% 2.5f") % averageLayerCorrelation[i];
         printer << "\n";
     }
     return *this;
@@ -111,7 +111,7 @@ ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pa
     //data
     for(int i = 0; i < pairCorrelation.length; i++){
         os << b::format("% 2.5f") % pairCorrelation.radius[i];
-        os << "\t" << b::format("% 2.5f") % pairCorrelation.correlationFunction[i];
+        os << "\t" << b::format("% 2.5f") % pairCorrelation.averageLayerCorrelation[i];
         os << "\n";
     }
     return os;
@@ -156,9 +156,9 @@ double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateMeanCorrelation(){
     double g_avg = 0;
     int ctr = 0;
     for(int i = 0; i < length; i++){
-        double currentG = correlationFunction[i];
+        double currentG = averageLayerCorrelation[i];
         if(isnan(currentG) == false){
-            g_avg += correlationFunction[i];
+            g_avg += averageLayerCorrelation[i];
             ctr++;
         }
     }
@@ -171,7 +171,7 @@ double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateMeanCorrelation(){
 //crossing within the range of <averageRange> is returned
 int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextUpCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
-        if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
+        if(averageLayerCorrelation[i] >= threshold && averageLayerCorrelation[i - 1] < threshold){
             int lastUpCrossing = findLastUpCrossing(i, threshold, i + averageRange);
             if(lastUpCrossing == -1){
                 return i;
@@ -186,7 +186,7 @@ int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextUpCrossing(int pos, double th
 
 int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextDownCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < length; i++){
-        if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){
+        if(averageLayerCorrelation[i] < threshold && averageLayerCorrelation[i - 1] >= threshold){
             int lastDownCrossing = findLastDownCrossing(i, threshold, i + averageRange);
             if(lastDownCrossing == -1){
                 return i;
@@ -203,7 +203,7 @@ int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextDownCrossing(int pos, double 
 int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findLastUpCrossing(int pos, double threshold, int posMax){
     int lastUpCrossing = -1;
     for(int i = pos + 1; i < posMax + 1; i++){
-        if(correlationFunction[i] >= threshold && correlationFunction[i-1] < threshold){
+        if(averageLayerCorrelation[i] >= threshold && averageLayerCorrelation[i - 1] < threshold){
             lastUpCrossing = i;
         }
     }
@@ -214,7 +214,7 @@ int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findLastUpCrossing(int pos, double th
 int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findLastDownCrossing(int pos, double threshold, int posMax){
     int lastDownCrossing = -1;
     for(int i = pos + 1; i < posMax + 1; i++){
-        if(correlationFunction[i] < threshold && correlationFunction[i-1] >= threshold){
+        if(averageLayerCorrelation[i] < threshold && averageLayerCorrelation[i - 1] >= threshold){
             lastDownCrossing = i;
         }
     }

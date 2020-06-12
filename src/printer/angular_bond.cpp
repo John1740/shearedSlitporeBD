@@ -50,5 +50,6 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
         sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);
         psi.getPairCorrelation().print("pairCorrelations/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
     }
+    psi.getPairCorrelation().print("pairCorrelation.out");
     *this << '\n';
 }

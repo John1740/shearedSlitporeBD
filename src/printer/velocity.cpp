@@ -32,7 +32,7 @@ void VELOCITY_PRINTER::printHeader(){
     numberOfLayers = round(sys->getSimulationBox().getDimensions().z);
     vector<string> dir{"x", "y", "z"};
     for(int j = 0; j < dir.size(); j++){
-        printer << format(format_h.c_str()) % ("v_" + dir[j]).c_str();
+        printer << format(format_h.c_str()) % (format("v_%s") % dir[j]); // ("v_" + dir[j]).c_str();
     }
     for(int i = 0; i < numberOfLayers; i++){
         for(int j = 0; j < dir.size(); j++){

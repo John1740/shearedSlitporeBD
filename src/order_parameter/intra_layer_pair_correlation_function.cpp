@@ -219,34 +219,28 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::se
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::print(string filename){
     PRINTER printer(filename);
     printer.reset();
-    //header
-    char comment = printer.getComment();
-    printer << comment << "r: radius [diameter]" << endl;
-    printer << comment << "g(r): in-plane radial pair correlation function [1/diameter]" << endl;
-    printer << comment << b::format("%7s") % "r";
-    printer << "\t" << b::format("%8s") % "g(r)";
-    printer << "\n";
-    
-    //data
-    for(int i = 0; i < numberOfBins; i++){
-        printer << b::format("% 2.5f") % radius[i];
-        printer << "\t" << b::format("% 2.5f") % averageLayerCorrelation[i];
-        printer << "\n";
-    }
+    printer << *this << endl;
     return *this;
 }
 
-ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation){
+ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& cor){
     os << "#r: radius [diameter]" << endl;
-    os << "#g(r): in-plane radial pair correlation function [1/diameter]" << endl;
+    os << "#g(r): average in-plane radial pair correlation function [1/diameter]" << endl;
+    os << "#g_m(r): in-plane radial pair correlation function of layer m [1/diameter]" << endl;
     os << "#" << b::format("%7s") % "r";
     os << "\t" << b::format("%8s") % "g(r)";
+    for(int l = 0; l < cor.layerCorrelation.size(); l++){
+        os << "\t" << b::format("%8s") % (b::format("g_%i(r)") % l);
+    }
     os << "\n";
     
     //data
-    for(int i = 0; i < pairCorrelation.numberOfBins; i++){
-        os << b::format("% 2.5f") % pairCorrelation.radius[i];
-        os << "\t" << b::format("% 2.5f") % pairCorrelation.averageLayerCorrelation[i];
+    for(int r = 0; r < cor.numberOfBins; r++){
+        os << b::format("% 2.5f") % cor.radius[r];
+        os << "\t" << b::format("% 2.5f") % cor.averageLayerCorrelation[r];
+        for(int l = 0; l < cor.layerCorrelation.size(); l++){
+            os << "\t" << b::format("% 2.5f") % cor.layerCorrelation[l][r];
+        }
         os << "\n";
     }
     return os;

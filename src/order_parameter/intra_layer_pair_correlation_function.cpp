@@ -38,33 +38,34 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
     }
     int numberOfParticles = particle.size();
     vector<vector<int>> particleLayerMap = layers.getParticleLayerMap(particle);
-    for(int i = 0; i < numberOfParticles; i++){
-        for(int j = i + 1; j < numberOfParticles; j++){
-            int layerNumber = layers.tellLayerNumber(particle[i]);
-            if(layerNumber != layers.tellLayerNumber(particle[j])){ //skip if (i,j) not in same layer
-                continue;
+    for(int l = 0; l < numberOfLayers; l++){
+        for(const int& i: particleLayerMap[l]){
+            for(const int& j: particleLayerMap[l]){
+                if(i == j){
+                    continue;
+                }
+                CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
+                relative = simBox.convertToBoxPosition(relative);
+                //distance within layer
+                double currentRadius = sqrt(pow(relative.x, 2.0) + pow(relative.y, 2.0));
+                //assign current radius to nearest index (only works for intervals starting at 0)
+                int r = round(currentRadius / dr);
+                layerCorrelation[l][r] += 1;
             }
-            CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
-            relative = simBox.convertToBoxPosition(relative);
-            //distance within layer
-            double currentRadius = sqrt(pow(relative.x, 2.0) + pow(relative.y, 2.0));
-            //assign current radius to nearest index (only works for intervals starting at 0)
-            int index = round(currentRadius / dr);
-            layerCorrelation[layerNumber][index] += 2;    //the pair (i,j) also appears as (j,i)
         }
     }
     //add prefactor and set radii
-    for(int i = 0; i < numberOfLayers; i++){
-        for(int j = 0; j < numberOfBins; j++){
-            radius[j] = j * dr;
+    for(int l = 0; l < numberOfLayers; l++){
+        for(int r = 0; r < numberOfBins; r++){
+            radius[r] = r * dr;
             //NEEDED: add correction to radii beyond L/2
-            double annulusArea = 2 * M_PI * radius[j] * dr;
-            double averageParticleDensity = particleLayerMap[i].size() / layers.getLayerArea();
+            double annulusArea = 2 * M_PI * radius[r] * dr;
+            double averageParticleDensity = particleLayerMap[l].size() / layers.getLayerArea();
             // average over all particles in layer (1/numberOfParticlesInLayer[i])
             // so far: layerCorrelation[i][j] = numberOfParticlesInAnnulus
             // ratio of densityInAnnulus (=numberOfParticlesInAnnulus/annulusArea) to averageParticleDensity
-            double normalization = particleLayerMap[i].size() * averageParticleDensity * annulusArea;
-            layerCorrelation[i][j] /= normalization;
+            double normalization = particleLayerMap[l].size() * averageParticleDensity * annulusArea;
+            layerCorrelation[l][r] /= normalization;
         }
     }
     return *this;
@@ -74,25 +75,26 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
     calculateLayerCorrelation();
     averageLayerCorrelation.clear();
     averageLayerCorrelation.resize(numberOfBins);
-    for(int i = 0; i < layerCorrelation.size(); i++){   //i = layer index
-        for(int j = 0; j < numberOfBins; j++){    //j = bin index
-            averageLayerCorrelation[j] += layerCorrelation[i][j];
+    for(int l = 0; l < layerCorrelation.size(); l++){   //i = layer index
+        for(int r = 0; r < numberOfBins; r++){    //j = bin index
+            averageLayerCorrelation[r] += layerCorrelation[l][r];
         }
     }
     //normalize
-    for(int j = 0; j < numberOfBins; j++){
-        averageLayerCorrelation[j] /= layerCorrelation.size();
+    for(int r = 0; r < numberOfBins; r++){
+        averageLayerCorrelation[r] /= layerCorrelation.size();
     }
     return *this;
 }
 
 double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateMeanCorrelation(){
+    //error message, if not yet calculated?
     double g_avg = 0;
     int ctr = 0;
-    for(int i = 0; i < numberOfBins; i++){
-        double currentG = averageLayerCorrelation[i];
+    for(int r = 0; r < numberOfBins; r++){
+        double currentG = averageLayerCorrelation[r];
         if(isnan(currentG) == false){
-            g_avg += averageLayerCorrelation[i];
+            g_avg += averageLayerCorrelation[r];
             ctr++;
         }
     }

@@ -24,7 +24,7 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     pairCorrelation = INTRA_LAYER_PAIR_CORRELATION_FUNCTION(sys, 0.05);
-    pairCorrelation.calculate();
+    pairCorrelation.calculateAverageLayerCorrelation();
     isolatedParticles.clear();
     return *this;
 }

@@ -15,7 +15,7 @@ private:
     vector<CHARGED_PARTICLE> particle;
     double maximalRadius;
     double dr;
-    int length;
+    int numberOfBins;
     vector<double> radius;
     vector<vector<double>> layerCorrelation;
     vector<double> averageLayerCorrelation;
@@ -31,7 +31,8 @@ public:
     
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr);
     
-    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculate();
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculateLayerCorrelation();
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculateAverageLayerCorrelation();
     double findPositionOfMinimum(int n, int smoothRange = 0, double lowerBound = 0);
     
     double calculateMeanCorrelation();
@@ -41,7 +42,8 @@ public:
     double getResolution() const;
     int getLength() const;
     vector<double> getRadii() const;
-    vector<double> getPairCorrelations() const;
+    vector<vector<double>> getLayerCorrelations() const;
+    vector<double> getAverageLayerCorrelations() const;
     
     //setter
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setMaximalRadius(double rMax);

@@ -6,7 +6,7 @@
 #define SHEAREDSLITPOREBD_LAYERS_H
 
 #include "slit_pore_box.h"
-#include "particle.h"
+#include "charged_particle.h"
 
 class LAYERS{
 private:
@@ -34,6 +34,7 @@ public:
     double calculateLayerThickness();
     vector<double> calculateLayerCenters();
     int tellLayerNumber(const PARTICLE& particle);
+    vector<vector<int>> getParticleLayerMap(const vector<CHARGED_PARTICLE>& particles);
 };
 
 

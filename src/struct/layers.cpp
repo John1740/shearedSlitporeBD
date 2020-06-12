@@ -72,3 +72,12 @@ double LAYERS::getLayerArea() const{
 void LAYERS::setLayerArea(const SLIT_PORE_BOX& simBox){
     layerArea = simBox.getDimensions().x * simBox.getDimensions().y;
 }
+
+vector<vector<int>> LAYERS::getParticleLayerMap(const vector<CHARGED_PARTICLE>& particles){
+    vector<vector<int>> indices(numberOfLayers);
+    for(int i = 0; i < particles.size(); i++){
+        int layerNumber = tellLayerNumber(particles[i]);
+        indices[layerNumber].push_back(i);
+    }
+    return indices;
+}

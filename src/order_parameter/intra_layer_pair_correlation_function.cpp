@@ -51,8 +51,14 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
     for(int i = 0; i < length; i++){
         radius[i] = i * dr;
         double annulusArea = 2 * M_PI * radius[i] * dr;
-        double prefactor = pow(numberOfLayers  / float(numberOfParticles), 2) * layers.getLayerArea() / annulusArea;
-        correlationFunction[i] *= prefactor;
+        int numberOfParticlesInLayer = numberOfParticles / numberOfLayers;
+        double averageParticleDensity = numberOfParticlesInLayer / layers.getLayerArea();
+        // Good explanation in: http://www.physics.emory.edu/faculty/weeks/idl/gofr2.html
+        // average over all layers (1/numberOfLayers)
+        // average over all particles i (1/numberOfParticlesInLayer)
+        // ratio of densityInAnnulus (=numberOfParticlesInAnnulus/annulusArea) to averageParticleDensity
+        double normalization = numberOfLayers * numberOfParticlesInLayer * averageParticleDensity * annulusArea;
+        correlationFunction[i] /= normalization;
     }
     return *this;
 }
@@ -96,17 +102,17 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::pr
 }
 
 ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation){
-    cout << "#r: radius [diameter]" << endl;
-    cout << "#g(r): in-plane radial pair correlation function [1/diameter]" << endl;
-    cout << "#" << b::format("%7s") % "r";
-    cout << "\t" << b::format("%8s") % "g(r)";
-    cout << "\n";
+    os << "#r: radius [diameter]" << endl;
+    os << "#g(r): in-plane radial pair correlation function [1/diameter]" << endl;
+    os << "#" << b::format("%7s") % "r";
+    os << "\t" << b::format("%8s") % "g(r)";
+    os << "\n";
     
     //data
     for(int i = 0; i < pairCorrelation.length; i++){
-        cout << b::format("% 2.5f") % pairCorrelation.radius[i];
-        cout << "\t" << b::format("% 2.5f") % pairCorrelation.correlationFunction[i];
-        cout << "\n";
+        os << b::format("% 2.5f") % pairCorrelation.radius[i];
+        os << "\t" << b::format("% 2.5f") % pairCorrelation.correlationFunction[i];
+        os << "\n";
     }
     return os;
 }

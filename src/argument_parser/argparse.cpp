@@ -40,6 +40,8 @@ void ARGUMENT_PARSER::addOptions() {
                                                                                "x<0 -> no print-outs")
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
                                                                            "x<0 -> no print-outs")
+            ("stressFourier", po::value<double>()->default_value(STRESS_FOURIER), "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
+                                                                           "x<0 -> no Fourier component calculation")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
                                                                            "x<0 -> no print-outs")
             ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND), "print the angular bond order parameter every x-th timestep; "
@@ -70,6 +72,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     int printAll = round(variablesMap["printAll"].as<double>());
     int printVelocity = round(variablesMap["printVelocity"].as<double>());
     int printStress = round(variablesMap["printStress"].as<double>());
+    int stressFourier = round(variablesMap["stressFourier"].as<double>());
     int printEnergy = round(variablesMap["printEnergy"].as<double>());
     int printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     int snapshotInterval = round(variablesMap["snapshot"].as<double>());
@@ -77,6 +80,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(args.printAll > 0){
         args.printVelocity = printAll;
         args.printStress = printAll;
+        args.stressFourier = 1;
         args.printEnergy = printAll;
         args.printAngularBond = printAll;
         args.snapshotInterval = printAll;
@@ -86,6 +90,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     }
     if(printStress != PRINT_STRESS){
         args.printStress = printStress;
+    }
+    if(stressFourier != STRESS_FOURIER){
+        args.stressFourier = stressFourier;
     }
     if(printEnergy != PRINT_ENERGY){
         args.printEnergy = printEnergy;

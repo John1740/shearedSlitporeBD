@@ -6,6 +6,9 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
     printStress = args.printStress;
+    if(args.stressFourier > 0){
+        printStress = args.stressFourier;
+    }
     printEnergy = args.printEnergy;
     shearRateOffset = args.shearRate;
     shearRateAmplitude = args.amplitude;
@@ -156,7 +159,7 @@ vector< CARTESIAN_MATRIX > SHEARED_SLITPORE_SYSTEM::getStressPerParticle(){
     return tmp;
 }
 
-CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress(){
+CARTESIAN_MATRIX SHEARED_SLITPORE_SYSTEM::getMeanStress() const{
     CARTESIAN_MATRIX meanStress(0.);
     for(int i = 0; i < stressPerParticle.size(); ++i){
         meanStress += stressPerParticle[i];

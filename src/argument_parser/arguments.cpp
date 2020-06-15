@@ -32,6 +32,9 @@ void ARGUMENTS::print() {
     if(printStress > 0){
         cout << "printStress = " << printStress << endl;
     }
+    if(stressFourier > 0){
+        cout << "stressFourier = " << stressFourier << endl;
+    }
     if(printEnergy > 0){
         cout << "printEnergy = " << printEnergy << endl;
         cout << "Energy print-outs not yet implemented!" << endl;

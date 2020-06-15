@@ -12,6 +12,7 @@
 #include "printer/stress.h"
 #include "printer/velocity.h"
 #include "printer/angular_bond.h"
+#include "order_parameter/stress_fourier_components.h"
 
 namespace fs = experimental::filesystem;
 
@@ -71,6 +72,7 @@ int main(int argc, const char *argv[]){
     VELOCITY_PRINTER velocity(&sys);
     STRESS_PRINTER stress(&sys);
     ANGULAR_BOND_PRINTER angularBond;
+    STRESS_FOURIER_COMPONENTS fc(args);
 
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; i++){
@@ -84,6 +86,9 @@ int main(int argc, const char *argv[]){
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();
         }
+        if(args.stressFourier > 0 && i % args.stressFourier == 0){
+            fc.addTimestep(sys);
+        }
         if(args.printVelocity > 0 && i > 0 && (i - 1) % args.printVelocity == 0){
             velocity.printLine();
         }
@@ -92,6 +97,12 @@ int main(int argc, const char *argv[]){
         }
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT);
+    if(args.stressFourier > 0){
+        cout << fc << endl;
+        for(int i = 0; i <= 4; i++){
+            cout << i << "-th Fourier component (xz): " << fc.calculate(i).xz << endl;
+        }
+    }
     
     //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
     sys.simulateForSteps(1);

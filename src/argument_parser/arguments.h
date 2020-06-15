@@ -31,6 +31,7 @@ public:
     
     int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
+    int stressFourier = STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
     int printAll = PRINT_ALL;

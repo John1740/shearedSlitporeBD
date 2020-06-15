@@ -65,7 +65,7 @@ public:
 
     //getter functions
     virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
-    virtual CARTESIAN_MATRIX getMeanStress();
+    virtual CARTESIAN_MATRIX getMeanStress() const;
     double getCurrentShearRate();
 
     vector<double> getEnergyPerParticle();

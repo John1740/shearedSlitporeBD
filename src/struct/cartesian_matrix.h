@@ -15,7 +15,7 @@ public:
     CARTESIAN_MATRIX(CARTESIAN_COORDINATE row1, CARTESIAN_COORDINATE row2, CARTESIAN_COORDINATE row3): xx(row1.x), xy(row1.y), xz(row1.z), yx(row2.x), yy(row2.y), yz(row2.z), zx(row3.x), zy(row3.y), zz(row3.z){}
     CARTESIAN_MATRIX(CARTESIAN_COORDINATE vec1, CARTESIAN_COORDINATE vec2): xx(vec1.x*vec2.x), xy(vec1.x*vec2.y), xz(vec1.x*vec2.z), yx(vec1.y*vec2.x), yy(vec1.y*vec2.y), yz(vec1.y*vec2.z), zx(vec1.z*vec2.x), zy(vec1.z*vec2.y), zz(vec1.z*vec2.z){}
 
-    double getDeterminante();
+    double getDeterminant();
 
     CARTESIAN_MATRIX& operator+= (CARTESIAN_MATRIX const& cCoordIN);
     CARTESIAN_MATRIX& operator+= (double const& doubleIN){

@@ -80,6 +80,9 @@ int main(int argc, const char *argv[]){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
             printf("Progress: %.1f%% (timestep %ld)\n", 100 * i / float(args.totalNumberOfTimesteps), sys.getTimestep());
         }
+        if(args.snapshotInterval > 0 && i % args.snapshotInterval == 0){
+            sys.writeConfigurationToFile(SNAPSHOTS + "/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+        }
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
         }
@@ -97,9 +100,6 @@ int main(int argc, const char *argv[]){
         }
         if(args.printVelocity > 0 && i > 0 && (i - 1) % args.printVelocity == 0){
             velocity.printLine();
-        }
-        if(args.snapshotInterval > 0 && (i + 1) % args.snapshotInterval == 0){
-            sys.writeConfigurationToFile(SNAPSHOTS + "/configuration_" + to_string(sys.getTimestep()) + ".out", false);
         }
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT);

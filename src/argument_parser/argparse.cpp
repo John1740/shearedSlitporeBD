@@ -50,6 +50,8 @@ void ARGUMENT_PARSER::addOptions() {
                                                                                       "x<0 -> no print-outs")
             ("snapshot", po::value<double>()->default_value(SNAPSHOT_INTERVAL), "Save a configuration snapshot every x-th timestep; "
                                                                         "x<0 -> no snapshots")
+            ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION), "print intra-layer pair correlation function every x-th timestep; "
+                                                                        "x<0 -> no print-outs")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ("clear", po::bool_switch()->default_value(CLEAR), "clear all existing output files (before simulation start)")
@@ -79,6 +81,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     int printEnergy = round(variablesMap["printEnergy"].as<double>());
     int printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     int snapshotInterval = round(variablesMap["snapshot"].as<double>());
+    int printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
     args.printAll = printAll;
     if(args.printAll > 0){
         args.printVelocity = printAll;
@@ -87,6 +90,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
         args.printEnergy = printAll;
         args.printAngularBond = printAll;
         args.snapshotInterval = printAll;
+        args.printPairCorrelation = printAll;
     }
     if(printVelocity != PRINT_VELOCITY){
         args.printVelocity = printVelocity;
@@ -105,6 +109,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     }
     if(snapshotInterval != SNAPSHOT_INTERVAL){
         args.snapshotInterval = snapshotInterval;
+    }
+    if(printPairCorrelation != PRINT_PAIR_CORRELATION){
+        args.printPairCorrelation = printPairCorrelation;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dryRun = variablesMap["dry"].as<bool>();

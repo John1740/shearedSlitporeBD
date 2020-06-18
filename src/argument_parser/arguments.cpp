@@ -27,6 +27,9 @@ void ARGUMENTS::print() {
     if(snapshotInterval > 0){
         cout << "snapshotInterval = " << snapshotInterval << endl;
     }
+    if(printPairCorrelation > 0){
+        cout << "printPairCorrelation = " << printPairCorrelation << endl;
+    }
     if(printVelocity > 0){
         cout << "printVelocity = " << printVelocity << endl;
     }

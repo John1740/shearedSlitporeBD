@@ -18,6 +18,7 @@ private:
     int numberOfTimesteps;
     vector<CARTESIAN_MATRIX> stress;
     double period;
+    double amplitude;
     double dt;
 
 public:
@@ -28,6 +29,9 @@ public:
     STRESS_FOURIER_COMPONENTS& setup(const ARGUMENTS& args);
     
     CARTESIAN_MATRIX_2<complex<double>> calculate(int n);
+    double calculateStorageModulus();
+    double calculateLossModulus();
+    
     
     STRESS_FOURIER_COMPONENTS& addTimestep(const SHEARED_SLITPORE_SYSTEM& sys);
     

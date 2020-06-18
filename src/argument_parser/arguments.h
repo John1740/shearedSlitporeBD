@@ -35,13 +35,13 @@ public:
     int stressFourier = STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
+    int snapshotInterval = SNAPSHOT_INTERVAL;
+    int printPairCorrelation = PRINT_PAIR_CORRELATION;
     int printAll = PRINT_ALL;
     bool clear = CLEAR;
     
     bool dryRun = false;
     bool printVersion = false;
-
-    int snapshotInterval = SNAPSHOT_INTERVAL;
 
     void print();
 

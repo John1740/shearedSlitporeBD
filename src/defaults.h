@@ -10,6 +10,7 @@
 const std::string CONFIGURATION_IN = "configuration.in";
 const std::string CONFIGURATION_OUT = "configuration.out";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
+const std::string PAIR_CORRELATIONS_OUT = "pairCorrelations";
 const std::string STRESSES_OUT = "stresses.out";
 const std::string VELOCITIES_OUT = "velocities.out";
 const std::string SNAPSHOTS = "snapshots";
@@ -41,6 +42,7 @@ const int STRESS_FOURIER = 0;
 const int PRINT_ENERGY = 0;
 const int PRINT_ANGULAR_BOND = 0;
 const int SNAPSHOT_INTERVAL = 0;
+const int PRINT_PAIR_CORRELATION = 0;
 const int PRINT_ALL = 0;
 const bool CLEAR = false;
 

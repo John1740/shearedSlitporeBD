@@ -4,7 +4,6 @@
 #include "version.h"
 #include <experimental/filesystem>
 #include "tools/format.h"
-#include "boost/format.hpp"
 
 #include "systems/sheared_slitpore_system.h"
 
@@ -13,6 +12,7 @@
 #include "printer/velocity.h"
 #include "printer/angular_bond.h"
 #include "order_parameter/stress_fourier_components.h"
+#include "order_parameter/intra_layer_pair_correlation_function.h"
 
 namespace fs = experimental::filesystem;
 
@@ -60,6 +60,7 @@ int main(int argc, const char *argv[]){
         fs::remove(STRESSES_OUT);
         fs::remove(VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
+        fs::remove_all(PAIR_CORRELATIONS_OUT);
     }
 
     if(args.dryRun){
@@ -82,6 +83,11 @@ int main(int argc, const char *argv[]){
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
         }
+        if(args.printPairCorrelation > 0 && i % args.printPairCorrelation == 0){
+            INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys, 0.05);
+            pC.calculateAverageLayerCorrelation();
+            pC.print(PAIR_CORRELATIONS_OUT + "/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
+        }
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();
@@ -99,6 +105,8 @@ int main(int argc, const char *argv[]){
     sys.writeConfigurationToFile(CONFIGURATION_OUT);
     if(args.stressFourier > 0){
         cout << fc << endl;
+        cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
+        cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
         for(int i = 0; i <= 4; i++){
             cout << i << "-th Fourier component (xz): " << fc.calculate(i).xz << endl;
         }

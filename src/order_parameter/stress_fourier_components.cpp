@@ -23,6 +23,7 @@ STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& arg
         numberOfTimesteps = args.totalNumberOfTimesteps;
     }
     period = args.oscillationPeriod;
+    amplitude = args.amplitude;
     dt = args.dt;
     stress.clear();
     return *this;
@@ -49,6 +50,20 @@ CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
     }
     fc /= N;
     return fc;
+}
+
+double STRESS_FOURIER_COMPONENTS::calculateStorageModulus(){
+    //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
+    double firstHarmonicFC = calculate(1).xz.imag();
+    double storageModulus = - firstHarmonicFC * period / amplitude;
+    return storageModulus;
+}
+
+double STRESS_FOURIER_COMPONENTS::calculateLossModulus(){
+    //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
+    double firstHarmonicFC = calculate(1).xz.real();
+    double lossModulus = firstHarmonicFC * period / amplitude;
+    return lossModulus;
 }
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::addTimestep(const SHEARED_SLITPORE_SYSTEM& sys){

@@ -182,7 +182,7 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateOffset + shearRateAmplitude * sin(2 * M_PI * timestep * dt / oscillationPeriod);
+    currentShearRate = shearRateOffset + shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod);
     return currentShearRate;
 }
 

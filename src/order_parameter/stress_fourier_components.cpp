@@ -38,8 +38,8 @@ CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
         return fc;
     }
     for(int t = 0; t < N; t++){
-        double phase = n * 2 * M_PI * (t * dt) / period;
-        complex<double> factor = exp(I * phase);
+        double phase = - n * 2 * M_PI * (t * dt) / period;
+        complex<double> factor = exp(I * phase); //cos, sin to reduce numerical errors
         fc += CARTESIAN_MATRIX_2<complex<double>>(stress[t]) * factor;
     }
     fc /= N;

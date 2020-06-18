@@ -21,14 +21,16 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
 void ARGUMENT_PARSER::addOptions() {
     description.add_options()
             ("help,h", "Help screen")
-            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions)")
-            ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset")
-            ("amplitude,a", po::value<double>()->default_value(SHEAR_RATE), "shear rate amplitude")
+            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions, simulation box)")
+            ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset (in units of 1/Brownian time)")
+            ("amplitude,a", po::value<double>()->default_value(AMPLITUDE), "shear rate amplitude (in units of 1/Brownian time)")
             ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD), "shear rate oscillation period (in units of Brownian time)")
+            ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
+                                                                                "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "strength of softsphere interaction")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
             ("dt", po::value<double>()->default_value(DELTA_T), "length of timestep")
-            ("temperature,t", po::value<double>()->default_value(TEMPERATURE), "temperature")
+            ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("timesteps,N", po::value<double>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
@@ -60,6 +62,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.amplitude = variablesMap["amplitude"].as<double>();
     args.oscillationPeriod = variablesMap["period"].as<double>();
+    args.phaseOffset = variablesMap["phaseOffset"].as<double>();
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
     args.dt = variablesMap["dt"].as<double>();

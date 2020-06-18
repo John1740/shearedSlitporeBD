@@ -16,7 +16,12 @@ STRESS_FOURIER_COMPONENTS::STRESS_FOURIER_COMPONENTS(string filename){
 }
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& args){
-    numberOfTimesteps = args.totalNumberOfTimesteps / args.stressFourier;
+    if(args.stressFourier > 0){
+        numberOfTimesteps = args.totalNumberOfTimesteps / args.stressFourier;
+    }
+    else{
+        numberOfTimesteps = args.totalNumberOfTimesteps;
+    }
     period = args.oscillationPeriod;
     dt = args.dt;
     stress.clear();

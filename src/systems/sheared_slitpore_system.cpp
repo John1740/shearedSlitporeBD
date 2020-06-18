@@ -13,6 +13,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     shearRateOffset = args.shearRate;
     shearRateAmplitude = args.amplitude;
     oscillationPeriod = args.oscillationPeriod;
+    phaseOffset = args.phaseOffset;
     currentShearRate = calculateCurrentShearRate();
     
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
@@ -182,7 +183,7 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateOffset + shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod);
+    currentShearRate = shearRateOffset + shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod + M_PI * phaseOffset);
     return currentShearRate;
 }
 

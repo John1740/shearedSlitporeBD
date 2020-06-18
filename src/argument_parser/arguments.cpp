@@ -17,6 +17,7 @@ void ARGUMENTS::print() {
     cout << "shearRate = " << shearRate << endl;
     cout << "amplitude = " << amplitude << endl;
     cout << "oscillationPeriod = " << oscillationPeriod << endl;
+    cout << "phaseOffset = " << phaseOffset << endl;
     cout << "dt = " << dt << endl;
     cout << "temperature = " << temperature << endl;
     cout << "D0 = " << D0 << endl;

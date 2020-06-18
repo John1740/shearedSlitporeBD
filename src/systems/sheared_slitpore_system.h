@@ -26,6 +26,7 @@ protected:
     double shearRateOffset = SHEAR_RATE;
     double shearRateAmplitude = AMPLITUDE;
     double oscillationPeriod = OSCILLATION_PERIOD;
+    double phaseOffset = PHASE_OFFSET;
     double currentShearRate;
 
     virtual double getInteractionLengthScale();

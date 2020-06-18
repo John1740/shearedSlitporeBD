@@ -19,6 +19,7 @@ public:
     double shearRate = SHEAR_RATE;
     double amplitude = AMPLITUDE;
     double oscillationPeriod = OSCILLATION_PERIOD;
+    double phaseOffset = PHASE_OFFSET;
 
     double dt = DELTA_T;
     double temperature = TEMPERATURE;

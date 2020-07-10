@@ -14,12 +14,30 @@
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
-#include "struct/cartesian_coordinate.h"
+#include "struct/cartesian_matrix.h"
 
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
     CLOCK clock;
+    
+    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
+    CARTESIAN_COORDINATE a(1, 2, 3);
+    CARTESIAN_COORDINATE b(4, 5, 6);
+    for(int i = 0; i < 10000000; i++){
+        CARTESIAN_MATRIX A(a, b);
+    }
+    CARTESIAN_MATRIX A(a, b);
+    cout << A << endl;
+    cout << A[0] << endl;
+    cout << A[0][1] << endl;
+    A[0][1] = 0;
+    cout << A[0][1] << endl;
+    clock.addTimePoint();
+    cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
+    printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
+    cout << endl;
+    exit(0);
     
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS args = parser.parseArgs();

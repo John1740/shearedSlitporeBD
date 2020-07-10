@@ -32,35 +32,31 @@ CARTESIAN_COORDINATE::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other){
 
 //const version for the use in assignment operators (e.g. operator=)
 double CARTESIAN_COORDINATE::operator[](int i) const{
-    if(i == 0){
-        return x;
-    }
-    else if(i == 1){
-        return y;
-    }
-    else if(i == 2){
-        return z;
-    }
-    else{
-        cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-        exit(0);
+    switch(i){
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        default:
+            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
+            exit(0);
     }
 }
 
 //non-const version, that can be used for assignment as well
 double& CARTESIAN_COORDINATE::operator[](int i){
-    if(i == 0){
-        return x;
-    }
-    else if(i == 1){
-        return y;
-    }
-    else if(i == 2){
-        return z;
-    }
-    else{
-        cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-        exit(0);
+    switch(i){
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        default:
+            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
+            exit(0);
     }
 }
 

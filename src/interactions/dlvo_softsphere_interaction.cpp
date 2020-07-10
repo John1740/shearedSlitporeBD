@@ -32,7 +32,7 @@ CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CH
     CARTESIAN_COORDINATE forceOnParticleFromParticle;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
-    distance = posDifference.getAbs();
+    distance = posDifference.abs();
 
     if(distance <= cutOffRadius){
         forceOnParticleFromParticle = (forceOnParticlePerDirection(distance) - shift1) * posDifference / distance;
@@ -42,7 +42,7 @@ CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CH
 
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
     posDifference = particle1.boxPosition - particle2.boxPosition;
-    distance = simBox.convertToBoxPosition(posDifference).getAbs();
+    distance = simBox.convertToBoxPosition(posDifference).abs();
 
     if(distance <= cutOffRadius){
         return energyOnParticles(distance) + distance * shift1 - (shift2 + shift3);

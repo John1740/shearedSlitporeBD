@@ -19,13 +19,6 @@
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
-//    CARTESIAN_COORDINATE a(1, 2, 3);
-//    cout << "a: " << a << endl;
-//    CARTESIAN_COORDINATE b(4, 5, 6);
-//    cout << "b: " << b << endl;
-//    cout << (a == (b = a)) << endl;
-//    exit(0);
-    
     CLOCK clock;
     
     ARGUMENT_PARSER parser(argc, argv);

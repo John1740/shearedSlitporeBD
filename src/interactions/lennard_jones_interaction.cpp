@@ -33,7 +33,7 @@ double LENNARD_JONES_INTERACTION::forceOnParticlePerDirection(double distance){
 
 void LENNARD_JONES_INTERACTION::setParametersForParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2){
     positionDifference = particle1.boxPosition - particle2.boxPosition;
-    distance = positionDifference.getAbs();
+    distance = positionDifference.abs();
     diameter = 0.5 * (particle1.diameter + particle2.diameter);
 }
 

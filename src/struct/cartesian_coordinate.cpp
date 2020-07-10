@@ -66,7 +66,7 @@ double& CARTESIAN_COORDINATE::operator[](int i){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double CARTESIAN_COORDINATE::getAbs() const{
+double CARTESIAN_COORDINATE::abs() const{
     return sqrt(x * x + y * y + z * z);
 }
 
@@ -218,8 +218,8 @@ ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
 
 vector<double> CARTESIAN_COORDINATE::convertToVector() const{
     vector<double> v;
-    for(int i=0; i < 3; i++){
-        v.push_back((*this)[i]);
-    }
+    v.push_back(x);
+    v.push_back(y);
+    v.push_back(z);
     return v;
 }

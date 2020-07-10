@@ -15,7 +15,7 @@ SHEAR_FORCE::SHEAR_FORCE(double shearRate, const CARTESIAN_COORDINATE& direction
 }
 
 void SHEAR_FORCE::setDirection(const CARTESIAN_COORDINATE& directionIn){
-    double abs = directionIn.getAbs();
+    double abs = directionIn.abs();
     direction = directionIn / abs;
 }
 

@@ -21,11 +21,11 @@ public:
     CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other);
     
     //index operators
-    double operator[] (int i) const;
-    double& operator[] (int i);
+    double operator[](int i) const;
+    double& operator[](int i);
     
     //functions
-    double getAbs() const;
+    double abs() const;
     
     //assignment operators
     CARTESIAN_COORDINATE& operator=(const CARTESIAN_COORDINATE& other);

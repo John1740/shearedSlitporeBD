@@ -8,7 +8,6 @@ public:
     double xx, xy, xz;
     double yx, yy, yz;
     double zx, zy, zz;
-//    CARTESIAN_COORDINATE x, y, z;
 
     //constructors
     CARTESIAN_MATRIX(): xx(0), xy(0), xz(0), yx(0), yy(0), yz(0), zx(0), zy(0), zz(0){}

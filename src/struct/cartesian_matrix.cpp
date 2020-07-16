@@ -1,13 +1,5 @@
 #include "cartesian_matrix.h"
 
-//CARTESIAN_MATRIX::CARTESIAN_MATRIX(){
-//    xx = xy = xz = yx = yy = yz = zx = zy = zz = 0;
-//}
-
-//CARTESIAN_MATRIX::CARTESIAN_MATRIX(double c){
-//    xx = xy = xz = yx = yy = yz = zx = zy = zz = c;
-//}
-
 CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& col){
     xx = xy = xz = col.x;
     yx = yy = yz = col.y;
@@ -26,7 +18,8 @@ CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& r1, const CARTESI
     zx = r1.z * r2.x; zy = r1.z * r2.y; zz = r1.z * r2.z;
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](int i) const{
+//read-only
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
     double x, y, z;
     switch(i){
         case 0:
@@ -40,7 +33,7 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](int i) const{
             break;
         default:
             cout << "CARTESIAN_MATRIX[" << i << "] out of range." << endl;
-            exit(0);
+            exit(1);
     }
     return CARTESIAN_COORDINATE(x, y, z);
 }

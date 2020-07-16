@@ -43,7 +43,7 @@ public:
     CARTESIAN_COORDINATE& operator/=(const CARTESIAN_COORDINATE& other);
     CARTESIAN_COORDINATE& operator/=(const double& c);
     
-    //combination operators
+    //arithmetic operators
     friend CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs);
     friend CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const double& rhs);
     friend CARTESIAN_COORDINATE operator+(const double& lhs, const CARTESIAN_COORDINATE& rhs);
@@ -60,7 +60,7 @@ public:
     friend CARTESIAN_COORDINATE operator/(const CARTESIAN_COORDINATE& lhs, const double& rhs);
     friend CARTESIAN_COORDINATE operator/(const double& lhs, const CARTESIAN_COORDINATE& rhs);
     
-    //bool operators
+    //logical operators
     friend bool operator==(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs);
     friend bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs);
     

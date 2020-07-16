@@ -42,7 +42,33 @@ double CARTESIAN_MATRIX::getDeterminant(){
     return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN){
+CARTESIAN_MATRIX& CARTESIAN_MATRIX::operator=(const CARTESIAN_MATRIX& cCoordIN){
+    this->xx = cCoordIN.xx;
+    this->xy = cCoordIN.xy;
+    this->xz = cCoordIN.xz;
+    this->yx = cCoordIN.yx;
+    this->yy = cCoordIN.yy;
+    this->yz = cCoordIN.yz;
+    this->zx = cCoordIN.zx;
+    this->zy = cCoordIN.zy;
+    this->zz = cCoordIN.zz;
+    return *this;
+}
+
+CARTESIAN_MATRIX& CARTESIAN_MATRIX::operator=(const double& doubleIN){
+    this->xx = doubleIN;
+    this->xy = doubleIN;
+    this->xz = doubleIN;
+    this->yx = doubleIN;
+    this->yy = doubleIN;
+    this->yz = doubleIN;
+    this->zx = doubleIN;
+    this->zy = doubleIN;
+    this->zz = doubleIN;
+    return *this;
+}
+
+CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX& cCoordIN){
     this->xx += cCoordIN.xx;
     this->xy += cCoordIN.xy;
     this->xz += cCoordIN.xz;
@@ -52,6 +78,19 @@ CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN
     this->zx += cCoordIN.zx;
     this->zy += cCoordIN.zy;
     this->zz += cCoordIN.zz;
+    return *this;
+}
+
+CARTESIAN_MATRIX& CARTESIAN_MATRIX::operator+=(const double& doubleIN){
+    this->xx += doubleIN;
+    this->xy += doubleIN;
+    this->xz += doubleIN;
+    this->yx += doubleIN;
+    this->yy += doubleIN;
+    this->yz += doubleIN;
+    this->zx += doubleIN;
+    this->zy += doubleIN;
+    this->zz += doubleIN;
     return *this;
 }
 

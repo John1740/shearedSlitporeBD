@@ -4,6 +4,11 @@
 #include "cartesian_coordinate.h"
 
 class CARTESIAN_MATRIX{
+    //This is completely hard-coded to improve performance. Another (slower) concept, that has been tried, is:
+    //CARTESIAN_COORDINATE x, y, z, accessing via (*this).x.x
+    //Access of single components is fast, but any operator or constructor that uses a function of CARTESIAN_COORDINATE
+    //is much slower. Same goes for the fact that the members here are public. Making them private and using getter- and
+    //setter-functions slows down the program harshly.
 public:
     double xx, xy, xz;
     double yx, yy, yz;
@@ -32,10 +37,8 @@ public:
     CARTESIAN_MATRIX& operator= (const CARTESIAN_MATRIX& cCoordIN);
     CARTESIAN_MATRIX& operator= (const double& doubleIN);
     
-    CARTESIAN_MATRIX& operator+= (CARTESIAN_MATRIX const& cCoordIN);
-    CARTESIAN_MATRIX& operator+= (double const& doubleIN){
-        return *this += CARTESIAN_MATRIX(doubleIN);
-    };
+    CARTESIAN_MATRIX& operator+= (const CARTESIAN_MATRIX& cCoordIN);
+    CARTESIAN_MATRIX& operator+= (const double& doubleIN);
 
     CARTESIAN_MATRIX& operator-= (CARTESIAN_MATRIX const& cCoordIN);
     CARTESIAN_MATRIX& operator-= (double const& doubleIN){

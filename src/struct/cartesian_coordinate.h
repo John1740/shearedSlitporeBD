@@ -11,6 +11,13 @@
 using namespace std;
 
 class CARTESIAN_COORDINATE{
+    //This is completely hard-coded to improve performance.
+    //Other (slower) concepts, that have been tried, are (in ascending order):
+    //private double r[3], access via (*this)[i] (overloaded operator[])
+    //same as above but with out-of-range check within operator[]
+    //inherit from boost::array<double, 3>, access via (*this)[i] (out-of-range check included)
+    //hard-coded as done here, but access via wrapped (*this)[i]
+    //inherit from std::array<double, 3>, access via (*this)[i] (out-of-range check included)
 public:
     double x, y, z;
     

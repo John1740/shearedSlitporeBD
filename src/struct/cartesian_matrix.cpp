@@ -33,7 +33,7 @@ CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double CARTESIAN_MATRIX::getDeterminant() const{
+double CARTESIAN_MATRIX::determinant() const{
     return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
@@ -43,23 +43,43 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::diag() const{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//read-only
 CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
-    double x, y, z;
     switch(i){
         case 0:
-            x = xx; y = xy; z = xz;
-            break;
+            return CARTESIAN_COORDINATE(xx, xy, xz);
         case 1:
-            x = yx; y = yy; z = yz;
-            break;
+            return CARTESIAN_COORDINATE(yx, yy, yz);
         case 2:
-            x = zx; y = zy; z = zz;
-            break;
+            return CARTESIAN_COORDINATE(zx, zy, zz);
         default:
             throw std::out_of_range("CARTESIAN_MATRIX[] out of range.");
     }
-    return CARTESIAN_COORDINATE(x, y, z);
+}
+
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::row(unsigned int i) const{
+    switch(i){
+        case 0:
+            return CARTESIAN_COORDINATE(xx, xy, xz);
+        case 1:
+            return CARTESIAN_COORDINATE(yx, yy, yz);
+        case 2:
+            return CARTESIAN_COORDINATE(zx, zy, zz);
+        default:
+            throw std::out_of_range("row() out of range.");
+    }
+}
+
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::col(unsigned int i) const{
+    switch(i){
+        case 0:
+            return CARTESIAN_COORDINATE(xx, yx, zx);
+        case 1:
+            return CARTESIAN_COORDINATE(xy, yy, zy);
+        case 2:
+            return CARTESIAN_COORDINATE(xz, yz, zz);
+        default:
+            throw std::out_of_range("col() out of range.");
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -28,7 +28,7 @@ public:
     CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other);
     
     //functions
-    double getDeterminant() const;
+    double determinant() const;
 //    CARTESIAN_MATRIX& invert();
 //    CARTESIAN_MATRIX invert() const;
     CARTESIAN_COORDINATE diag() const;
@@ -38,7 +38,10 @@ public:
     //type cast operators?
     
     //index operators
+    //read-only
     CARTESIAN_COORDINATE operator[](unsigned int i) const;
+    CARTESIAN_COORDINATE row(unsigned int i) const;
+    CARTESIAN_COORDINATE col(unsigned int i) const;
     
     //assignment operators
     CARTESIAN_MATRIX& operator=(const CARTESIAN_MATRIX& other);

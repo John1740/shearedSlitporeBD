@@ -28,7 +28,7 @@ int main(int argc, const char *argv[]){
     CARTESIAN_MATRIX B(1);
     double c = 2;
     for(int i = 0; i < 10000000; i++){
-        A.getDeterminant();
+        A[0];
     }
     cout << A << endl;
     clock.addTimePoint();

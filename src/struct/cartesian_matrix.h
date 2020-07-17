@@ -29,15 +29,17 @@ public:
     
     //functions
     double determinant() const;
-//    CARTESIAN_MATRIX& invert();
-//    CARTESIAN_MATRIX invert() const;
     CARTESIAN_COORDINATE diag() const;
-//    CARTESIAN_MATRIX dot(const CARTESIAN_MATRIX& rhs);
-//    CARTESIAN_MATRIX dot(const CARTESIAN_COORDINATE& rhs);
+    CARTESIAN_MATRIX& transposeInPlace();
+    CARTESIAN_MATRIX transpose() const;
+    CARTESIAN_MATRIX dot(const CARTESIAN_MATRIX& rhs);
+    CARTESIAN_COORDINATE dot(const CARTESIAN_COORDINATE& rhs);
     
     //type cast operators?
     
     //index operators
+    double operator()(unsigned int row, unsigned int col) const;
+    double& operator()(unsigned int row, unsigned int col);
     //read-only
     CARTESIAN_COORDINATE operator[](unsigned int i) const;
     CARTESIAN_COORDINATE row(unsigned int i) const;

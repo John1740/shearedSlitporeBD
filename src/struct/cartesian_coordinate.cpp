@@ -203,13 +203,6 @@ bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
-    os << "[" << r.x << ",\t" << r.y << ",\t" << r.z << "]";
-    return os;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 vector<double> CARTESIAN_COORDINATE::asVector() const{
     vector<double> v(3);
     v[0] = x;
@@ -224,4 +217,11 @@ boost::array<double, 3> CARTESIAN_COORDINATE::asArray() const{
     v[1] = y;
     v[2] = z;
     return v;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
+    os << "[" << r.x << ",\t" << r.y << ",\t" << r.z << "]";
+    return os;
 }

@@ -22,13 +22,17 @@ namespace fs = experimental::filesystem;
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
-    CARTESIAN_COORDINATE a(M_PI, 5.7, 3*M_PI);
+    CARTESIAN_COORDINATE a(1, 2, 3);
     CARTESIAN_COORDINATE b(4, 5, 6);
     CARTESIAN_MATRIX A(a, b);
-    CARTESIAN_MATRIX B(1);
+    CARTESIAN_MATRIX B;
+    B.xx = 1;
+    B.yy = 1;
+    B.zz = 1;
+    CARTESIAN_MATRIX C;
     double c = 2;
     for(int i = 0; i < 10000000; i++){
-        A[0];
+        A.dot(B);
     }
     cout << A << endl;
     clock.addTimePoint();

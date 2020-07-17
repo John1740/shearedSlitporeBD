@@ -41,7 +41,143 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::diag() const{
     return CARTESIAN_COORDINATE(xx, yy, zz);;
 }
 
+CARTESIAN_MATRIX& CARTESIAN_MATRIX::transposeInPlace(){
+    double tmp;
+    tmp = xy; xy = yx; yx = tmp;
+    tmp = xz; xz = zx; zx = tmp;
+    tmp = yz; yz = zy; zy = tmp;
+    return *this;
+}
+
+CARTESIAN_MATRIX CARTESIAN_MATRIX::transpose() const{
+    CARTESIAN_MATRIX result;
+    result.xx = xx;
+    result.xy = yx;
+    result.xz = zx;
+    result.yx = xy;
+    result.yy = yy;
+    result.yz = zy;
+    result.zx = xz;
+    result.zy = yz;
+    result.zz = zz;
+    return result;
+}
+
+CARTESIAN_MATRIX CARTESIAN_MATRIX::dot(const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = xx * rhs.xx + xy * rhs.yx + xz * rhs.zx;
+    result.xy = xx * rhs.xy + xy * rhs.yy + xz * rhs.zy;
+    result.xz = xx * rhs.xz + xy * rhs.yz + xz * rhs.zz;
+    result.yx = yx * rhs.xx + yy * rhs.yx + yz * rhs.zx;
+    result.yy = yx * rhs.xy + yy * rhs.yy + yz * rhs.zy;
+    result.yz = yx * rhs.xz + yy * rhs.yz + yz * rhs.zz;
+    result.zx = zx * rhs.xx + zy * rhs.yx + zz * rhs.zx;
+    result.zy = zx * rhs.xy + zy * rhs.yy + zz * rhs.zy;
+    result.zz = zx * rhs.xz + zy * rhs.yz + zz * rhs.zz;
+    return result;
+}
+
+//CARTESIAN_MATRIX CARTESIAN_MATRIX::dot(const CARTESIAN_MATRIX& rhs){
+//    CARTESIAN_MATRIX result;
+//    for(int i=0; i < 3; i++){
+//        for(int j=0; j < 3; j++){
+//            for(int k=0; k < 3; k++){
+//                result(i, j) += (*this)(i, k) * rhs(k, j);
+//            }
+//        }
+//    }
+//    return result;
+//}
+
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::dot(const CARTESIAN_COORDINATE& rhs){
+    CARTESIAN_COORDINATE result;
+    result.x = xx * rhs.x + xy * rhs.y + xz * rhs.z;
+    result.y = yx * rhs.x + yy * rhs.y + yz * rhs.z;
+    result.z = zx * rhs.x + zy * rhs.y + zz * rhs.z;
+    return result;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double CARTESIAN_MATRIX::operator()(unsigned int row, unsigned int col) const{
+    switch(row){
+        case 0:
+            switch(col){
+                case 0:
+                    return xx;
+                case 1:
+                    return xy;
+                case 2:
+                    return xz;
+                default:
+                    throw std::out_of_range("col out of range.");
+            }
+        case 1:
+            switch(col){
+                case 0:
+                    return yx;
+                case 1:
+                    return yy;
+                case 2:
+                    return yz;
+                default:
+                    throw std::out_of_range("col out of range.");
+            }
+        case 2:
+            switch(col){
+                case 0:
+                    return zx;
+                case 1:
+                    return zy;
+                case 2:
+                    return zz;
+                default:
+                    throw std::out_of_range("col out of range.");
+            }
+        default:
+            throw std::out_of_range("row out of range.");
+    }
+}
+
+double& CARTESIAN_MATRIX::operator()(unsigned int row, unsigned int col){
+    switch(row){
+        case 0:
+            switch(col){
+                case 0:
+                    return xx;
+                case 1:
+                    return xy;
+                case 2:
+                    return xz;
+                default:
+                    throw std::out_of_range("col() out of range.");
+            }
+        case 1:
+            switch(col){
+                case 0:
+                    return yx;
+                case 1:
+                    return yy;
+                case 2:
+                    return yz;
+                default:
+                    throw std::out_of_range("col() out of range.");
+            }
+        case 2:
+            switch(col){
+                case 0:
+                    return zx;
+                case 1:
+                    return zy;
+                case 2:
+                    return zz;
+                default:
+                    throw std::out_of_range("col() out of range.");
+            }
+        default:
+            throw std::out_of_range("row() out of range.");
+    }
+}
 
 CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
     switch(i){

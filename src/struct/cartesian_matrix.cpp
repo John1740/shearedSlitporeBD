@@ -384,7 +384,55 @@ bool operator!=(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+boost::array<boost::array<double, 3>, 3> CARTESIAN_MATRIX::asArray() const{
+    boost::array<boost::array<double, 3>, 3> v;
+    v[0][0] = xx;
+    v[0][1] = xy;
+    v[0][2] = xz;
+    v[1][0] = yx;
+    v[1][1] = yy;
+    v[1][2] = yz;
+    v[2][0] = zx;
+    v[2][1] = zy;
+    v[2][2] = zz;
+    return v;
+}
 
+boost::array<double, 9> CARTESIAN_MATRIX::asFlatArray() const{
+    boost::array<double, 9> v;
+    v[0] = xx;
+    v[1] = xy;
+    v[2] = xz;
+    v[3] = yx;
+    v[4] = yy;
+    v[5] = yz;
+    v[6] = zx;
+    v[7] = zy;
+    v[8] = zz;
+    return v;
+}
+
+vector<vector<double>> CARTESIAN_MATRIX::asVector() const{
+    vector<vector<double>> v(3);
+    v[0] = (*this)[0].asVector();
+    v[1] = (*this)[1].asVector();
+    v[2] = (*this)[2].asVector();
+    return v;
+}
+
+vector<double> CARTESIAN_MATRIX::asFlatVector() const{
+    vector<double> v(9);
+    v[0] = xx;
+    v[1] = xy;
+    v[2] = xz;
+    v[3] = yx;
+    v[4] = yy;
+    v[5] = yz;
+    v[6] = zx;
+    v[7] = zy;
+    v[8] = zz;
+    return v;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

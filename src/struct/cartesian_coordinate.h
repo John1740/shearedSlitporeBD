@@ -8,6 +8,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include "boost/array.hpp"
 using namespace std;
 
 class CARTESIAN_COORDINATE{
@@ -72,7 +73,8 @@ public:
     friend bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs);
     
     //conversions
-    vector<double> convertToVector() const;
+    vector<double> asVector() const;
+    boost::array<double, 3> asArray() const;
     
     //stream handling
     friend ostream& operator<<(ostream& os, const CARTESIAN_COORDINATE& r);

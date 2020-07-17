@@ -210,8 +210,16 @@ ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vector<double> CARTESIAN_COORDINATE::convertToVector() const{
+vector<double> CARTESIAN_COORDINATE::asVector() const{
     vector<double> v(3);
+    v[0] = x;
+    v[1] = y;
+    v[2] = z;
+    return v;
+}
+
+boost::array<double, 3> CARTESIAN_COORDINATE::asArray() const{
+    boost::array<double, 3> v;
     v[0] = x;
     v[1] = y;
     v[2] = z;

@@ -78,6 +78,10 @@ public:
     friend bool operator!=(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs);
     
     //conversions
+    //quiet slow
+    boost::array<boost::array<double, 3>, 3> asArray() const;
+    boost::array<double, 9> asFlatArray() const;
+    //quiet fast
     vector<vector<double>> asVector() const;
     vector<double> asFlatVector() const;
     

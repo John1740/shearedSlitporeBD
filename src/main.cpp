@@ -15,19 +15,20 @@
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
 #include "struct/cartesian_matrix.h"
+#include <math.h>
 
 namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
-    CARTESIAN_COORDINATE a(1, 2, 3);
+    CARTESIAN_COORDINATE a(M_PI, 5.7, 3*M_PI);
     CARTESIAN_COORDINATE b(4, 5, 6);
     CARTESIAN_MATRIX A(a, b);
     CARTESIAN_MATRIX B(1);
     double c = 2;
     for(int i = 0; i < 10000000; i++){
-        B + c;
+        A != A;
     }
     cout << A << endl;
     clock.addTimePoint();

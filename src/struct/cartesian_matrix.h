@@ -72,125 +72,17 @@ public:
     friend CARTESIAN_MATRIX operator/(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs);
     friend CARTESIAN_MATRIX operator/(const double& lhs, const CARTESIAN_MATRIX& rhs);
     friend CARTESIAN_MATRIX operator/(const CARTESIAN_MATRIX& lhs, const double& rhs);
-
-//    friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs.xx - rhs.xx;
-//        result.xy = lhs.xy - rhs.xy;
-//        result.xz = lhs.xz - rhs.xz;
-//        result.yx = lhs.yx - rhs.yx;
-//        result.yy = lhs.yy - rhs.yy;
-//        result.yz = lhs.yz - rhs.yz;
-//        result.zx = lhs.zx - rhs.zx;
-//        result.zy = lhs.zy - rhs.zy;
-//        result.zz = lhs.zz - rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator- (double const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs - rhs.xx;
-//        result.xy = lhs - rhs.xy;
-//        result.xz = lhs - rhs.xz;
-//        result.yx = lhs - rhs.yx;
-//        result.yy = lhs - rhs.yy;
-//        result.yz = lhs - rhs.yz;
-//        result.zx = lhs - rhs.zx;
-//        result.zy = lhs - rhs.zy;
-//        result.zz = lhs - rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator- (CARTESIAN_MATRIX const& lhs, double const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result = -1*rhs + lhs;
-//        return result;
-//    };
-//
-//    friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs.xx * rhs.xx;
-//        result.xy = lhs.xy * rhs.xy;
-//        result.xz = lhs.xz * rhs.xz;
-//        result.yx = lhs.yx * rhs.yx;
-//        result.yy = lhs.yy * rhs.yy;
-//        result.yz = lhs.yz * rhs.yz;
-//        result.zx = lhs.zx * rhs.zx;
-//        result.zy = lhs.zy * rhs.zy;
-//        result.zz = lhs.zz * rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator* (double const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs * rhs.xx;
-//        result.xy = lhs * rhs.xy;
-//        result.xz = lhs * rhs.xz;
-//        result.yx = lhs * rhs.yx;
-//        result.yy = lhs * rhs.yy;
-//        result.yz = lhs * rhs.yz;
-//        result.zx = lhs * rhs.zx;
-//        result.zy = lhs * rhs.zy;
-//        result.zz = lhs * rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator* (CARTESIAN_MATRIX const& lhs, double const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result = rhs * lhs;
-//        return result;
-//    };
-//
-//    friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs.xx / rhs.xx;
-//        result.xy = lhs.xy / rhs.xy;
-//        result.xz = lhs.xz / rhs.xz;
-//        result.yx = lhs.yx / rhs.yx;
-//        result.yy = lhs.yy / rhs.yy;
-//        result.yz = lhs.yz / rhs.yz;
-//        result.zx = lhs.zx / rhs.zx;
-//        result.zy = lhs.zy / rhs.zy;
-//        result.zz = lhs.zz / rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator/ (double const& lhs, CARTESIAN_MATRIX const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result.xx = lhs / rhs.xx;
-//        result.xy = lhs / rhs.xy;
-//        result.xz = lhs / rhs.xz;
-//        result.yx = lhs / rhs.yx;
-//        result.yy = lhs / rhs.yy;
-//        result.yz = lhs / rhs.yz;
-//        result.zx = lhs / rhs.zx;
-//        result.zy = lhs / rhs.zy;
-//        result.zz = lhs / rhs.zz;
-//        return result;
-//    };
-//    friend CARTESIAN_MATRIX operator/ (CARTESIAN_MATRIX const& lhs, double const& rhs){
-//        CARTESIAN_MATRIX result;
-//        result = lhs * (1./rhs);
-//        return result;
-//    };
     
     //logical operators
-    friend bool operator== (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
-        if(lhs.xx==rhs.xx && lhs.xy==rhs.xy && lhs.xz==rhs.xz && lhs.yx==rhs.yx && lhs.yy==rhs.yy && lhs.yz==rhs.yz && lhs.zx==rhs.zx && lhs.zy==rhs.zy && lhs.zz==rhs.zz){
-            return true;
-        }
-        else{
-            return false;
-        }
-    };
-
-    friend bool operator!= (const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
-        return ! (lhs == rhs);
-    };
+    friend bool operator==(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs);
+    friend bool operator!=(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs);
     
     //conversions
     vector<vector<double>> asVector() const;
     vector<double> asFlatVector() const;
     
     //stream handling
-    friend ostream& operator<< (ostream& lhs, CARTESIAN_MATRIX const& rhs){
-        return lhs << rhs.xx << "\t" << rhs.xy << "\t" << rhs.xz << "\n" << rhs.yx << "\t" << rhs.yy << "\t" << rhs.yz << "\n" << rhs.zx << "\t" << rhs.zy << "\t" << rhs.zz;
-    }
+    friend ostream& operator<<(ostream& os, const CARTESIAN_MATRIX& A);
 };
 
 #endif // CARTESIAN_MATRIX_H

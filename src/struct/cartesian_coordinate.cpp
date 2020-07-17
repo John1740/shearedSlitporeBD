@@ -40,8 +40,7 @@ double CARTESIAN_COORDINATE::operator[](int i) const{
         case 2:
             return z;
         default:
-            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-            exit(0);
+            throw std::out_of_range("CARTESIAN_COORDINATE[] out of range.");
     }
 }
 
@@ -55,12 +54,11 @@ double& CARTESIAN_COORDINATE::operator[](int i){
         case 2:
             return z;
         default:
-            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-            exit(0);
+            throw std::out_of_range("CARTESIAN_COORDINATE[] out of range.");
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double CARTESIAN_COORDINATE::abs() const{
     return sqrt(x * x + y * y + z * z);
@@ -138,7 +136,7 @@ CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator/=(const double& c){
     return *this;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
     return CARTESIAN_COORDINATE(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
@@ -188,7 +186,7 @@ CARTESIAN_COORDINATE operator/(const double& lhs, const CARTESIAN_COORDINATE& rh
     return CARTESIAN_COORDINATE(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool operator==(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
     if(lhs.x==rhs.x && lhs.y==rhs.y && lhs.z==rhs.z){
@@ -206,16 +204,16 @@ bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
-    os << "[" << r.x << ", " << r.y << ", " << r.z << "]";
+    os << "[" << r.x << ",\t" << r.y << ",\t" << r.z << "]";
     return os;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vector<double> CARTESIAN_COORDINATE::convertToVector() const{
-    vector<double> v;
-    v.push_back(x);
-    v.push_back(y);
-    v.push_back(z);
+    vector<double> v(3);
+    v[0] = x;
+    v[1] = y;
+    v[2] = z;
     return v;
 }

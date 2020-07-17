@@ -1,4 +1,5 @@
 #include "cartesian_matrix.h"
+#include <stdexcept>
 
 CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& col){
     xx = xy = xz = col.x;
@@ -30,6 +31,8 @@ CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
     this->zz = other.zz;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //read-only
 CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
     double x, y, z;
@@ -44,8 +47,7 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
             x = zx; y = zy; z = zz;
             break;
         default:
-            cout << "CARTESIAN_MATRIX[" << i << "] out of range." << endl;
-            exit(1);
+            throw std::out_of_range("CARTESIAN_MATRIX[] out of range.");
     }
     return CARTESIAN_COORDINATE(x, y, z);
 }
@@ -53,6 +55,8 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
 double CARTESIAN_MATRIX::getDeterminant(){
     return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CARTESIAN_MATRIX& CARTESIAN_MATRIX::operator=(const CARTESIAN_MATRIX& other){
     this->xx = other.xx;
@@ -184,6 +188,8 @@ CARTESIAN_MATRIX& CARTESIAN_MATRIX::operator/=(const double& c){
     return *this;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 CARTESIAN_MATRIX operator+(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
     CARTESIAN_MATRIX result;
     result.xx = lhs.xx + rhs.xx;
@@ -224,4 +230,169 @@ CARTESIAN_MATRIX operator+(const CARTESIAN_MATRIX& lhs, const double& rhs){
     result.zy = lhs.zy + rhs;
     result.zz = lhs.zz + rhs;
     return result;
+}
+
+CARTESIAN_MATRIX operator-(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx - rhs.xx;
+    result.xy = lhs.xy - rhs.xy;
+    result.xz = lhs.xz - rhs.xz;
+    result.yx = lhs.yx - rhs.yx;
+    result.yy = lhs.yy - rhs.yy;
+    result.yz = lhs.yz - rhs.yz;
+    result.zx = lhs.zx - rhs.zx;
+    result.zy = lhs.zy - rhs.zy;
+    result.zz = lhs.zz - rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator-(const double& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs - rhs.xx;
+    result.xy = lhs - rhs.xy;
+    result.xz = lhs - rhs.xz;
+    result.yx = lhs - rhs.yx;
+    result.yy = lhs - rhs.yy;
+    result.yz = lhs - rhs.yz;
+    result.zx = lhs - rhs.zx;
+    result.zy = lhs - rhs.zy;
+    result.zz = lhs - rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator-(const CARTESIAN_MATRIX& lhs, const double& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx - rhs;
+    result.xy = lhs.xy - rhs;
+    result.xz = lhs.xz - rhs;
+    result.yx = lhs.yx - rhs;
+    result.yy = lhs.yy - rhs;
+    result.yz = lhs.yz - rhs;
+    result.zx = lhs.zx - rhs;
+    result.zy = lhs.zy - rhs;
+    result.zz = lhs.zz - rhs;
+    return result;
+}
+
+CARTESIAN_MATRIX operator*(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx * rhs.xx;
+    result.xy = lhs.xy * rhs.xy;
+    result.xz = lhs.xz * rhs.xz;
+    result.yx = lhs.yx * rhs.yx;
+    result.yy = lhs.yy * rhs.yy;
+    result.yz = lhs.yz * rhs.yz;
+    result.zx = lhs.zx * rhs.zx;
+    result.zy = lhs.zy * rhs.zy;
+    result.zz = lhs.zz * rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator*(const double& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs * rhs.xx;
+    result.xy = lhs * rhs.xy;
+    result.xz = lhs * rhs.xz;
+    result.yx = lhs * rhs.yx;
+    result.yy = lhs * rhs.yy;
+    result.yz = lhs * rhs.yz;
+    result.zx = lhs * rhs.zx;
+    result.zy = lhs * rhs.zy;
+    result.zz = lhs * rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator*(const CARTESIAN_MATRIX& lhs, const double& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx * rhs;
+    result.xy = lhs.xy * rhs;
+    result.xz = lhs.xz * rhs;
+    result.yx = lhs.yx * rhs;
+    result.yy = lhs.yy * rhs;
+    result.yz = lhs.yz * rhs;
+    result.zx = lhs.zx * rhs;
+    result.zy = lhs.zy * rhs;
+    result.zz = lhs.zz * rhs;
+    return result;
+}
+
+CARTESIAN_MATRIX operator/(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx / rhs.xx;
+    result.xy = lhs.xy / rhs.xy;
+    result.xz = lhs.xz / rhs.xz;
+    result.yx = lhs.yx / rhs.yx;
+    result.yy = lhs.yy / rhs.yy;
+    result.yz = lhs.yz / rhs.yz;
+    result.zx = lhs.zx / rhs.zx;
+    result.zy = lhs.zy / rhs.zy;
+    result.zz = lhs.zz / rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator/(const double& lhs, const CARTESIAN_MATRIX& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs / rhs.xx;
+    result.xy = lhs / rhs.xy;
+    result.xz = lhs / rhs.xz;
+    result.yx = lhs / rhs.yx;
+    result.yy = lhs / rhs.yy;
+    result.yz = lhs / rhs.yz;
+    result.zx = lhs / rhs.zx;
+    result.zy = lhs / rhs.zy;
+    result.zz = lhs / rhs.zz;
+    return result;
+}
+
+CARTESIAN_MATRIX operator/(const CARTESIAN_MATRIX& lhs, const double& rhs){
+    CARTESIAN_MATRIX result;
+    result.xx = lhs.xx / rhs;
+    result.xy = lhs.xy / rhs;
+    result.xz = lhs.xz / rhs;
+    result.yx = lhs.yx / rhs;
+    result.yy = lhs.yy / rhs;
+    result.yz = lhs.yz / rhs;
+    result.zx = lhs.zx / rhs;
+    result.zy = lhs.zy / rhs;
+    result.zz = lhs.zz / rhs;
+    return result;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool operator==(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
+    if(lhs.xx==rhs.xx && lhs.xy==rhs.xy && lhs.xz==rhs.xz &&
+       lhs.yx==rhs.yx && lhs.yy==rhs.yy && lhs.yz==rhs.yz &&
+       lhs.zx==rhs.zx && lhs.zy==rhs.zy && lhs.zz==rhs.zz){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool operator!=(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
+    if(lhs.xx!=rhs.xx && lhs.xy!=rhs.xy && lhs.xz!=rhs.xz &&
+       lhs.yx!=rhs.yx && lhs.yy!=rhs.yy && lhs.yz!=rhs.yz &&
+       lhs.zx!=rhs.zx && lhs.zy!=rhs.zy && lhs.zz!=rhs.zz){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ostream& operator<<(ostream& os, const CARTESIAN_MATRIX& A){
+    os << "[";
+    os << A[0] << ",\n ";
+    os << A[1] << ",\n ";
+    os << A[2];
+    os << "]";
+    return os;
 }

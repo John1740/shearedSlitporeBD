@@ -179,8 +179,8 @@ double& CARTESIAN_MATRIX::operator()(unsigned int row, unsigned int col){
     }
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
-    switch(i){
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int row) const{
+    switch(row){
         case 0:
             return CARTESIAN_COORDINATE(xx, xy, xz);
         case 1:

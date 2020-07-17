@@ -41,7 +41,7 @@ public:
     double operator()(unsigned int row, unsigned int col) const;
     double& operator()(unsigned int row, unsigned int col);
     //read-only
-    CARTESIAN_COORDINATE operator[](unsigned int i) const;
+    CARTESIAN_COORDINATE operator[](unsigned int row) const;
     CARTESIAN_COORDINATE row(unsigned int i) const;
     CARTESIAN_COORDINATE col(unsigned int i) const;
     

@@ -28,10 +28,10 @@ public:
     CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other);
     
     //functions
-    double getDeterminant();
+    double getDeterminant() const;
 //    CARTESIAN_MATRIX& invert();
 //    CARTESIAN_MATRIX invert() const;
-//    CARTESIAN_COORDINATE diag() const;
+    CARTESIAN_COORDINATE diag() const;
 //    CARTESIAN_MATRIX dot(const CARTESIAN_MATRIX& rhs);
 //    CARTESIAN_MATRIX dot(const CARTESIAN_COORDINATE& rhs);
     

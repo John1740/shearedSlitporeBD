@@ -33,6 +33,16 @@ CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+double CARTESIAN_MATRIX::getDeterminant() const{
+    return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
+}
+
+CARTESIAN_COORDINATE CARTESIAN_MATRIX::diag() const{
+    return CARTESIAN_COORDINATE(xx, yy, zz);;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //read-only
 CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
     double x, y, z;
@@ -50,10 +60,6 @@ CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int i) const{
             throw std::out_of_range("CARTESIAN_MATRIX[] out of range.");
     }
     return CARTESIAN_COORDINATE(x, y, z);
-}
-
-double CARTESIAN_MATRIX::getDeterminant(){
-    return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -44,7 +44,7 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
                 if(i == j){
                     continue;
                 }
-                CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
+                REAL_C relative = particle[i].boxPosition - particle[j].boxPosition;
                 relative = simBox.convertToBoxPosition(relative);
                 //distance within layer
                 double currentRadius = sqrt(pow(relative.x, 2.0) + pow(relative.y, 2.0));

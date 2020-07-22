@@ -16,10 +16,10 @@ double SOFT_WALL_FORCE::energyOnParticle(PARTICLE &particle){
     return (4 * M_PI / 5) * wallInteractionStrength * (pow(diameter / (dWall / 2 - zPosition), 9) + pow(diameter / (dWall / 2 + zPosition), 9));
 }
 
-CARTESIAN_COORDINATE SOFT_WALL_FORCE::forceOnParticle(PARTICLE &particle){
+REAL_C SOFT_WALL_FORCE::forceOnParticle(PARTICLE &particle){
     zPosition = particle.boxPosition.z;
     double diameter = particle.diameter;
-    CARTESIAN_COORDINATE forceOnParticle;
+    REAL_C forceOnParticle;
     forceOnParticle.z = forceInZDirection(zPosition, diameter);
     return forceOnParticle;
 }

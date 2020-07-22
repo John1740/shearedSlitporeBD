@@ -8,7 +8,7 @@ public:
     int charge;
 
     CHARGED_PARTICLE();
-    CHARGED_PARTICLE(const CARTESIAN_COORDINATE& positionIN);
+    CHARGED_PARTICLE(const REAL_C& positionIN);
     CHARGED_PARTICLE(const CHARGED_PARTICLE& other);
 };
 

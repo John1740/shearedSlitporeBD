@@ -28,8 +28,8 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(){
     forceCutOffThreshold = abs(lji.forceOnParticlePerDirection(3.) / 3.);
 }
 
-CARTESIAN_COORDINATE DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
-    CARTESIAN_COORDINATE forceOnParticleFromParticle;
+REAL_C DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
+    REAL_C forceOnParticleFromParticle;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     distance = posDifference.abs();

@@ -65,7 +65,7 @@ add_executable(shearedSlitporeBD
         src/struct/charged_particle.cpp
         src/struct/particle.cpp
         src/struct/slit_pore_box.cpp
-        src/struct/cartesian_coordinate.cpp
+        src/struct/real_coordinate.cpp
         src/struct/cartesian_matrix.cpp
         src/struct/configuration.cpp src/struct/configuration.h
         src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
@@ -91,7 +91,7 @@ add_executable(shearedSlitporeBD
         src/printer/stress.cpp src/printer/stress.h
         src/printer/velocity.cpp src/printer/velocity.h
         src/struct/layers.cpp src/struct/layers.h
-        src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h src/printer/angular_bond.cpp src/printer/angular_bond.h src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h src/struct/complex_cartesian_matrix.cpp src/struct/complex_cartesian_matrix.h src/struct/cartesian_coordinate.cpp src/struct/cartesian_coordinate.h)
+        src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h src/printer/angular_bond.cpp src/printer/angular_bond.h src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h src/struct/complex_cartesian_matrix.cpp src/struct/complex_cartesian_matrix.h src/struct/real_coordinate.cpp src/struct/real_coordinate.h src/struct/cartesian_coordinate.cpp src/struct/cartesian_coordinate.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(writePairCorrelation
@@ -113,7 +113,7 @@ add_executable(writePairCorrelation
         src/struct/charged_particle.cpp
         src/struct/particle.cpp
         src/struct/slit_pore_box.cpp
-        src/struct/cartesian_coordinate.cpp
+        src/struct/real_coordinate.cpp
         src/struct/cartesian_matrix.cpp
         src/struct/configuration.cpp src/struct/configuration.h
         src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h

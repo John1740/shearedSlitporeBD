@@ -3,26 +3,26 @@
 
 #include "../interfaces/force_template_interfaces.h"
 #include "../struct/particle.h"
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/real_coordinate.h"
 #include "../defaults.h"
 
 class SHEAR_FORCE:  FORCE<PARTICLE>{
 private:
-    CARTESIAN_COORDINATE direction;
+    REAL_C direction;
 public:
     double shearRate = SHEAR_RATE;
 
     SHEAR_FORCE();
     SHEAR_FORCE(double shearRate);
-    SHEAR_FORCE(double shearRate, const CARTESIAN_COORDINATE& direction);
+    SHEAR_FORCE(double shearRate, const REAL_C& direction);
 
     //setter functions
-    void setDirection(const CARTESIAN_COORDINATE& directionIn);
+    void setDirection(const REAL_C& directionIn);
 
     //getter functions
-    CARTESIAN_COORDINATE getDirection();
+    REAL_C getDirection();
 
-    CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle);
+    REAL_C forceOnParticle(PARTICLE& particle);
 };
 
 #endif // SHEAR_FORCE_H

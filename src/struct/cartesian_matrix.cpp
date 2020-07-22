@@ -1,19 +1,19 @@
 #include "cartesian_matrix.h"
 #include <stdexcept>
 
-CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& col){
+CARTESIAN_MATRIX::CARTESIAN_MATRIX(const REAL_C& col){
     xx = xy = xz = col.x;
     yx = yy = yz = col.y;
     zx = zy = zz = col.z;
 }
 
-CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& col1, const CARTESIAN_COORDINATE& col2, const CARTESIAN_COORDINATE& col3){
+CARTESIAN_MATRIX::CARTESIAN_MATRIX(const REAL_C& col1, const REAL_C& col2, const REAL_C& col3){
     xx = col1.x; xy = col2.x; xz = col3.x;
     yx = col1.y; yy = col2.y; yz = col3.y;
     zx = col1.z; zy = col2.z; zz = col3.z;
 }
 
-CARTESIAN_MATRIX::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE& r1, const CARTESIAN_COORDINATE& r2){
+CARTESIAN_MATRIX::CARTESIAN_MATRIX(const REAL_C& r1, const REAL_C& r2){
     xx = r1.x * r2.x; xy = r1.x * r2.y; xz = r1.x * r2.z;
     yx = r1.y * r2.x; yy = r1.y * r2.y; yz = r1.y * r2.z;
     zx = r1.z * r2.x; zy = r1.z * r2.y; zz = r1.z * r2.z;
@@ -37,8 +37,8 @@ double CARTESIAN_MATRIX::determinant() const{
     return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::diag() const{
-    return CARTESIAN_COORDINATE(xx, yy, zz);;
+REAL_C CARTESIAN_MATRIX::diag() const{
+    return REAL_C(xx, yy, zz);;
 }
 
 CARTESIAN_MATRIX& CARTESIAN_MATRIX::transposeInPlace(){
@@ -89,8 +89,8 @@ CARTESIAN_MATRIX CARTESIAN_MATRIX::dot(const CARTESIAN_MATRIX& rhs){
 //    return result;
 //}
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::dot(const CARTESIAN_COORDINATE& rhs){
-    CARTESIAN_COORDINATE result;
+REAL_C CARTESIAN_MATRIX::dot(const REAL_C& rhs){
+    REAL_C result;
     result.x = xx * rhs.x + xy * rhs.y + xz * rhs.z;
     result.y = yx * rhs.x + yy * rhs.y + yz * rhs.z;
     result.z = zx * rhs.x + zy * rhs.y + zz * rhs.z;
@@ -179,40 +179,40 @@ double& CARTESIAN_MATRIX::operator()(unsigned int row, unsigned int col){
     }
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::operator[](unsigned int row) const{
+REAL_C CARTESIAN_MATRIX::operator[](unsigned int row) const{
     switch(row){
         case 0:
-            return CARTESIAN_COORDINATE(xx, xy, xz);
+            return REAL_C(xx, xy, xz);
         case 1:
-            return CARTESIAN_COORDINATE(yx, yy, yz);
+            return REAL_C(yx, yy, yz);
         case 2:
-            return CARTESIAN_COORDINATE(zx, zy, zz);
+            return REAL_C(zx, zy, zz);
         default:
             throw std::out_of_range("CARTESIAN_MATRIX[] out of range.");
     }
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::row(unsigned int i) const{
+REAL_C CARTESIAN_MATRIX::row(unsigned int i) const{
     switch(i){
         case 0:
-            return CARTESIAN_COORDINATE(xx, xy, xz);
+            return REAL_C(xx, xy, xz);
         case 1:
-            return CARTESIAN_COORDINATE(yx, yy, yz);
+            return REAL_C(yx, yy, yz);
         case 2:
-            return CARTESIAN_COORDINATE(zx, zy, zz);
+            return REAL_C(zx, zy, zz);
         default:
             throw std::out_of_range("row() out of range.");
     }
 }
 
-CARTESIAN_COORDINATE CARTESIAN_MATRIX::col(unsigned int i) const{
+REAL_C CARTESIAN_MATRIX::col(unsigned int i) const{
     switch(i){
         case 0:
-            return CARTESIAN_COORDINATE(xx, yx, zx);
+            return REAL_C(xx, yx, zx);
         case 1:
-            return CARTESIAN_COORDINATE(xy, yy, zy);
+            return REAL_C(xy, yy, zy);
         case 2:
-            return CARTESIAN_COORDINATE(xz, yz, zz);
+            return REAL_C(xz, yz, zz);
         default:
             throw std::out_of_range("col() out of range.");
     }

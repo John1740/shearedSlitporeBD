@@ -22,23 +22,23 @@ namespace fs = experimental::filesystem;
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
-    CARTESIAN_COORDINATE a(1, 2, 3);
-    CARTESIAN_COORDINATE b(4, 5, 6);
-    CARTESIAN_MATRIX A(a, b);
-    CARTESIAN_MATRIX B;
-    B.xx = 1;
-    B.yy = 1;
-    B.zz = 1;
-    CARTESIAN_MATRIX C;
-    double c = 2;
-    for(int i = 0; i < 10000000; i++){
-        A.dot(B);
-    }
-    cout << A << endl;
-    clock.addTimePoint();
-    printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
-    cout << endl;
-    exit(0);
+//    CARTESIAN_COORDINATE a(1, 2, 3);
+//    CARTESIAN_COORDINATE b(4, 5, 6);
+//    CARTESIAN_MATRIX A(a, b);
+//    CARTESIAN_MATRIX B;
+//    B.xx = 1;
+//    B.yy = 1;
+//    B.zz = 1;
+//    CARTESIAN_MATRIX C;
+//    double c = 2;
+//    for(int i = 0; i < 10000000; i++){
+//        A.dot(B);
+//    }
+//    cout << A << endl;
+//    clock.addTimePoint();
+//    printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
+//    cout << endl;
+//    exit(0);
     
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS args = parser.parseArgs();

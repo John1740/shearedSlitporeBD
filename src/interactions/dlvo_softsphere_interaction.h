@@ -39,13 +39,13 @@ public:
     double cutOffRadius, shift1, shift2, shift3;
 
     double distance;
-    CARTESIAN_COORDINATE posDifference;
+    REAL_C posDifference;
 
     void calculateInteractionParameters();
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
-    CARTESIAN_COORDINATE forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
+    REAL_C forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
     double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
     double forceOnParticlePerDirection(double r);

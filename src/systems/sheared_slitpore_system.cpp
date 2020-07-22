@@ -44,7 +44,7 @@ double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
 
 //reset forces, stresses and energy
 void SHEARED_SLITPORE_SYSTEM::reset(){
-    force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
+    force.assign(numberOfParticles, REAL_C(0.));
 
     if(printStress > 0){
         stressPerParticle.assign(numberOfParticles, CARTESIAN_MATRIX(0.));
@@ -59,8 +59,8 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     // Force calculation
     calculateForce();
 
-    CARTESIAN_COORDINATE randomDisplacement;
-    CARTESIAN_COORDINATE shearForce;
+    REAL_C randomDisplacement;
+    REAL_C shearForce;
     previousParticle = particle;
     this->shearForce.shearRate = calculateCurrentShearRate();
 
@@ -78,15 +78,15 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     timestep++;
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
+REAL_C SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
     return shearForce.forceOnParticle(particle[index]);
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
+REAL_C SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return dlvo.forceOnParticleFromParticle(particle1, particle2, simBox);
 }
 
-CARTESIAN_COORDINATE SHEARED_SLITPORE_SYSTEM::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle){
+REAL_C SHEARED_SLITPORE_SYSTEM::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle){
     return swf.forceOnParticle(particle);
 }
 
@@ -104,7 +104,7 @@ double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTI
 //}
 
 void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
-    CARTESIAN_COORDINATE tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
+    REAL_C tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
     force[i] += tmpForce;
     force[j] -= tmpForce;
 
@@ -118,8 +118,8 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j){
-    CARTESIAN_COORDINATE posDifference = particle[i].boxPosition - particle[j].boxPosition;
+void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(REAL_C forceIn, int i, int j){
+    REAL_C posDifference = particle[i].boxPosition - particle[j].boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     CARTESIAN_MATRIX tmpStress(posDifference, forceIn);
     stressPerParticle[i] += 0.5* tmpStress;
@@ -127,7 +127,7 @@ void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(CARTESIAN_COORDINATE forc
 }
 
 void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
-    CARTESIAN_COORDINATE tmpForce = forceOnParticleFromExternalFields(particle[i]);
+    REAL_C tmpForce = forceOnParticleFromExternalFields(particle[i]);
     force[i] += tmpForce;
 
     if(printStress > 0){
@@ -139,7 +139,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     }
 }
 
-void SHEARED_SLITPORE_SYSTEM::addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i){   //const CARTESIAN_COORDINATE&
+void SHEARED_SLITPORE_SYSTEM::addExternalStress(const REAL_C& forceIn, int i){   //const CARTESIAN_COORDINATE&
     CARTESIAN_MATRIX tmpStress(0.);
 
     if(particle[i].boxPosition.z >= 0){

@@ -1,0 +1,30 @@
+//
+// Created by mhuels on 7/9/20.
+//
+
+#include "real_coordinate.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+REAL_C::REAL_C(){
+
+}
+
+REAL_C::REAL_C(double c): CARTESIAN_COORDINATE(c){
+
+}
+
+REAL_C::REAL_C(double x, double y, double z): CARTESIAN_COORDINATE(x, y, z){
+
+}
+
+REAL_C::REAL_C(const REAL_C& other){
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double REAL_C::abs() const{
+    return sqrt(x * x + y * y + z * z);
+}
+

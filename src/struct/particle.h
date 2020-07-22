@@ -1,29 +1,29 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 #include "../global.h"
-#include "cartesian_coordinate.h"
+#include "real_coordinate.h"
 #include "../interfaces/box_geometry.h"
 
 class PARTICLE{
 public:
-    CARTESIAN_COORDINATE position;
-    CARTESIAN_COORDINATE boxPosition;
+    REAL_C position;
+    REAL_C boxPosition;
 
     int index;
     double diameter;
     int species;
 
     PARTICLE();
-    PARTICLE(const CARTESIAN_COORDINATE& positionIN);
+    PARTICLE(const REAL_C& positionIN);
     PARTICLE(const PARTICLE& other);
 
-    CARTESIAN_COORDINATE getPosition() const;
+    REAL_C getPosition() const;
 
     double distanceTo(PARTICLE& other);
-    double distanceTo(CARTESIAN_COORDINATE& positionIN);
+    double distanceTo(REAL_C& positionIN);
 
     double boxDistanceTo(PARTICLE& other, BOX_GEOMETRY& boxGeom);
-    double boxDistanceTo(CARTESIAN_COORDINATE& positionIN, BOX_GEOMETRY& boxGeom);
+    double boxDistanceTo(REAL_C& positionIN, BOX_GEOMETRY& boxGeom);
 
     void setBoxPosition(BOX_GEOMETRY& boxGeom);
 

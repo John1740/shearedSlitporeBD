@@ -7,7 +7,7 @@
 #include "../boxmueller.h"
 #include "../interfaces/system_interface.h"
 
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/real_coordinate.h"
 #include "../struct/cartesian_matrix.h"
 #include "../struct/particle.h"
 #include "../struct/slit_pore_box.h"
@@ -37,7 +37,7 @@ protected:
 //    CONFIGURATION cfg;
     
     vector<CHARGED_PARTICLE> particle, previousParticle;
-    vector<CARTESIAN_COORDINATE> force;
+    vector<REAL_C> force;
     SLIT_PORE_BOX simBox;
     
     string configurationIn = CONFIGURATION_IN;
@@ -61,7 +61,7 @@ protected:
     virtual void reset();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
-    virtual CARTESIAN_COORDINATE getRandomDisplacement();
+    virtual REAL_C getRandomDisplacement();
 
     // Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
@@ -78,8 +78,8 @@ public:
     virtual void simulateForSteps(int maxSteps);
 
     // Two-Body and External Forces
-    virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
-    virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
+    virtual REAL_C forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
+    virtual REAL_C forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
 
@@ -92,14 +92,14 @@ public:
     virtual double getTimeStepSize();
     double getDensity() const;
     virtual double getInteractionLengthScale();
-    virtual vector<CARTESIAN_COORDINATE> getPositionList();
+    virtual vector<REAL_C> getPositionList();
     virtual vector<CHARGED_PARTICLE> getParticleList();
     virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
     
-    vector<CARTESIAN_COORDINATE> getVelocities();
-    CARTESIAN_COORDINATE getMeanVelocity();
-    vector<CARTESIAN_COORDINATE> getMeanLayerVelocities();
+    vector<REAL_C> getVelocities();
+    REAL_C getMeanVelocity();
+    vector<REAL_C> getMeanLayerVelocities();
 
     // Initial configuration generation
 //    virtual void generateInitialConfiguration();

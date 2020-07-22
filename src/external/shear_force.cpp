@@ -1,30 +1,30 @@
 #include "shear_force.h"
 
 SHEAR_FORCE::SHEAR_FORCE(){
-    direction = CARTESIAN_COORDINATE(1.,0.,0.);
+    direction = REAL_C(1., 0., 0.);
 }
 
 SHEAR_FORCE::SHEAR_FORCE(double shearRate) {
     this->shearRate = shearRate;
-    direction = CARTESIAN_COORDINATE(1., 0., 0.);
+    direction = REAL_C(1., 0., 0.);
 }
 
-SHEAR_FORCE::SHEAR_FORCE(double shearRate, const CARTESIAN_COORDINATE& direction) {
+SHEAR_FORCE::SHEAR_FORCE(double shearRate, const REAL_C& direction) {
     this->shearRate = shearRate;
     setDirection(direction);
 }
 
-void SHEAR_FORCE::setDirection(const CARTESIAN_COORDINATE& directionIn){
+void SHEAR_FORCE::setDirection(const REAL_C& directionIn){
     double abs = directionIn.abs();
     direction = directionIn / abs;
 }
 
-CARTESIAN_COORDINATE SHEAR_FORCE::forceOnParticle(PARTICLE& particle){
-    CARTESIAN_COORDINATE forceOnParticle = shearRate * direction * particle.boxPosition.z;
+REAL_C SHEAR_FORCE::forceOnParticle(PARTICLE& particle){
+    REAL_C forceOnParticle = shearRate * direction * particle.boxPosition.z;
     return forceOnParticle;
 }
 
-CARTESIAN_COORDINATE SHEAR_FORCE::getDirection(){
+REAL_C SHEAR_FORCE::getDirection(){
     return direction;
 }
 

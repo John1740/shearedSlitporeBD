@@ -1,16 +1,16 @@
 #include "particle.h"
 
 PARTICLE::PARTICLE(){
-    position = CARTESIAN_COORDINATE(0.);
-    boxPosition = CARTESIAN_COORDINATE(0.);
+    position = REAL_C(0.);
+    boxPosition = REAL_C(0.);
     diameter = 1;
     species = 0;
     index = 0;
 }
 
-PARTICLE::PARTICLE(const CARTESIAN_COORDINATE &positionIN){
+PARTICLE::PARTICLE(const REAL_C &positionIN){
     position = positionIN;
-    boxPosition = CARTESIAN_COORDINATE(0.);
+    boxPosition = REAL_C(0.);
     diameter = 1;
     species = 0;
     index = 0;
@@ -24,32 +24,32 @@ PARTICLE::PARTICLE(const PARTICLE &other){
     index = other.index;
 }
 
-CARTESIAN_COORDINATE PARTICLE::getPosition() const{
-    return CARTESIAN_COORDINATE(position.x, position.y, position.z);
+REAL_C PARTICLE::getPosition() const{
+    return REAL_C(position.x, position.y, position.z);
 }
 
 double PARTICLE::distanceTo(PARTICLE &other){
-    CARTESIAN_COORDINATE difference;
+    REAL_C difference;
     difference = position - other.position; //change to boxPosition?
     return difference.abs();
 }
 
-double PARTICLE::distanceTo(CARTESIAN_COORDINATE &positionIN){
-    CARTESIAN_COORDINATE difference;
+double PARTICLE::distanceTo(REAL_C &positionIN){
+    REAL_C difference;
     difference = position - positionIN;  //change to boxPosition?
     return difference.abs();
 }
 
 //needs the simulation box information
 double PARTICLE::boxDistanceTo(PARTICLE &other, BOX_GEOMETRY& boxGeom){
-    CARTESIAN_COORDINATE difference;
+    REAL_C difference;
     difference = boxPosition - other.boxPosition;
     difference = boxGeom.convertToBoxPosition(difference);
     return difference.abs();
 }
 
-double PARTICLE::boxDistanceTo(CARTESIAN_COORDINATE &positionIN, BOX_GEOMETRY& boxGeom){
-    CARTESIAN_COORDINATE difference;
+double PARTICLE::boxDistanceTo(REAL_C &positionIN, BOX_GEOMETRY& boxGeom){
+    REAL_C difference;
     difference = boxPosition - positionIN;
     difference = boxGeom.convertToBoxPosition(difference);
     return difference.abs();

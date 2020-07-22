@@ -5,11 +5,11 @@
 #ifndef SHEAREDSLITPOREBD_PERIODIC_COORDINATE_H
 #define SHEAREDSLITPOREBD_PERIODIC_COORDINATE_H
 
-#include "cartesian_coordinate.h"
+#include "real_coordinate.h"
 #include "../interfaces/box_geometry.h"
 #include <vector>
 
-class PERIODIC_COORDINATE: public CARTESIAN_COORDINATE{
+class PERIODIC_COORDINATE: public REAL_C{
 private:
     //CARTESIAN_COORDINATE needs to only have position (private), not boxPosition
     //boxPosition will be overriden here onto position instead by overriding getPosition() and setPosition()
@@ -25,7 +25,7 @@ public:
     vector<bool> getPeriodicBoundaryConditions() const;
     
     //setter
-    void setPosition(const CARTESIAN_COORDINATE& other);
+    void setPosition(const REAL_C& other);
     void setPosition(const PERIODIC_COORDINATE& other);
     void setPosition(double x, double y, double z);
     void setSimBox(BOX_GEOMETRY* simBoxIn);

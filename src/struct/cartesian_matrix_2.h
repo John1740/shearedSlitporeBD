@@ -1,7 +1,7 @@
 #ifndef CARTESIAN_MATRIX2_H
 #define CARTESIAN_MATRIX2_H
 
-#include "cartesian_coordinate.h"
+#include "real_coordinate.h"
 #include "cartesian_matrix.h"
 
 template <class dtype>
@@ -23,9 +23,9 @@ public:
         zz = 0;
     }
     CARTESIAN_MATRIX_2(double doubleIn): xx(doubleIn), xy(doubleIn), xz(doubleIn), yx(doubleIn), yy(doubleIn), yz(doubleIn), zx(doubleIn), zy(doubleIn), zz(doubleIn){}
-    CARTESIAN_MATRIX_2(CARTESIAN_COORDINATE posIn): xx(posIn.x), xy(posIn.y), xz(posIn.z), yx(posIn.x), yy(posIn.y), yz(posIn.z), zx(posIn.x), zy(posIn.y), zz(posIn.z){}
-    CARTESIAN_MATRIX_2(CARTESIAN_COORDINATE row1, CARTESIAN_COORDINATE row2, CARTESIAN_COORDINATE row3): xx(row1.x), xy(row1.y), xz(row1.z), yx(row2.x), yy(row2.y), yz(row2.z), zx(row3.x), zy(row3.y), zz(row3.z){}
-    CARTESIAN_MATRIX_2(CARTESIAN_COORDINATE vec1, CARTESIAN_COORDINATE vec2): xx(vec1.x * vec2.x), xy(vec1.x * vec2.y), xz(vec1.x * vec2.z), yx(vec1.y * vec2.x), yy(vec1.y * vec2.y), yz(vec1.y * vec2.z), zx(vec1.z * vec2.x), zy(vec1.z * vec2.y), zz(vec1.z * vec2.z){}
+    CARTESIAN_MATRIX_2(REAL_C posIn): xx(posIn.x), xy(posIn.y), xz(posIn.z), yx(posIn.x), yy(posIn.y), yz(posIn.z), zx(posIn.x), zy(posIn.y), zz(posIn.z){}
+    CARTESIAN_MATRIX_2(REAL_C row1, REAL_C row2, REAL_C row3): xx(row1.x), xy(row1.y), xz(row1.z), yx(row2.x), yy(row2.y), yz(row2.z), zx(row3.x), zy(row3.y), zz(row3.z){}
+    CARTESIAN_MATRIX_2(REAL_C vec1, REAL_C vec2): xx(vec1.x * vec2.x), xy(vec1.x * vec2.y), xz(vec1.x * vec2.z), yx(vec1.y * vec2.x), yy(vec1.y * vec2.y), yz(vec1.y * vec2.z), zx(vec1.z * vec2.x), zy(vec1.z * vec2.y), zz(vec1.z * vec2.z){}
     CARTESIAN_MATRIX_2(const CARTESIAN_MATRIX& other){
         xx = other.xx;
         xy = other.xy;

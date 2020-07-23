@@ -3,10 +3,11 @@
 //
 
 #include "real_coordinate.h"
+#include "math.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-REAL_C::REAL_C(){
+REAL_C::REAL_C() : CARTESIAN_COORDINATE(){
 
 }
 
@@ -18,7 +19,7 @@ REAL_C::REAL_C(double x, double y, double z): CARTESIAN_COORDINATE(x, y, z){
 
 }
 
-REAL_C::REAL_C(const REAL_C& other){
+REAL_C::REAL_C(const REAL_C& other) : CARTESIAN_COORDINATE(other){
 
 }
 

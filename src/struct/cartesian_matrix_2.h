@@ -2,7 +2,7 @@
 #define CARTESIAN_MATRIX2_H
 
 #include "cartesian_c.h"
-#include "cartesian_matrix.h"
+#include "cartesian_m.h"
 
 template <class dtype>
 class CARTESIAN_MATRIX_2{
@@ -26,7 +26,7 @@ public:
     CARTESIAN_MATRIX_2(REAL_C posIn): xx(posIn.x), xy(posIn.y), xz(posIn.z), yx(posIn.x), yy(posIn.y), yz(posIn.z), zx(posIn.x), zy(posIn.y), zz(posIn.z){}
     CARTESIAN_MATRIX_2(REAL_C row1, REAL_C row2, REAL_C row3): xx(row1.x), xy(row1.y), xz(row1.z), yx(row2.x), yy(row2.y), yz(row2.z), zx(row3.x), zy(row3.y), zz(row3.z){}
     CARTESIAN_MATRIX_2(REAL_C vec1, REAL_C vec2): xx(vec1.x * vec2.x), xy(vec1.x * vec2.y), xz(vec1.x * vec2.z), yx(vec1.y * vec2.x), yy(vec1.y * vec2.y), yz(vec1.y * vec2.z), zx(vec1.z * vec2.x), zy(vec1.z * vec2.y), zz(vec1.z * vec2.z){}
-    CARTESIAN_MATRIX_2(const CARTESIAN_MATRIX& other){
+    CARTESIAN_MATRIX_2(const REAL_M& other){
         xx = other.xx;
         xy = other.xy;
         xz = other.xz;

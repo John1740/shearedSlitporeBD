@@ -14,7 +14,7 @@
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
-#include "struct/cartesian_matrix.h"
+#include "struct/cartesian_m.h"
 #include <math.h>
 
 namespace fs = experimental::filesystem;

@@ -8,7 +8,7 @@
 #include "../interfaces/system_interface.h"
 
 #include "../struct/cartesian_c.h"
-#include "../struct/cartesian_matrix.h"
+#include "../struct/cartesian_m.h"
 #include "../struct/particle.h"
 #include "../struct/slit_pore_box.h"
 

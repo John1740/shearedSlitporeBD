@@ -67,7 +67,7 @@ double STRESS_FOURIER_COMPONENTS::calculateLossModulus(){
 }
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::addTimestep(const SHEARED_SLITPORE_SYSTEM& sys){
-    CARTESIAN_MATRIX currentStress = sys.getMeanStress();
+    REAL_M currentStress = sys.getMeanStress();
     stress.push_back(currentStress);
     return *this;
 }
@@ -76,7 +76,7 @@ int STRESS_FOURIER_COMPONENTS::getNumberOfTimesteps() const{
     return numberOfTimesteps;
 }
 
-vector<CARTESIAN_MATRIX> STRESS_FOURIER_COMPONENTS::getStressList() const{
+vector<REAL_M> STRESS_FOURIER_COMPONENTS::getStressList() const{
     return stress;
 }
 
@@ -93,7 +93,7 @@ STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setNumberOfTimesteps(int n
     return *this;
 }
 
-STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setStressList(vector<CARTESIAN_MATRIX> stress){
+STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setStressList(vector<REAL_M> stress){
     this->stress = stress;
     return *this;
 }

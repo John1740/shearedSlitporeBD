@@ -21,7 +21,7 @@ protected:
 
     vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
-    vector<CARTESIAN_MATRIX> stressPerParticle;
+    vector<REAL_M> stressPerParticle;
     
     double shearRateOffset = SHEAR_RATE;
     double shearRateAmplitude = AMPLITUDE;
@@ -65,8 +65,8 @@ public:
     //setter functions
 
     //getter functions
-    virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
-    virtual CARTESIAN_MATRIX getMeanStress() const;
+    virtual vector<REAL_M> getStressPerParticle();
+    virtual REAL_M getMeanStress() const;
     double getCurrentShearRate();
 
     vector<double> getEnergyPerParticle();

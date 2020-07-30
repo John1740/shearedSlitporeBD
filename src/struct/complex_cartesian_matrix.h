@@ -6,7 +6,7 @@
 #define SHEAREDSLITPOREBD_COMPLEX_CARTESIAN_MATRIX_H
 
 #include <complex>
-#include "cartesian_matrix.h"
+#include "cartesian_m.h"
 using namespace std;
 
 class COMPLEX_CARTESIAN_MATRIX{
@@ -18,8 +18,8 @@ public:
     COMPLEX_CARTESIAN_MATRIX();
     
     //getter
-    CARTESIAN_MATRIX real();
-    CARTESIAN_MATRIX imag();
+    REAL_M real();
+    REAL_M imag();
     
 };
 

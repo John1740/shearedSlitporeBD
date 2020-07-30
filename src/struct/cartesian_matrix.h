@@ -36,6 +36,8 @@ public:
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1, const CARTESIAN_COORDINATE<dtype>& col2, const CARTESIAN_COORDINATE<dtype>& col3);
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& r1, const CARTESIAN_COORDINATE<dtype>& r2);
     CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other);
+//    template <class M>
+//    CARTESIAN_MATRIX(const CARTESIAN_MATRIX<M>& other);
 
     //functions
     dtype determinant() const;
@@ -305,7 +307,7 @@ CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& r1,
     zx = r1.z * r2.x; zy = r1.z * r2.y; zz = r1.z * r2.z;
 }
 
-template <typename dtype>
+template <class dtype>
 CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
     this->xx = other.xx;
     this->xy = other.xy;

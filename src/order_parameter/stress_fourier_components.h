@@ -8,7 +8,6 @@
 
 #include "../argument_parser/arguments.h"
 #include "../struct/cartesian_m.h"
-#include "../struct/cartesian_matrix_2.h"
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 #include <complex>
@@ -28,7 +27,7 @@ public:
     
     STRESS_FOURIER_COMPONENTS& setup(const ARGUMENTS& args);
     
-    CARTESIAN_MATRIX_2<complex<double>> calculate(int n);
+    COMPLEX_M calculate(int n);
     double calculateStorageModulus();
     double calculateLossModulus();
     

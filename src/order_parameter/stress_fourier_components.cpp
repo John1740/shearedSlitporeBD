@@ -29,8 +29,8 @@ STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& arg
     return *this;
 }
 
-CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
-    CARTESIAN_MATRIX_2<complex<double>> fc; //fc==fourier component
+COMPLEX_M STRESS_FOURIER_COMPONENTS::calculate(int n){
+    COMPLEX_M fc; //fc==fourier component
     complex<double> I(0, 1);
     //sometimes rounds falsely
     int timestepsPerPeriod = period / dt;
@@ -46,7 +46,12 @@ CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
     for(int t = 0; t < N; t++){
         double phase = - n * 2 * M_PI * (t * dt) / period;
         complex<double> factor = exp(I * phase); //cos, sin to reduce numerical errors
-        fc += CARTESIAN_MATRIX_2<complex<double>>(stress[t]) * factor;
+        COMPLEX_M tmp;
+        tmp.xx = stress[t].xx; tmp.xy = stress[t].xy; tmp.xz = stress[t].xz;
+        tmp.yx = stress[t].yx; tmp.yy = stress[t].yy; tmp.yz = stress[t].yz;
+        tmp.zx = stress[t].zx; tmp.zy = stress[t].zy; tmp.zz = stress[t].zz;
+        fc += tmp * factor; //need a cleverer solution here
+//        fc += COMPLEX_M(stress[t]) * factor;
     }
     fc /= N;
     return fc;

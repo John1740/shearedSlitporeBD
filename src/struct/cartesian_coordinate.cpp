@@ -35,7 +35,7 @@ double CARTESIAN_COORDINATE<complex<double>>::abs() const{
 
 template<>
 CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<double>::real() const{
-    return CARTESIAN_COORDINATE<double>(x, y, z);
+    return *this;
 }
 
 template<>

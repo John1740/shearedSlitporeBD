@@ -3,7 +3,7 @@
 
 #include "../interfaces/force_template_interfaces.h"
 #include "../struct/particle.h"
-#include "../struct/real_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../defaults.h"
 
 class SHEAR_FORCE:  FORCE<PARTICLE>{

@@ -1,7 +1,7 @@
 #ifndef SYSTEM_INTERFACE_H
 #define SYSTEM_INTERFACE_H
 
-#include "../struct/real_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../struct/cartesian_matrix.h"
 #include "../interfaces/box_geometry.h"
 #include "../struct/charged_particle.h"

@@ -1,7 +1,7 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 #include "../global.h"
-#include "real_coordinate.h"
+#include "cartesian_c.h"
 #include "../interfaces/box_geometry.h"
 
 class PARTICLE{

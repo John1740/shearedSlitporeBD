@@ -5,7 +5,7 @@
 #ifndef SHEAREDSLITPOREBD_VELOCITY_H
 #define SHEAREDSLITPOREBD_VELOCITY_H
 
-#include "../struct/real_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 

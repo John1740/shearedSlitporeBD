@@ -1,7 +1,7 @@
 #ifndef BOX_GEOMETRY_H
 #define BOX_GEOMETRY_H
 
-#include "../struct/real_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include <vector>
 using namespace std;
 

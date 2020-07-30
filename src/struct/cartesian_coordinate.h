@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include "boost/array.hpp"
+#include <stdexcept>
 using namespace std;
 
 //Member function definitions follow after the declaration (to preserve some organization).
@@ -22,6 +23,9 @@ class CARTESIAN_COORDINATE{
     //inherit from boost::array<dtype, 3>, access via (*this)[i] (out-of-range check included)
     //hard-coded as done here, but access via wrapped (*this)[i]
     //inherit from std::array<dtype, 3>, access via (*this)[i] (out-of-range check included)
+    //
+    //Template datatype needs to have defined the following operators:
+    //+ - * / = += -= *= /= == != <<
 public:
     dtype x, y, z;
 
@@ -29,7 +33,13 @@ public:
     CARTESIAN_COORDINATE();
     CARTESIAN_COORDINATE(dtype c);
     CARTESIAN_COORDINATE(dtype x, dtype y, dtype z);
-    CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE<dtype>& other);
+    CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other);
+
+    //functions
+    double abs() const;
+    dtype dot(const CARTESIAN_COORDINATE& other) const;
+    CARTESIAN_COORDINATE<double> real() const;
+    CARTESIAN_COORDINATE<double> imag() const;
 
     //index operators
     dtype operator[](unsigned int i) const;
@@ -145,10 +155,32 @@ CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(dtype x, dtype y, dtype z){
 }
 
 template <typename dtype>
-CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE<dtype>& other){
+CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other){
     this->x = other.x;
     this->y = other.y;
     this->z = other.z;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename dtype>
+double CARTESIAN_COORDINATE<dtype>::abs() const{
+    throw runtime_error(string("abs() is not implemented for the following datatype/class: ") + typeid(x).name());
+}
+
+template<typename dtype>
+dtype CARTESIAN_COORDINATE<dtype>::dot(const CARTESIAN_COORDINATE& other) const{
+    return x * other.x + y * other.y + z * other.z;
+}
+
+template<typename dtype>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<dtype>::real() const{
+    throw runtime_error(string("real() is not implemented for the following datatype/class: ") + typeid(x).name());
+}
+
+template<typename dtype>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<dtype>::imag() const{
+    throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(x).name());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

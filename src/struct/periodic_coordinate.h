@@ -5,7 +5,7 @@
 #ifndef SHEAREDSLITPOREBD_PERIODIC_COORDINATE_H
 #define SHEAREDSLITPOREBD_PERIODIC_COORDINATE_H
 
-#include "real_coordinate.h"
+#include "cartesian_c.h"
 #include "../interfaces/box_geometry.h"
 #include <vector>
 

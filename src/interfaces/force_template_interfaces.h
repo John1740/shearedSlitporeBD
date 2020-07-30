@@ -1,7 +1,7 @@
 #ifndef FORCE_H
 #define FORCE_H
 
-#include "../struct/real_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../interfaces/box_geometry.h"
 
 template<class PARTICLE_T>

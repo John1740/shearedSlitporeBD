@@ -1,7 +1,7 @@
 #ifndef CARTESIAN_MATRIX2_H
 #define CARTESIAN_MATRIX2_H
 
-#include "real_coordinate.h"
+#include "cartesian_c.h"
 #include "cartesian_matrix.h"
 
 template <class dtype>

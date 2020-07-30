@@ -1,7 +1,7 @@
 #ifndef CARTESIAN_MATRIX_H
 #define CARTESIAN_MATRIX_H
 
-#include "real_coordinate.h"
+#include "cartesian_c.h"
 
 class CARTESIAN_MATRIX{
     //This is completely hard-coded to improve performance. Another (slower) concept, that has been tried, is:

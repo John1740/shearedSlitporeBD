@@ -3,7 +3,7 @@
 
 #include "../interfaces/force_template_interfaces.h"
 #include "../struct/particle.h"
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../defaults.h"
 #include "../argument_parser/arguments.h"
 
@@ -21,7 +21,7 @@ public:
 //    SOFT_WALL_FORCE(const ARGUMENTS& args);
     SOFT_WALL_FORCE(double wallInteractionStrength, double dWall);
 
-    CARTESIAN_COORDINATE forceOnParticle(PARTICLE& particle);
+    REAL_C forceOnParticle(PARTICLE& particle);
     double energyOnParticle(PARTICLE& particle);
 
     double forceInZDirection(double zPositionIn, double diameterIn);

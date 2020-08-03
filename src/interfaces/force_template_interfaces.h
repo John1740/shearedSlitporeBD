@@ -1,13 +1,13 @@
 #ifndef FORCE_H
 #define FORCE_H
 
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../interfaces/box_geometry.h"
 
 template<class PARTICLE_T>
 class FORCE{
 public:
-    virtual CARTESIAN_COORDINATE forceOnParticle(PARTICLE_T& particle) = 0;
+    virtual REAL_C forceOnParticle(PARTICLE_T& particle) = 0;
 };
 
 template<class PARTICLE_T>
@@ -19,7 +19,7 @@ public:
 template<class PARTICLE_T>
 class TWO_BODY_FORCE{
 public:
-    virtual CARTESIAN_COORDINATE forceOnParticleFromParticle(PARTICLE_T& particle1, PARTICLE_T& particle2, BOX_GEOMETRY& simBox) = 0;
+    virtual REAL_C forceOnParticleFromParticle(PARTICLE_T& particle1, PARTICLE_T& particle2, BOX_GEOMETRY& simBox) = 0;
 };
 
 template<class PARTICLE_T>

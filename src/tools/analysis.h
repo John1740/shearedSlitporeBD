@@ -5,9 +5,9 @@
 #ifndef SHEAREDSLITPOREBD_ANALYSIS_H
 #define SHEAREDSLITPOREBD_ANALYSIS_H
 
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include <vector>
 
-CARTESIAN_COORDINATE getMinCoordinate(vector<CARTESIAN_COORDINATE> coordinateList);
+REAL_C getMinCoordinate(vector<REAL_C> coordinateList);
 
 #endif //SHEAREDSLITPOREBD_ANALYSIS_H

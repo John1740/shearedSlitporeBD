@@ -4,11 +4,11 @@
 #include "../interfaces/command.h"
 #include "../systems/sheared_slitpore_system.h"
 
-#include "../struct/cartesian_matrix.h"
+#include "../struct/cartesian_m.h"
 
 class AVERAGE_STRESS:public COMMAND<SHEARED_SLITPORE_SYSTEM>{
 private:
-    CARTESIAN_MATRIX stress;
+    REAL_M stress;
     int count;
 
 public:
@@ -17,7 +17,7 @@ public:
 
     void doForSystem(SHEARED_SLITPORE_SYSTEM& sysIn);
 
-    CARTESIAN_MATRIX getStress();
+    REAL_M getStress();
 };
 
 #endif // AVERAGE_STRESS_H

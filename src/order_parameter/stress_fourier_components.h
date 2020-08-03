@@ -7,8 +7,7 @@
 
 
 #include "../argument_parser/arguments.h"
-#include "../struct/cartesian_matrix.h"
-#include "../struct/cartesian_matrix_2.h"
+#include "../struct/cartesian_m.h"
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 #include <complex>
@@ -16,7 +15,7 @@
 class STRESS_FOURIER_COMPONENTS{
 private:
     int numberOfTimesteps;
-    vector<CARTESIAN_MATRIX> stress;
+    vector<REAL_M> stress;
     double period;
     double amplitude;
     double dt;
@@ -28,7 +27,7 @@ public:
     
     STRESS_FOURIER_COMPONENTS& setup(const ARGUMENTS& args);
     
-    CARTESIAN_MATRIX_2<complex<double>> calculate(int n);
+    COMPLEX_M calculate(int n);
     double calculateStorageModulus();
     double calculateLossModulus();
     
@@ -37,13 +36,13 @@ public:
     
     //getter
     int getNumberOfTimesteps() const;
-    vector<CARTESIAN_MATRIX> getStressList() const;
+    vector<REAL_M> getStressList() const;
     double getPeriod() const;
     double getDt() const;
     
     //setter
     STRESS_FOURIER_COMPONENTS& setNumberOfTimesteps(int numberOfTimesteps);
-    STRESS_FOURIER_COMPONENTS& setStressList(vector<CARTESIAN_MATRIX> stress);
+    STRESS_FOURIER_COMPONENTS& setStressList(vector<REAL_M> stress);
     STRESS_FOURIER_COMPONENTS& setPeriod(double period);
     STRESS_FOURIER_COMPONENTS& setDt(double dt);
     

@@ -11,7 +11,7 @@ private:
     vector<int> neighborMap;
     vector<int> firstParticleIndexInBox, nextParticleIndexInBoxOfParticleIndex;
 
-    vector<CARTESIAN_COORDINATE> boxPositions;
+    vector<REAL_C> boxPositions;
     BOX_GEOMETRY* simBox;    //should be initialized in constructor
 
     unsigned int getBoxIndexFromGridIndices(int i, int j);

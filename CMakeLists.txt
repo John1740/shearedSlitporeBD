@@ -62,36 +62,43 @@ add_executable(shearedSlitporeBD
         src/command/calculate_forces.cpp
         src/command/generate_square_layers.cpp
 
-        src/struct/charged_particle.cpp
-        src/struct/particle.cpp
-        src/struct/slit_pore_box.cpp
-        src/struct/cartesian_coordinate.cpp
-        src/struct/cartesian_matrix.cpp
-        src/struct/configuration.cpp src/struct/configuration.h
+        src/struct/cartesian_c.h
+        src/struct/cartesian_coordinate.cpp src/struct/cartesian_coordinate.h
         src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
+        src/struct/cartesian_m.h
+        src/struct/cartesian_matrix.cpp src/struct/cartesian_matrix.h
+
+        src/struct/particle.cpp
+        src/struct/charged_particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/configuration.cpp src/struct/configuration.h
+        src/struct/layers.cpp src/struct/layers.h
 
         src/systems/sheared_slitpore_system.cpp
         src/systems/confined_brownian_particles.cpp
 
         src/printer/printer.cpp
-
-        src/tools/analysis.cpp src/tools/analysis.h
+        src/printer/stress.cpp src/printer/stress.h
+        src/printer/velocity.cpp src/printer/velocity.h
+        src/printer/angular_bond.cpp src/printer/angular_bond.h
 
         src/argument_parser/argparse.cpp src/argument_parser/argparse.h
         src/argument_parser/arguments.cpp src/argument_parser/arguments.h
 
         src/defaults.h
+        src/templates/version.h.template
 
         src/tools/clock.cpp src/tools/clock.h
-
         src/tools/my_vector.h
-
-        src/templates/version.h.template
         src/tools/format.cpp src/tools/format.h
-        src/printer/stress.cpp src/printer/stress.h
-        src/printer/velocity.cpp src/printer/velocity.h
-        src/struct/layers.cpp src/struct/layers.h
-        src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h src/printer/angular_bond.cpp src/printer/angular_bond.h src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h src/struct/complex_cartesian_matrix.cpp src/struct/complex_cartesian_matrix.h src/struct/cartesian_coordinate.cpp src/struct/cartesian_coordinate.h)
+        src/tools/analysis.cpp src/tools/analysis.h
+
+        src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h
+        src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h
+        src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h
+        src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h
+
+        )
 
 #build a library first if you want to have multiple executable files!
 add_executable(writePairCorrelation
@@ -113,8 +120,6 @@ add_executable(writePairCorrelation
         src/struct/charged_particle.cpp
         src/struct/particle.cpp
         src/struct/slit_pore_box.cpp
-        src/struct/cartesian_coordinate.cpp
-        src/struct/cartesian_matrix.cpp
         src/struct/configuration.cpp src/struct/configuration.h
         src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
 
@@ -122,6 +127,8 @@ add_executable(writePairCorrelation
         src/systems/confined_brownian_particles.cpp
 
         src/printer/printer.cpp
+        src/printer/stress.cpp src/printer/stress.h
+        src/printer/velocity.cpp src/printer/velocity.h
 
         src/tools/analysis.cpp src/tools/analysis.h
 
@@ -136,11 +143,9 @@ add_executable(writePairCorrelation
 
         src/templates/version.h.template
         src/tools/format.cpp src/tools/format.h
-        src/printer/stress.cpp src/printer/stress.h
-        src/printer/velocity.cpp src/printer/velocity.h
         src/struct/layers.cpp src/struct/layers.h
         src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h
-        )
+        src/struct/cartesian_coordinate.cpp src/struct/cartesian_matrix.cpp src/struct/cartesian_matrix.h)
 
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)

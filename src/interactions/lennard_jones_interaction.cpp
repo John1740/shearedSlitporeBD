@@ -19,10 +19,10 @@ double LENNARD_JONES_INTERACTION::energyOnParticles(double distance){
     return 4.*interactionStrength * (pow(diameter / distance, 12) - pow(diameter / distance, 6));
 }
 
-CARTESIAN_COORDINATE LENNARD_JONES_INTERACTION::forceOnParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2, BOX_GEOMETRY& simBox){
+REAL_C LENNARD_JONES_INTERACTION::forceOnParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2, BOX_GEOMETRY& simBox){
     setParametersForParticleFromParticle(particle1, particle2);
 
-    CARTESIAN_COORDINATE result;
+    REAL_C result;
     result = positionDifference * forceOnParticlePerDirection(distance) / distance;
     return result;
 }

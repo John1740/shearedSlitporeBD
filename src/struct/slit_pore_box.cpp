@@ -9,7 +9,7 @@ SLIT_PORE_BOX::SLIT_PORE_BOX(){
     setLengthAndDWall(1., D_WALL);
 }
 
-SLIT_PORE_BOX::SLIT_PORE_BOX(CARTESIAN_COORDINATE dimensionsIn){
+SLIT_PORE_BOX::SLIT_PORE_BOX(REAL_C dimensionsIn){
     setDimensions(dimensionsIn);
 }
 
@@ -22,7 +22,7 @@ void SLIT_PORE_BOX::setDwall(double dWallIn){
     setVolume();
 }
 
-void SLIT_PORE_BOX::setDimensions(CARTESIAN_COORDINATE dimensionsIn){
+void SLIT_PORE_BOX::setDimensions(REAL_C dimensionsIn){
     dimensions = dimensionsIn;
     setVolume();
 }
@@ -49,14 +49,14 @@ void SLIT_PORE_BOX::setVolume(){
     volume = dimensions.x * dimensions.y * dimensions.z;
 }
 
-CARTESIAN_COORDINATE SLIT_PORE_BOX::getDimensions() const{
+REAL_C SLIT_PORE_BOX::getDimensions() const{
     return dimensions;
 }
 
 //Converts coordinates x and y into the scope [-L/2,+L/2] (periodic boundary conditions),
 //where L is the dimension dx or dy respectively.
-CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition(CARTESIAN_COORDINATE &positionIN){
-    CARTESIAN_COORDINATE boxPosition;
+REAL_C SLIT_PORE_BOX::convertToBoxPosition(REAL_C &positionIN){
+    REAL_C boxPosition;
     //x  = X*L + r (x=positionIN.x, X to be integer, L=dimension.x, r to be remainder ([0,L])
     //x' = x - round( x / L ) * L  (x'=boxPosition.x)
     //x' = r - round( r / L ) * L  (r/L is element [0,1] and so either rounded to 0 or 1)
@@ -69,11 +69,11 @@ CARTESIAN_COORDINATE SLIT_PORE_BOX::convertToBoxPosition(CARTESIAN_COORDINATE &p
     return boxPosition;
 }
 
-CARTESIAN_COORDINATE SLIT_PORE_BOX::getOrigin() const{
+REAL_C SLIT_PORE_BOX::getOrigin() const{
     return origin;
 }
 
-void SLIT_PORE_BOX::setOrigin(CARTESIAN_COORDINATE origin){
+void SLIT_PORE_BOX::setOrigin(REAL_C origin){
     this->origin = origin;
 }
 

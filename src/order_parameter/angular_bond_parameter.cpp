@@ -36,7 +36,7 @@ vector<int> ANGULAR_BOND_PARAMETER::getNeighborIndices(int i){
             continue;
         }
         if(layers.tellLayerNumber(particle[i]) == layers.tellLayerNumber(particle[j])){
-            CARTESIAN_COORDINATE relative = particle[i].boxPosition - particle[j].boxPosition;
+            REAL_C relative = particle[i].boxPosition - particle[j].boxPosition;
             relative = simBox.convertToBoxPosition(relative);
             double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
             if(distance <= nextNeighborShellRadius){
@@ -88,7 +88,7 @@ double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
 }
 
 double ANGULAR_BOND_PARAMETER::angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2){
-    CARTESIAN_COORDINATE relative = particle2.boxPosition - particle1.boxPosition;
+    REAL_C relative = particle2.boxPosition - particle1.boxPosition;
     relative = simBox.convertToBoxPosition(relative);
     double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
     double angle;

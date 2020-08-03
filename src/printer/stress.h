@@ -13,7 +13,7 @@ using namespace std;
 class STRESS_PRINTER{
 private:
     SHEARED_SLITPORE_SYSTEM* sys;
-    CARTESIAN_MATRIX meanStress;    //ensemble average/mean
+    REAL_M meanStress;    //ensemble average/mean
 
 public:
     STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);

@@ -1,57 +1,46 @@
+//
+// Created by mhuelsberg on 30.07.20.
+//
+
 #include "cartesian_matrix.h"
+#include <complex>
 
-double CARTESIAN_MATRIX::getDeterminant(){
-    return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
-}
-
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator+= (const CARTESIAN_MATRIX &cCoordIN){
-    this->xx += cCoordIN.xx;
-    this->xy += cCoordIN.xy;
-    this->xz += cCoordIN.xz;
-    this->yx += cCoordIN.yx;
-    this->yy += cCoordIN.yy;
-    this->yz += cCoordIN.yz;
-    this->zx += cCoordIN.zx;
-    this->zy += cCoordIN.zy;
-    this->zz += cCoordIN.zz;
+template<>
+CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<double>::real() const{
     return *this;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator-= (const CARTESIAN_MATRIX &cCoordIN){
-    this->xx -= cCoordIN.xx;
-    this->xy -= cCoordIN.xy;
-    this->xz -= cCoordIN.xz;
-    this->yx -= cCoordIN.yx;
-    this->yy -= cCoordIN.yy;
-    this->yz -= cCoordIN.yz;
-    this->zx -= cCoordIN.zx;
-    this->zy -= cCoordIN.zy;
-    this->zz -= cCoordIN.zz;
-    return *this;
+template<>
+CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<double>::imag() const{
+    return CARTESIAN_MATRIX<double>(0);
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator*= (const CARTESIAN_MATRIX &cCoordIN){
-    this->xx *= cCoordIN.xx;
-    this->xy *= cCoordIN.xy;
-    this->xz *= cCoordIN.xz;
-    this->yx *= cCoordIN.yx;
-    this->yy *= cCoordIN.yy;
-    this->yz *= cCoordIN.yz;
-    this->zx *= cCoordIN.zx;
-    this->zy *= cCoordIN.zy;
-    this->zz *= cCoordIN.zz;
-    return *this;
+template<>
+CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<complex<double>>::real() const{
+    CARTESIAN_MATRIX<double> result;
+    result.xx = xx.real();
+    result.xy = xy.real();
+    result.xz = xz.real();
+    result.yx = yx.real();
+    result.yy = yy.real();
+    result.yz = yz.real();
+    result.zx = zx.real();
+    result.zy = zy.real();
+    result.zz = zz.real();
+    return result;
 }
 
-CARTESIAN_MATRIX &CARTESIAN_MATRIX::operator/= (const CARTESIAN_MATRIX &cCoordIN){
-    this->xx /= cCoordIN.xx;
-    this->xy /= cCoordIN.xy;
-    this->xz /= cCoordIN.xz;
-    this->yx /= cCoordIN.yx;
-    this->yy /= cCoordIN.yy;
-    this->yz /= cCoordIN.yz;
-    this->zx /= cCoordIN.zx;
-    this->zy /= cCoordIN.zy;
-    this->zz /= cCoordIN.zz;
-    return *this;
+template<>
+CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<complex<double>>::imag() const {
+    CARTESIAN_MATRIX<double> result;
+    result.xx = xx.imag();
+    result.xy = xy.imag();
+    result.xz = xz.imag();
+    result.yx = yx.imag();
+    result.yy = yy.imag();
+    result.yz = yz.imag();
+    result.zx = zx.imag();
+    result.zy = zy.imag();
+    result.zz = zz.imag();
+    return result;
 }

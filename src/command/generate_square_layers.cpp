@@ -45,7 +45,7 @@ void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
     for(int j = 0; j < numberOfRows; ++j){ //j=index in y-direction
         for(int k = 0; k < numberOfRows; ++k){ //k=index in x-direction
             CHARGED_PARTICLE newParticle;
-            newParticle.position = CARTESIAN_COORDINATE(
+            newParticle.position = REAL_C(
                     dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
                     dy * j + layerIndex * dy / 2, //displaced by dy/2 from lower layer
                     zMin + layerIndex * dz
@@ -59,7 +59,7 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
     for(int j = 0; j < numberOfRows + numberOfAdditionalRows; ++j){
         for(int k = 0; k < numberOfRows + numberOfAdditionalRows; ++k){
             CHARGED_PARTICLE newParticle;
-            newParticle.position = CARTESIAN_COORDINATE(
+            newParticle.position = REAL_C(
                     dxAdd * k + layerIndex * dxAdd / 2,
                     dyAdd * j + layerIndex * dyAdd / 2,
                     zMin + layerIndex * dz

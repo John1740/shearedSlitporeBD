@@ -29,8 +29,8 @@ STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& arg
     return *this;
 }
 
-CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
-    CARTESIAN_MATRIX_2<complex<double>> fc; //fc==fourier component
+COMPLEX_M STRESS_FOURIER_COMPONENTS::calculate(int n){
+    COMPLEX_M fc; //fc==fourier component
     complex<double> I(0, 1);
     //sometimes rounds falsely
     int timestepsPerPeriod = period / dt;
@@ -46,7 +46,12 @@ CARTESIAN_MATRIX_2<complex<double>> STRESS_FOURIER_COMPONENTS::calculate(int n){
     for(int t = 0; t < N; t++){
         double phase = - n * 2 * M_PI * (t * dt) / period;
         complex<double> factor = exp(I * phase); //cos, sin to reduce numerical errors
-        fc += CARTESIAN_MATRIX_2<complex<double>>(stress[t]) * factor;
+        COMPLEX_M tmp;
+        tmp.xx = stress[t].xx; tmp.xy = stress[t].xy; tmp.xz = stress[t].xz;
+        tmp.yx = stress[t].yx; tmp.yy = stress[t].yy; tmp.yz = stress[t].yz;
+        tmp.zx = stress[t].zx; tmp.zy = stress[t].zy; tmp.zz = stress[t].zz;
+        fc += tmp * factor; //need a cleverer solution here
+//        fc += COMPLEX_M(stress[t]) * factor;
     }
     fc /= N;
     return fc;
@@ -67,7 +72,7 @@ double STRESS_FOURIER_COMPONENTS::calculateLossModulus(){
 }
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::addTimestep(const SHEARED_SLITPORE_SYSTEM& sys){
-    CARTESIAN_MATRIX currentStress = sys.getMeanStress();
+    REAL_M currentStress = sys.getMeanStress();
     stress.push_back(currentStress);
     return *this;
 }
@@ -76,7 +81,7 @@ int STRESS_FOURIER_COMPONENTS::getNumberOfTimesteps() const{
     return numberOfTimesteps;
 }
 
-vector<CARTESIAN_MATRIX> STRESS_FOURIER_COMPONENTS::getStressList() const{
+vector<REAL_M> STRESS_FOURIER_COMPONENTS::getStressList() const{
     return stress;
 }
 
@@ -93,7 +98,7 @@ STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setNumberOfTimesteps(int n
     return *this;
 }
 
-STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setStressList(vector<CARTESIAN_MATRIX> stress){
+STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setStressList(vector<REAL_M> stress){
     this->stress = stress;
     return *this;
 }

@@ -5,16 +5,16 @@
 #ifndef SHEAREDSLITPOREBD_VELOCITY_H
 #define SHEAREDSLITPOREBD_VELOCITY_H
 
-#include "../struct/cartesian_coordinate.h"
+#include "../struct/cartesian_c.h"
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 
 class VELOCITY_PRINTER{
 private:
     SHEARED_SLITPORE_SYSTEM* sys;
-    CARTESIAN_COORDINATE meanVelocity;
+    REAL_C meanVelocity;
     int numberOfLayers;
-    vector<CARTESIAN_COORDINATE> meanLayerVelocities;
+    vector<REAL_C> meanLayerVelocities;
 public:
     VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
     VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);

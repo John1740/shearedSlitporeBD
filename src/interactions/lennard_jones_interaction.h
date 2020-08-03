@@ -12,12 +12,12 @@ public:
     double diameter;
 
     double distance;
-    CARTESIAN_COORDINATE positionDifference;
+    REAL_C positionDifference;
 
     LENNARD_JONES_INTERACTION();
     LENNARD_JONES_INTERACTION(double interactionStrengthIN);
 
-    CARTESIAN_COORDINATE forceOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
+    REAL_C forceOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
     double energyOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
     double energyOnParticles(double distance);

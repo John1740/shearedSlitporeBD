@@ -19,9 +19,9 @@ protected:
     SOFT_WALL_FORCE swf;
     SHEAR_FORCE shearForce;
 
-    vector<CARTESIAN_COORDINATE> randomForces, shearFlowForces;
+    vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
-    vector<CARTESIAN_MATRIX> stressPerParticle;
+    vector<REAL_M> stressPerParticle;
     
     double shearRateOffset = SHEAR_RATE;
     double shearRateAmplitude = AMPLITUDE;
@@ -33,7 +33,7 @@ protected:
 
     virtual void reset();
 
-    virtual CARTESIAN_COORDINATE getShearForce(int index);
+    virtual REAL_C getShearForce(int index);
 
     virtual void equationOfMotion();
     virtual void calculateInteractionForce(int i, int j);
@@ -41,8 +41,8 @@ protected:
     
 //    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
 
-    virtual void addConfigurationalStress(CARTESIAN_COORDINATE forceIn, int i, int j);
-    virtual void addExternalStress(const CARTESIAN_COORDINATE& forceIn, int i);
+    virtual void addConfigurationalStress(REAL_C forceIn, int i, int j);
+    virtual void addExternalStress(const REAL_C& forceIn, int i);
     
     double calculateCurrentShearRate();
 
@@ -55,8 +55,8 @@ public:
 
     virtual void prepareSystem();
 
-    virtual CARTESIAN_COORDINATE forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
-    virtual CARTESIAN_COORDINATE forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
+    virtual REAL_C forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
+    virtual REAL_C forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
     
@@ -65,8 +65,8 @@ public:
     //setter functions
 
     //getter functions
-    virtual vector<CARTESIAN_MATRIX> getStressPerParticle();
-    virtual CARTESIAN_MATRIX getMeanStress() const;
+    virtual vector<REAL_M> getStressPerParticle();
+    virtual REAL_M getMeanStress() const;
     double getCurrentShearRate();
 
     vector<double> getEnergyPerParticle();

@@ -34,7 +34,7 @@ void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
 
 void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     calculateForce();
-    CARTESIAN_COORDINATE randomDisplacement;
+    REAL_C randomDisplacement;
     previousParticle = particle;
 
     for(int i = 0; i < particle.size(); ++i){
@@ -53,11 +53,11 @@ void CONFINED_BROWNIAN_PARTICLES::calculateForce(){
 
 //reset forces
 void CONFINED_BROWNIAN_PARTICLES::reset(){
-    force.assign(numberOfParticles, CARTESIAN_COORDINATE(0.));
+    force.assign(numberOfParticles, REAL_C(0.));
 }
 
-CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
-    CARTESIAN_COORDINATE randomForce;
+REAL_C CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
+    REAL_C randomForce;
     randomForce.x = sqrt(2 * D0 * dt) * boxmueller(0, 1);
     randomForce.y = sqrt(2 * D0 * dt) * boxmueller(0, 1);
     randomForce.z = sqrt(2 * D0 * dt) * boxmueller(0, 1);
@@ -76,9 +76,9 @@ vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getPreviousParticleList(){
     return previousParticle;
 }
 
-vector< CARTESIAN_COORDINATE > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
+vector< REAL_C > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
     setPositionInBox();
-    vector<CARTESIAN_COORDINATE> positionList(particle.size());
+    vector<REAL_C> positionList(particle.size());
 
     for(int i = 0; i < particle.size(); ++i){
         positionList[i] = particle[i].boxPosition;
@@ -98,7 +98,7 @@ double CONFINED_BROWNIAN_PARTICLES::getInteractionLengthScale(){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::calculateInteractionForce(int i, int j){
-    CARTESIAN_COORDINATE tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
+    REAL_C tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
     force[i] += tmpForce;
     force[j] -= tmpForce;
 }
@@ -107,16 +107,16 @@ void CONFINED_BROWNIAN_PARTICLES::calculateExternalForce(int i){
     force[i] += forceOnParticleFromExternalFields(particle[i]);
 }
 
-CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
-    return CARTESIAN_COORDINATE(0.);
+REAL_C CONFINED_BROWNIAN_PARTICLES::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
+    return REAL_C(0.);
 }
 
 double CONFINED_BROWNIAN_PARTICLES::energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return 0.;
 }
 
-CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle){
-    return CARTESIAN_COORDINATE(0.);
+REAL_C CONFINED_BROWNIAN_PARTICLES::forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle){
+    return REAL_C(0.);
 }
 
 double CONFINED_BROWNIAN_PARTICLES::energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle){
@@ -206,7 +206,7 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFileOld(string filename, 
             numberOfParticles = stoi(line);
         }
         else if(line.find("BOX BOUNDS xx yy zz") != string::npos){
-            CARTESIAN_COORDINATE boxDimensions;
+            REAL_C boxDimensions;
             f >> c1 >> c2;
             boxDimensions.x = c2 - c1;
             f >> c1 >> c2;
@@ -237,7 +237,7 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFileOld(string filename, 
     
     //read particle positions
     while(f >> c1 >> c2 >> c3){
-        newParticle.position = CARTESIAN_COORDINATE(c1, c2, c3);
+        newParticle.position = REAL_C(c1, c2, c3);
         particleIn.push_back(newParticle);
     }
     
@@ -397,7 +397,7 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
                 else{
                     newParticle.index = counter;
                 }
-                newParticle.position = CARTESIAN_COORDINATE(c[pX], c[pY], c[pZ]);
+                newParticle.position = REAL_C(c[pX], c[pY], c[pZ]);
                 newParticle.boxPosition = newParticle.position;
                 if(pDiameter != -1){
                     newParticle.diameter = c[pDiameter];
@@ -465,19 +465,19 @@ void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn, bool ve
 
 //Calculate the velocities of the previous time step.
 //v(t-dt) = (r(t) - r(t-dt))/dt
-vector<CARTESIAN_COORDINATE> CONFINED_BROWNIAN_PARTICLES::getVelocities(){
-    vector<CARTESIAN_COORDINATE> velocities;
+vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getVelocities(){
+    vector<REAL_C> velocities;
     for(int i = 0; i < numberOfParticles; i++){
-        CARTESIAN_COORDINATE positionDifference = particle[i].boxPosition - previousParticle[i].boxPosition;
+        REAL_C positionDifference = particle[i].boxPosition - previousParticle[i].boxPosition;
         positionDifference = simBox.convertToBoxPosition(positionDifference);
         velocities.push_back(positionDifference / dt);
     }
     return velocities;
 }
 
-CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
-    vector<CARTESIAN_COORDINATE> velocities = getVelocities();
-    CARTESIAN_COORDINATE meanVelocity;
+REAL_C CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
+    vector<REAL_C> velocities = getVelocities();
+    REAL_C meanVelocity;
     for(int i = 0; i < numberOfParticles; i++){
         meanVelocity += velocities[i];
     }
@@ -486,12 +486,12 @@ CARTESIAN_COORDINATE CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
 }
 
 //Returns velocity average of each layer. Length of returned vector corresponds to number of layers.
-vector<CARTESIAN_COORDINATE> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
+vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
     LAYERS layers(simBox);
     int numberOfLayers = layers.getNumberOfLayers();
     
-    vector<CARTESIAN_COORDINATE> velocities = getVelocities();
-    vector<CARTESIAN_COORDINATE> meanLayerVelocities(numberOfLayers);
+    vector<REAL_C> velocities = getVelocities();
+    vector<REAL_C> meanLayerVelocities(numberOfLayers);
     vector<int> counter(numberOfLayers);
     int layerNumber;
     for(int i = 0; i < numberOfParticles; i++){

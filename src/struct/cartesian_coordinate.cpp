@@ -1,221 +1,54 @@
 //
-// Created by mhuels on 7/9/20.
+// Created by mhuelsberg on 30.07.20.
 //
 
 #include "cartesian_coordinate.h"
+#include <complex>
 
-CARTESIAN_COORDINATE::CARTESIAN_COORDINATE(){
-    this->x = 0;
-    this->y = 0;
-    this->z = 0;
-}
-
-CARTESIAN_COORDINATE::CARTESIAN_COORDINATE(double c){
-    this->x = c;
-    this->y = c;
-    this->z = c;
-}
-
-CARTESIAN_COORDINATE::CARTESIAN_COORDINATE(double x, double y, double z){
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-CARTESIAN_COORDINATE::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other){
-    this->x = other.x;
-    this->y = other.y;
-    this->z = other.z;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//const version for the use in assignment operators (e.g. operator=)
-double CARTESIAN_COORDINATE::operator[](int i) const{
-    switch(i){
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-            exit(0);
-    }
-}
-
-//non-const version, that can be used for assignment as well
-double& CARTESIAN_COORDINATE::operator[](int i){
-    switch(i){
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            cout << "CARTESIAN_COORDINATE[" << i << "] out of range." << endl;
-            exit(0);
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-double CARTESIAN_COORDINATE::abs() const{
+template<>
+double CARTESIAN_COORDINATE<int>::abs() const{
     return sqrt(x * x + y * y + z * z);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<>
+double CARTESIAN_COORDINATE<float>::abs() const{
+    return sqrt(x * x + y * y + z * z);
+}
 
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator=(const CARTESIAN_COORDINATE& other){
-    this->x = other.x;
-    this->y = other.y;
-    this->z = other.z;
+template<>
+double CARTESIAN_COORDINATE<double>::abs() const{
+    return sqrt(x * x + y * y + z * z);
+}
+
+template<>
+double CARTESIAN_COORDINATE<long double>::abs() const{
+    return sqrt(x * x + y * y + z * z);
+}
+
+template<>
+double CARTESIAN_COORDINATE<complex<double>>::abs() const{
+    double squared = x.real() * x.real() + x.imag() * x.imag()
+                     + y.real() * y.real() + y.imag() * y.imag()
+                     + z.real() * z.real() + z.imag() * z.imag();
+    return sqrt(squared);
+}
+
+template<>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<double>::real() const{
     return *this;
 }
 
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator=(const double& c){
-    this->x = c;
-    this->y = c;
-    this->z = c;
-    return *this;
+template<>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<double>::imag() const{
+    return CARTESIAN_COORDINATE<double>(0);
 }
 
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator+=(const CARTESIAN_COORDINATE& other){
-    this->x += other.x;
-    this->y += other.y;
-    this->z += other.z;
-    return *this;
+template<>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<complex<double>>::real() const{
+    return CARTESIAN_COORDINATE<double>(x.real(), y.real(), z.real());
 }
 
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator+=(const double& c){
-    this->x += c;
-    this->y += c;
-    this->z += c;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator-=(const CARTESIAN_COORDINATE& other){
-    this->x -= other.x;
-    this->y -= other.y;
-    this->z -= other.z;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator-=(const double& c){
-    this->x -= c;
-    this->y -= c;
-    this->z -= c;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator*=(const CARTESIAN_COORDINATE& other){
-    this->x *= other.x;
-    this->y *= other.y;
-    this->z *= other.z;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator*=(const double& c){
-    this->x *= c;
-    this->y *= c;
-    this->z *= c;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator/=(const CARTESIAN_COORDINATE& other){
-    this->x /= other.x;
-    this->y /= other.y;
-    this->z /= other.z;
-    return *this;
-}
-
-CARTESIAN_COORDINATE& CARTESIAN_COORDINATE::operator/=(const double& c){
-    this->x /= c;
-    this->y /= c;
-    this->z /= c;
-    return *this;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
-}
-
-CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const double& rhs){
-    return CARTESIAN_COORDINATE(lhs.x + rhs, lhs.y + rhs, lhs.z + rhs);
-}
-
-CARTESIAN_COORDINATE operator+(const double& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs + rhs.x, lhs + rhs.y, lhs + rhs.z);
-}
-
-CARTESIAN_COORDINATE operator-(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
-}
-
-CARTESIAN_COORDINATE operator-(const CARTESIAN_COORDINATE& lhs, const double& rhs){
-    return CARTESIAN_COORDINATE(lhs.x - rhs, lhs.y - rhs, lhs.z - rhs);
-}
-
-CARTESIAN_COORDINATE operator-(const double& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs - rhs.x, lhs - rhs.y, lhs - rhs.z);
-}
-
-CARTESIAN_COORDINATE operator*(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
-}
-
-CARTESIAN_COORDINATE operator*(const CARTESIAN_COORDINATE& lhs, const double& rhs){
-    return CARTESIAN_COORDINATE(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
-}
-
-CARTESIAN_COORDINATE operator*(const double& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z);
-}
-
-CARTESIAN_COORDINATE operator/(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z);
-}
-
-CARTESIAN_COORDINATE operator/(const CARTESIAN_COORDINATE& lhs, const double& rhs){
-    return CARTESIAN_COORDINATE(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs);
-}
-
-CARTESIAN_COORDINATE operator/(const double& lhs, const CARTESIAN_COORDINATE& rhs){
-    return CARTESIAN_COORDINATE(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool operator==(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    if(lhs.x==rhs.x && lhs.y==rhs.y && lhs.z==rhs.z){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-    return !(lhs == rhs);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ostream& operator<< (ostream& os, const CARTESIAN_COORDINATE& r){
-    os << "[" << r.x << ", " << r.y << ", " << r.z << "]";
-    return os;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-vector<double> CARTESIAN_COORDINATE::convertToVector() const{
-    vector<double> v;
-    v.push_back(x);
-    v.push_back(y);
-    v.push_back(z);
-    return v;
+template<>
+CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<complex<double>>::imag() const{
+    return CARTESIAN_COORDINATE<double>(x.imag(), y.imag(), z.imag());
 }

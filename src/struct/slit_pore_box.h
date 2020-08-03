@@ -6,8 +6,8 @@
 
 class SLIT_PORE_BOX: public BOX_GEOMETRY{
 private:
-    CARTESIAN_COORDINATE dimensions;
-    CARTESIAN_COORDINATE origin;
+    REAL_C dimensions;
+    REAL_C origin;
     double volume;
     
     void setVolume();
@@ -15,23 +15,23 @@ private:
 public:
     //constructors
     SLIT_PORE_BOX();
-    SLIT_PORE_BOX(CARTESIAN_COORDINATE dimensionsIn);
+    SLIT_PORE_BOX(REAL_C dimensionsIn);
     SLIT_PORE_BOX(double volume, double dWallIN);
 
     //setter functions
     void setDwall(double dWallIn);
-    void setDimensions(CARTESIAN_COORDINATE dimensionsIn);
-    void setOrigin(CARTESIAN_COORDINATE origin);
+    void setDimensions(REAL_C dimensionsIn);
+    void setOrigin(REAL_C origin);
     
     void setLengthAndDWall(double lengthIN, double dWallIN);    //necessary?
     void setVolumeAndDWall(double volumeIN, double dWallIN);
 
     //getter functions
-    CARTESIAN_COORDINATE getDimensions() const;
-    CARTESIAN_COORDINATE getOrigin() const;
+    REAL_C getDimensions() const;
+    REAL_C getOrigin() const;
     double getVolume() const;
 
-    CARTESIAN_COORDINATE convertToBoxPosition(CARTESIAN_COORDINATE& positionIN);
+    REAL_C convertToBoxPosition(REAL_C& positionIN);
     
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox);

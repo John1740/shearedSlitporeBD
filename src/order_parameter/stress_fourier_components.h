@@ -30,6 +30,8 @@ public:
     COMPLEX_M calculate(int n);
     double calculateStorageModulus();
     double calculateLossModulus();
+    double calculateStorageModulusOld();
+    double calculateLossModulusOld();
     
     
     STRESS_FOURIER_COMPONENTS& addTimestep(const SHEARED_SLITPORE_SYSTEM& sys);

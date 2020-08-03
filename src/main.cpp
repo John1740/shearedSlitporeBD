@@ -110,8 +110,13 @@ int main(int argc, const char *argv[]){
         cout << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
+        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;
+        cout << "Old Loss modulus [kT/d^3]: " << fc.calculateLossModulusOld() << endl;
         for(int i = 0; i <= 4; i++){
-            cout << i << "-th Fourier component (xz): " << fc.calculate(i).xz << endl;
+            cout << "Fourier component (xz) (n= " << i << "): " << fc.calculate(i).xz << endl;
+            if(i > 0){
+                cout << "Fourier component (xz) (n=" << -i << "): " << fc.calculate(-i).xz << endl;
+            }
         }
     }
     

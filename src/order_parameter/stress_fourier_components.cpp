@@ -56,15 +56,31 @@ COMPLEX_M STRESS_FOURIER_COMPONENTS::calculate(int n){
 
 double STRESS_FOURIER_COMPONENTS::calculateStorageModulus(){
     //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
-    double firstHarmonicFC = calculate(1).xz.imag();
-    double storageModulus = - firstHarmonicFC * period / amplitude;
+    double fc1positive = calculate(1).xz.imag();
+    double fc1negative = calculate(-1).xz.imag();
+    double storageModulus = (fc1negative - fc1positive) * 2 * M_PI / (period * amplitude);
     return storageModulus;
 }
 
 double STRESS_FOURIER_COMPONENTS::calculateLossModulus(){
     //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
+    double fc1positive = calculate(1).xz.real();
+    double fc1negative = calculate(-1).xz.real();
+    double lossModulus = (fc1negative + fc1positive) * 2 * M_PI / (period * amplitude);
+    return lossModulus;
+}
+
+double STRESS_FOURIER_COMPONENTS::calculateStorageModulusOld(){
+    //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
+    double firstHarmonicFC = calculate(1).xz.imag();
+    double storageModulus = - firstHarmonicFC * 2 * M_PI / (period * amplitude);
+    return storageModulus;
+}
+
+double STRESS_FOURIER_COMPONENTS::calculateLossModulusOld(){
+    //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
     double firstHarmonicFC = calculate(1).xz.real();
-    double lossModulus = firstHarmonicFC * period / amplitude;
+    double lossModulus = firstHarmonicFC * 2 * M_PI / (period * amplitude);
     return lossModulus;
 }
 

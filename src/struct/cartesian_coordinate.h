@@ -40,6 +40,8 @@ public:
     dtype dot(const CARTESIAN_COORDINATE& other) const;
     CARTESIAN_COORDINATE<double> real() const;
     CARTESIAN_COORDINATE<double> imag() const;
+    CARTESIAN_COORDINATE& real(const CARTESIAN_COORDINATE<double>& r);
+    CARTESIAN_COORDINATE& imag(const CARTESIAN_COORDINATE<double>& i);
 
     //index operators
     dtype operator[](unsigned int i) const;
@@ -180,6 +182,16 @@ CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<dtype>::real() const{
 
 template<typename dtype>
 CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<dtype>::imag() const{
+    throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(x).name());
+}
+
+template<typename dtype>
+CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::real(const CARTESIAN_COORDINATE<double>& r){
+    throw runtime_error(string("real() is not implemented for the following datatype/class: ") + typeid(x).name());
+}
+
+template<typename dtype>
+CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::imag(const CARTESIAN_COORDINATE<double>& i){
     throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(x).name());
 }
 

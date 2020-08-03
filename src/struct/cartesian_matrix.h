@@ -36,8 +36,6 @@ public:
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1, const CARTESIAN_COORDINATE<dtype>& col2, const CARTESIAN_COORDINATE<dtype>& col3);
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& r1, const CARTESIAN_COORDINATE<dtype>& r2);
     CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other);
-//    template <class M>
-//    CARTESIAN_MATRIX(const CARTESIAN_MATRIX<M>& other);
 
     //functions
     dtype determinant() const;
@@ -48,6 +46,8 @@ public:
     CARTESIAN_COORDINATE<dtype> dot(const CARTESIAN_COORDINATE<dtype>& rhs);
     CARTESIAN_MATRIX<double> real() const;
     CARTESIAN_MATRIX<double> imag() const;
+    CARTESIAN_MATRIX& real(const CARTESIAN_MATRIX<double>& r);
+    CARTESIAN_MATRIX& imag(const CARTESIAN_MATRIX<double>& i);
 
     //index operators
     dtype  operator()(unsigned int row, unsigned int col) const;
@@ -387,6 +387,16 @@ CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<dtype>::real() const{
 
 template <typename dtype>
 CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<dtype>::imag() const{
+    throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(xx).name());
+}
+
+template<typename dtype>
+CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::real(const CARTESIAN_MATRIX<double>& r){
+    throw runtime_error(string("real() is not implemented for the following datatype/class: ") + typeid(xx).name());
+}
+
+template<typename dtype>
+CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::imag(const CARTESIAN_MATRIX<double>& i){
     throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(xx).name());
 }
 

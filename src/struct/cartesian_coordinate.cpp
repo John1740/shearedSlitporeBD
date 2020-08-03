@@ -52,3 +52,19 @@ template<>
 CARTESIAN_COORDINATE<double> CARTESIAN_COORDINATE<complex<double>>::imag() const{
     return CARTESIAN_COORDINATE<double>(x.imag(), y.imag(), z.imag());
 }
+
+template<>
+CARTESIAN_COORDINATE<complex<double>>& CARTESIAN_COORDINATE<complex<double>>::real(const CARTESIAN_COORDINATE<double>& r){
+    x.real(r.x);
+    y.real(r.y);
+    z.real(r.z);
+    return *this;
+}
+
+template<>
+CARTESIAN_COORDINATE<complex<double>>& CARTESIAN_COORDINATE<complex<double>>::imag(const CARTESIAN_COORDINATE<double>& i){
+    x.imag(i.x);
+    y.imag(i.y);
+    z.imag(i.z);
+    return *this;
+}

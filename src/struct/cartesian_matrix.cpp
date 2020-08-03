@@ -44,3 +44,19 @@ CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<complex<double>>::imag() const {
     result.zz = zz.imag();
     return result;
 }
+
+template<>
+CARTESIAN_MATRIX<complex<double>>& CARTESIAN_MATRIX<complex<double>>::real(const CARTESIAN_MATRIX<double>& r){
+    xx.real(r.xx); xy.real(r.xy); xz.real(r.xz);
+    yx.real(r.yx); yy.real(r.yy); yz.real(r.yz);
+    zx.real(r.xx); zy.real(r.zy); zz.real(r.zz);
+    return *this;
+}
+
+template<>
+CARTESIAN_MATRIX<complex<double>>& CARTESIAN_MATRIX<complex<double>>::imag(const CARTESIAN_MATRIX<double>& r){
+    xx.imag(r.xx); xy.imag(r.xy); xz.imag(r.xz);
+    yx.imag(r.yx); yy.imag(r.yy); yz.imag(r.yz);
+    zx.imag(r.xx); zy.imag(r.zy); zz.imag(r.zz);
+    return *this;
+}

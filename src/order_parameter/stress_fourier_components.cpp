@@ -43,15 +43,12 @@ COMPLEX_M STRESS_FOURIER_COMPONENTS::calculate(int n){
         cout << "Existing data is not large enough (" << stress.size() << "<" << timestepsPerPeriod << ") to compute a Fourier component!" << endl;
         return fc;
     }
+    COMPLEX_M complex_stress;
     for(int t = 0; t < N; t++){
         double phase = - n * 2 * M_PI * (t * dt) / period;
         complex<double> factor = exp(I * phase); //cos, sin to reduce numerical errors
-        COMPLEX_M tmp;
-        tmp.xx = stress[t].xx; tmp.xy = stress[t].xy; tmp.xz = stress[t].xz;
-        tmp.yx = stress[t].yx; tmp.yy = stress[t].yy; tmp.yz = stress[t].yz;
-        tmp.zx = stress[t].zx; tmp.zy = stress[t].zy; tmp.zz = stress[t].zz;
-        fc += tmp * factor; //need a cleverer solution here
-//        fc += COMPLEX_M(stress[t]) * factor;
+        complex_stress.real(stress[t]);
+        fc += complex_stress * factor;
     }
     fc /= N;
     return fc;

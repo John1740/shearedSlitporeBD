@@ -5,6 +5,7 @@
 #include <iostream>
 #include "boost/program_options.hpp"
 #include "../src/systems/confined_brownian_particles.h"
+#include "../src/defaults.h"
 
 using namespace std;
 namespace po = boost::program_options;
@@ -15,6 +16,9 @@ int main(int argc, const char *argv[]){
     description.add_options()
             ("help,h", "Help screen")
             ("filename,i", po::value<string>(), "configuration file (particle positions)")
+            ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (in units of particle diameter)")
+            ("density", po::value<double>()->default_value(DENSITY), "particle density (in 1/diameter^3)")
+            ("N", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
             ;
     po::positional_options_description pos;
     pos.add("filename", 1);
@@ -27,8 +31,8 @@ int main(int argc, const char *argv[]){
     
     string filename = variablesMap["filename"].as<string>();
     
-    cout << filename << endl;
-    
     CONFINED_BROWNIAN_PARTICLES sys;
+    sys.setInitialConfigurationForLayersWithSides();
+    sys.writeConfigurationToFile(filename, true);
     
 }

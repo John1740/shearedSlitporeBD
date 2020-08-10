@@ -41,9 +41,6 @@ protected:
     string configurationIn = CONFIGURATION_IN;
 
     int numberOfParticles = NUMBER_OF_PARTICLES;
-    
-//    double density = DENSITY;
-//    double dWall = D_WALL;
 
     long timestep = 0;
     double dt = DELTA_T;

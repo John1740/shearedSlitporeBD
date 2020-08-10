@@ -3,9 +3,7 @@
 
 #include "../interfaces/force_template_interfaces.h"
 #include "../struct/particle.h"
-#include "../struct/cartesian_c.h"
 #include "../defaults.h"
-#include "../argument_parser/arguments.h"
 
 class SOFT_WALL_FORCE: public CONSERVATIVE_FORCE<PARTICLE>{
 private:
@@ -13,12 +11,10 @@ private:
 public:
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
     double zPosition = 0.;
-//    double diameter = DIAMETER;
     double dWall = D_WALL;
 
     //constructors
     SOFT_WALL_FORCE();
-//    SOFT_WALL_FORCE(const ARGUMENTS& args);
     SOFT_WALL_FORCE(double wallInteractionStrength, double dWall);
 
     REAL_C forceOnParticle(PARTICLE& particle);

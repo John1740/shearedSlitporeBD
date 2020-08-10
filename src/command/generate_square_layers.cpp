@@ -1,11 +1,11 @@
 #include "generate_square_layers.h"
+
 #include "../struct/layers.h"
 
 GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(){
     numberOfLayers = 2;
     numberOfRows = 23;
     numberOfAdditionalRows = 0;
-
 }
 
 void GENERATE_SQUARE_LAYERS::setNumberOfLayersRowsAdditionalRows(int numberOfLayersIn, int numberOfRowsIn, int numberOfAdditionalRowsIn){

@@ -1,5 +1,8 @@
 #include "argparse.h"
 
+#include <iostream>
+using namespace std;
+
 ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
     try{
         addOptions();

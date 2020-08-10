@@ -6,7 +6,7 @@
 #include "../struct/cartesian_c.h"
 #include "../defaults.h"
 
-class SHEAR_FORCE:  FORCE<PARTICLE>{
+class SHEAR_FORCE: FORCE<PARTICLE>{
 private:
     REAL_C direction;
 public:

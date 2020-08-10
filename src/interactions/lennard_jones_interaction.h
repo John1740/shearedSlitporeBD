@@ -2,6 +2,7 @@
 #define LENNARD_JONES_INTERACTION_H
 
 #include "../interfaces/force_template_interfaces.h"
+#include "../interfaces/box_geometry.h"
 #include "../struct/particle.h"
 
 class LENNARD_JONES_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<PARTICLE>{

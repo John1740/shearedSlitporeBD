@@ -5,7 +5,6 @@ SOFT_WALL_FORCE::SOFT_WALL_FORCE(){
 
 SOFT_WALL_FORCE::SOFT_WALL_FORCE(double wallInteractionStrength, double dWall) {
     this->wallInteractionStrength = wallInteractionStrength;
-//    diameter = args.diameter;
     this->dWall = dWall;
 }
 
@@ -18,9 +17,8 @@ double SOFT_WALL_FORCE::energyOnParticle(PARTICLE &particle){
 
 REAL_C SOFT_WALL_FORCE::forceOnParticle(PARTICLE &particle){
     zPosition = particle.boxPosition.z;
-    double diameter = particle.diameter;
     REAL_C forceOnParticle;
-    forceOnParticle.z = forceInZDirection(zPosition, diameter);
+    forceOnParticle.z = forceInZDirection(zPosition, particle.diameter);
     return forceOnParticle;
 }
 

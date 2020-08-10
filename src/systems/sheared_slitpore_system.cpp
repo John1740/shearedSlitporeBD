@@ -17,8 +17,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     currentShearRate = calculateCurrentShearRate();
     
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
-    dlvo = DLVO_SOFTSPHERE_INTERACTION();
-    dlvo.ssInteractionStrength = args.ssInteractionStrength;
+    dlvo = DLVO_SOFTSPHERE_INTERACTION(args.ssInteractionStrength);
     
     prepareSystem();
 }

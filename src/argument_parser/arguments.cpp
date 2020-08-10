@@ -4,6 +4,8 @@
 
 #include "arguments.h"
 
+#include <iostream>
+
 void ARGUMENTS::print() {
     if(seed == 0){
         cout << "RNG seed: not set yet" << endl << endl;

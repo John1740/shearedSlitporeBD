@@ -5,9 +5,8 @@
 #ifndef SHEAREDSLITPOREBD_ARGUMENTS_H
 #define SHEAREDSLITPOREBD_ARGUMENTS_H
 
+#include <string>
 #include "../defaults.h"
-#include <iostream>
-
 using namespace std;
 
 class ARGUMENTS{

@@ -5,12 +5,10 @@
 #ifndef SHEAREDSLITPOREBD_ARGPARSE_H
 #define SHEAREDSLITPOREBD_ARGPARSE_H
 
-#include <iostream>
 #include "boost/program_options.hpp"
 #include "arguments.h"
 
 namespace po = boost::program_options;
-using namespace std;
 
 class ARGUMENT_PARSER{
 private:

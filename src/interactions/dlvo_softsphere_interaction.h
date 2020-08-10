@@ -5,7 +5,7 @@
 #include "lennard_jones_interaction.h"
 #include "../struct/charged_particle.h"
 #include "../interfaces/box_geometry.h"
-#include "../argument_parser/arguments.h"
+#include "../defaults.h"
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
@@ -19,7 +19,7 @@ private:
 
 public:
     DLVO_SOFTSPHERE_INTERACTION();
-    DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS& args);
+    DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength);
 
     double lengthRange = 10;    //needed for cutOff calculation, default questionable
 

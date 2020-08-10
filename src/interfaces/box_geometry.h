@@ -2,8 +2,6 @@
 #define BOX_GEOMETRY_H
 
 #include "../struct/cartesian_c.h"
-#include <vector>
-using namespace std;
 
 class BOX_GEOMETRY{
 public:

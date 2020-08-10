@@ -5,8 +5,8 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
 }
 
 //not needed?
-DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(const ARGUMENTS &args) {
-    ssInteractionStrength = args.ssInteractionStrength;
+DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength) {
+    this->ssInteractionStrength = ssInteractionStrength;
 
     calculateInteractionParameters();
 }

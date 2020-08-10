@@ -251,9 +251,11 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFileOld(string filename, 
     setParticleList(particleIn);
 }
 
-void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool verbose){
+void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool overwrite, bool verbose){
     PRINTER printer(filename);
-    printer.reset();
+    if(overwrite){
+        printer.reset();
+    }
     const char* fmt = "% 2.5f\t";
     
     //header

@@ -53,13 +53,13 @@ int main(int argc, const char *argv[]){
 
     //initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);
-    sys.writeConfigurationToFile("configuration.in.new", true);
+    sys.writeConfigurationToFile("configuration.in.new", true, true);
     
     //clear
     if(args.clear){
         fs::remove("configuration.in.new");
         fs::remove(CONFIGURATION_OUT);
-        fs::remove_all(SNAPSHOTS);
+        fs::remove(SNAPSHOTS);
         fs::remove(STRESSES_OUT);
         fs::remove(VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
@@ -84,7 +84,7 @@ int main(int argc, const char *argv[]){
             printf("Progress: %.1f%% (timestep %ld)\n", 100 * i / float(args.totalNumberOfTimesteps), sys.getTimestep());
         }
         if(args.snapshotInterval > 0 && i % args.snapshotInterval == 0){
-            sys.writeConfigurationToFile(SNAPSHOTS + "/configuration_" + to_string(sys.getTimestep()) + ".out", false);
+            sys.writeConfigurationToFile("snapshots.out", false, false);
         }
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
@@ -105,7 +105,7 @@ int main(int argc, const char *argv[]){
             velocity.printLine();
         }
     }
-    sys.writeConfigurationToFile(CONFIGURATION_OUT);
+    sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     if(args.stressFourier > 0){
         cout << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;

@@ -13,7 +13,7 @@ const std::string ANGULAR_BOND_OUT = "angularBond.out";
 const std::string PAIR_CORRELATIONS_OUT = "pairCorrelations";
 const std::string STRESSES_OUT = "stresses.out";
 const std::string VELOCITIES_OUT = "velocities.out";
-const std::string SNAPSHOTS = "snapshots";
+const std::string SNAPSHOTS = "snapshots.out";
 
 const double SHEAR_RATE = 0.0;
 const double AMPLITUDE = 0.0;

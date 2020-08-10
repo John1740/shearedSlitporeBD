@@ -106,10 +106,10 @@ public:
     virtual void setInitialConfigurationForLayersWithSides();
     
     // File-Handling
-    virtual void readConfigurationFromFileOld(string filename, bool createIfMissing= false, bool verbose= true);
-    virtual void writeConfigurationToFileOld(string filename, bool verbose= true);
-    virtual void readConfigurationFromFile(string filename, bool verbose= true);
-    virtual void writeConfigurationToFile(string filename, bool verbose= true);
+    virtual void readConfigurationFromFileOld(string filename, bool createIfMissing=false, bool verbose=true);
+    virtual void writeConfigurationToFileOld(string filename, bool verbose=true);
+    virtual void readConfigurationFromFile(string filename, bool verbose=true);
+    virtual void writeConfigurationToFile(string filename, bool overwrite=false, bool verbose=true);
 };
 
 #endif // BROWNIAN_PARTICLES_H

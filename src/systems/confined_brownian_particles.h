@@ -1,8 +1,6 @@
 #ifndef CONFINED_BROWNIAN_PARTICLES_H
 #define CONFINED_BROWNIAN_PARTICLES_H
 
-//#include <fstream>
-
 #include "../interfaces/system_interface.h"
 #include "../command/calculate_forces.h"
 
@@ -17,7 +15,6 @@
 
 #include "../defaults.h"
 #include "../argument_parser/arguments.h"
-//#include "../struct/configuration.h"
 
 namespace fs = experimental::filesystem;
 
@@ -95,14 +92,8 @@ public:
     vector<REAL_C> getVelocities();
     REAL_C getMeanVelocity();
     vector<REAL_C> getMeanLayerVelocities();
-
-    // Initial configuration generation
-//    virtual void generateInitialConfiguration();
-    virtual void setInitialConfigurationForLayersWithSides();
     
     // File-Handling
-    virtual void readConfigurationFromFileOld(string filename, bool createIfMissing=false, bool verbose=true);
-    virtual void writeConfigurationToFileOld(string filename, bool verbose=true);
     virtual void readConfigurationFromFile(string filename, bool verbose=true);
     virtual void writeConfigurationToFile(string filename, bool overwrite=false, bool verbose=true);
 };

@@ -1,32 +1,37 @@
 #ifndef GENERATE_SQUARE_LAYERS_H
 #define GENERATE_SQUARE_LAYERS_H
 
-#include "../interfaces/command.h"
 #include "../systems/confined_brownian_particles.h"
+#include "../struct/slit_pore_box.h"
 
-//center of layers (in z-direction) is 0
-class GENERATE_SQUARE_LAYERS:public COMMAND<CONFINED_BROWNIAN_PARTICLES>{
-private:
-    vector<CHARGED_PARTICLE> particleList;
-
+class GENERATE_SQUARE_LAYERS{
+public:
     int numberOfLayers;
-    int numberOfRows;
-    int numberOfAdditionalRows;
-
+    int numberOfSites;
+    int numberOfAdditionalSites;
+private:
+    vector<CHARGED_PARTICLE> particle;
     SLIT_PORE_BOX simBox;
     double dx, dy, dz, dxAdd, dyAdd;
     double zMin;
+    CHARGED_PARTICLE particleTemplate;
 
     void setLatticePeriodicity();
-
     void addLayer(int layerIndex);
     void addIncommensurableLayer(int layerIndex);
 
 public:
+    //constructors
     GENERATE_SQUARE_LAYERS();
-    void setNumberOfLayersRowsAdditionalRows(int numberOfLayersIn, int numberOfRowsIn, int numberOfAdditionalRowsIn);
+    GENERATE_SQUARE_LAYERS(int N, double dWall, double density);
+    
+    GENERATE_SQUARE_LAYERS& setup(int N, double dWall, double density);
 
-    void doForSystem(CONFINED_BROWNIAN_PARTICLES& sysIn);
+    CONFINED_BROWNIAN_PARTICLES generate();
+    
+    //setter
+    GENERATE_SQUARE_LAYERS& setParticleProperties(const CHARGED_PARTICLE& particle);
+    GENERATE_SQUARE_LAYERS& setParticleProperties(double charge, double diameter, int species);
 };
 
 #endif // GENERATE_SQUARE_LAYERS_H

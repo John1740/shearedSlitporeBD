@@ -15,7 +15,7 @@ int main(int argc, const char *argv[]){
     description.add_options()
             ("help,h", "Help screen")
             ("filename,i", po::value<string>(), "configuration file (particle positions)")
-//            ("outname,o", po::value<string>()->default_value("pairCorrelation.out"), "filename of output file")
+            ("dr", po::value<double>(),  "resolution dr")
             ;
     po::positional_options_description pos;
     pos.add("filename", 1);
@@ -27,14 +27,17 @@ int main(int argc, const char *argv[]){
     }
     
     string filename = variablesMap["filename"].as<string>();
-//    string outname = variablesMap["outname"].as<string>();
     
     cout << "#Generated from: " << filename << endl;
     
     CONFINED_BROWNIAN_PARTICLES sys;
-    sys.readConfigurationFromFileOld(filename, false, false);
-    INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation(sys, 0.01);
-    pairCorrelation.calculateLayerCorrelation();
+    sys.readConfigurationFromFile(filename, false);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation(sys);
+    if(variablesMap.count("dr")){
+        double dr = variablesMap["dr"].as<double>();
+        pairCorrelation.setResolution(dr);
+    }
+    pairCorrelation.calculateAverageLayerCorrelation();
     cout << pairCorrelation;
     return 0;
 }

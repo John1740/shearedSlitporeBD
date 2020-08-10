@@ -1,23 +1,18 @@
-#include "global.h"
-#include <ctime>
 #include "tools/clock.h"
 #include "version.h"
-#include <experimental/filesystem>
 #include "tools/format.h"
 
 #include "systems/sheared_slitpore_system.h"
 
-#include "printer/printer.h"
+//#include "printer/printer.h"
 #include "printer/stress.h"
 #include "printer/velocity.h"
 #include "printer/angular_bond.h"
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
-#include "struct/cartesian_m.h"
-#include <math.h>
-
-namespace fs = experimental::filesystem;
+//#include <experimental/filesystem>
+//namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
     CLOCK clock;

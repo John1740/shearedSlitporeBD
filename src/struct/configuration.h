@@ -5,7 +5,6 @@
 #ifndef SHEAREDSLITPOREBD_CONFIGURATION_H
 #define SHEAREDSLITPOREBD_CONFIGURATION_H
 
-
 #include "../argument_parser/arguments.h"
 #include "slit_pore_box.h"
 #include "charged_particle.h"

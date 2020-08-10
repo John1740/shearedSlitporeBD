@@ -6,7 +6,6 @@
 #include "boost/format.hpp"
 using namespace boost;
 
-
 VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn){
     sys = sysIn;
     printer.setFilename(VELOCITIES_OUT);

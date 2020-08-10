@@ -2,7 +2,6 @@
 #define SYSTEM_INTERFACE_H
 
 #include "../struct/cartesian_c.h"
-#include "../struct/cartesian_m.h"
 #include "../interfaces/box_geometry.h"
 #include "../struct/charged_particle.h"
 

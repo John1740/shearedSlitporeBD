@@ -1,6 +1,6 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
-#include "../global.h"
+
 #include "cartesian_c.h"
 #include "../interfaces/box_geometry.h"
 

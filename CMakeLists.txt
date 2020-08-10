@@ -147,8 +147,64 @@ add_executable(writePairCorrelation
         src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h
         src/struct/cartesian_coordinate.cpp src/struct/cartesian_matrix.cpp src/struct/cartesian_matrix.h)
 
+add_executable(generateSquareLayers
+        scripts/generateSquareLayers.cpp
+
+        src/boxmueller.cpp
+        src/mersenne.cpp
+        src/global.cpp
+
+#        src/interactions/dlvo_softsphere_interaction.cpp
+#        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+#        src/command/average_stress.cpp
+        src/command/calculate_forces.cpp
+        src/command/generate_square_layers.cpp
+
+        src/struct/cartesian_c.h
+        src/struct/cartesian_coordinate.cpp src/struct/cartesian_coordinate.h
+#        src/struct/periodic_coordinate.cpp src/struct/periodic_coordinate.h
+#        src/struct/cartesian_m.h
+#        src/struct/cartesian_matrix.cpp src/struct/cartesian_matrix.h
+
+        src/struct/particle.cpp
+        src/struct/charged_particle.cpp
+        src/struct/slit_pore_box.cpp
+#        src/struct/configuration.cpp src/struct/configuration.h
+        src/struct/layers.cpp src/struct/layers.h
+
+#        src/systems/sheared_slitpore_system.cpp
+        src/systems/confined_brownian_particles.cpp
+
+        src/printer/printer.cpp
+#        src/printer/stress.cpp src/printer/stress.h
+#        src/printer/velocity.cpp src/printer/velocity.h
+#        src/printer/angular_bond.cpp src/printer/angular_bond.h
+
+#        src/argument_parser/argparse.cpp src/argument_parser/argparse.h
+#        src/argument_parser/arguments.cpp src/argument_parser/arguments.h
+
+#        src/defaults.h
+#        src/templates/version.h.template
+
+        src/tools/clock.cpp src/tools/clock.h
+#        src/tools/my_vector.h
+#        src/tools/format.cpp src/tools/format.h
+#        src/tools/analysis.cpp src/tools/analysis.h
+
+#        src/order_parameter/intra_layer_pair_correlation_function.cpp src/order_parameter/intra_layer_pair_correlation_function.h
+#        src/order_parameter/angular_bond_parameter.cpp src/order_parameter/angular_bond_parameter.h
+#        src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h
+#        src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h
+
+        )
+
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(generateSquareLayers ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

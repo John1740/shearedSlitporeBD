@@ -1,4 +1,5 @@
 #include "slit_pore_box.h"
+
 #include <boost/format.hpp>
 #include <fstream>
 #include <experimental/filesystem>

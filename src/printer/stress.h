@@ -6,9 +6,7 @@
 #define SHEAREDSLITPOREBD_STRESS_H
 
 #include <string>
-#include <cstdio>
 #include "../systems/sheared_slitpore_system.h"
-using namespace std;
 
 class STRESS_PRINTER{
 private:

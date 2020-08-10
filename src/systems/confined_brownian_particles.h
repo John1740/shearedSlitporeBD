@@ -1,25 +1,23 @@
 #ifndef CONFINED_BROWNIAN_PARTICLES_H
 #define CONFINED_BROWNIAN_PARTICLES_H
 
-#include "../global.h"
-#include <fstream>
+//#include <fstream>
 
-#include "../boxmueller.h"
 #include "../interfaces/system_interface.h"
+#include "../command/calculate_forces.h"
 
 #include "../struct/cartesian_c.h"
 #include "../struct/cartesian_m.h"
-#include "../struct/particle.h"
+#include "../struct/charged_particle.h"
 #include "../struct/slit_pore_box.h"
 
-#include "../command/calculate_forces.h"
 
 #include "../printer/printer.h"
 #include "experimental/filesystem"
 
 #include "../defaults.h"
 #include "../argument_parser/arguments.h"
-#include "../struct/configuration.h"
+//#include "../struct/configuration.h"
 
 namespace fs = experimental::filesystem;
 

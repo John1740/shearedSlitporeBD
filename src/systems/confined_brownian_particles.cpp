@@ -1,7 +1,10 @@
 #include "confined_brownian_particles.h"
+
 #include "../command/generate_square_layers.h"  //can't use in header (circular dependency)
 #include "../struct/layers.h"
-#include "../order_parameter/intra_layer_pair_correlation_function.h"
+#include "../global.h"
+#include "../boxmueller.h"
+
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 namespace bo = boost;

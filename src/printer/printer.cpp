@@ -1,5 +1,6 @@
-#include <iostream>
 #include "printer.h"
+
+#include <iostream>
 
 PRINTER::PRINTER(){
 }

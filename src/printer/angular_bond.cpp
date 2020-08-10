@@ -4,6 +4,7 @@
 
 #include "angular_bond.h"
 #include "../order_parameter/angular_bond_parameter.h"
+
 #include "boost/format.hpp"
 using namespace boost;
 

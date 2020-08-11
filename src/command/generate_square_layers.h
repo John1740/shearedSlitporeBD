@@ -32,6 +32,12 @@ public:
     //setter
     GENERATE_SQUARE_LAYERS& setParticleProperties(const CHARGED_PARTICLE& particle);
     GENERATE_SQUARE_LAYERS& setParticleProperties(double charge, double diameter, int species);
+    
+    //getter
+    CHARGED_PARTICLE getParticleTemplate() const;
+    SLIT_PORE_BOX getSimBox() const;
+    
+    friend ostream& operator<<(ostream& os, const GENERATE_SQUARE_LAYERS& gsl);
 };
 
 #endif // GENERATE_SQUARE_LAYERS_H

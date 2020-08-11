@@ -16,7 +16,8 @@ int main(int argc, const char *argv[]){
     po::variables_map vm;
     description.add_options()
             ("help,h", "Help screen")
-            ("filename,i", po::value<string>(), "configuration file (particle positions)")
+            ("filename,o", po::value<string>(), "output configuration filename")
+            ("dry,n", po::bool_switch()->default_value(false), "dry run")
             ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (in units of particle diameter)")
             ("density", po::value<double>()->default_value(DENSITY), "particle density (in 1/diameter^3)")
             ("N", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
@@ -35,9 +36,24 @@ int main(int argc, const char *argv[]){
     
     string filename = vm["filename"].as<string>();
     
+    cout << "Generating a square-layer configuration with" << endl;
+    cout << "numberOfParticles: " << vm["N"].as<int>() << endl;
+    cout << "density: " << vm["density"].as<double>() << " [diameters^-3]" << endl;
+    cout << "dWall: " << vm["dWall"].as<double>() << " [diameters]" << endl << endl;
+    
     GENERATE_SQUARE_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>());
     gen.setParticleProperties(vm["charge"].as<double>(), vm["diameter"].as<double>(), vm["species"].as<int>());
+    cout << "Simulation box:" << endl;
+    cout << gen.getSimBox() << endl;
+    cout << "Particle template: " << endl;
+    cout << gen.getParticleTemplate() << endl << endl;
     CONFINED_BROWNIAN_PARTICLES sys = gen.generate();
-    sys.writeConfigurationToFile(filename, true);
+    cout << gen << endl;
+    if(!vm["dry"].as<bool>()){
+        sys.writeConfigurationToFile(filename, true);
+    }
+    else{
+        cout << "Dry run. Remove the -n (or --dry) option to do an actual run!" << endl;
+    }
     
 }

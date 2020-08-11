@@ -12,3 +12,12 @@ CHARGED_PARTICLE::CHARGED_PARTICLE(const CHARGED_PARTICLE& other): PARTICLE(othe
     charge = other.charge;
 }
 
+ostream& operator<<(ostream& os, const CHARGED_PARTICLE& particle){
+    os << "CHARGED_PARTICLE(";
+    os << "charge: " << particle.charge << ", ";
+    os << "diameter: " << particle.diameter << ", ";
+    os << "species: " << particle.species << ", ";
+    os << "boxPosition: " << particle.boxPosition;
+    os << ")";
+    return os;
+}

@@ -62,3 +62,12 @@ void PARTICLE::setBoxPosition(BOX_GEOMETRY &boxGeom){
 double PARTICLE::getVolume(){
     return diameter * diameter * diameter * M_PI / 6.;  //4pi/3 r^3 = 4pi/3 d^3/8 = pi/6
 }
+
+ostream& operator<<(ostream& os, const PARTICLE& particle){
+    os << "PARTICLE(";
+    os << "diameter: " << particle.diameter << ", ";
+    os << "species: " << particle.species << ", ";
+    os << "boxPosition: " << particle.boxPosition;
+    os << ")";
+    return os;
+}

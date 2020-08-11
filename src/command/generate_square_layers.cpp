@@ -90,3 +90,19 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setParticleProperties(double cha
     return *this;
 }
 
+CHARGED_PARTICLE GENERATE_SQUARE_LAYERS::getParticleTemplate() const{
+    return particleTemplate;
+}
+
+SLIT_PORE_BOX GENERATE_SQUARE_LAYERS::getSimBox() const{
+    return simBox;
+}
+
+ostream& operator<<(ostream& os, const GENERATE_SQUARE_LAYERS& gsl){
+    os << "GENERATE_SQUARE_LAYERS(";
+    os << "numberOfLayers: " << gsl.numberOfLayers;
+    os << ", numberOfSites: " << gsl.numberOfSites;
+    os << ", numberOfAdditionalSites: " << gsl.numberOfAdditionalSites;
+    os << ")";
+    return os;
+}

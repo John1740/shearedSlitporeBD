@@ -13,9 +13,6 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) {
     configurationIn = args.configurationIn;
-//    numberOfParticles = args.numberOfParticles;
-//    density = args.density;
-//    dWall = args.dWall;
     
     readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
     dt = args.dt;

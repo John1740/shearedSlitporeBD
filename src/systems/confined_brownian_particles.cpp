@@ -326,6 +326,7 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
     particle = particleListIn;
+    numberOfParticles = particleListIn.size();
     setPositionInBox();
 }
 

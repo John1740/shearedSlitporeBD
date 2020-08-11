@@ -15,6 +15,7 @@ private:
     double dx, dy, dz, dxAdd, dyAdd;
     double zMin;
     CHARGED_PARTICLE particleTemplate;
+    int particleIndex = 0;
 
     void setLatticePeriodicity();
     void addLayer(int layerIndex);
@@ -34,6 +35,7 @@ public:
     GENERATE_SQUARE_LAYERS& setParticleProperties(double charge, double diameter, int species);
     
     //getter
+    int getNumberOfParticles() const;
     CHARGED_PARTICLE getParticleTemplate() const;
     SLIT_PORE_BOX getSimBox() const;
     

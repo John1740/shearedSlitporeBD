@@ -20,6 +20,7 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setup(int N, double dWall, doubl
     particleTemplate.charge = CHARGE;
     particleTemplate.diameter = DIAMETER;
     particleTemplate.species = 0;
+    particleIndex = 0;
     return *this;
 }
 
@@ -59,6 +60,8 @@ void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
                     dy * j + layerIndex * dy / 2, //displaced by dy/2 from lower layer
                     zMin + layerIndex * dz
                     );
+            newParticle.index = particleIndex;
+            particleIndex++;
             particle.push_back(newParticle);
         }
     }
@@ -73,6 +76,8 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
                     dyAdd * j + layerIndex * dyAdd / 2,
                     zMin + layerIndex * dz
                     );
+            newParticle.index = particleIndex;
+            particleIndex++;
             particle.push_back(newParticle);
         }
     }
@@ -88,6 +93,11 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setParticleProperties(double cha
     particleTemplate.diameter = diameter;
     particleTemplate.species = species;
     return *this;
+}
+
+int GENERATE_SQUARE_LAYERS::getNumberOfParticles() const {
+    int totalNumberOfSites = numberOfSites + numberOfAdditionalSites;
+    return totalNumberOfSites * totalNumberOfSites * numberOfLayers;
 }
 
 CHARGED_PARTICLE GENERATE_SQUARE_LAYERS::getParticleTemplate() const{

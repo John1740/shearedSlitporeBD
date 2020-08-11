@@ -20,7 +20,7 @@ int main(int argc, const char *argv[]){
             ("dry,n", po::bool_switch()->default_value(false), "dry run")
             ("dWall", po::value<double>()->default_value(D_WALL), "distance between walls (in units of particle diameter)")
             ("density", po::value<double>()->default_value(DENSITY), "particle density (in 1/diameter^3)")
-            ("N", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
+            ("N,N", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
             ("charge", po::value<double>()->default_value(CHARGE), "charge of particles")
             ("diameter", po::value<double>()->default_value(DIAMETER), "diameter of particles")
             ("species", po::value<int>()->default_value(0), "species number of particles")
@@ -35,13 +35,14 @@ int main(int argc, const char *argv[]){
     }
     
     string filename = vm["filename"].as<string>();
-    
+
+    GENERATE_SQUARE_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>());
+
     cout << "Generating a square-layer configuration with" << endl;
-    cout << "numberOfParticles: " << vm["N"].as<int>() << endl;
+    cout << "numberOfParticles: " << vm["N"].as<int>() << " -> " << gen.getNumberOfParticles() << endl;
     cout << "density: " << vm["density"].as<double>() << " [diameters^-3]" << endl;
     cout << "dWall: " << vm["dWall"].as<double>() << " [diameters]" << endl << endl;
-    
-    GENERATE_SQUARE_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>());
+
     gen.setParticleProperties(vm["charge"].as<double>(), vm["diameter"].as<double>(), vm["species"].as<int>());
     cout << "Simulation box:" << endl;
     cout << gen.getSimBox() << endl;

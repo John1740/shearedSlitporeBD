@@ -135,7 +135,7 @@ uint32_t CRandomMersenne::BRandom(){
 double CRandomMersenne::Random(){
     // Output random float number in the interval 0 <= x < 1
     // Multiply by 2^(-32)
-    randomCounter++;
+    rngCounter++;
     return (double) BRandom() * (1. / (65536.*65536.));
 }
 

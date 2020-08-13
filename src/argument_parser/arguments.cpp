@@ -8,11 +8,15 @@
 
 void ARGUMENTS::print() {
     if(seed == 0){
-        cout << "RNG seed: not set yet" << endl << endl;
+        cout << "RNG seed: not set" << endl;
     }
     else{
-        cout << "RNG seed: " << seed << endl << endl;
+        cout << "RNG seed: " << seed << endl;
     }
+    if(rngCounter != 0 ){
+        cout << "RNG counter: " << rngCounter << endl;
+    }
+    cout << endl;
     
     cout << "Configuration file: " << configurationIn << endl << endl;
 

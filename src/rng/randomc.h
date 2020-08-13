@@ -170,7 +170,7 @@ public:
         RandomInit(seed);
         LastInterval = 0;
     }
-    unsigned long long randomCounter = 0;   //should be enough for 1000 particles * 6 calls/particle * 10^15 timesteps
+    unsigned long long rngCounter = 0;   //should be enough for 1000 particles * 6 calls/particle * 10^15 timesteps
 
     void RandomInit(int seed);       // Re-seed
     void RandomInitByArray(int const seeds[], int NumSeeds); // Seed by more than 32 bits

@@ -37,6 +37,7 @@ void ARGUMENT_PARSER::addOptions() {
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("timesteps,N", po::value<double>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
+            ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
                                                                      "x<0 -> no print-outs; "
                                                                      "ATTENTION: The calculation will be very slow! "
@@ -75,7 +76,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.D0 = variablesMap["D0"].as<double>();
     args.totalNumberOfTimesteps = round(variablesMap["timesteps"].as<double>());
     args.seed = variablesMap["seed"].as<unsigned int>();
-    
+    args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();
+
     //doubles are allowed as input for convenience (allows 1e5 float terminology)
     int printAll = round(variablesMap["printAll"].as<double>());
     int printVelocity = round(variablesMap["printVelocity"].as<double>());

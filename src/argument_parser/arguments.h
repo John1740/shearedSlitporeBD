@@ -12,6 +12,7 @@ using namespace std;
 class ARGUMENTS{
 public:
     unsigned int seed = 0;
+    unsigned long long rngCounter = 0;
     
     string configurationIn = CONFIGURATION_IN;
 

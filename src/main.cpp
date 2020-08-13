@@ -43,12 +43,11 @@ int main(int argc, const char *argv[]){
     }
     //initialize RNG with seed
     random_event.RandomInit(args.seed);
-
-//    for(int i=0; i < 634800; i++){ //63480, 634800, 12696000/2
-//        random_event.Random();
-//    }
-
-//    cout << random_event.randomCounter << endl;
+    if(args.rngCounter != 0){
+        for(int i = 0; i < args.rngCounter; i++){
+            random_event.Random();
+        }
+    }
 
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
@@ -57,6 +56,9 @@ int main(int argc, const char *argv[]){
 
     cout << surroundWithSeparator("System Initialization") << endl;
 
+    if(args.rngCounter != 0){
+        cout << "Set rngCounter to " << args.rngCounter << endl;
+    }
     //initialize Slitpore System
     SHEARED_SLITPORE_SYSTEM sys(args);
     sys.writeConfigurationToFile("configuration.in.new", true, true);
@@ -112,7 +114,7 @@ int main(int argc, const char *argv[]){
         }
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
-    cout << "randomCounter: " << random_event.randomCounter << endl;
+    cout << "rngCounter: " << random_event.rngCounter << endl;
     if(args.stressFourier > 0){
         cout << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;

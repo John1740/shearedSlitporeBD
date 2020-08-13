@@ -1,6 +1,8 @@
 #include "tools/clock.h"
 #include "version.h"
 #include "tools/format.h"
+#include "boost/format.hpp"
+namespace b = boost;
 
 #include "global.h" //contains random_event definition
 extern CRandomMersenne random_event;    //use global instance of random_event
@@ -41,7 +43,7 @@ int main(int argc, const char *argv[]){
     if(args.seed == 0){
         args.seed = getpid() * time(0); //dunno where getpid()-definition was imported from (unistd.h)
     }
-    //initialize RNG with seed
+    //initialize RNG with seed (and skip steps if asked for)
     random_event.RandomInit(args.seed);
     if(args.rngCounter != 0){
         for(int i = 0; i < args.rngCounter; i++){
@@ -54,12 +56,12 @@ int main(int argc, const char *argv[]){
     args.print();
     cout << endl;
 
+    //initialize Slitpore System
     cout << surroundWithSeparator("System Initialization") << endl;
-
     if(args.rngCounter != 0){
         cout << "Set rngCounter to " << args.rngCounter << endl;
     }
-    //initialize Slitpore System
+
     SHEARED_SLITPORE_SYSTEM sys(args);
     sys.writeConfigurationToFile("configuration.in.new", true, true);
     
@@ -79,6 +81,7 @@ int main(int argc, const char *argv[]){
         exit(0);
     }
 
+    //Simulation start
     cout << endl << surroundWithSeparator("Simulation start") << endl;
     
     VELOCITY_PRINTER velocity(&sys);
@@ -89,7 +92,9 @@ int main(int argc, const char *argv[]){
     //column description
     for(int i = 0; i < args.totalNumberOfTimesteps; i++){
         if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
-            printf("Progress: %.1f%% (timestep %ld)\n", 100 * i / float(args.totalNumberOfTimesteps), sys.getTimestep());
+            cout << b::format("Progress: %.1f%% (timestep %ld)")
+                    % (100 * i / float(args.totalNumberOfTimesteps))
+                    % sys.getTimestep() << endl;
         }
         if(args.snapshotInterval > 0 && i % args.snapshotInterval == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);
@@ -98,7 +103,7 @@ int main(int argc, const char *argv[]){
             angularBond.printLine(sys);
         }
         if(args.printPairCorrelation > 0 && i % args.printPairCorrelation == 0){
-            INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys, 0.05);
+            INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys);
             pC.calculateAverageLayerCorrelation();
             pC.print(PAIR_CORRELATIONS_OUT + "/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
         }
@@ -136,23 +141,21 @@ int main(int argc, const char *argv[]){
     }
     
     if(args.printStress > 0){
-        printf("Printed stresses to %s\n", stress.printer.getFilename().c_str());
+        cout << b::format("Printed stresses to %s") % stress.printer.getFilename().c_str() << endl;
     }
     if(args.printVelocity > 0){
-        printf("Printed velocities to %s\n", velocity.printer.getFilename().c_str());
+        cout << b::format("Printed velocities to %s") % velocity.printer.getFilename().c_str() << endl;
     }
     if(args.printAngularBond > 0){
-        printf("Printed angular bond parameters to %s\n", angularBond.getFilename().c_str());
+        cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
     }
     
     cout << endl << surroundWithSeparator("Simulation end") << endl;
     
     clock.addTimePoint();
     cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
-    printf("Task finished in %.3f seconds (%s)\n", clock.getDuration(0, -1), clock.readDuration(0, -1).c_str());
+    cout << b::format("Task finished in %.3f seconds (%s)") % clock.getDuration(0, -1) % clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
     
     return 0;
 }
-
-//-a 400 -p 1e-3 --seed 3863985048 -N 10 --printAngularBond 1

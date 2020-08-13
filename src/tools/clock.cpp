@@ -3,6 +3,9 @@
 //
 
 #include "clock.h"
+#include <iomanip>
+#include <cmath>
+#include <algorithm>    //needed for count (in strings)
 
 CLOCK::CLOCK() {
     reset();

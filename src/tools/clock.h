@@ -6,12 +6,8 @@
 #define SHEAREDSLITPOREBD_CLOCK_H
 
 #include <time.h>
-#include <iomanip>
 #include "my_vector.h"
 #include <string>
-#include <sstream>
-#include <cmath>
-#include <algorithm>    //needed for count (in strings)
 
 using namespace std;
 

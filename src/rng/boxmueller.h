@@ -7,9 +7,6 @@
 #ifndef  boxmueller_h
 #define  boxmueller_h
 
-#include <cmath>
-#include "randomc.h"
-
 double boxmueller(double mu, double sigma);
 
 #endif

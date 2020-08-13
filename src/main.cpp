@@ -2,6 +2,9 @@
 #include "version.h"
 #include "tools/format.h"
 
+#include "global.h" //contains random_event definition
+extern CRandomMersenne random_event;    //use global instance of random_event
+
 #include "systems/sheared_slitpore_system.h"
 
 //#include "printer/printer.h"
@@ -36,8 +39,10 @@ int main(int argc, const char *argv[]){
     
     //generate or read seed
     if(args.seed == 0){
-        args.seed = getpid() * time(0);
+        args.seed = getpid() * time(0); //dunno where getpid()-definition was imported from (unistd.h)
     }
+    //initialize RNG with seed
+    random_event.RandomInit(args.seed);
     
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;

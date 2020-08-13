@@ -7,14 +7,14 @@
 #include "global.h"
 
 #include <unistd.h> //getpid()
-#include "randomc.h"    //CRandomMersenne
 #include <sstream>  //time()
 
-CRandomMersenne random_event(getpid()*time(0)); //using this somewhere else needs to use 'extern'
+//global instance that can be used everywhere via the 'extern' keyword
+CRandomMersenne random_event(getpid()*time(0));
 
-void initSeed(unsigned int seed){
-    random_event.RandomInit(seed);
-}
+//void initSeed(unsigned int seed){
+//    random_event.RandomInit(seed);
+//}
 
 
 

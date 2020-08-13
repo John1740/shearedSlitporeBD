@@ -5,7 +5,9 @@
  *  Author: Tarlan Vezirov
  */
 #include "boxmueller.h"
-extern CRandomMersenne random_event;
+#include <cmath>
+#include "../global.h" //contains random_event definition
+extern CRandomMersenne random_event;    //use global instance of random_event
 
 double boxmueller(double mu, double sigma){
     const double pi = 3.14159;

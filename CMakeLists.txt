@@ -49,8 +49,8 @@ configure_file(
 add_executable(shearedSlitporeBD
         src/main.cpp
 
-        src/boxmueller.cpp
-        src/mersenne.cpp
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
         src/global.cpp
 
         src/interactions/dlvo_softsphere_interaction.cpp
@@ -105,8 +105,8 @@ add_executable(shearedSlitporeBD
 add_executable(writePairCorrelation
         scripts/writePairCorrelation.cpp
 
-        src/boxmueller.cpp
-        src/mersenne.cpp
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
         src/global.cpp
 
         src/command/calculate_forces.cpp
@@ -133,8 +133,8 @@ add_executable(writePairCorrelation
 add_executable(generateSquareLayers
         scripts/generateSquareLayers.cpp
 
-        src/boxmueller.cpp
-        src/mersenne.cpp
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
         src/global.cpp
 
         src/command/calculate_forces.cpp

@@ -7,6 +7,8 @@
 #ifndef global_h
 #define global_h
 
-void initSeed (unsigned int seed);
+#include "rng/randomc.h"    //CRandomMersenne
+
+//void initSeed (unsigned int seed);
 
 #endif

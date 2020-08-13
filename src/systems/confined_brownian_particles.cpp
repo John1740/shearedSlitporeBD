@@ -1,8 +1,7 @@
 #include "confined_brownian_particles.h"
 
 #include "../struct/layers.h"
-#include "../global.h"
-#include "../boxmueller.h"
+#include "../rng/boxmueller.h"
 
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
@@ -18,7 +17,6 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) 
     dt = args.dt;
     T = args.temperature;
     D0 = args.D0;
-    initSeed(args.seed);
 }
 
 CONFINED_BROWNIAN_PARTICLES::~CONFINED_BROWNIAN_PARTICLES(){

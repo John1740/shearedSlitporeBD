@@ -43,7 +43,13 @@ int main(int argc, const char *argv[]){
     }
     //initialize RNG with seed
     random_event.RandomInit(args.seed);
-    
+
+//    for(int i=0; i < 634800; i++){ //63480, 634800, 12696000/2
+//        random_event.Random();
+//    }
+
+//    cout << random_event.randomCounter << endl;
+
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
     args.print();
@@ -106,6 +112,7 @@ int main(int argc, const char *argv[]){
         }
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
+    cout << "randomCounter: " << random_event.randomCounter << endl;
     if(args.stressFourier > 0){
         cout << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;

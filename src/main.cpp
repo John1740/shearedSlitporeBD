@@ -46,7 +46,7 @@ int main(int argc, const char *argv[]){
     //initialize RNG with seed (and skip steps if asked for)
     random_event.RandomInit(args.seed);
     if(args.rngCounter != 0){
-        for(int i = 0; i < args.rngCounter; i++){
+        for(unsigned long long int i = 0; i < args.rngCounter; i++){
             random_event.Random();
         }
     }

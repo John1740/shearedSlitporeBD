@@ -8,50 +8,50 @@
 
 void ARGUMENTS::print() {
     if(seed == 0){
-        cout << "RNG seed: not set" << endl;
+        cout << "RNG seed" << sep << "not set" << endl;
     }
     else{
-        cout << "RNG seed: " << seed << endl;
+        cout << "RNG seed" << sep << seed << endl;
     }
     if(rngCounter != 0 ){
-        cout << "RNG counter: " << rngCounter << endl;
+        cout << "RNG counter" << sep << rngCounter << endl;
     }
     cout << endl;
-    
-    cout << "Configuration file: " << configurationIn << endl << endl;
-
-    cout << "shearRate: " << shearRate << endl;
-    cout << "amplitude: " << amplitude << endl;
-    cout << "oscillationPeriod: " << oscillationPeriod << endl;
-    cout << "phaseOffset: " << phaseOffset << endl;
-    cout << "dt: " << dt << endl;
-    cout << "temperature: " << temperature << endl;
-    cout << "D0: " << D0 << endl;
-    cout << "ssInteractionStrength: " << ssInteractionStrength << "\t\t" << "wallInteractionStrength = " << wallInteractionStrength << endl << endl;
-
-    cout << "TotalNumberOfTimesteps: " << totalNumberOfTimesteps << endl;
+    cout << "Configuration file" << sep << configurationIn << endl;
+    cout << endl;
+    cout << "shearRate" << sep << shearRate << endl;
+    cout << "amplitude" << sep << amplitude << endl;
+    cout << "oscillationPeriod" << sep << oscillationPeriod << endl;
+    cout << "phaseOffset" << sep << phaseOffset << endl;
+    cout << "dt" << sep << dt << endl;
+    cout << "temperature" << sep << temperature << endl;
+    cout << "D0" << sep << D0 << endl;
+    cout << "ssInteractionStrength" << sep << ssInteractionStrength << endl;
+    cout << "wallInteractionStrength" << sep << wallInteractionStrength << endl;
+    cout << endl;
+    cout << "TotalNumberOfTimesteps" << sep << totalNumberOfTimesteps << endl;
     if(snapshotInterval > 0){
-        cout << "snapshotInterval: " << snapshotInterval << endl;
+        cout << "snapshotInterval" << sep << snapshotInterval << endl;
     }
     if(printPairCorrelation > 0){
-        cout << "printPairCorrelation: " << printPairCorrelation << endl;
+        cout << "printPairCorrelation" << sep << printPairCorrelation << endl;
     }
     if(printVelocity > 0){
-        cout << "printVelocity: " << printVelocity << endl;
+        cout << "printVelocity" << sep << printVelocity << endl;
     }
     if(printStress > 0){
-        cout << "printStress: " << printStress << endl;
+        cout << "printStress" << sep << printStress << endl;
     }
     if(stressFourier > 0){
-        cout << "stressFourier: " << stressFourier << endl;
+        cout << "stressFourier" << sep << stressFourier << endl;
     }
     if(printEnergy > 0){
-        cout << "printEnergy: " << printEnergy << endl;
-        cout << "Energy print-outs not yet implemented!" << endl;
+        cout << "printEnergy" << sep << printEnergy << " (not yet implemented)" << endl;
     }
     if(printAngularBond > 0){
-        cout << "printAngularBond: " << printAngularBond << endl;
+        cout << "printAngularBond" << sep << printAngularBond << endl;
     }
+    cout << endl;
     if(clear){
         cout << "Clearing all existing output-files!" << endl;
     }

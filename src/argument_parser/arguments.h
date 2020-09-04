@@ -10,6 +10,8 @@
 using namespace std;
 
 class ARGUMENTS{
+private:
+    string sep = ": ";
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
@@ -45,6 +47,9 @@ public:
 
     void print();
 
+    ARGUMENTS& setSeparator(string sep);
+    string getSeparator() const;
+    
     //void readFromFile(string filename);
     //ARGUMENTS(string filename);
 };

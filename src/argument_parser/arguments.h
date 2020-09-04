@@ -26,7 +26,6 @@ public:
     double dt = DELTA_T;
     double temperature = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
-
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
@@ -45,12 +44,14 @@ public:
     bool dryRun = false;
     bool printVersion = false;
 
-    void print();
+    friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;
     
-    //void readFromFile(string filename);
+    // file-handling
+    ARGUMENTS& readFromFile(string filename);
+    ARGUMENTS& writeToFile(string filename);
     //ARGUMENTS(string filename);
 };
 

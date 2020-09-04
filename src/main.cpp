@@ -53,8 +53,8 @@ int main(int argc, const char *argv[]){
 
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
-    args.print();
-    cout << endl;
+    cout << args << endl;
+    args.writeToFile("control.in");
 
     //initialize Slitpore System
     cout << surroundWithSeparator("System Initialization") << endl;
@@ -67,6 +67,7 @@ int main(int argc, const char *argv[]){
     
     //clear
     if(args.clear){
+        cout << "Clearing all existing output-files!" << endl;
         fs::remove("configuration.in.new");
         fs::remove(CONFIGURATION_OUT);
         fs::remove(SNAPSHOTS);

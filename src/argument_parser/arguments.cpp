@@ -5,56 +5,55 @@
 #include "arguments.h"
 
 #include <iostream>
+#include "../printer/printer.h"
 
-void ARGUMENTS::print() {
-    if(seed == 0){
-        cout << "RNG seed" << sep << "not set" << endl;
+ostream& operator<<(ostream& os, const ARGUMENTS& args){
+    if(args.seed == 0){
+        os << "RNG seed" << args.sep << "not set" << endl;
     }
     else{
-        cout << "RNG seed" << sep << seed << endl;
+        os << "RNG seed" << args.sep << args.seed << endl;
     }
-    if(rngCounter != 0 ){
-        cout << "RNG counter" << sep << rngCounter << endl;
+    if(args.rngCounter != 0 ){
+        os << "RNG counter" << args.sep << args.rngCounter << endl;
     }
-    cout << endl;
-    cout << "Configuration file" << sep << configurationIn << endl;
-    cout << endl;
-    cout << "shearRate" << sep << shearRate << endl;
-    cout << "amplitude" << sep << amplitude << endl;
-    cout << "oscillationPeriod" << sep << oscillationPeriod << endl;
-    cout << "phaseOffset" << sep << phaseOffset << endl;
-    cout << "dt" << sep << dt << endl;
-    cout << "temperature" << sep << temperature << endl;
-    cout << "D0" << sep << D0 << endl;
-    cout << "ssInteractionStrength" << sep << ssInteractionStrength << endl;
-    cout << "wallInteractionStrength" << sep << wallInteractionStrength << endl;
-    cout << endl;
-    cout << "TotalNumberOfTimesteps" << sep << totalNumberOfTimesteps << endl;
-    if(snapshotInterval > 0){
-        cout << "snapshotInterval" << sep << snapshotInterval << endl;
+    os << endl;
+    os << "Configuration file" << args.sep << args.configurationIn << endl;
+    os << endl;
+    os << "shearRate" << args.sep << args.shearRate << endl;
+    os << "amplitude" << args.sep << args.amplitude << endl;
+    os << "oscillationPeriod" << args.sep << args.oscillationPeriod << endl;
+    os << "phaseOffset" << args.sep << args.phaseOffset << endl;
+    os << "dt" << args.sep << args.dt << endl;
+    os << "temperature" << args.sep << args.temperature << endl;
+    os << "D0" << args.sep << args.D0 << endl;
+    os << "ssInteractionStrength" << args.sep << args.ssInteractionStrength << endl;
+    os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
+    os << endl;
+    os << "TotalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
+    if(args.snapshotInterval > 0){
+        os << "snapshotInterval" << args.sep << args.snapshotInterval << endl;
     }
-    if(printPairCorrelation > 0){
-        cout << "printPairCorrelation" << sep << printPairCorrelation << endl;
+    if(args.printPairCorrelation > 0){
+        os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
     }
-    if(printVelocity > 0){
-        cout << "printVelocity" << sep << printVelocity << endl;
+    if(args.printVelocity > 0){
+        os << "printVelocity" << args.sep << args.printVelocity << endl;
     }
-    if(printStress > 0){
-        cout << "printStress" << sep << printStress << endl;
+    if(args.printStress > 0){
+        os << "printStress" << args.sep << args.printStress << endl;
     }
-    if(stressFourier > 0){
-        cout << "stressFourier" << sep << stressFourier << endl;
+    if(args.stressFourier > 0){
+        os << "stressFourier" << args.sep << args.stressFourier << endl;
     }
-    if(printEnergy > 0){
-        cout << "printEnergy" << sep << printEnergy << " (not yet implemented)" << endl;
+    if(args.printEnergy > 0){
+        os << "printEnergy" << args.sep << args.printEnergy << " (not yet implemented)" << endl;
     }
-    if(printAngularBond > 0){
-        cout << "printAngularBond" << sep << printAngularBond << endl;
+    if(args.printAngularBond > 0){
+        os << "printAngularBond" << args.sep << args.printAngularBond << endl;
     }
-    cout << endl;
-    if(clear){
-        cout << "Clearing all existing output-files!" << endl;
-    }
+    os << endl;
+    return os;
 }
 
 ARGUMENTS& ARGUMENTS::setSeparator(string sep){
@@ -64,4 +63,14 @@ ARGUMENTS& ARGUMENTS::setSeparator(string sep){
 
 string ARGUMENTS::getSeparator() const{
     return sep;
+}
+
+ARGUMENTS& ARGUMENTS::readFromFile(string filename){
+    return *this;
+}
+
+ARGUMENTS& ARGUMENTS::writeToFile(string filename){
+    PRINTER printer(filename);
+    printer << *this;
+    return *this;
 }

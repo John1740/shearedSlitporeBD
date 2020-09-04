@@ -198,9 +198,6 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     //read particle information
     readParticlesFromFile(filename, true);
     
-//    dWall = simBox.getDimensions().z;   //deprecated
-//    density = numberOfParticles / simBox.getVolume();
-    
     if(verbose){
         cout << "Read " << filename << " successfully!" << endl;
     }

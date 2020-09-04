@@ -22,8 +22,9 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
+    ARGUMENTS args("control.in.test");
     ARGUMENT_PARSER parser(argc, argv);
-    ARGUMENTS args = parser.parseArgs();
+    args = parser.parseArgs();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;

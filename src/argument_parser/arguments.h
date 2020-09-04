@@ -43,6 +43,10 @@ public:
     
     bool dryRun = false;
     bool printVersion = false;
+    
+    // constructors
+    ARGUMENTS();
+    ARGUMENTS(string filename);
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
@@ -52,7 +56,6 @@ public:
     // file-handling
     ARGUMENTS& readFromFile(string filename);
     ARGUMENTS& writeToFile(string filename);
-    //ARGUMENTS(string filename);
 };
 
 

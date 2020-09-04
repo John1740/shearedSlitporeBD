@@ -7,6 +7,14 @@
 #include <iostream>
 #include "../printer/printer.h"
 
+ARGUMENTS::ARGUMENTS(){
+
+}
+
+ARGUMENTS::ARGUMENTS(string filename){
+    readFromFile(filename);
+}
+
 ostream& operator<<(ostream& os, const ARGUMENTS& args){
     if(args.seed == 0){
         os << "RNG seed" << args.sep << "not set" << endl;
@@ -18,7 +26,7 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "RNG counter" << args.sep << args.rngCounter << endl;
     }
     os << endl;
-    os << "Configuration file" << args.sep << args.configurationIn << endl;
+    os << "configuration file" << args.sep << args.configurationIn << endl;
     os << endl;
     os << "shearRate" << args.sep << args.shearRate << endl;
     os << "amplitude" << args.sep << args.amplitude << endl;
@@ -30,7 +38,7 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "ssInteractionStrength" << args.sep << args.ssInteractionStrength << endl;
     os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
     os << endl;
-    os << "TotalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
+    os << "totalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
     if(args.snapshotInterval > 0){
         os << "snapshotInterval" << args.sep << args.snapshotInterval << endl;
     }

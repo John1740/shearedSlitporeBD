@@ -32,6 +32,7 @@ int main(int argc, const char *argv[]){
         argsParsed.settingsIn += string(" (not existing)");
     }
     args.update(argsParsed);
+    argsParsed.~ARGUMENTS();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;
@@ -51,13 +52,6 @@ int main(int argc, const char *argv[]){
     if(args.seed == 0){
         args.seed = getpid() * time(0); //dunno where getpid()-definition was imported from (unistd.h)
     }
-    //initialize RNG with seed (and skip steps if asked for)
-    random_event.RandomInit(args.seed);
-    if(args.rngCounter != 0){
-        for(unsigned long long int i = 0; i < args.rngCounter; i++){
-            random_event.Random();
-        }
-    }
 
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
@@ -65,8 +59,13 @@ int main(int argc, const char *argv[]){
 
     //initialize Slitpore System
     cout << surroundWithSeparator("System Initialization") << endl;
+    //initialize RNG with seed (and skip steps if asked for)
+    random_event.RandomInit(args.seed);
     if(args.rngCounter != 0){
-        cout << "Set rngCounter to " << args.rngCounter << endl;
+        for(unsigned long long int i = 0; i < args.rngCounter; i++){
+            random_event.Random();
+        }
+        cout << "Called random number generator " << args.rngCounter << " times." << endl;
     }
 
     SHEARED_SLITPORE_SYSTEM sys(args);

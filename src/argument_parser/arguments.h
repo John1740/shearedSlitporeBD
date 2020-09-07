@@ -17,6 +17,7 @@ public:
     unsigned long long rngCounter = 0;
     
     string configurationIn = CONFIGURATION_IN;
+    string settingsIn = SETTINGS_IN;
 
     double shearRate = SHEAR_RATE;
     double amplitude = AMPLITUDE;
@@ -38,7 +39,6 @@ public:
     int printAngularBond = PRINT_ANGULAR_BOND;
     int printSnapshots = PRINT_SNAPSHOTS;
     int printPairCorrelation = PRINT_PAIR_CORRELATION;
-    int printAll = PRINT_ALL;
     
     bool clear = CLEAR;
     bool dry = false;
@@ -47,6 +47,9 @@ public:
     // constructors
     ARGUMENTS();
     ARGUMENTS(string filename);
+    
+    // update with other instance of this class
+    ARGUMENTS& update(const ARGUMENTS& other);
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
@@ -54,7 +57,7 @@ public:
     string getSeparator() const;
     
     // file-handling
-    ARGUMENTS& readFromFile(string filename);
+    ARGUMENTS& readFromFile(string filename, char comment='#');
     ARGUMENTS& writeToFile(string filename);
 };
 

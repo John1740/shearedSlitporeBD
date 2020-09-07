@@ -22,10 +22,10 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
-    ARGUMENTS args("settings.in");
-    
     ARGUMENT_PARSER parser(argc, argv);
-//    args = parser.parseArgs();
+    ARGUMENTS argsParsed = parser.parseArgs();
+    ARGUMENTS args(argsParsed.settingsIn);
+    args.update(argsParsed);
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;
@@ -56,7 +56,6 @@ int main(int argc, const char *argv[]){
     //print parsed arguments
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
     cout << args << endl;
-    args.writeToFile("control.in");
 
     //initialize Slitpore System
     cout << surroundWithSeparator("System Initialization") << endl;

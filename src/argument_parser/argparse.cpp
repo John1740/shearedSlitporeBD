@@ -24,8 +24,9 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
 void ARGUMENT_PARSER::addOptions() {
     description.add_options()
             ("help,h", "Help screen")
+            ("settings,s", po::value<string>()->default_value(SETTINGS_IN), "settings file")
             ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions, simulation box)")
-            ("shearRate,s", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset (in units of 1/Brownian time)")
+            ("shearRate", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset (in units of 1/Brownian time)")
             ("amplitude,a", po::value<double>()->default_value(AMPLITUDE), "shear rate amplitude (in units of 1/Brownian time)")
             ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD), "shear rate oscillation period (in units of Brownian time)")
             ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
@@ -64,6 +65,7 @@ void ARGUMENT_PARSER::addOptions() {
 
 ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     ARGUMENTS args;
+    args.settingsIn = variablesMap["settings"].as<string>();
     args.configurationIn = variablesMap["configuration"].as<string>();
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.amplitude = variablesMap["amplitude"].as<double>();

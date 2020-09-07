@@ -15,9 +15,43 @@ ARGUMENTS::ARGUMENTS(){
 
 ARGUMENTS::ARGUMENTS(string filename){
     readFromFile(filename);
+    settingsIn = filename;
+}
+
+ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
+    //only update if non-default values
+    if(other.seed != 0) seed = other.seed;
+    if(other.rngCounter != 0) rngCounter = other.rngCounter;
+    if(other.settingsIn != SETTINGS_IN) settingsIn = other.settingsIn;
+    if(other.configurationIn != CONFIGURATION_IN) configurationIn = other.configurationIn;
+    if(other.shearRate != SHEAR_RATE) shearRate = other.shearRate;
+    if(other.amplitude != AMPLITUDE) amplitude = other.amplitude;
+    if(other.oscillationPeriod != OSCILLATION_PERIOD) oscillationPeriod = other.oscillationPeriod;
+    if(other.phaseOffset != PHASE_OFFSET) phaseOffset = other.phaseOffset;
+    if(other.dt != DELTA_T) dt = other.dt;
+    if(other.temperature != TEMPERATURE) temperature = other.temperature;
+    if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
+    if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
+    if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH) wallInteractionStrength = other.wallInteractionStrength;
+    if(other.totalNumberOfTimesteps != TOTAL_NUMBER_OF_TIMESTEPS) totalNumberOfTimesteps = other.totalNumberOfTimesteps;
+    if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
+    if(other.printStress != PRINT_STRESS) printStress = other.printStress;
+    if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
+    if(other.printEnergy != PRINT_ENERGY) printEnergy = other.printEnergy;
+    if(other.printAngularBond != PRINT_ANGULAR_BOND) printAngularBond = other.printAngularBond;
+    if(other.printSnapshots != PRINT_SNAPSHOTS) printSnapshots = other.printSnapshots;
+    if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
+    
+    //defaults don't matter for these options
+    clear = other.clear;
+    dry = other.dry;
+    printVersion = other.printVersion;
+    return *this;
 }
 
 ostream& operator<<(ostream& os, const ARGUMENTS& args){
+    os << "settings" << args.sep << args.settingsIn << endl;
+    os << endl;
     if(args.seed == 0){
         os << "seed" << args.sep << "not set" << endl;
     }
@@ -60,7 +94,6 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     if(args.printStressFourier > 0){
         os << "printStressFourier" << args.sep << args.printStressFourier << endl;
     }
-    os << endl;
     return os;
 }
 
@@ -77,14 +110,14 @@ bool str_is_empty(string str){
     return str.empty();
 }
 
-ARGUMENTS& ARGUMENTS::readFromFile(string filename){
+ARGUMENTS& ARGUMENTS::readFromFile(string filename, char comment){
     ifstream f;
     f.open(filename.c_str());
     string line;
     while(getline(f, line)){
         vector<string> linesplit;
-        //skip empty lines
-        if(line.empty()){
+        //skip empty lines and comments
+        if(line.empty() || line.find(comment) == 0){
             continue;
         }
         bo::split(linesplit, line, bo::is_any_of(sep));

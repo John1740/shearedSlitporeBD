@@ -7,6 +7,7 @@
 
 #include <string>
 
+const std::string SETTINGS_IN = "settings.in";
 const std::string CONFIGURATION_IN = "configuration.in";
 const std::string CONFIGURATION_OUT = "configuration.out";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";

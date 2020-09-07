@@ -8,6 +8,8 @@
 #include "../printer/printer.h"
 #include <boost/algorithm/string.hpp>
 namespace bo = boost;
+#include <experimental/filesystem>
+namespace fs = experimental::filesystem;
 
 ARGUMENTS::ARGUMENTS(){
 
@@ -110,7 +112,11 @@ bool str_is_empty(string str){
     return str.empty();
 }
 
-ARGUMENTS& ARGUMENTS::readFromFile(string filename, char comment){
+bool ARGUMENTS::readFromFile(string filename, char comment){
+    if(!fs::exists(filename)){
+        cout << filename << " does not exist!" << endl;
+        return false;
+    }
     ifstream f;
     f.open(filename.c_str());
     string line;
@@ -190,7 +196,7 @@ ARGUMENTS& ARGUMENTS::readFromFile(string filename, char comment){
         }
     }
     f.close();
-    return *this;
+    return true;
 }
 
 ARGUMENTS& ARGUMENTS::writeToFile(string filename){

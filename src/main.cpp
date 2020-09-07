@@ -16,15 +16,21 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
-//#include <experimental/filesystem>
-//namespace fs = experimental::filesystem;
+#include <experimental/filesystem>
+namespace fs = experimental::filesystem;
 
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS argsParsed = parser.parseArgs();
-    ARGUMENTS args(argsParsed.settingsIn);
+    ARGUMENTS args;
+    if(fs::exists(argsParsed.settingsIn)){
+        args.readFromFile(argsParsed.settingsIn);
+    }
+    else{
+        argsParsed.settingsIn += string(" (not existing)");
+    }
     args.update(argsParsed);
 
     if(args.printVersion){

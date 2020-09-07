@@ -6,8 +6,8 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
     printStress = args.printStress;
-    if(args.stressFourier > 0){
-        printStress = args.stressFourier;
+    if(args.printStressFourier > 0){
+        printStress = args.printStressFourier;
     }
     printEnergy = args.printEnergy;
     shearRateOffset = args.shearRate;

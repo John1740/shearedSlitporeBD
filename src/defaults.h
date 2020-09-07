@@ -38,10 +38,10 @@ const int TOTAL_NUMBER_OF_TIMESTEPS = 10;
 
 const int PRINT_VELOCITY = 0;
 const int PRINT_STRESS = 0;
-const int STRESS_FOURIER = 0;
+const int PRINT_STRESS_FOURIER = 0;
 const int PRINT_ENERGY = 0;
 const int PRINT_ANGULAR_BOND = 0;
-const int SNAPSHOT_INTERVAL = 0;
+const int PRINT_SNAPSHOTS = 0;
 const int PRINT_PAIR_CORRELATION = 0;
 const int PRINT_ALL = 0;
 const bool CLEAR = false;

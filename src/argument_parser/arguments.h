@@ -33,15 +33,15 @@ public:
     
     int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
-    int stressFourier = STRESS_FOURIER;
+    int printStressFourier = PRINT_STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
-    int snapshotInterval = SNAPSHOT_INTERVAL;
+    int printSnapshots = PRINT_SNAPSHOTS;
     int printPairCorrelation = PRINT_PAIR_CORRELATION;
     int printAll = PRINT_ALL;
-    bool clear = CLEAR;
     
-    bool dryRun = false;
+    bool clear = CLEAR;
+    bool dry = false;
     bool printVersion = false;
     
     // constructors

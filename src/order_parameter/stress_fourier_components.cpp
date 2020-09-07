@@ -16,8 +16,8 @@ STRESS_FOURIER_COMPONENTS::STRESS_FOURIER_COMPONENTS(string filename){
 }
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& args){
-    if(args.stressFourier > 0){
-        numberOfTimesteps = args.totalNumberOfTimesteps / args.stressFourier;
+    if(args.printStressFourier > 0){
+        numberOfTimesteps = args.totalNumberOfTimesteps / args.printStressFourier;
     }
     else{
         numberOfTimesteps = args.totalNumberOfTimesteps;

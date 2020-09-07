@@ -22,9 +22,10 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 int main(int argc, const char *argv[]){
     CLOCK clock;
     
-    ARGUMENTS args("control.in.test");
+    ARGUMENTS args("settings.in");
+    
     ARGUMENT_PARSER parser(argc, argv);
-    args = parser.parseArgs();
+//    args = parser.parseArgs();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;
@@ -78,7 +79,7 @@ int main(int argc, const char *argv[]){
         fs::remove_all(PAIR_CORRELATIONS_OUT);
     }
 
-    if(args.dryRun){
+    if(args.dry){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
         exit(0);
     }
@@ -98,7 +99,7 @@ int main(int argc, const char *argv[]){
                     % (100 * i / float(args.totalNumberOfTimesteps))
                     % sys.getTimestep() << endl;
         }
-        if(args.snapshotInterval > 0 && i % args.snapshotInterval == 0){
+        if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);
         }
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
@@ -113,7 +114,7 @@ int main(int argc, const char *argv[]){
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();
         }
-        if(args.stressFourier > 0 && i % args.stressFourier == 0){
+        if(args.printStressFourier > 0 && i % args.printStressFourier == 0){
             fc.addTimestep(sys);
         }
         if(args.printVelocity > 0 && i > 0 && (i - 1) % args.printVelocity == 0){
@@ -122,7 +123,7 @@ int main(int argc, const char *argv[]){
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
-    if(args.stressFourier > 0){
+    if(args.printStressFourier > 0){
         cout << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;

@@ -24,9 +24,7 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     else{
         os << "seed" << args.sep << args.seed << endl;
     }
-    if(args.rngCounter != 0 ){
-        os << "rngCounter" << args.sep << args.rngCounter << endl;
-    }
+    os << "rngCounter" << args.sep << args.rngCounter << endl;
     os << endl;
     os << "configuration" << args.sep << args.configurationIn << endl;
     os << endl;
@@ -41,8 +39,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
     os << endl;
     os << "totalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
-    if(args.snapshotInterval > 0){
-        os << "snapshotInterval" << args.sep << args.snapshotInterval << endl;
+    if(args.printSnapshots > 0){
+        os << "printSnapshots" << args.sep << args.printSnapshots << endl;
     }
     if(args.printPairCorrelation > 0){
         os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
@@ -53,14 +51,14 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
     }
-    if(args.stressFourier > 0){
-        os << "stressFourier" << args.sep << args.stressFourier << endl;
-    }
     if(args.printEnergy > 0){
         os << "printEnergy" << args.sep << args.printEnergy << " (not yet implemented)" << endl;
     }
     if(args.printAngularBond > 0){
         os << "printAngularBond" << args.sep << args.printAngularBond << endl;
+    }
+    if(args.printStressFourier > 0){
+        os << "printStressFourier" << args.sep << args.printStressFourier << endl;
     }
     os << endl;
     return os;
@@ -94,7 +92,13 @@ ARGUMENTS& ARGUMENTS::readFromFile(string filename){
         auto new_end = remove_if(linesplit.begin(), linesplit.end(), str_is_empty);
         linesplit.erase(new_end, linesplit.end());
         if(line.find("seed") != string::npos){
-            amplitude = stod(linesplit[1]);
+            seed = stoul(linesplit[1]);
+        }
+        else if(line.find("rngCounter") != string::npos){
+            rngCounter = stoull(linesplit[1]);
+        }
+        else if(line.find("configuration") != string::npos){
+            configurationIn = linesplit[1];
         }
         else if(line.find("shearRate") != string::npos){
             shearRate = stod(linesplit[1]);
@@ -102,8 +106,54 @@ ARGUMENTS& ARGUMENTS::readFromFile(string filename){
         else if(line.find("amplitude") != string::npos){
             amplitude = stod(linesplit[1]);
         }
+        else if(line.find("oscillationPeriod") != string::npos){
+            oscillationPeriod = stod(linesplit[1]);
+        }
+        else if(line.find("phaseOffset") != string::npos){
+            phaseOffset = stod(linesplit[1]);
+        }
+        else if(line.find("dt") != string::npos){
+            dt = stod(linesplit[1]);
+        }
+        else if(line.find("temperature") != string::npos){
+            temperature = stod(linesplit[1]);
+        }
+        else if(line.find("D0") != string::npos){
+            D0 = stod(linesplit[1]);
+        }
+        else if(line.find("ssInteractionStrength") != string::npos){
+            ssInteractionStrength = stod(linesplit[1]);
+        }
+        else if(line.find("wallInteractionStrength") != string::npos){
+            wallInteractionStrength = stod(linesplit[1]);
+        }
+        else if(line.find("totalNumberOfTimesteps") != string::npos){
+            totalNumberOfTimesteps = long(stod(linesplit[1]));
+        }
+        else if(line.find("printSnapshots") != string::npos){
+            printSnapshots = int(stod(linesplit[1]));
+        }
+        else if(line.find("printPairCorrelation") != string::npos){
+            printPairCorrelation = int(stod(linesplit[1]));
+        }
+        else if(line.find("printVelocity") != string::npos){
+            printVelocity = int(stod(linesplit[1]));
+        }
+        //needs to be before "printStress"
+        else if(line.find("printStressFourier") != string::npos){
+            printStressFourier = int(stod(linesplit[1]));
+        }
+        else if(line.find("printStress") != string::npos){
+            printStress = int(stod(linesplit[1]));
+        }
+        else if(line.find("printEnergy") != string::npos){
+            printEnergy = int(stod(linesplit[1]));
+        }
+        else if(line.find("printAngularBond") != string::npos){
+            printAngularBond = int(stod(linesplit[1]));
+        }
         else{
-            cout << line << " unrecognized!" << endl;
+            cout << "Option unrecognized: " << line << endl;
         }
     }
     f.close();

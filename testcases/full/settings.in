@@ -1,0 +1,8 @@
+amplitude: 150
+oscillationPeriod: 1e-3
+
+totalNumberOfTimesteps: 100
+printAll: 1
+printEnergy: -1
+printSnapshots: 10
+printPairCorrelations: 10

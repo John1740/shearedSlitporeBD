@@ -89,7 +89,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     int printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     int printSnapshots = round(variablesMap["printSnapshots"].as<double>());
     int printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
-//    args.printAll = printAll;
+    args.printAll = printAll;
     if(printAll > 0){
         args.printVelocity = printAll;
         args.printStress = printAll;

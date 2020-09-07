@@ -127,19 +127,6 @@ int main(int argc, const char *argv[]){
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
-    if(args.printStressFourier > 0){
-        cout << fc << endl;
-        cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
-        cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
-        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;
-        cout << "Old Loss modulus [kT/d^3]: " << fc.calculateLossModulusOld() << endl;
-        for(int i = 0; i <= 4; i++){
-            cout << "Fourier component (xz) (n= " << i << "): " << fc.calculate(i).xz << endl;
-            if(i > 0){
-                cout << "Fourier component (xz) (n=" << -i << "): " << fc.calculate(-i).xz << endl;
-            }
-        }
-    }
     
     //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
     sys.simulateForSteps(1);
@@ -155,6 +142,23 @@ int main(int argc, const char *argv[]){
     }
     if(args.printAngularBond > 0){
         cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
+    }
+    if(args.printPairCorrelation > 0){
+        cout << b::format("Printed pair correlations to %s/") % PAIR_CORRELATIONS_OUT << endl;
+    }
+    cout << endl;
+    if(args.printStressFourier > 0){
+        cout << fc << endl;
+        cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
+        cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
+//        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;
+//        cout << "Old Loss modulus [kT/d^3]: " << fc.calculateLossModulusOld() << endl;
+        for(int i = 0; i <= 4; i++){
+            cout << "Fourier component (xz) (n= " << i << "): " << fc.calculate(i).xz << endl;
+            if(i > 0){
+                cout << "Fourier component (xz) (n=" << -i << "): " << fc.calculate(-i).xz << endl;
+            }
+        }
     }
     
     cout << endl << surroundWithSeparator("Simulation end") << endl;

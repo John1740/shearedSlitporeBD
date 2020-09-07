@@ -39,6 +39,7 @@ public:
     int printAngularBond = PRINT_ANGULAR_BOND;
     int printSnapshots = PRINT_SNAPSHOTS;
     int printPairCorrelation = PRINT_PAIR_CORRELATION;
+    int printAll = PRINT_ALL;
     
     bool clear = CLEAR;
     bool dry = false;

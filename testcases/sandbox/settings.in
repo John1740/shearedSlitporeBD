@@ -6,6 +6,4 @@ amplitude: 400
 oscillationPeriod: 1
 
 totalNumberOfTimesteps: 10
-printSnapshots: 1
 printStress: 1
-printAngularBond: 1

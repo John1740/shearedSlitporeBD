@@ -10,6 +10,7 @@
 namespace bo = boost;
 #include <experimental/filesystem>
 namespace fs = experimental::filesystem;
+#include <cmath>
 
 ARGUMENTS::ARGUMENTS(){
 
@@ -170,29 +171,56 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
             totalNumberOfTimesteps = long(stod(linesplit[1]));
         }
         else if(line.find("printSnapshots") != string::npos){
-            printSnapshots = int(stod(linesplit[1]));
+            printSnapshots = round(stod(linesplit[1]));
         }
         else if(line.find("printPairCorrelation") != string::npos){
-            printPairCorrelation = int(stod(linesplit[1]));
+            printPairCorrelation = round(stod(linesplit[1]));
         }
         else if(line.find("printVelocity") != string::npos){
-            printVelocity = int(stod(linesplit[1]));
+            printVelocity = round(stod(linesplit[1]));
         }
         //needs to be before "printStress"
         else if(line.find("printStressFourier") != string::npos){
-            printStressFourier = int(stod(linesplit[1]));
+            printStressFourier = round(stod(linesplit[1]));
         }
         else if(line.find("printStress") != string::npos){
-            printStress = int(stod(linesplit[1]));
+            printStress = round(stod(linesplit[1]));
         }
         else if(line.find("printEnergy") != string::npos){
-            printEnergy = int(stod(linesplit[1]));
+            printEnergy = round(stod(linesplit[1]));
         }
         else if(line.find("printAngularBond") != string::npos){
-            printAngularBond = int(stod(linesplit[1]));
+            printAngularBond = round(stod(linesplit[1]));
+        }
+        else if(line.find("printAll") != string::npos){
+            printAll = round(stod(linesplit[1]));
         }
         else{
             cout << "Option unrecognized: " << line << endl;
+        }
+    }
+    // overwrite print-statements by printAll if not further specified
+    if(printAll > 0){
+        if(printVelocity == PRINT_VELOCITY){
+            printVelocity = printAll;
+        }
+        if(printStress == PRINT_STRESS){
+            printStress = printAll;
+        }
+        if(printStressFourier == PRINT_STRESS_FOURIER){
+            printStressFourier = 1;
+        }
+        if(printEnergy == PRINT_ENERGY){
+            printEnergy = printAll;
+        }
+        if(printAngularBond == PRINT_ANGULAR_BOND){
+            printAngularBond = printAll;
+        }
+        if(printSnapshots == PRINT_SNAPSHOTS){
+            printSnapshots = printAll;
+        }
+        if(printPairCorrelation == PRINT_PAIR_CORRELATION){
+            printPairCorrelation = printAll;
         }
     }
     f.close();

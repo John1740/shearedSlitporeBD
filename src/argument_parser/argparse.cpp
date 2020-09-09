@@ -37,6 +37,8 @@ void ARGUMENT_PARSER::addOptions() {
             ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("timesteps,N", po::value<double>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
+            ("totalTime", po::value<double>(), "Total time (in Brownian times) the simulations runs for.\n"
+                                               "Overwrites --timesteps/-N")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
@@ -77,6 +79,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
     args.totalNumberOfTimesteps = round(variablesMap["timesteps"].as<double>());
+    if(variablesMap.count("totalTime")){
+        args.setTotalTime(variablesMap["totalTime"].as<double>());
+    }
     args.seed = variablesMap["seed"].as<unsigned int>();
     args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();
 

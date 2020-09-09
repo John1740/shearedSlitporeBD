@@ -76,6 +76,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
     os << endl;
     os << "totalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
+    os << "totalTime" << args.sep << args.getTotalTime() << endl;
+    os << "numberOfPeriods" << args.sep << args.getNumberOfPeriods() << endl;
     if(args.printSnapshots > 0){
         os << "printSnapshots" << args.sep << args.printSnapshots << endl;
     }
@@ -170,6 +172,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("totalNumberOfTimesteps") != string::npos){
             totalNumberOfTimesteps = long(stod(linesplit[1]));
         }
+        else if(line.find("totalTime") != string::npos){
+            setTotalTime(stod(linesplit[1]));
+        }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
         }
@@ -232,4 +237,22 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
     printer.reset();
     printer << *this;
     return *this;
+}
+
+ARGUMENTS& ARGUMENTS::setTotalTime(double totalTime){
+    totalNumberOfTimesteps = totalTime / dt;
+    return *this;
+}
+
+double ARGUMENTS::getTotalTime() const{
+    return totalNumberOfTimesteps * dt;
+}
+
+ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
+    setTotalTime(numberOfPeriods * oscillationPeriod);
+    return *this;
+}
+
+double ARGUMENTS::getNumberOfPeriods() const{
+    return getTotalTime() / oscillationPeriod;
 }

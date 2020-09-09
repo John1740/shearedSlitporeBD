@@ -54,6 +54,12 @@ public:
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
+    // setter and getter
+    ARGUMENTS& setTotalTime(double totalTime);
+    double getTotalTime() const;
+    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
+    double getNumberOfPeriods() const;
+    
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;
     

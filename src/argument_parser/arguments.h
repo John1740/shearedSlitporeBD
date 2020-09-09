@@ -64,7 +64,7 @@ public:
     string getSeparator() const;
     
     // file-handling
-    bool readFromFile(string filename, char comment='#');
+    bool readFromFile(string filename, char comment='#', bool twice=true);
     ARGUMENTS& writeToFile(string filename);
 };
 

@@ -115,10 +115,13 @@ bool str_is_empty(string str){
     return str.empty();
 }
 
-bool ARGUMENTS::readFromFile(string filename, char comment){
+bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
     if(!fs::exists(filename)){
         cout << filename << " does not exist!" << endl;
         return false;
+    }
+    if(twice){
+        readFromFile(filename, comment, false);
     }
     ifstream f;
     f.open(filename.c_str());

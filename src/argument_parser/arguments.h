@@ -30,7 +30,7 @@ public:
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
-    int totalNumberOfTimesteps = TOTAL_NUMBER_OF_TIMESTEPS;
+    int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
     
     int printVelocity = PRINT_VELOCITY;
     int printStress = PRINT_STRESS;
@@ -55,8 +55,8 @@ public:
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
     // setter and getter
-    ARGUMENTS& setTotalTime(double totalTime);
-    double getTotalTime() const;
+    ARGUMENTS& setDuration(double duration);
+    double getDuration() const;
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     double getNumberOfPeriods() const;
     

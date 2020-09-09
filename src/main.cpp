@@ -97,10 +97,10 @@ int main(int argc, const char *argv[]){
     STRESS_FOURIER_COMPONENTS fc(args);
 
     //column description
-    for(int i = 0; i < args.totalNumberOfTimesteps; i++){
-        if(i % (int)ceil(args.totalNumberOfTimesteps / 100.) == 0){
+    for(int i = 0; i < args.numberOfTimesteps; i++){
+        if(i % (int)ceil(args.numberOfTimesteps / 100.) == 0){
             cout << b::format("Progress: %.1f%% (timestep %ld)")
-                    % (100 * i / float(args.totalNumberOfTimesteps))
+                    % (100 * i / float(args.numberOfTimesteps))
                     % sys.getTimestep() << endl;
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
@@ -130,7 +130,7 @@ int main(int argc, const char *argv[]){
     
     //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
     sys.simulateForSteps(1);
-    if(args.printVelocity > 0 && args.totalNumberOfTimesteps > 0 && (args.totalNumberOfTimesteps - 1) % args.printVelocity == 0){
+    if(args.printVelocity > 0 && args.numberOfTimesteps > 0 && (args.numberOfTimesteps - 1) % args.printVelocity == 0){
         velocity.printLine();
     }
     

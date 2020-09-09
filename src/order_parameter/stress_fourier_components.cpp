@@ -17,10 +17,10 @@ STRESS_FOURIER_COMPONENTS::STRESS_FOURIER_COMPONENTS(string filename){
 
 STRESS_FOURIER_COMPONENTS& STRESS_FOURIER_COMPONENTS::setup(const ARGUMENTS& args){
     if(args.printStressFourier > 0){
-        numberOfTimesteps = args.totalNumberOfTimesteps / args.printStressFourier;
+        numberOfTimesteps = args.numberOfTimesteps / args.printStressFourier;
     }
     else{
-        numberOfTimesteps = args.totalNumberOfTimesteps;
+        numberOfTimesteps = args.numberOfTimesteps;
     }
     period = args.oscillationPeriod;
     amplitude = args.amplitude;

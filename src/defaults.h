@@ -35,7 +35,7 @@ const double DELTA_T = 1e-5;
 const double TEMPERATURE = 1.0;
 const double DIFFUSION_CONSTANT = 1.0;
 
-const int TOTAL_NUMBER_OF_TIMESTEPS = 10;
+const int NUMBER_OF_TIMESTEPS = 10;
 
 const int PRINT_VELOCITY = 0;
 const int PRINT_STRESS = 0;

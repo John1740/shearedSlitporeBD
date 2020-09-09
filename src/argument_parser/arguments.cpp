@@ -36,7 +36,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
     if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH) wallInteractionStrength = other.wallInteractionStrength;
-    if(other.totalNumberOfTimesteps != TOTAL_NUMBER_OF_TIMESTEPS) totalNumberOfTimesteps = other.totalNumberOfTimesteps;
+    if(other.numberOfTimesteps != NUMBER_OF_TIMESTEPS) numberOfTimesteps = other.numberOfTimesteps;
     if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
     if(other.printStress != PRINT_STRESS) printStress = other.printStress;
     if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
@@ -75,8 +75,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "ssInteractionStrength" << args.sep << args.ssInteractionStrength << endl;
     os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
     os << endl;
-    os << "totalNumberOfTimesteps" << args.sep << args.totalNumberOfTimesteps << endl;
-    os << "totalTime" << args.sep << args.getTotalTime() << endl;
+    os << "numberOfTimesteps" << args.sep << args.numberOfTimesteps << endl;
+    os << "duration" << args.sep << args.getDuration() << endl;
     os << "numberOfPeriods" << args.sep << args.getNumberOfPeriods() << endl;
     if(args.printSnapshots > 0){
         os << "printSnapshots" << args.sep << args.printSnapshots << endl;
@@ -169,11 +169,11 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("wallInteractionStrength") != string::npos){
             wallInteractionStrength = stod(linesplit[1]);
         }
-        else if(line.find("totalNumberOfTimesteps") != string::npos){
-            totalNumberOfTimesteps = long(stod(linesplit[1]));
+        else if(line.find("numberOfTimesteps") != string::npos){
+            numberOfTimesteps = long(stod(linesplit[1]));
         }
-        else if(line.find("totalTime") != string::npos){
-            setTotalTime(stod(linesplit[1]));
+        else if(line.find("duration") != string::npos){
+            setDuration(stod(linesplit[1]));
         }
         else if(line.find("numberOfPeriods") != string::npos){
             setNumberOfPeriods(stod(linesplit[1]));
@@ -242,20 +242,20 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
     return *this;
 }
 
-ARGUMENTS& ARGUMENTS::setTotalTime(double totalTime){
-    totalNumberOfTimesteps = round(totalTime / dt);
+ARGUMENTS& ARGUMENTS::setDuration(double duration){
+    numberOfTimesteps = round(duration / dt);
     return *this;
 }
 
-double ARGUMENTS::getTotalTime() const{
-    return totalNumberOfTimesteps * dt;
+double ARGUMENTS::getDuration() const{
+    return numberOfTimesteps * dt;
 }
 
 ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
-    setTotalTime(numberOfPeriods * oscillationPeriod);
+    setDuration(numberOfPeriods * oscillationPeriod);
     return *this;
 }
 
 double ARGUMENTS::getNumberOfPeriods() const{
-    return getTotalTime() / oscillationPeriod;
+    return getDuration() / oscillationPeriod;
 }

@@ -39,6 +39,8 @@ void ARGUMENT_PARSER::addOptions() {
             ("timesteps,N", po::value<double>()->default_value(TOTAL_NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
             ("totalTime", po::value<double>(), "Total time (in Brownian times) the simulations runs for.\n"
                                                "Overwrites --timesteps/-N")
+            ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
+                                               "Overwrites --timesteps/-N and --totalTime")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
@@ -81,6 +83,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.totalNumberOfTimesteps = round(variablesMap["timesteps"].as<double>());
     if(variablesMap.count("totalTime")){
         args.setTotalTime(variablesMap["totalTime"].as<double>());
+    }
+    if(variablesMap.count("numberOfPeriods")){
+        args.setNumberOfPeriods(variablesMap["numberOfPeriods"].as<double>());
     }
     args.seed = variablesMap["seed"].as<unsigned int>();
     args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();

@@ -6,4 +6,6 @@ amplitude: 400
 oscillationPeriod: 1
 
 totalNumberOfTimesteps: 10
+totalTime: 0.0002
+numberOfPeriods: 0.0003
 printStress: 1

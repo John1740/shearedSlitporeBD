@@ -175,6 +175,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("totalTime") != string::npos){
             setTotalTime(stod(linesplit[1]));
         }
+        else if(line.find("numberOfPeriods") != string::npos){
+            setNumberOfPeriods(stod(linesplit[1]));
+        }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
         }
@@ -240,7 +243,7 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
 }
 
 ARGUMENTS& ARGUMENTS::setTotalTime(double totalTime){
-    totalNumberOfTimesteps = totalTime / dt;
+    totalNumberOfTimesteps = round(totalTime / dt);
     return *this;
 }
 

@@ -52,6 +52,7 @@ public:
     
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
+    ARGUMENTS& polish();
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 

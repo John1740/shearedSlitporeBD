@@ -292,10 +292,21 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
     return *this;
 }
 
+// idempotent
 ARGUMENTS& ARGUMENTS::recoverDuration(){
     if(duration != 0) {
         setDuration(duration);
+        duration = 0;
     }
-    duration = 0;
+    return *this;
+}
+
+// to be called at the very end
+ARGUMENTS& ARGUMENTS::polish() {
+    // default dt if not given
+    if(dt == 0){
+        setDefaultDt();
+    }
+    recoverDuration();
     return *this;
 }

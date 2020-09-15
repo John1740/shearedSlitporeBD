@@ -31,13 +31,9 @@ int main(int argc, const char *argv[]){
     else{
         argsParsed.settingsIn += string(" (not existing)");
     }
-    args.update(argsParsed);
+    args.update(argsParsed);    //argsParsed have priority
+    args.polish();  //dt-defaulting and last corrections
     argsParsed.~ARGUMENTS();
-    // default dt if not given
-    if(args.dt == 0){
-        args.setDefaultDt();
-    }
-    args.recoverDuration();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;

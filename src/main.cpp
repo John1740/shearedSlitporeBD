@@ -37,6 +37,7 @@ int main(int argc, const char *argv[]){
     if(args.dt == 0){
         args.setDefaultDt();
     }
+    args.recoverDuration();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;
@@ -150,9 +151,8 @@ int main(int argc, const char *argv[]){
     if(args.printPairCorrelation > 0){
         cout << b::format("Printed pair correlations to %s/") % PAIR_CORRELATIONS_OUT << endl;
     }
-    cout << endl;
     if(args.printStressFourier > 0){
-        cout << fc << endl;
+        cout << endl << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
 //        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;

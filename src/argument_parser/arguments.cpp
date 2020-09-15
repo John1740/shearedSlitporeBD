@@ -44,6 +44,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.printAngularBond != PRINT_ANGULAR_BOND) printAngularBond = other.printAngularBond;
     if(other.printSnapshots != PRINT_SNAPSHOTS) printSnapshots = other.printSnapshots;
     if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
+    if(other.duration != 0) duration = other.duration;
     
     //defaults don't matter for these options
     clear = other.clear;
@@ -246,12 +247,23 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
 }
 
 ARGUMENTS& ARGUMENTS::setDuration(double duration){
-    numberOfTimesteps = round(duration / dt);
+    if(dt != 0) {
+        numberOfTimesteps = round(duration / dt);
+    }
+    else{
+        this->duration = duration;
+        numberOfTimesteps = 0;
+    }
     return *this;
 }
 
 double ARGUMENTS::getDuration() const{
-    return numberOfTimesteps * dt;
+    if(dt != 0) {
+        return numberOfTimesteps * dt;
+    }
+    else{
+        return duration;
+    }
 }
 
 ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
@@ -263,7 +275,7 @@ double ARGUMENTS::getNumberOfPeriods() const{
     return getDuration() / oscillationPeriod;
 }
 
-ARGUMENTS &ARGUMENTS::setDefaultDt() {
+ARGUMENTS& ARGUMENTS::setDefaultDt() {
     // minimum due to energy potential (bigger dt lead to particles leaving the box)
     dt = 1e-5;
     // it needs dtDeformation to move the upper wall by the wall distance once
@@ -277,6 +289,13 @@ ARGUMENTS &ARGUMENTS::setDefaultDt() {
     if(dt > dtOscillation){
         dt = dtOscillation;
     }
-    // need
+    return *this;
+}
+
+ARGUMENTS& ARGUMENTS::recoverDuration(){
+    if(duration != 0) {
+        setDuration(duration);
+    }
+    duration = 0;
     return *this;
 }

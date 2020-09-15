@@ -24,7 +24,7 @@ public:
     double oscillationPeriod = OSCILLATION_PERIOD;
     double phaseOffset = PHASE_OFFSET;
 
-    double dt = DELTA_T;
+    double dt = 0;
     double temperature = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
@@ -54,12 +54,14 @@ public:
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
-    // setter and getter
-    ARGUMENTS& setDuration(double duration);
+    // getter
     double getDuration() const;
-    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     double getNumberOfPeriods() const;
-    
+
+    //setter
+    ARGUMENTS& setDuration(double duration);
+    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
+    ARGUMENTS& setDefaultDt();
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;
     

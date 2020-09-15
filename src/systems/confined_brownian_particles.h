@@ -40,7 +40,7 @@ protected:
     int numberOfParticles = NUMBER_OF_PARTICLES;
 
     long timestep = 0;
-    double dt = DELTA_T;
+    double dt = 1e-5;
     double T = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
 

@@ -31,7 +31,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.amplitude != AMPLITUDE) amplitude = other.amplitude;
     if(other.oscillationPeriod != OSCILLATION_PERIOD) oscillationPeriod = other.oscillationPeriod;
     if(other.phaseOffset != PHASE_OFFSET) phaseOffset = other.phaseOffset;
-    if(other.dt != DELTA_T) dt = other.dt;
+    if(other.dt != 0) dt = other.dt;
     if(other.temperature != TEMPERATURE) temperature = other.temperature;
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
@@ -235,6 +235,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
         }
     }
     f.close();
+    if(dt == 0){
+        setDefaultDt();
+    }
     return true;
 }
 
@@ -261,4 +264,22 @@ ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
 
 double ARGUMENTS::getNumberOfPeriods() const{
     return getDuration() / oscillationPeriod;
+}
+
+ARGUMENTS &ARGUMENTS::setDefaultDt() {
+    // minimum due to energy potential (bigger dt lead to particles leaving the box)
+    dt = 1e-5;
+    // it needs dtDeformation to move the upper wall by the wall distance once
+    // need to have at least 1000 sample points for that time
+    double dtDeformation = 1 / (abs(shearRate) + abs(amplitude)) / 1000;
+    if(dt > dtDeformation){
+        dt = dtDeformation;
+    }
+    // need to have at least 1000 sample points per oscillation period
+    double dtOscillation = oscillationPeriod / 1000;
+    if(dt > dtOscillation){
+        dt = dtOscillation;
+    }
+    // need
+    return *this;
 }

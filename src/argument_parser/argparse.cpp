@@ -33,7 +33,7 @@ void ARGUMENT_PARSER::addOptions() {
                                                                                 "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "strength of softsphere interaction")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
-            ("dt", po::value<double>()->default_value(DELTA_T), "length of timestep")
+            ("dt", po::value<double>()->default_value(0), "length of timestep")
             ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("numberOfTimesteps,N", po::value<double>()->default_value(NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
@@ -77,7 +77,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.phaseOffset = variablesMap["phaseOffset"].as<double>();
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
-    args.dt = variablesMap["dt"].as<double>();
+    args.dt = variablesMap["dt"].as<double>(); //defaulting happens elsewhere
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
     args.numberOfTimesteps = round(variablesMap["numberOfTimesteps"].as<double>());

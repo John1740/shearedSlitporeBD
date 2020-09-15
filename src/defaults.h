@@ -31,7 +31,6 @@ const double DIAMETER = 1.;
 const double SS_INTERACTION_STRENGTH = 1.0;
 const double WALL_INTERACTION_STRENGTH = 1.0;
 
-const double DELTA_T = 1e-5;
 const double TEMPERATURE = 1.0;
 const double DIFFUSION_CONSTANT = 1.0;
 

@@ -77,7 +77,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.phaseOffset = variablesMap["phaseOffset"].as<double>();
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
-    args.dt = variablesMap["dt"].as<double>(); //defaulting happens elsewhere
+    args.dt = variablesMap["dt"].as<double>();
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
     args.numberOfTimesteps = round(variablesMap["numberOfTimesteps"].as<double>());

@@ -235,9 +235,6 @@ bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
         }
     }
     f.close();
-    if(dt == 0){
-        setDefaultDt();
-    }
     return true;
 }
 

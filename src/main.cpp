@@ -33,6 +33,10 @@ int main(int argc, const char *argv[]){
     }
     args.update(argsParsed);
     argsParsed.~ARGUMENTS();
+    // default dt if not given
+    if(args.dt == 0){
+        args.setDefaultDt();
+    }
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;

@@ -51,6 +51,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     clear = other.clear;
     dry = other.dry;
     printVersion = other.printVersion;
+    finalized = false;
     return *this;
 }
 
@@ -234,6 +235,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
     }
     f.close();
+    finalized = false;
     return true;
 }
 
@@ -263,12 +265,22 @@ double ARGUMENTS::getNumberOfPeriods() const{
 }
 
 ARGUMENTS& ARGUMENTS::setDuration(double duration){
-    this->duration = duration;
+    if(finalized){
+        numberOfTimesteps = round(duration / dt);
+    }
+    else{
+        this->duration = duration;
+    }
     return *this;
 }
 
 ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
-    this->numberOfPeriods = numberOfPeriods;
+    if(finalized){
+        setDuration(numberOfPeriods * oscillationPeriod);
+    }
+    else{
+        this->numberOfPeriods = numberOfPeriods;
+    }
     return *this;
 }
 
@@ -289,36 +301,21 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
     return *this;
 }
 
-// idempotent
-ARGUMENTS& ARGUMENTS::recoverDuration(){
-    if(duration != 0){
-        numberOfTimesteps = round(duration / dt);
-        duration = 0;
-    }
-    return *this;
-}
-
-ARGUMENTS& ARGUMENTS::recoverNumberOfPeriods(){
-    if(numberOfPeriods != 0){
-        duration = numberOfPeriods * oscillationPeriod;
-        recoverDuration();
-        numberOfPeriods = 0;
-    }
-    return *this;
-}
-
 // to be called at the very end once oscillationPeriod and dt are chosen
-ARGUMENTS& ARGUMENTS::finalize() {
+ARGUMENTS& ARGUMENTS::finalize(){
+    finalized = true;
     // default dt if not given
     if(dt == 0){
         setDefaultDt();
     }
     // overwrite totalNumberOfTimesteps with priority numberOfPeriods > duration > totalNumberOfTimesteps
     if(duration != 0){
-        recoverDuration();
+        setDuration(duration);
+        duration = 0;
     }
     if(numberOfPeriods != 0){
-        recoverNumberOfPeriods();
+        setNumberOfPeriods(numberOfPeriods);
+        numberOfPeriods = 0;
     }
     return *this;
 }

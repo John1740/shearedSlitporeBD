@@ -12,6 +12,7 @@ using namespace std;
 class ARGUMENTS{
 private:
     string sep = ": ";
+    bool finalized = false;    // toggles whether finalize needs to be called
     // placeholders
     double duration = 0;
     double numberOfPeriods = 0;
@@ -54,6 +55,8 @@ public:
     
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
+
+    // get the prioritized duration
     ARGUMENTS& finalize();
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
@@ -65,8 +68,6 @@ public:
     //setter
     ARGUMENTS& setDuration(double duration);
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
-    ARGUMENTS& recoverDuration();   //can be used once dt-defaulting is done
-    ARGUMENTS& recoverNumberOfPeriods();
     ARGUMENTS& setDefaultDt();
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;

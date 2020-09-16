@@ -36,7 +36,7 @@ void ARGUMENT_PARSER::addOptions() {
             ("dt", po::value<double>()->default_value(0), "length of timestep")
             ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
-            ("numberOfTimesteps,N", po::value<double>()->default_value(NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
+            ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
             ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
                                                "Overwrites --numberOfTimesteps/-N")
             ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
@@ -80,7 +80,12 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.dt = variablesMap["dt"].as<double>();
     args.temperature = variablesMap["temperature"].as<double>();
     args.D0 = variablesMap["D0"].as<double>();
-    args.numberOfTimesteps = round(variablesMap["numberOfTimesteps"].as<double>());
+    if(variablesMap.count("numberOfTimesteps")){
+        args.numberOfTimesteps = round(variablesMap["numberOfTimesteps"].as<double>());
+    }
+    else{
+        args.numberOfTimesteps = 0;
+    }
     if(variablesMap.count("duration")){
         args.setDuration(variablesMap["duration"].as<double>());
     }

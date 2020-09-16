@@ -36,7 +36,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
     if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH) wallInteractionStrength = other.wallInteractionStrength;
-    if(other.numberOfTimesteps != NUMBER_OF_TIMESTEPS){
+    if(other.numberOfTimesteps != 0){
         numberOfTimesteps = other.numberOfTimesteps;
         duration = 0;   //other.numberOfTimesteps has priority
         numberOfPeriods = 0;

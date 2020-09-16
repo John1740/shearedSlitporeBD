@@ -72,7 +72,7 @@ public:
     string getSeparator() const;
     
     // file-handling
-    bool readFromFile(string filename, char comment='#', bool twice=true);
+    bool readFromFile(string filename, char comment='#');
     ARGUMENTS& writeToFile(string filename);
 };
 

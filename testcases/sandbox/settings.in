@@ -10,4 +10,4 @@ numberOfTimesteps: 10
 #numberOfPeriods: 3
 printStress: 1
 
-#dt: 1e-5
+dt: 1e-5

@@ -117,14 +117,11 @@ bool str_is_empty(string str){
     return str.empty();
 }
 
-bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
+bool ARGUMENTS::readFromFile(string filename, char comment){
     if(!fs::exists(filename)){
         cout << filename << " does not exist!" << endl;
         return false;
     }
-//    if(twice){
-//        readFromFile(filename, comment, false);
-//    }
     ifstream f;
     f.open(filename.c_str());
     string line;
@@ -179,11 +176,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
         }
         else if(line.find("duration") != string::npos){
             duration = stod(linesplit[1]);
-//            setDuration(stod(linesplit[1]));
         }
         else if(line.find("numberOfPeriods") != string::npos){
             numberOfPeriods = stod(linesplit[1]);
-//            setNumberOfPeriods(stod(linesplit[1]));
         }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
@@ -296,7 +291,7 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
 
 // idempotent
 ARGUMENTS& ARGUMENTS::recoverDuration(){
-    if(duration != 0) {
+    if(duration != 0){
         numberOfTimesteps = round(duration / dt);
         duration = 0;
     }
@@ -304,7 +299,7 @@ ARGUMENTS& ARGUMENTS::recoverDuration(){
 }
 
 ARGUMENTS& ARGUMENTS::recoverNumberOfPeriods(){
-    if(numberOfPeriods != 0) {
+    if(numberOfPeriods != 0){
         duration = numberOfPeriods * oscillationPeriod;
         recoverDuration();
         numberOfPeriods = 0;

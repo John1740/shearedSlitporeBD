@@ -32,7 +32,7 @@ int main(int argc, const char *argv[]){
         argsParsed.settingsIn += string(" (not existing)");
     }
     args.update(argsParsed);    //argsParsed have priority
-    args.polish();  //dt-defaulting and last corrections
+    args.finalize();  //dt-defaulting and last corrections
     argsParsed.~ARGUMENTS();
 
     if(args.printVersion){

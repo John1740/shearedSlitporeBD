@@ -249,18 +249,6 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
     return *this;
 }
 
-ARGUMENTS& ARGUMENTS::setDuration(double duration){
-    this->duration = duration;
-//    if(dt != 0) {
-//        numberOfTimesteps = round(duration / dt);
-//    }
-//    else{
-//        this->duration = duration;
-//        numberOfTimesteps = 0;
-//    }
-    return *this;
-}
-
 double ARGUMENTS::getDuration() const{
     if(duration == 0){
         return numberOfTimesteps * dt;
@@ -270,19 +258,6 @@ double ARGUMENTS::getDuration() const{
     }
 }
 
-ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
-    this->numberOfPeriods = numberOfPeriods;
-//    if(oscillationPeriod != 0) {
-//        setDuration(numberOfPeriods * oscillationPeriod);
-//    }
-//    else{
-//        this->numberOfPeriods = numberOfPeriods;
-//        duration = 0;
-//        numberOfTimesteps = 0;
-//    }
-    return *this;
-}
-
 double ARGUMENTS::getNumberOfPeriods() const{
     if(numberOfPeriods == 0){
         return getDuration() / oscillationPeriod;
@@ -290,12 +265,16 @@ double ARGUMENTS::getNumberOfPeriods() const{
     else{
         return numberOfPeriods;
     }
-//    if(oscillationPeriod != 0){
-//        return getDuration() / oscillationPeriod;
-//    }
-//    else{
-//        return numberOfPeriods;
-//    }
+}
+
+ARGUMENTS& ARGUMENTS::setDuration(double duration){
+    this->duration = duration;
+    return *this;
+}
+
+ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
+    this->numberOfPeriods = numberOfPeriods;
+    return *this;
 }
 
 ARGUMENTS& ARGUMENTS::setDefaultDt() {
@@ -317,10 +296,6 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
 
 // idempotent
 ARGUMENTS& ARGUMENTS::recoverDuration(){
-//    if(duration != 0){
-//        setDuration(duration);
-//        duration = 0;
-//    }
     if(duration != 0) {
         numberOfTimesteps = round(duration / dt);
         duration = 0;
@@ -328,11 +303,7 @@ ARGUMENTS& ARGUMENTS::recoverDuration(){
     return *this;
 }
 
-ARGUMENTS &ARGUMENTS::recoverNumberOfPeriods() {
-//    if(numberOfPeriods != 0){
-//        setNumberOfPeriods(numberOfPeriods);
-//        numberOfPeriods = 0;
-//    }
+ARGUMENTS& ARGUMENTS::recoverNumberOfPeriods(){
     if(numberOfPeriods != 0) {
         duration = numberOfPeriods * oscillationPeriod;
         recoverDuration();
@@ -341,18 +312,18 @@ ARGUMENTS &ARGUMENTS::recoverNumberOfPeriods() {
     return *this;
 }
 
-// to be called at the very end
-ARGUMENTS& ARGUMENTS::polish() {
+// to be called at the very end once oscillationPeriod and dt are chosen
+ARGUMENTS& ARGUMENTS::finalize() {
     // default dt if not given
     if(dt == 0){
         setDefaultDt();
     }
+    // overwrite totalNumberOfTimesteps with priority numberOfPeriods > duration > totalNumberOfTimesteps
     if(duration != 0){
         recoverDuration();
     }
     if(numberOfPeriods != 0){
         recoverNumberOfPeriods();
     }
-//    recoverDuration();
     return *this;
 }

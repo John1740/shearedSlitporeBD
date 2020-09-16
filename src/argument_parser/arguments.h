@@ -12,8 +12,9 @@ using namespace std;
 class ARGUMENTS{
 private:
     string sep = ": ";
-    double duration = 0;    //placeholder in case dt is not set yet
-    double numberOfPeriods = 0; //placeholder
+    // placeholders
+    double duration = 0;
+    double numberOfPeriods = 0;
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
@@ -53,7 +54,7 @@ public:
     
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
-    ARGUMENTS& polish();
+    ARGUMENTS& finalize();
 
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
@@ -63,9 +64,9 @@ public:
 
     //setter
     ARGUMENTS& setDuration(double duration);
+    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     ARGUMENTS& recoverDuration();   //can be used once dt-defaulting is done
     ARGUMENTS& recoverNumberOfPeriods();
-    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     ARGUMENTS& setDefaultDt();
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;

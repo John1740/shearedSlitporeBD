@@ -64,6 +64,7 @@ public:
     // getter
     double getDuration() const;
     double getNumberOfPeriods() const;
+    bool isFinalized() const;
 
     //setter
     ARGUMENTS& setDuration(double duration);

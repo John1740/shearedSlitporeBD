@@ -271,6 +271,10 @@ double ARGUMENTS::getNumberOfPeriods() const{
     }
 }
 
+bool ARGUMENTS::isFinalized() const {
+    return finalized;
+}
+
 ARGUMENTS& ARGUMENTS::setDuration(double duration){
     if(finalized){
         numberOfTimesteps = round(duration / dt);

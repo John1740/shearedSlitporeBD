@@ -48,8 +48,8 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
         cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
         cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation() << "[1/diameter]" << endl;
         cout << endl;
-        sys.writeConfigurationToFile("snapshots/configuration_" + to_string(sys.getTimestep()) + ".out", true);
-        psi.getPairCorrelation().print("pairCorrelations/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
+        sys.writeConfigurationToFile("erroneousParticles/configuration_" + to_string(sys.getTimestep()) + ".out", true);
+        psi.getPairCorrelation().print("erroneousParticles/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
     }
     *this << '\n';
 }

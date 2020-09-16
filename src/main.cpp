@@ -136,10 +136,10 @@ int main(int argc, const char *argv[]){
     }
     
     if(args.printStress > 0){
-        cout << b::format("Printed stresses to %s") % stress.printer.getFilename().c_str() << endl;
+        cout << b::format("Printed stresses to %s") % stress.getFilename().c_str() << endl;
     }
     if(args.printVelocity > 0){
-        cout << b::format("Printed velocities to %s") % velocity.printer.getFilename().c_str() << endl;
+        cout << b::format("Printed velocities to %s") % velocity.getFilename().c_str() << endl;
     }
     if(args.printAngularBond > 0){
         cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
@@ -151,8 +151,6 @@ int main(int argc, const char *argv[]){
         cout << endl << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
-//        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;
-//        cout << "Old Loss modulus [kT/d^3]: " << fc.calculateLossModulusOld() << endl;
         for(int i = 0; i <= 4; i++){
             cout << "Fourier component (xz) (n= " << i << "): " << fc.calculate(i).xz << endl;
             if(i > 0){

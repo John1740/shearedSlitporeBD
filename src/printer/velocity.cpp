@@ -24,10 +24,12 @@ VELOCITY_PRINTER::~VELOCITY_PRINTER(){
 
 void VELOCITY_PRINTER::printHeader(){
     char comment = printer.getComment();
-    printer << comment << "v_i: average velocity of all particles (in direction i=x,y,z)" << endl;
-    printer << comment << "v_i(n): average velocity of layer n (in direction i=x,y,z)" << endl;
+    printer << comment << "i: timestep (dt = " << sys->getTimeStepSize() << " tB)" << endl;
+    printer << comment << "dy/dt: shear rate [1/tB]" << endl;
+    printer << comment << "v_i: average velocity of all layers (in direction i=x,y,z) [d/tB]" << endl;
+    printer << comment << "v_i(n): average velocity of layer n (in direction i=x,y,z) [d/tB]" << endl;
     printer << comment << format("%5s\t") % "i";
-    printer << format(format_h.c_str()) % "shearRate";
+    printer << format(format_h.c_str()) % "dy/dt";
     numberOfLayers = round(sys->getSimulationBox().getDimensions().z);
     vector<string> dir{"x", "y", "z"};
     for(int j = 0; j < dir.size(); j++){

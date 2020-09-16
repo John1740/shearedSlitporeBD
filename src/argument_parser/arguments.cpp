@@ -36,7 +36,16 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
     if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH) wallInteractionStrength = other.wallInteractionStrength;
-    if(other.numberOfTimesteps != NUMBER_OF_TIMESTEPS) numberOfTimesteps = other.numberOfTimesteps;
+    if(other.numberOfTimesteps != NUMBER_OF_TIMESTEPS){
+        numberOfTimesteps = other.numberOfTimesteps;
+        duration = 0;   //other.numberOfTimesteps has priority
+        numberOfPeriods = 0;
+    }
+    if(other.duration != 0){
+        duration = other.duration;
+        numberOfPeriods = 0;    //other.duration has priority
+    }
+    if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
     if(other.printStress != PRINT_STRESS) printStress = other.printStress;
     if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
@@ -44,8 +53,6 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.printAngularBond != PRINT_ANGULAR_BOND) printAngularBond = other.printAngularBond;
     if(other.printSnapshots != PRINT_SNAPSHOTS) printSnapshots = other.printSnapshots;
     if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
-    if(other.duration != 0) duration = other.duration;
-    if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     
     //defaults don't matter for these options
     clear = other.clear;

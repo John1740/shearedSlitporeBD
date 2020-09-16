@@ -305,6 +305,8 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
     if(dt > dtOscillation){
         dt = dtOscillation;
     }
+    // make dt even split of oscillationPeriod
+    dt = oscillationPeriod / round(oscillationPeriod / dt);
     return *this;
 }
 

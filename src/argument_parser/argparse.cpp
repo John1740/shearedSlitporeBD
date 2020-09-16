@@ -37,10 +37,10 @@ void ARGUMENT_PARSER::addOptions() {
             ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("numberOfTimesteps,N", po::value<double>()->default_value(NUMBER_OF_TIMESTEPS), "Number of timesteps the simulations runs for")
-            ("duration,d", po::value<double>(), "Total time (in Brownian times) the simulations runs for.\n"
-                                               "Overwrites --timesteps/-N")
+            ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
+                                               "Overwrites --numberOfTimesteps/-N")
             ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
-                                               "Overwrites --timesteps/-N and --totalTime")
+                                               "Overwrites --numberOfTimesteps/-N and --duration/-d")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "

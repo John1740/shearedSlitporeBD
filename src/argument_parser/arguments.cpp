@@ -45,6 +45,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.printSnapshots != PRINT_SNAPSHOTS) printSnapshots = other.printSnapshots;
     if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
     if(other.duration != 0) duration = other.duration;
+    if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     
     //defaults don't matter for these options
     clear = other.clear;
@@ -121,9 +122,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
         cout << filename << " does not exist!" << endl;
         return false;
     }
-    if(twice){
-        readFromFile(filename, comment, false);
-    }
+//    if(twice){
+//        readFromFile(filename, comment, false);
+//    }
     ifstream f;
     f.open(filename.c_str());
     string line;
@@ -177,10 +178,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment, bool twice){
             numberOfTimesteps = long(stod(linesplit[1]));
         }
         else if(line.find("duration") != string::npos){
-            setDuration(stod(linesplit[1]));
+            duration = stod(linesplit[1]);
+//            setDuration(stod(linesplit[1]));
         }
         else if(line.find("numberOfPeriods") != string::npos){
-            setNumberOfPeriods(stod(linesplit[1]));
+            numberOfPeriods = stod(linesplit[1]);
+//            setNumberOfPeriods(stod(linesplit[1]));
         }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
@@ -247,18 +250,19 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
 }
 
 ARGUMENTS& ARGUMENTS::setDuration(double duration){
-    if(dt != 0) {
-        numberOfTimesteps = round(duration / dt);
-    }
-    else{
-        this->duration = duration;
-        numberOfTimesteps = 0;
-    }
+    this->duration = duration;
+//    if(dt != 0) {
+//        numberOfTimesteps = round(duration / dt);
+//    }
+//    else{
+//        this->duration = duration;
+//        numberOfTimesteps = 0;
+//    }
     return *this;
 }
 
 double ARGUMENTS::getDuration() const{
-    if(dt != 0) {
+    if(duration == 0){
         return numberOfTimesteps * dt;
     }
     else{
@@ -267,12 +271,31 @@ double ARGUMENTS::getDuration() const{
 }
 
 ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
-    setDuration(numberOfPeriods * oscillationPeriod);
+    this->numberOfPeriods = numberOfPeriods;
+//    if(oscillationPeriod != 0) {
+//        setDuration(numberOfPeriods * oscillationPeriod);
+//    }
+//    else{
+//        this->numberOfPeriods = numberOfPeriods;
+//        duration = 0;
+//        numberOfTimesteps = 0;
+//    }
     return *this;
 }
 
 double ARGUMENTS::getNumberOfPeriods() const{
-    return getDuration() / oscillationPeriod;
+    if(numberOfPeriods == 0){
+        return getDuration() / oscillationPeriod;
+    }
+    else{
+        return numberOfPeriods;
+    }
+//    if(oscillationPeriod != 0){
+//        return getDuration() / oscillationPeriod;
+//    }
+//    else{
+//        return numberOfPeriods;
+//    }
 }
 
 ARGUMENTS& ARGUMENTS::setDefaultDt() {
@@ -294,9 +317,26 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
 
 // idempotent
 ARGUMENTS& ARGUMENTS::recoverDuration(){
+//    if(duration != 0){
+//        setDuration(duration);
+//        duration = 0;
+//    }
     if(duration != 0) {
-        setDuration(duration);
+        numberOfTimesteps = round(duration / dt);
         duration = 0;
+    }
+    return *this;
+}
+
+ARGUMENTS &ARGUMENTS::recoverNumberOfPeriods() {
+//    if(numberOfPeriods != 0){
+//        setNumberOfPeriods(numberOfPeriods);
+//        numberOfPeriods = 0;
+//    }
+    if(numberOfPeriods != 0) {
+        duration = numberOfPeriods * oscillationPeriod;
+        recoverDuration();
+        numberOfPeriods = 0;
     }
     return *this;
 }
@@ -307,6 +347,12 @@ ARGUMENTS& ARGUMENTS::polish() {
     if(dt == 0){
         setDefaultDt();
     }
-    recoverDuration();
+    if(duration != 0){
+        recoverDuration();
+    }
+    if(numberOfPeriods != 0){
+        recoverNumberOfPeriods();
+    }
+//    recoverDuration();
     return *this;
 }

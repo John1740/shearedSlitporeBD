@@ -12,11 +12,17 @@ namespace bo = boost;
 namespace fs = experimental::filesystem;
 #include <cmath>
 
+bool str_is_empty(string str){
+    return str.empty();
+}
+
 ARGUMENTS::ARGUMENTS(){
+    printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
 }
 
 ARGUMENTS::ARGUMENTS(string filename){
+    printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     readFromFile(filename);
     settingsIn = filename;
@@ -53,17 +59,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
     if(other.printEnergy != PRINT_ENERGY) printEnergy = other.printEnergy;
     if(other.printAngularBond != PRINT_ANGULAR_BOND) printAngularBond = other.printAngularBond;
-    if(other.printSnapshots != PRINT_SNAPSHOTS) {
-        printSnapshots = other.printSnapshots;
-        printSnapshotsDuration = 0;
-        printSnapshotsPeriod = 0;
-    }
-    if(other.printSnapshotsDuration != 0){
-        printSnapshotsDuration = other.printSnapshotsDuration;
-        printSnapshotsPeriod = 0;
-    }
-    if(other.printSnapshotsPeriod != 0) printSnapshotsPeriod = other.printSnapshotsPeriod;
-//    if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
+    printSnapshots.update(other.printSnapshots);
     printPairCorrelation.update(other.printPairCorrelation);
 
     //defaults don't matter for these options
@@ -102,8 +98,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "numberOfPeriods" << args.sep << args.getNumberOfPeriods() << endl;
     if(args.printSnapshots > 0){
         os << "printSnapshots" << args.sep << args.printSnapshots << endl;
-        os << "printSnapshotsDuration" << args.sep << args.getSnapshotDuration() << endl;
-        os << "printSnapshotsPeriod" << args.sep << args.getSnapshotPeriod() << endl;
+        os << "printSnapshotsDuration" << args.sep << args.printSnapshots.getDuration() << endl;
+        os << "printSnapshotsPeriod" << args.sep << args.printSnapshots.getPeriod() << endl;
     }
     if(args.printPairCorrelation > 0){
         os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
@@ -135,10 +131,6 @@ ARGUMENTS& ARGUMENTS::setSeparator(string sep){
 
 string ARGUMENTS::getSeparator() const{
     return sep;
-}
-
-bool str_is_empty(string str){
-    return str.empty();
 }
 
 bool ARGUMENTS::readFromFile(string filename, char comment){
@@ -205,10 +197,10 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
             numberOfPeriods = stod(linesplit[1]);
         }
         else if(line.find("printSnapshotsDuration") != string::npos){
-            printSnapshotsDuration = stod(linesplit[1]);
+            printSnapshots.setDuration(stod(linesplit[1]));
         }
         else if(line.find("printSnapshotsPeriod") != string::npos){
-            printSnapshotsPeriod = stod(linesplit[1]);
+            printSnapshots.setPeriod(stod(linesplit[1]));
         }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
@@ -262,7 +254,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printAngularBond == PRINT_ANGULAR_BOND){
             printAngularBond = printAll;
         }
-        if(printSnapshots == PRINT_SNAPSHOTS && printSnapshotsDuration == 0 && printSnapshotsPeriod == 0){
+        if(printSnapshots == PRINT_SNAPSHOTS && printSnapshots.getDuration() == 0 && printSnapshots.getPeriod() == 0){
             printSnapshots = printAll;
         }
         if(printPairCorrelation == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 && printPairCorrelation.getPeriod() == 0){
@@ -299,22 +291,22 @@ double ARGUMENTS::getNumberOfPeriods() const{
     }
 }
 
-double ARGUMENTS::getSnapshotDuration() const {
-    if(printSnapshotsDuration == 0){
-        if(numberOfTimesteps == 0) return 0;
-        else return double(printSnapshots) / numberOfTimesteps;
-    }
-    else return printSnapshotsDuration;
-}
-
-double ARGUMENTS::getSnapshotPeriod() const {
-    if(printSnapshotsPeriod == 0){
-        return double(printSnapshots) * dt / oscillationPeriod;
-    }
-    else {
-        return printSnapshotsPeriod;
-    }
-}
+//double ARGUMENTS::getSnapshotDuration() const {
+//    if(printSnapshotsDuration == 0){
+//        if(numberOfTimesteps == 0) return 0;
+//        else return double(printSnapshots) / numberOfTimesteps;
+//    }
+//    else return printSnapshotsDuration;
+//}
+//
+//double ARGUMENTS::getSnapshotPeriod() const {
+//    if(printSnapshotsPeriod == 0){
+//        return double(printSnapshots) * dt / oscillationPeriod;
+//    }
+//    else {
+//        return printSnapshotsPeriod;
+//    }
+//}
 
 bool ARGUMENTS::isFinalized() const {
     return finalized;
@@ -340,25 +332,25 @@ ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
     return *this;
 }
 
-ARGUMENTS& ARGUMENTS::setSnapshotDuration(double snapshotDuration) {
-    if(finalized){
-        printSnapshots = snapshotDuration * numberOfTimesteps;
-    }
-    else{
-        this->printSnapshotsDuration = snapshotDuration;
-    }
-    return *this;
-}
-
-ARGUMENTS& ARGUMENTS::setSnapshotPeriod(double snapshotPeriod) {
-    if(finalized){
-        printSnapshots = snapshotPeriod * oscillationPeriod / dt;
-    }
-    else{
-        this->printSnapshotsPeriod = snapshotPeriod;
-    }
-    return *this;
-}
+//ARGUMENTS& ARGUMENTS::setSnapshotDuration(double snapshotDuration) {
+//    if(finalized){
+//        printSnapshots = snapshotDuration * numberOfTimesteps;
+//    }
+//    else{
+//        this->printSnapshotsDuration = snapshotDuration;
+//    }
+//    return *this;
+//}
+//
+//ARGUMENTS& ARGUMENTS::setSnapshotPeriod(double snapshotPeriod) {
+//    if(finalized){
+//        printSnapshots = snapshotPeriod * oscillationPeriod / dt;
+//    }
+//    else{
+//        this->printSnapshotsPeriod = snapshotPeriod;
+//    }
+//    return *this;
+//}
 
 ARGUMENTS& ARGUMENTS::setDefaultDt() {
     // minimum due to energy potential (bigger dt lead to particles leaving the box)
@@ -395,14 +387,15 @@ ARGUMENTS& ARGUMENTS::finalize(){
         setNumberOfPeriods(numberOfPeriods);
         numberOfPeriods = 0;
     }
-    if(printSnapshotsDuration != 0){
-        setSnapshotDuration(printSnapshotsDuration);
-        printSnapshotsDuration = 0;
-    }
-    if(printSnapshotsPeriod != 0){
-        setSnapshotPeriod(printSnapshotsPeriod);
-        printSnapshotsPeriod = 0;
-    }
+//    if(printSnapshotsDuration != 0){
+//        setSnapshotDuration(printSnapshotsDuration);
+//        printSnapshotsDuration = 0;
+//    }
+//    if(printSnapshotsPeriod != 0){
+//        setSnapshotPeriod(printSnapshotsPeriod);
+//        printSnapshotsPeriod = 0;
+//    }
+    printSnapshots.finalize();
     printPairCorrelation.finalize();
     return *this;
 }

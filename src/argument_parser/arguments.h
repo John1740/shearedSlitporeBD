@@ -18,8 +18,8 @@ private:
     double duration = 0;
     double numberOfPeriods = 0;
 
-    double printSnapshotsDuration = 0;
-    double printSnapshotsPeriod = 0;
+//    double printSnapshotsDuration = 0;
+//    double printSnapshotsPeriod = 0;
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
@@ -45,8 +45,8 @@ public:
     int printStressFourier = PRINT_STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
-    int printSnapshots = PRINT_SNAPSHOTS;
-//    int printPairCorrelation = PRINT_PAIR_CORRELATION;
+//    int printSnapshots = PRINT_SNAPSHOTS;
+    PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
     
@@ -69,15 +69,15 @@ public:
     // getter
     double getDuration() const;
     double getNumberOfPeriods() const;
-    double getSnapshotDuration() const;
-    double getSnapshotPeriod() const;
+//    double getSnapshotDuration() const;
+//    double getSnapshotPeriod() const;
     bool isFinalized() const;
 
     //setter
     ARGUMENTS& setDuration(double duration);
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
-    ARGUMENTS& setSnapshotDuration(double snapshotDuration);
-    ARGUMENTS& setSnapshotPeriod(double snapshotPeriod);
+//    ARGUMENTS& setSnapshotDuration(double snapshotDuration);
+//    ARGUMENTS& setSnapshotPeriod(double snapshotPeriod);
     ARGUMENTS& setDefaultDt();
     ARGUMENTS& setSeparator(string sep);
     string getSeparator() const;

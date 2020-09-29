@@ -107,10 +107,10 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     args.printSnapshots = round(variablesMap["printSnapshots"].as<double>());
     if(variablesMap.count("printSnapshotsDuration")){
-        args.setSnapshotDuration(variablesMap["printSnapshotsDuration"].as<double>());
+        args.printSnapshots.setDuration(variablesMap["printSnapshotsDuration"].as<double>());
     }
     if(variablesMap.count("printSnapshotsPeriod")){
-        args.setSnapshotPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
+        args.printSnapshots.setPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
     args.printPairCorrelation.interval = round(variablesMap["printPairCorrelation"].as<double>());
     if(variablesMap.count("printPairCorrelationDuration")){
@@ -129,8 +129,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
         if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND) args.printAngularBond = args.printAll;
         if(args.printSnapshots == PRINT_SNAPSHOTS
-            && args.getSnapshotDuration() == 0
-            && args.getSnapshotPeriod() == 0) args.printSnapshots = args.printAll;
+            && args.printSnapshots.getDuration() == 0
+            && args.printSnapshots.getPeriod() == 0) args.printSnapshots = args.printAll;
         if(args.printPairCorrelation.interval == PRINT_PAIR_CORRELATION
             && args.printPairCorrelation.getDuration() == 0
             && args.printPairCorrelation.getPeriod() == 0) args.printPairCorrelation.interval = args.printAll;

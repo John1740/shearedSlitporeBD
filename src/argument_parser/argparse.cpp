@@ -59,6 +59,8 @@ void ARGUMENT_PARSER::addOptions() {
                                                                                       "x<0 -> no print-outs")
             ("printSnapshots", po::value<double>()->default_value(PRINT_SNAPSHOTS), "Save a configuration snapshot every x-th timestep; "
                                                                         "x<0 -> no snapshots")
+            ("printSnapshotsDuration", po::value<double>(), "Same as --printSnapshots but in units of total simulation time.")
+            ("printSnapshotsPeriod", po::value<double>(), "Same as --printSnapshots but in units of oscillation periods.")
             ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION), "print intra-layer pair correlation function every x-th timestep; "
                                                                         "x<0 -> no print-outs")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
@@ -96,44 +98,34 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();
 
     //doubles are allowed as input for convenience (allows 1e5 float terminology)
-    int printAll = round(variablesMap["printAll"].as<double>());
-    int printVelocity = round(variablesMap["printVelocity"].as<double>());
-    int printStress = round(variablesMap["printStress"].as<double>());
-    int printStressFourier = round(variablesMap["printStressFourier"].as<double>());
-    int printEnergy = round(variablesMap["printEnergy"].as<double>());
-    int printAngularBond = round(variablesMap["printAngularBond"].as<double>());
-    int printSnapshots = round(variablesMap["printSnapshots"].as<double>());
-    int printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
-    args.printAll = printAll;
-    if(printAll > 0){
-        args.printVelocity = printAll;
-        args.printStress = printAll;
-        args.printStressFourier = 1;
-        args.printEnergy = printAll;
-        args.printAngularBond = printAll;
-        args.printSnapshots = printAll;
-        args.printPairCorrelation = printAll;
+    args.printVelocity = round(variablesMap["printVelocity"].as<double>());
+    args.printStress = round(variablesMap["printStress"].as<double>());
+    args.printStressFourier = round(variablesMap["printStressFourier"].as<double>());
+    args.printEnergy = round(variablesMap["printEnergy"].as<double>());
+    args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
+    args.printSnapshots = round(variablesMap["printSnapshots"].as<double>());
+    if(variablesMap.count("printSnapshotsDuration")){
+        args.setSnapshotDuration(variablesMap["printSnapshotsDuration"].as<double>());
     }
-    if(printVelocity != PRINT_VELOCITY){
-        args.printVelocity = printVelocity;
+    if(variablesMap.count("printSnapshotsPeriod")){
+        args.setSnapshotPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
-    if(printStress != PRINT_STRESS){
-        args.printStress = printStress;
-    }
-    if(printStressFourier != PRINT_STRESS_FOURIER){
-        args.printStressFourier = printStressFourier;
-    }
-    if(printEnergy != PRINT_ENERGY){
-        args.printEnergy = printEnergy;
-    }
-    if(printAngularBond != PRINT_ANGULAR_BOND){
-        args.printAngularBond = printAngularBond;
-    }
-    if(printSnapshots != PRINT_SNAPSHOTS){
-        args.printSnapshots = printSnapshots;
-    }
-    if(printPairCorrelation != PRINT_PAIR_CORRELATION){
-        args.printPairCorrelation = printPairCorrelation;
+    args.printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
+
+    args.printAll = round(variablesMap["printAll"].as<double>());
+    // overwrite print-statements by printAll if not further specified
+    if(args.printAll > 0){
+        if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
+        if(args.printStress == PRINT_STRESS) args.printStress = args.printAll;
+        if(args.printStressFourier == PRINT_STRESS_FOURIER) args.printStressFourier = 1;
+        if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
+        if(args.printAngularBond == PRINT_ANGULAR_BOND) args.printAngularBond = args.printAll;
+        if(args.printSnapshots == PRINT_SNAPSHOTS
+        && args.getSnapshotDuration() == 0
+        && args.getSnapshotPeriod() == 0){
+            args.printSnapshots = args.printAll;
+        }
+        if(args.printPairCorrelation == PRINT_PAIR_CORRELATION) args.printPairCorrelation = args.printAll;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();

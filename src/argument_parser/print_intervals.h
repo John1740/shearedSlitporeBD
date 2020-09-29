@@ -34,6 +34,9 @@ public:
     PRINT_INTERVAL& setDuration(double duration);
     PRINT_INTERVAL& setPeriod(double period);
 
+    // operators
+    operator int() const;
+    PRINT_INTERVAL& operator=(double interval);
 };
 
 

@@ -110,7 +110,7 @@ int main(int argc, const char *argv[]){
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
             angularBond.printLine(sys);
         }
-        if(args.printPairCorrelation.interval > 0 && i % args.printPairCorrelation.interval == 0){
+        if(args.printPairCorrelation > 0 && i % args.printPairCorrelation == 0){
             INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys);
             pC.calculateAverageLayerCorrelation();
             pC.print(PAIR_CORRELATIONS_OUT + "/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
@@ -144,7 +144,7 @@ int main(int argc, const char *argv[]){
     if(args.printAngularBond > 0){
         cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
     }
-    if(args.printPairCorrelation.interval > 0){
+    if(args.printPairCorrelation > 0){
         cout << b::format("Printed pair correlations to %s/") % PAIR_CORRELATIONS_OUT << endl;
     }
     if(args.printStressFourier > 0){

@@ -81,3 +81,12 @@ PRINT_INTERVAL& PRINT_INTERVAL::setPeriod(double period) {
     }
     return *this;
 }
+
+PRINT_INTERVAL::operator int() const {
+    return interval;
+}
+
+PRINT_INTERVAL& PRINT_INTERVAL::operator=(double interval) {
+    this->interval = interval;
+    return *this;
+}

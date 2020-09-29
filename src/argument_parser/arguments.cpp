@@ -105,8 +105,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printSnapshotsDuration" << args.sep << args.getSnapshotDuration() << endl;
         os << "printSnapshotsPeriod" << args.sep << args.getSnapshotPeriod() << endl;
     }
-    if(args.printPairCorrelation.interval > 0){
-        os << "printPairCorrelation" << args.sep << args.printPairCorrelation.interval << endl;
+    if(args.printPairCorrelation > 0){
+        os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
         os << "printPairCorrelationDuration" << args.sep << args.printPairCorrelation.getDuration() << endl;
         os << "printPairCorrelationPeriod" << args.sep << args.printPairCorrelation.getPeriod() << endl;
     }
@@ -220,7 +220,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
             printPairCorrelation.setPeriod(stod(linesplit[1]));
         }
         else if(line.find("printPairCorrelation") != string::npos){
-            printPairCorrelation.interval = round(stod(linesplit[1]));
+            printPairCorrelation = round(stod(linesplit[1]));
         }
         else if(line.find("printVelocity") != string::npos){
             printVelocity = round(stod(linesplit[1]));
@@ -265,8 +265,8 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printSnapshots == PRINT_SNAPSHOTS && printSnapshotsDuration == 0 && printSnapshotsPeriod == 0){
             printSnapshots = printAll;
         }
-        if(printPairCorrelation.interval == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 && printPairCorrelation.getPeriod() == 0){
-            printPairCorrelation.interval = printAll;
+        if(printPairCorrelation == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 && printPairCorrelation.getPeriod() == 0){
+            printPairCorrelation = printAll;
         }
     }
     f.close();

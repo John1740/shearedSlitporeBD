@@ -9,4 +9,5 @@ oscillationPeriod: 0.01
 numberOfPeriods: 10
 
 printSnapshotsPeriod: 0.01
-printPairCorrelationPeriod: 0.02
+#printPairCorrelationPeriod: 0.02
+printPairCorrelation: 5

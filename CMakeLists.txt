@@ -99,7 +99,7 @@ add_executable(shearedSlitporeBD
         src/order_parameter/relaxation_modulus.cpp src/order_parameter/relaxation_modulus.h
         src/order_parameter/stress_fourier_components.cpp src/order_parameter/stress_fourier_components.h
 
-        )
+        src/argument_parser/print_intervals.cpp src/argument_parser/print_intervals.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(writePairCorrelation

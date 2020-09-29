@@ -13,10 +13,11 @@ namespace fs = experimental::filesystem;
 #include <cmath>
 
 ARGUMENTS::ARGUMENTS(){
-
+    printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
 }
 
 ARGUMENTS::ARGUMENTS(string filename){
+    printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     readFromFile(filename);
     settingsIn = filename;
 }
@@ -62,8 +63,9 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
         printSnapshotsPeriod = 0;
     }
     if(other.printSnapshotsPeriod != 0) printSnapshotsPeriod = other.printSnapshotsPeriod;
-    if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
-    
+//    if(other.printPairCorrelation != PRINT_PAIR_CORRELATION) printPairCorrelation = other.printPairCorrelation;
+    printPairCorrelation.update(other.printPairCorrelation);
+
     //defaults don't matter for these options
     clear = other.clear;
     dry = other.dry;
@@ -103,8 +105,10 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printSnapshotsDuration" << args.sep << args.getSnapshotDuration() << endl;
         os << "printSnapshotsPeriod" << args.sep << args.getSnapshotPeriod() << endl;
     }
-    if(args.printPairCorrelation > 0){
-        os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
+    if(args.printPairCorrelation.interval > 0){
+        os << "printPairCorrelation" << args.sep << args.printPairCorrelation.interval << endl;
+        os << "printPairCorrelationDuration" << args.sep << args.printPairCorrelation.getDuration() << endl;
+        os << "printPairCorrelationPeriod" << args.sep << args.printPairCorrelation.getPeriod() << endl;
     }
     if(args.printVelocity > 0){
         os << "printVelocity" << args.sep << args.printVelocity << endl;
@@ -209,8 +213,14 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
         }
+        else if(line.find("printPairCorrelationDuration") != string::npos){
+            printPairCorrelation.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("printPairCorrelationPeriod") != string::npos){
+            printPairCorrelation.setPeriod(stod(linesplit[1]));
+        }
         else if(line.find("printPairCorrelation") != string::npos){
-            printPairCorrelation = round(stod(linesplit[1]));
+            printPairCorrelation.interval = round(stod(linesplit[1]));
         }
         else if(line.find("printVelocity") != string::npos){
             printVelocity = round(stod(linesplit[1]));
@@ -255,8 +265,8 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printSnapshots == PRINT_SNAPSHOTS && printSnapshotsDuration == 0 && printSnapshotsPeriod == 0){
             printSnapshots = printAll;
         }
-        if(printPairCorrelation == PRINT_PAIR_CORRELATION){
-            printPairCorrelation = printAll;
+        if(printPairCorrelation.interval == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 && printPairCorrelation.getPeriod() == 0){
+            printPairCorrelation.interval = printAll;
         }
     }
     f.close();
@@ -371,7 +381,7 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
 
 // to be called at the very end once oscillationPeriod and dt are chosen
 ARGUMENTS& ARGUMENTS::finalize(){
-    finalized = true;
+    finalized = true;   // needs to be at beginning because some functions question this
     // default dt if not given
     if(dt == 0){
         setDefaultDt();
@@ -393,5 +403,6 @@ ARGUMENTS& ARGUMENTS::finalize(){
         setSnapshotPeriod(printSnapshotsPeriod);
         printSnapshotsPeriod = 0;
     }
+    printPairCorrelation.finalize();
     return *this;
 }

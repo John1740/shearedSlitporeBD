@@ -7,6 +7,7 @@
 
 #include <string>
 #include "../defaults.h"
+#include "print_intervals.h"
 using namespace std;
 
 class ARGUMENTS{
@@ -45,7 +46,8 @@ public:
     int printEnergy = PRINT_ENERGY;
     int printAngularBond = PRINT_ANGULAR_BOND;
     int printSnapshots = PRINT_SNAPSHOTS;
-    int printPairCorrelation = PRINT_PAIR_CORRELATION;
+//    int printPairCorrelation = PRINT_PAIR_CORRELATION;
+    PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
     
     bool clear = CLEAR;

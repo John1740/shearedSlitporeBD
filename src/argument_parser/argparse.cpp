@@ -63,6 +63,8 @@ void ARGUMENT_PARSER::addOptions() {
             ("printSnapshotsPeriod", po::value<double>(), "Same as --printSnapshots but in units of oscillation periods.")
             ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION), "print intra-layer pair correlation function every x-th timestep; "
                                                                         "x<0 -> no print-outs")
+            ("printPairCorrelationDuration", po::value<double>(), "Same as --printPairCorrelation but in units of total simulation time")
+            ("printPairCorrelationPeriod", po::value<double>(), "Same as --printPairCorrelation but in units of oscillation periods.")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ("clear", po::bool_switch()->default_value(CLEAR), "clear all existing output files (before simulation start)")
@@ -110,7 +112,13 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(variablesMap.count("printSnapshotsPeriod")){
         args.setSnapshotPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
-    args.printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
+    args.printPairCorrelation.interval = round(variablesMap["printPairCorrelation"].as<double>());
+    if(variablesMap.count("printPairCorrelationDuration")){
+        args.printPairCorrelation.setDuration(variablesMap["printPairCorrelationDuration"].as<double>());
+    }
+    if(variablesMap.count("printPairCorrelationPeriod")){
+        args.printPairCorrelation.setPeriod(variablesMap["printPairCorrelationPeriod"].as<double>());
+    }
 
     args.printAll = round(variablesMap["printAll"].as<double>());
     // overwrite print-statements by printAll if not further specified
@@ -121,11 +129,11 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
         if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND) args.printAngularBond = args.printAll;
         if(args.printSnapshots == PRINT_SNAPSHOTS
-        && args.getSnapshotDuration() == 0
-        && args.getSnapshotPeriod() == 0){
-            args.printSnapshots = args.printAll;
-        }
-        if(args.printPairCorrelation == PRINT_PAIR_CORRELATION) args.printPairCorrelation = args.printAll;
+            && args.getSnapshotDuration() == 0
+            && args.getSnapshotPeriod() == 0) args.printSnapshots = args.printAll;
+        if(args.printPairCorrelation.interval == PRINT_PAIR_CORRELATION
+            && args.printPairCorrelation.getDuration() == 0
+            && args.printPairCorrelation.getPeriod() == 0) args.printPairCorrelation.interval = args.printAll;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();

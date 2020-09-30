@@ -43,28 +43,36 @@ void ARGUMENT_PARSER::addOptions() {
                                                "Overwrites --numberOfTimesteps/-N and --duration/-d")
             ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
-            ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
-                                                                     "x<0 -> no print-outs; "
-                                                                     "ATTENTION: The calculation will be very slow! "
-                                                                     "Gets overwritten by other (non-zero) print-arguments")
-            ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
-                                                                               "x<0 -> no print-outs")
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
                                                                            "x<0 -> no print-outs")
             ("printStressFourier", po::value<double>()->default_value(PRINT_STRESS_FOURIER), "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
                                                                            "x<0 -> no Fourier component calculation")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
                                                                            "x<0 -> no print-outs")
+            ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
+                                                                                  "x<0 -> no print-outs")
             ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND), "print the angular bond order parameter every x-th timestep; "
                                                                                       "x<0 -> no print-outs")
+            ("printAngularBondDuration", po::value<double>(), "Same as --printAngularBond but in units of total simulation time.\n"
+                                                            "Overwrites --printAngularBond")
+            ("printAngularBondPeriod", po::value<double>(), "Same as --printAngularBond but in units of oscillation periods.\n"
+                                                          "Overwrites --printAngularBond and --printAngularBondDuration")
             ("printSnapshots", po::value<double>()->default_value(PRINT_SNAPSHOTS), "Save a configuration snapshot every x-th timestep; "
                                                                         "x<0 -> no snapshots")
-            ("printSnapshotsDuration", po::value<double>(), "Same as --printSnapshots but in units of total simulation time.")
-            ("printSnapshotsPeriod", po::value<double>(), "Same as --printSnapshots but in units of oscillation periods.")
+            ("printSnapshotsDuration", po::value<double>(), "Same as --printSnapshots but in units of total simulation time.\n"
+                                                            "Overwrites --printSnapshots")
+            ("printSnapshotsPeriod", po::value<double>(), "Same as --printSnapshots but in units of oscillation periods.\n"
+                                                          "Overwrites --printSnapshots and --printSnapshotsDuration")
             ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION), "print intra-layer pair correlation function every x-th timestep; "
                                                                         "x<0 -> no print-outs")
-            ("printPairCorrelationDuration", po::value<double>(), "Same as --printPairCorrelation but in units of total simulation time")
-            ("printPairCorrelationPeriod", po::value<double>(), "Same as --printPairCorrelation but in units of oscillation periods.")
+            ("printPairCorrelationDuration", po::value<double>(), "Same as --printPairCorrelation but in units of total simulation time\n"
+                                                                  "Overwrites --printPairCorrelation")
+            ("printPairCorrelationPeriod", po::value<double>(), "Same as --printPairCorrelation but in units of oscillation periods.\n"
+                                                                "Overwrites --printPairCorrelation and --printPairCorrelationDuration")
+            ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
+                                                                        "x<0 -> no print-outs; "
+                                                                        "ATTENTION: The calculation will be very slow! "
+                                                                        "Gets overwritten by other (non-zero) print-arguments")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ("clear", po::bool_switch()->default_value(CLEAR), "clear all existing output files (before simulation start)")
@@ -100,11 +108,19 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();
 
     //doubles are allowed as input for convenience (allows 1e5 float terminology)
-    args.printVelocity = round(variablesMap["printVelocity"].as<double>());
     args.printStress = round(variablesMap["printStress"].as<double>());
     args.printStressFourier = round(variablesMap["printStressFourier"].as<double>());
     args.printEnergy = round(variablesMap["printEnergy"].as<double>());
+    args.printVelocity = round(variablesMap["printVelocity"].as<double>());
+
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
+    if(variablesMap.count("printAngularBondDuration")){
+        args.printAngularBond.setDuration(variablesMap["printAngularBondDuration"].as<double>());
+    }
+    if(variablesMap.count("printAngularBondPeriod")){
+        args.printAngularBond.setPeriod(variablesMap["printAngularBondPeriod"].as<double>());
+    }
+
     args.printSnapshots = round(variablesMap["printSnapshots"].as<double>());
     if(variablesMap.count("printSnapshotsDuration")){
         args.printSnapshots.setDuration(variablesMap["printSnapshotsDuration"].as<double>());
@@ -112,7 +128,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(variablesMap.count("printSnapshotsPeriod")){
         args.printSnapshots.setPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
-    args.printPairCorrelation.interval = round(variablesMap["printPairCorrelation"].as<double>());
+
+    args.printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
     if(variablesMap.count("printPairCorrelationDuration")){
         args.printPairCorrelation.setDuration(variablesMap["printPairCorrelationDuration"].as<double>());
     }
@@ -123,17 +140,19 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.printAll = round(variablesMap["printAll"].as<double>());
     // overwrite print-statements by printAll if not further specified
     if(args.printAll > 0){
-        if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
         if(args.printStress == PRINT_STRESS) args.printStress = args.printAll;
         if(args.printStressFourier == PRINT_STRESS_FOURIER) args.printStressFourier = 1;
         if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
-        if(args.printAngularBond == PRINT_ANGULAR_BOND) args.printAngularBond = args.printAll;
+        if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
+        if(args.printAngularBond == PRINT_ANGULAR_BOND
+            && args.printAngularBond.getDuration() == 0
+            && args.printAngularBond.getPeriod() == 0) args.printAngularBond = args.printAll;
         if(args.printSnapshots == PRINT_SNAPSHOTS
             && args.printSnapshots.getDuration() == 0
             && args.printSnapshots.getPeriod() == 0) args.printSnapshots = args.printAll;
-        if(args.printPairCorrelation.interval == PRINT_PAIR_CORRELATION
+        if(args.printPairCorrelation == PRINT_PAIR_CORRELATION
             && args.printPairCorrelation.getDuration() == 0
-            && args.printPairCorrelation.getPeriod() == 0) args.printPairCorrelation.interval = args.printAll;
+            && args.printPairCorrelation.getPeriod() == 0) args.printPairCorrelation = args.printAll;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();

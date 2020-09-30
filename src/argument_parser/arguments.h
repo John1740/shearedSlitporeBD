@@ -13,13 +13,10 @@ using namespace std;
 class ARGUMENTS{
 private:
     string sep = ": ";
-    bool finalized = false;    // toggles whether finalize needs to be called
+    bool finalized = false;    // toggles whether finalize() needs to be called
     // placeholders
     double duration = 0;
     double numberOfPeriods = 0;
-
-//    double printSnapshotsDuration = 0;
-//    double printSnapshotsPeriod = 0;
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
@@ -44,8 +41,7 @@ public:
     int printStress = PRINT_STRESS;
     int printStressFourier = PRINT_STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
-    int printAngularBond = PRINT_ANGULAR_BOND;
-//    int printSnapshots = PRINT_SNAPSHOTS;
+    PRINT_INTERVAL printAngularBond;
     PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
@@ -57,35 +53,32 @@ public:
     // constructors
     ARGUMENTS();
     ARGUMENTS(string filename);
+    ARGUMENTS& setup();
     
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
 
-    // get the prioritized duration
+    // choose the prioritized print intervals
     ARGUMENTS& finalize();
-
-    friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
     // getter
     double getDuration() const;
     double getNumberOfPeriods() const;
-//    double getSnapshotDuration() const;
-//    double getSnapshotPeriod() const;
     bool isFinalized() const;
+    string getSeparator() const;
 
     //setter
     ARGUMENTS& setDuration(double duration);
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
-//    ARGUMENTS& setSnapshotDuration(double snapshotDuration);
-//    ARGUMENTS& setSnapshotPeriod(double snapshotPeriod);
     ARGUMENTS& setDefaultDt();
     ARGUMENTS& setSeparator(string sep);
-    string getSeparator() const;
+
+    // operators
+    friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
     
     // file-handling
     bool readFromFile(string filename, char comment='#');
     ARGUMENTS& writeToFile(string filename);
 };
-
 
 #endif //SHEAREDSLITPOREBD_ARGUMENTS_H

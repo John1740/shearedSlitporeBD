@@ -5,9 +5,4 @@ configuration: configuration.in.equilibrium
 amplitude: 400
 oscillationPeriod: 0.01
 
-#numberOfTimesteps: 100
-numberOfPeriods: 10
-
-printSnapshotsPeriod: 0.01
-#printPairCorrelationPeriod: 0.02
-printPairCorrelation: 5
+numberOfTimesteps: 10

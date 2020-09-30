@@ -27,6 +27,7 @@ ARGUMENTS::ARGUMENTS(string filename){
 }
 
 ARGUMENTS& ARGUMENTS::setup(){
+    printStress = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printAngularBond = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
@@ -59,7 +60,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     }
     if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     if(other.printAll != PRINT_ALL) printAll = other.printAll;
-    if(other.printStress != PRINT_STRESS) printStress = other.printStress;
+    printStress.update(other.printStress);
     if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
     if(other.printEnergy != PRINT_ENERGY) printEnergy = other.printEnergy;
     if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
@@ -103,6 +104,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "numberOfPeriods" << args.sep << args.getNumberOfPeriods() << endl;
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
+        os << "printStressDuration" << args.sep << args.printStress.getDuration() << endl;
+        os << "printStressPeriod" << args.sep << args.printStress.getPeriod() << endl;
     }
     if(args.printStressFourier > 0){
         os << "printStressFourier" << args.sep << args.printStressFourier << endl;
@@ -129,15 +132,6 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printPairCorrelationPeriod" << args.sep << args.printPairCorrelation.getPeriod() << endl;
     }
     return os;
-}
-
-ARGUMENTS& ARGUMENTS::setSeparator(string sep){
-    this->sep = sep;
-    return *this;
-}
-
-string ARGUMENTS::getSeparator() const{
-    return sep;
 }
 
 bool ARGUMENTS::readFromFile(string filename, char comment){
@@ -207,6 +201,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("printStressFourier") != string::npos){
             printStressFourier = round(stod(linesplit[1]));
         }
+        else if(line.find("printStressDuration") != string::npos){
+            printStress.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("printStressPeriod") != string::npos){
+            printStress.setPeriod(stod(linesplit[1]));
+        }
         else if(line.find("printStress") != string::npos){
             printStress = round(stod(linesplit[1]));
         }
@@ -252,7 +252,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
     }
     // overwrite print-statements by printAll if not further specified
     if(printAll > 0){
-        if(printStress == PRINT_STRESS){
+        if(printStress == PRINT_STRESS && printStress.getDuration() == 0 && printStress.getPeriod() == 0){
             printStress = printAll;
         }
         if(printStressFourier == PRINT_STRESS_FOURIER){
@@ -286,6 +286,33 @@ ARGUMENTS& ARGUMENTS::writeToFile(string filename){
     return *this;
 }
 
+// to be called at the very end once oscillationPeriod and dt are chosen
+ARGUMENTS& ARGUMENTS::finalize(){
+    finalized = true;   // needs to be at beginning because some functions question this
+    // default dt if not given
+    if(dt == 0){
+        setDefaultDt();
+    }
+    // overwrite totalNumberOfTimesteps with priority numberOfPeriods > duration > totalNumberOfTimesteps
+    if(duration != 0){
+        setDuration(duration);
+        duration = 0;
+    }
+    if(numberOfPeriods != 0){
+        setNumberOfPeriods(numberOfPeriods);
+        numberOfPeriods = 0;
+    }
+    printStress.finalize();
+    printAngularBond.finalize();
+    printSnapshots.finalize();
+    printPairCorrelation.finalize();
+    return *this;
+}
+
+string ARGUMENTS::getSeparator() const{
+    return sep;
+}
+
 double ARGUMENTS::getDuration() const{
     if(duration == 0){
         return numberOfTimesteps * dt;
@@ -306,6 +333,11 @@ double ARGUMENTS::getNumberOfPeriods() const{
 
 bool ARGUMENTS::isFinalized() const {
     return finalized;
+}
+
+ARGUMENTS& ARGUMENTS::setSeparator(string sep){
+    this->sep = sep;
+    return *this;
 }
 
 ARGUMENTS& ARGUMENTS::setDuration(double duration){
@@ -344,27 +376,5 @@ ARGUMENTS& ARGUMENTS::setDefaultDt() {
     }
     // make dt even split of oscillationPeriod
     dt = oscillationPeriod / round(oscillationPeriod / dt);
-    return *this;
-}
-
-// to be called at the very end once oscillationPeriod and dt are chosen
-ARGUMENTS& ARGUMENTS::finalize(){
-    finalized = true;   // needs to be at beginning because some functions question this
-    // default dt if not given
-    if(dt == 0){
-        setDefaultDt();
-    }
-    // overwrite totalNumberOfTimesteps with priority numberOfPeriods > duration > totalNumberOfTimesteps
-    if(duration != 0){
-        setDuration(duration);
-        duration = 0;
-    }
-    if(numberOfPeriods != 0){
-        setNumberOfPeriods(numberOfPeriods);
-        numberOfPeriods = 0;
-    }
-    printAngularBond.finalize();
-    printSnapshots.finalize();
-    printPairCorrelation.finalize();
     return *this;
 }

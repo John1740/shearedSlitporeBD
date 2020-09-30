@@ -45,6 +45,10 @@ void ARGUMENT_PARSER::addOptions() {
             ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
                                                                            "x<0 -> no print-outs")
+            ("printStressDuration", po::value<double>(), "Same as --printStress but in units of total simulation time.\n"
+                                                              "Overwrites --printStress")
+            ("printStressPeriod", po::value<double>(), "Same as --printStress but in units of oscillation periods.\n"
+                                                            "Overwrites --printStress and --printStressDuration")
             ("printStressFourier", po::value<double>()->default_value(PRINT_STRESS_FOURIER), "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
                                                                            "x<0 -> no Fourier component calculation")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
@@ -109,10 +113,17 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
 
     //doubles are allowed as input for convenience (allows 1e5 float terminology)
     args.printStress = round(variablesMap["printStress"].as<double>());
+    if(variablesMap.count("printStressDuration")){
+        args.printStress.setDuration(variablesMap["printStressDuration"].as<double>());
+    }
+    if(variablesMap.count("printStressPeriod")){
+        args.printStress.setPeriod(variablesMap["printStressPeriod"].as<double>());
+    }
+    //
     args.printStressFourier = round(variablesMap["printStressFourier"].as<double>());
     args.printEnergy = round(variablesMap["printEnergy"].as<double>());
     args.printVelocity = round(variablesMap["printVelocity"].as<double>());
-
+    //
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     if(variablesMap.count("printAngularBondDuration")){
         args.printAngularBond.setDuration(variablesMap["printAngularBondDuration"].as<double>());
@@ -120,7 +131,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(variablesMap.count("printAngularBondPeriod")){
         args.printAngularBond.setPeriod(variablesMap["printAngularBondPeriod"].as<double>());
     }
-
+    //
     args.printSnapshots = round(variablesMap["printSnapshots"].as<double>());
     if(variablesMap.count("printSnapshotsDuration")){
         args.printSnapshots.setDuration(variablesMap["printSnapshotsDuration"].as<double>());
@@ -128,7 +139,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(variablesMap.count("printSnapshotsPeriod")){
         args.printSnapshots.setPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
-
+    //
     args.printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
     if(variablesMap.count("printPairCorrelationDuration")){
         args.printPairCorrelation.setDuration(variablesMap["printPairCorrelationDuration"].as<double>());
@@ -136,7 +147,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     if(variablesMap.count("printPairCorrelationPeriod")){
         args.printPairCorrelation.setPeriod(variablesMap["printPairCorrelationPeriod"].as<double>());
     }
-
+    //
     args.printAll = round(variablesMap["printAll"].as<double>());
     // overwrite print-statements by printAll if not further specified
     if(args.printAll > 0){

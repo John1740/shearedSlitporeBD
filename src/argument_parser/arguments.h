@@ -36,11 +36,11 @@ public:
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
     int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
-    
-    int printVelocity = PRINT_VELOCITY;
-    int printStress = PRINT_STRESS;
+
+    PRINT_INTERVAL printStress;
     int printStressFourier = PRINT_STRESS_FOURIER;
     int printEnergy = PRINT_ENERGY;
+    int printVelocity = PRINT_VELOCITY;
     PRINT_INTERVAL printAngularBond;
     PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;

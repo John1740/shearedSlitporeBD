@@ -57,6 +57,10 @@ void ARGUMENT_PARSER::addOptions() {
                                                        "Overwrites --printStressFourier and --printStressFourierDuration")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
                                                                            "x<0 -> no print-outs")
+            ("printEnergyDuration", po::value<double>(), "Same as --printEnergy but in units of total simulation time.\n"
+                                                              "Overwrites --printEnergy")
+            ("printEnergyPeriod", po::value<double>(), "Same as --printEnergy but in units of oscillation periods.\n"
+                                                            "Overwrites --printEnergy and --printEnergyDuration")
             ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
                                                                                   "x<0 -> no print-outs")
             ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND), "print the angular bond order parameter every x-th timestep; "
@@ -133,6 +137,13 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     }
     //
     args.printEnergy = round(variablesMap["printEnergy"].as<double>());
+    if(variablesMap.count("printEnergyDuration")){
+        args.printEnergy.setDuration(variablesMap["printEnergyDuration"].as<double>());
+    }
+    if(variablesMap.count("printEnergyPeriod")){
+        args.printEnergy.setPeriod(variablesMap["printEnergyPeriod"].as<double>());
+    }
+    //
     args.printVelocity = round(variablesMap["printVelocity"].as<double>());
     //
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
@@ -168,7 +179,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
         if(args.printStressFourier == PRINT_STRESS_FOURIER
             && args.printStressFourier.getDuration() == 0
             && args.printStressFourier.getPeriod() == 0) args.printStressFourier = 1;
-        if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
+        if(args.printEnergy == PRINT_ENERGY
+           && args.printEnergy.getDuration() == 0
+           && args.printEnergy.getPeriod() == 0) args.printEnergy = args.printAll;
         if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND
             && args.printAngularBond.getDuration() == 0

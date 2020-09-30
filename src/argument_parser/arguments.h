@@ -39,7 +39,7 @@ public:
 
     PRINT_INTERVAL printStress;
     PRINT_INTERVAL printStressFourier;
-    int printEnergy = PRINT_ENERGY;
+    PRINT_INTERVAL printEnergy;
     int printVelocity = PRINT_VELOCITY;
     PRINT_INTERVAL printAngularBond;
     PRINT_INTERVAL printSnapshots;

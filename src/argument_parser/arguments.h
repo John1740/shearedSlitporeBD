@@ -38,7 +38,7 @@ public:
     int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
 
     PRINT_INTERVAL printStress;
-    int printStressFourier = PRINT_STRESS_FOURIER;
+    PRINT_INTERVAL printStressFourier;
     int printEnergy = PRINT_ENERGY;
     int printVelocity = PRINT_VELOCITY;
     PRINT_INTERVAL printAngularBond;

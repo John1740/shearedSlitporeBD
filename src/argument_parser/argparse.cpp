@@ -51,6 +51,10 @@ void ARGUMENT_PARSER::addOptions() {
                                                             "Overwrites --printStress and --printStressDuration")
             ("printStressFourier", po::value<double>()->default_value(PRINT_STRESS_FOURIER), "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
                                                                            "x<0 -> no Fourier component calculation")
+            ("printStressFourierDuration", po::value<double>(), "Same as --printStressFourier but in units of total simulation time.\n"
+                                                         "Overwrites --printStressFourier")
+            ("printStressFourierPeriod", po::value<double>(), "Same as --printStressFourier but in units of oscillation periods.\n"
+                                                       "Overwrites --printStressFourier and --printStressFourierDuration")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
                                                                            "x<0 -> no print-outs")
             ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
@@ -121,6 +125,13 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     }
     //
     args.printStressFourier = round(variablesMap["printStressFourier"].as<double>());
+    if(variablesMap.count("printStressFourierDuration")){
+        args.printStressFourier.setDuration(variablesMap["printStressFourierDuration"].as<double>());
+    }
+    if(variablesMap.count("printStressFourierPeriod")){
+        args.printStressFourier.setPeriod(variablesMap["printStressFourierPeriod"].as<double>());
+    }
+    //
     args.printEnergy = round(variablesMap["printEnergy"].as<double>());
     args.printVelocity = round(variablesMap["printVelocity"].as<double>());
     //
@@ -151,8 +162,12 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     args.printAll = round(variablesMap["printAll"].as<double>());
     // overwrite print-statements by printAll if not further specified
     if(args.printAll > 0){
-        if(args.printStress == PRINT_STRESS) args.printStress = args.printAll;
-        if(args.printStressFourier == PRINT_STRESS_FOURIER) args.printStressFourier = 1;
+        if(args.printStress == PRINT_STRESS
+            && args.printStress.getDuration() == 0
+            && args.printStress.getPeriod() == 0) args.printStress = args.printAll;
+        if(args.printStressFourier == PRINT_STRESS_FOURIER
+            && args.printStressFourier.getDuration() == 0
+            && args.printStressFourier.getPeriod() == 0) args.printStressFourier = 1;
         if(args.printEnergy == PRINT_ENERGY) args.printEnergy = args.printAll;
         if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND

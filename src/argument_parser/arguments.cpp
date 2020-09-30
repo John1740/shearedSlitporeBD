@@ -28,6 +28,7 @@ ARGUMENTS::ARGUMENTS(string filename){
 
 ARGUMENTS& ARGUMENTS::setup(){
     printStress = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
+    printStressFourier = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printAngularBond = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
@@ -61,7 +62,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     if(other.printAll != PRINT_ALL) printAll = other.printAll;
     printStress.update(other.printStress);
-    if(other.printStressFourier != PRINT_STRESS_FOURIER) printStressFourier = other.printStressFourier;
+    printStressFourier.update(other.printStressFourier);
     if(other.printEnergy != PRINT_ENERGY) printEnergy = other.printEnergy;
     if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
     printAngularBond.update(other.printAngularBond);
@@ -109,6 +110,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     }
     if(args.printStressFourier > 0){
         os << "printStressFourier" << args.sep << args.printStressFourier << endl;
+        os << "printStressFourierDuration" << args.sep << args.printStressFourier.getDuration() << endl;
+        os << "printStressFourierPeriod" << args.sep << args.printStressFourier.getPeriod() << endl;
     }
     if(args.printEnergy > 0){
         os << "printEnergy" << args.sep << args.printEnergy << " (not yet implemented)" << endl;
@@ -198,6 +201,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
             numberOfPeriods = stod(linesplit[1]);
         }
         //needs to be before "printStress"
+        else if(line.find("printStressFourierDuration") != string::npos){
+            printStressFourier.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("printStressFourierPeriod") != string::npos){
+            printStressFourier.setPeriod(stod(linesplit[1]));
+        }
         else if(line.find("printStressFourier") != string::npos){
             printStressFourier = round(stod(linesplit[1]));
         }
@@ -255,7 +264,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printStress == PRINT_STRESS && printStress.getDuration() == 0 && printStress.getPeriod() == 0){
             printStress = printAll;
         }
-        if(printStressFourier == PRINT_STRESS_FOURIER){
+        if(printStressFourier == PRINT_STRESS_FOURIER && printStressFourier.getDuration() == 0 && printStressFourier.getPeriod() == 0){
             printStressFourier = 1;
         }
         if(printEnergy == PRINT_ENERGY){
@@ -303,6 +312,7 @@ ARGUMENTS& ARGUMENTS::finalize(){
         numberOfPeriods = 0;
     }
     printStress.finalize();
+    printStressFourier.finalize();
     printAngularBond.finalize();
     printSnapshots.finalize();
     printPairCorrelation.finalize();

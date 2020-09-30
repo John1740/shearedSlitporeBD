@@ -63,6 +63,10 @@ void ARGUMENT_PARSER::addOptions() {
                                                             "Overwrites --printEnergy and --printEnergyDuration")
             ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
                                                                                   "x<0 -> no print-outs")
+            ("printVelocityDuration", po::value<double>(), "Same as --printVelocity but in units of total simulation time.\n"
+                                                              "Overwrites --printVelocity")
+            ("printVelocityPeriod", po::value<double>(), "Same as --printVelocity but in units of oscillation periods.\n"
+                                                            "Overwrites --printVelocity and --printVelocityDuration")
             ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND), "print the angular bond order parameter every x-th timestep; "
                                                                                       "x<0 -> no print-outs")
             ("printAngularBondDuration", po::value<double>(), "Same as --printAngularBond but in units of total simulation time.\n"
@@ -145,6 +149,12 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     }
     //
     args.printVelocity = round(variablesMap["printVelocity"].as<double>());
+    if(variablesMap.count("printVelocityDuration")){
+        args.printVelocity.setDuration(variablesMap["printVelocityDuration"].as<double>());
+    }
+    if(variablesMap.count("printVelocityPeriod")){
+        args.printVelocity.setPeriod(variablesMap["printVelocityPeriod"].as<double>());
+    }
     //
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
     if(variablesMap.count("printAngularBondDuration")){
@@ -182,7 +192,9 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
         if(args.printEnergy == PRINT_ENERGY
            && args.printEnergy.getDuration() == 0
            && args.printEnergy.getPeriod() == 0) args.printEnergy = args.printAll;
-        if(args.printVelocity == PRINT_VELOCITY) args.printVelocity = args.printAll;
+        if(args.printVelocity == PRINT_VELOCITY
+           && args.printVelocity.getDuration() == 0
+           && args.printVelocity.getPeriod() == 0) args.printVelocity = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND
             && args.printAngularBond.getDuration() == 0
             && args.printAngularBond.getPeriod() == 0) args.printAngularBond = args.printAll;

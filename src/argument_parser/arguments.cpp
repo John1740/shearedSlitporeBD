@@ -30,6 +30,7 @@ ARGUMENTS& ARGUMENTS::setup(){
     printStress = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printStressFourier = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printEnergy = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
+    printVelocity = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printAngularBond = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
@@ -65,7 +66,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
     printEnergy.update(other.printEnergy);
-    if(other.printVelocity != PRINT_VELOCITY) printVelocity = other.printVelocity;
+    printVelocity.update(other.printVelocity);
     printAngularBond.update(other.printAngularBond);
     printSnapshots.update(other.printSnapshots);
     printPairCorrelation.update(other.printPairCorrelation);
@@ -121,6 +122,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     }
     if(args.printVelocity > 0){
         os << "printVelocity" << args.sep << args.printVelocity << endl;
+        os << "printVelocityDuration" << args.sep << args.printVelocity.getDuration() << endl;
+        os << "printVelocityPeriod" << args.sep << args.printVelocity.getPeriod() << endl;
     }
     if(args.printAngularBond > 0){
         os << "printAngularBond" << args.sep << args.printAngularBond << endl;
@@ -231,6 +234,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("printEnergy") != string::npos){
             printEnergy = round(stod(linesplit[1]));
         }
+        else if(line.find("printVelocityDuration") != string::npos){
+            printVelocity.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("printVelocityPeriod") != string::npos){
+            printVelocity.setPeriod(stod(linesplit[1]));
+        }
         else if(line.find("printVelocity") != string::npos){
             printVelocity = round(stod(linesplit[1]));
         }
@@ -279,7 +288,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printEnergy == PRINT_ENERGY && printEnergy.getDuration() == 0 && printEnergy.getPeriod() == 0){
             printEnergy = printAll;
         }
-        if(printVelocity == PRINT_VELOCITY){
+        if(printVelocity == PRINT_VELOCITY && printVelocity.getDuration() == 0 && printVelocity.getPeriod() == 0){
             printVelocity = printAll;
         }
         if(printAngularBond == PRINT_ANGULAR_BOND && printAngularBond.getDuration() == 0 && printAngularBond.getPeriod() == 0){
@@ -323,6 +332,7 @@ ARGUMENTS& ARGUMENTS::finalize(){
     printStress.finalize();
     printStressFourier.finalize();
     printEnergy.finalize();
+    printVelocity.finalize();
     printAngularBond.finalize();
     printSnapshots.finalize();
     printPairCorrelation.finalize();

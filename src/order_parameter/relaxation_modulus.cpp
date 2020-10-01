@@ -4,6 +4,7 @@
 
 #include "relaxation_modulus.h"
 #include <boost/format.hpp>
+
 namespace b = boost;
 
 RELAXATION_MODULUS::RELAXATION_MODULUS(){

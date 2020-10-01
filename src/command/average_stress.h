@@ -5,7 +5,7 @@
 #include "../systems/sheared_slitpore_system.h"
 #include "../struct/cartesian_m.h"
 
-class AVERAGE_STRESS:public COMMAND<SHEARED_SLITPORE_SYSTEM>{
+class AVERAGE_STRESS: public COMMAND<SHEARED_SLITPORE_SYSTEM>{
 private:
     REAL_M stress;
     int count;

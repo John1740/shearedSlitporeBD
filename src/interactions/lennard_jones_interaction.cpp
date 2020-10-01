@@ -5,21 +5,24 @@ LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(){
     diameter = 1.;
 }
 
-LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(double interactionStrengthIN): interactionStrength(interactionStrengthIN){
+LENNARD_JONES_INTERACTION::LENNARD_JONES_INTERACTION(double interactionStrengthIN): interactionStrength(
+        interactionStrengthIN){
     diameter = 1.;
 }
 
-double LENNARD_JONES_INTERACTION::energyOnParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2, BOX_GEOMETRY& simBox){
+double
+LENNARD_JONES_INTERACTION::energyOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox){
     setParametersForParticleFromParticle(particle1, particle2);
 
     return energyOnParticles(distance);
 }
 
 double LENNARD_JONES_INTERACTION::energyOnParticles(double distance){
-    return 4.*interactionStrength * (pow(diameter / distance, 12) - pow(diameter / distance, 6));
+    return 4. * interactionStrength * (pow(diameter / distance, 12) - pow(diameter / distance, 6));
 }
 
-REAL_C LENNARD_JONES_INTERACTION::forceOnParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2, BOX_GEOMETRY& simBox){
+REAL_C
+LENNARD_JONES_INTERACTION::forceOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox){
     setParametersForParticleFromParticle(particle1, particle2);
 
     REAL_C result;
@@ -28,10 +31,10 @@ REAL_C LENNARD_JONES_INTERACTION::forceOnParticleFromParticle(PARTICLE &particle
 }
 
 double LENNARD_JONES_INTERACTION::forceOnParticlePerDirection(double distance){
-    return 48.*interactionStrength * (pow(diameter / distance, 13) - 0.5 * pow(diameter / distance, 7));
+    return 48. * interactionStrength * (pow(diameter / distance, 13) - 0.5 * pow(diameter / distance, 7));
 }
 
-void LENNARD_JONES_INTERACTION::setParametersForParticleFromParticle(PARTICLE &particle1, PARTICLE &particle2){
+void LENNARD_JONES_INTERACTION::setParametersForParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2){
     positionDifference = particle1.boxPosition - particle2.boxPosition;
     distance = positionDifference.abs();
     diameter = 0.5 * (particle1.diameter + particle2.diameter);

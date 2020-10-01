@@ -22,7 +22,7 @@ protected:
     vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
-    
+
     double shearRateOffset = SHEAR_RATE;
     double shearRateAmplitude = AMPLITUDE;
     double oscillationPeriod = OSCILLATION_PERIOD;
@@ -38,12 +38,12 @@ protected:
     virtual void equationOfMotion();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
-    
+
 //    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
 
     virtual void addConfigurationalStress(REAL_C forceIn, int i, int j);
     virtual void addExternalStress(const REAL_C& forceIn, int i);
-    
+
     double calculateCurrentShearRate();
 
 public:
@@ -59,7 +59,7 @@ public:
     virtual REAL_C forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
     virtual double energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
-    
+
     virtual void convertPositionToBoxPosition();
 
     //setter functions

@@ -16,7 +16,10 @@
       <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
     </codeStyleSettings>
     <codeStyleSettings language="ObjectiveC">
+      <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+      <option name="BLANK_LINES_AROUND_METHOD_IN_INTERFACE" value="0" />
       <option name="ELSE_ON_NEW_LINE" value="true" />
       <option name="SPACE_AROUND_LAMBDA_ARROW" value="false" />
       <option name="SPACE_AFTER_TYPE_CAST" value="false" />

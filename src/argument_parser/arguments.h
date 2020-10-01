@@ -53,9 +53,7 @@ public:
 
     // constructors
     ARGUMENTS();
-
     ARGUMENTS(string filename);
-
     ARGUMENTS& setup();
 
     // update with other instance of this class
@@ -66,20 +64,14 @@ public:
 
     // getter
     double getDuration() const;
-
     double getNumberOfPeriods() const;
-
     bool isFinalized() const;
-
     string getSeparator() const;
 
     //setter
     ARGUMENTS& setDuration(double duration);
-
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
-
     ARGUMENTS& setDefaultDt();
-
     ARGUMENTS& setSeparator(string sep);
 
     // operators

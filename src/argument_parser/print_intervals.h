@@ -18,17 +18,22 @@ public:
     // constructors
     PRINT_INTERVAL();
     PRINT_INTERVAL(int* numberOfTimesteps, double* dt, double* oscillationPeriod);
+
     // update with other instance of this class
     PRINT_INTERVAL& update(const PRINT_INTERVAL& other);
+
     // choose the prioritized print intervals
     PRINT_INTERVAL& finalize();
+
     // getter
     double getDuration() const;
     double getPeriod() const;
     bool isFinalized() const;
+
     // setter
     PRINT_INTERVAL& setDuration(double duration);
     PRINT_INTERVAL& setPeriod(double period);
+
     // operators
     operator int() const;
     PRINT_INTERVAL& operator=(double interval);

@@ -10,11 +10,7 @@
 #include <sstream>  //time()
 
 //global instance that can be used everywhere via the 'extern' keyword
-CRandomMersenne random_event(getpid()*time(0));
-
-//void initSeed(unsigned int seed){
-//    random_event.RandomInit(seed);
-//}
+CRandomMersenne random_event(getpid() * time(0));
 
 
 

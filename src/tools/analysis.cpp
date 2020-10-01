@@ -6,7 +6,7 @@
 
 REAL_C getMinCoordinate(vector<REAL_C> coordinateList){
     REAL_C minCoordinate;
-    for(int i=0; i < coordinateList.size(); i++){
+    for(int i = 0; i < coordinateList.size(); i++){
         if(coordinateList[i].x < minCoordinate.x){
             minCoordinate.x = coordinateList[i].x;
         }

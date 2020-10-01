@@ -21,7 +21,6 @@ public:
     double energyOnParticle(PARTICLE& particle);
 
     double forceInZDirection(double zPositionIn, double diameterIn);
-
 };
 
 #endif // SOFT_WALL_FORCE_H

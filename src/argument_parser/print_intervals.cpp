@@ -4,8 +4,7 @@
 
 #include "print_intervals.h"
 
-PRINT_INTERVAL::PRINT_INTERVAL() {
-
+PRINT_INTERVAL::PRINT_INTERVAL(){
 }
 
 PRINT_INTERVAL::PRINT_INTERVAL(int* numberOfTimestepsIn, double* dt, double* oscillationPeriod){
@@ -14,8 +13,8 @@ PRINT_INTERVAL::PRINT_INTERVAL(int* numberOfTimestepsIn, double* dt, double* osc
     this->oscillationPeriod = oscillationPeriod;
 }
 
-PRINT_INTERVAL& PRINT_INTERVAL::update(const PRINT_INTERVAL& other) {
-    if(other.interval != 0) {
+PRINT_INTERVAL& PRINT_INTERVAL::update(const PRINT_INTERVAL& other){
+    if(other.interval != 0){
         interval = other.interval;
         duration = 0;
         period = 0;
@@ -28,7 +27,7 @@ PRINT_INTERVAL& PRINT_INTERVAL::update(const PRINT_INTERVAL& other) {
     return *this;
 }
 
-PRINT_INTERVAL& PRINT_INTERVAL::finalize() {
+PRINT_INTERVAL& PRINT_INTERVAL::finalize(){
     finalized = true;   // needs to be at beginning because setDuration/setPeriod question this
     if(duration != 0){
         setDuration(duration);
@@ -41,7 +40,7 @@ PRINT_INTERVAL& PRINT_INTERVAL::finalize() {
     return *this;
 }
 
-double PRINT_INTERVAL::getDuration() const {
+double PRINT_INTERVAL::getDuration() const{
     if(duration == 0){
         if(numberOfTimesteps == 0) return 0;
         else return double(interval) / *numberOfTimesteps;
@@ -49,20 +48,20 @@ double PRINT_INTERVAL::getDuration() const {
     else return duration;
 }
 
-double PRINT_INTERVAL::getPeriod() const {
+double PRINT_INTERVAL::getPeriod() const{
     if(period == 0){
         return double(interval) * *dt / *oscillationPeriod;
     }
-    else {
+    else{
         return period;
     }
 }
 
-bool PRINT_INTERVAL::isFinalized() const {
+bool PRINT_INTERVAL::isFinalized() const{
     return finalized;
 }
 
-PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration) {
+PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration){
     if(finalized){
         interval = duration * *numberOfTimesteps;
     }
@@ -72,7 +71,7 @@ PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration) {
     return *this;
 }
 
-PRINT_INTERVAL& PRINT_INTERVAL::setPeriod(double period) {
+PRINT_INTERVAL& PRINT_INTERVAL::setPeriod(double period){
     if(finalized){
         interval = period * *oscillationPeriod / *dt;
     }
@@ -82,11 +81,11 @@ PRINT_INTERVAL& PRINT_INTERVAL::setPeriod(double period) {
     return *this;
 }
 
-PRINT_INTERVAL::operator int() const {
+PRINT_INTERVAL::operator int() const{
     return interval;
 }
 
-PRINT_INTERVAL& PRINT_INTERVAL::operator=(double interval) {
+PRINT_INTERVAL& PRINT_INTERVAL::operator=(double interval){
     this->interval = interval;
     return *this;
 }

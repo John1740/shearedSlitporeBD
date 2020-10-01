@@ -5,7 +5,7 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
 }
 
 //not needed?
-DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength) {
+DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength){
     this->ssInteractionStrength = ssInteractionStrength;
 
     calculateInteractionParameters();
@@ -28,7 +28,9 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(){
     forceCutOffThreshold = abs(lji.forceOnParticlePerDirection(3.) / 3.);
 }
 
-REAL_C DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
+REAL_C
+DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2,
+                                                         BOX_GEOMETRY& simBox){
     REAL_C forceOnParticleFromParticle;
     posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
@@ -40,7 +42,9 @@ REAL_C DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE
     return forceOnParticleFromParticle;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE &particle1, CHARGED_PARTICLE &particle2, BOX_GEOMETRY& simBox){
+double
+DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2,
+                                                          BOX_GEOMETRY& simBox){
     posDifference = particle1.boxPosition - particle2.boxPosition;
     distance = simBox.convertToBoxPosition(posDifference).abs();
 

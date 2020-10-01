@@ -10,7 +10,7 @@ public:
     CHARGED_PARTICLE();
     CHARGED_PARTICLE(const REAL_C& positionIN);
     CHARGED_PARTICLE(const CHARGED_PARTICLE& other);
-    
+
     friend ostream& operator<<(ostream& os, const CHARGED_PARTICLE& particle);
 };
 

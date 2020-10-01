@@ -27,6 +27,7 @@
       <option name="SPACE_BEFORE_SWITCH_LBRACE" value="false" />
       <option name="SPACE_BEFORE_TRY_LBRACE" value="false" />
       <option name="SPACE_BEFORE_CATCH_LBRACE" value="false" />
+      <option name="WRAP_ON_TYPING" value="0" />
     </codeStyleSettings>
   </code_scheme>
 </component>

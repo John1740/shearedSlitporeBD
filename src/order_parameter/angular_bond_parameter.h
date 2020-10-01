@@ -15,36 +15,35 @@ private:
     SLIT_PORE_BOX simBox;
     LAYERS layers;
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation;
-    
+
     int n;  //integer of angular bond symmetry
     double nextNeighborShellRadius;
-    
+
     double angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2);
     vector<int> getNeighborIndices(int i);
-    
+
     //warnings
     vector<int> isolatedParticles;
-    
+
 public:
     ANGULAR_BOND_PARAMETER();
     ANGULAR_BOND_PARAMETER(CONFINED_BROWNIAN_PARTICLES& sysIn);
     ANGULAR_BOND_PARAMETER(CONFINED_BROWNIAN_PARTICLES& sysIn, int n);
-    
+
     ANGULAR_BOND_PARAMETER& setup(CONFINED_BROWNIAN_PARTICLES& sysIn);
-    
+
     double calculateForSingleParticle(int i);
     double calculateAverageOverAllParticles();
     double calculateNextNeighborShellRadius();
-    
+
     //setter
     ANGULAR_BOND_PARAMETER& setN(int n);
-    
+
     //getter
     int getN() const;
     double getNextNeighborShellRadius() const;
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION getPairCorrelation() const;
     vector<int> getIsolatedParticles() const;
 };
-
 
 #endif //SHEAREDSLITPOREBD_ANGULAR_BOND_PARAMETER_H

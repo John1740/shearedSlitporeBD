@@ -10,7 +10,6 @@ public:
 //    virtual void setVolume() = 0;
     virtual double getVolume() const = 0;
     virtual REAL_C getDimensions() const = 0;
-
 };
 
 #endif // BOX_GEOMETRY_H

@@ -5,7 +5,6 @@
 #include "layers.h"
 
 LAYERS::LAYERS(){
-
 }
 
 //need to initialize with this constructor
@@ -34,11 +33,11 @@ void LAYERS::setNumberOfLayers(const SLIT_PORE_BOX& simBox){
 }
 
 void LAYERS::setZMin(const SLIT_PORE_BOX& simBox){
-    zMin = - 0.2 * simBox.getDimensions().z;
+    zMin = -0.2 * simBox.getDimensions().z;
 }
 
 double LAYERS::calculateLayerThickness(){
-    layerThickness = - 2 * zMin / (numberOfLayers - 1);
+    layerThickness = -2 * zMin / (numberOfLayers - 1);
     return layerThickness;
 }
 

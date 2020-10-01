@@ -11,7 +11,3 @@
 
 //global instance that can be used everywhere via the 'extern' keyword
 CRandomMersenne random_event(getpid() * time(0));
-
-
-
-

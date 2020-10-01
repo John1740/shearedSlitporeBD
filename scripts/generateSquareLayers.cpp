@@ -56,5 +56,4 @@ int main(int argc, const char* argv[]){
     else{
         cout << "Dry run. Remove the -n (or --dry) option to do an actual run!" << endl;
     }
-
 }

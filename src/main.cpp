@@ -30,7 +30,8 @@ int main(int argc, const char* argv[]){
     ARGUMENTS args;
     if(fs::exists(argsParsed.settingsIn)){
         args.readFromFile(argsParsed.settingsIn);
-    } else{
+    }
+    else{
         argsParsed.settingsIn += string(" (not existing)");
     }
     args.update(argsParsed);    //argsParsed have priority

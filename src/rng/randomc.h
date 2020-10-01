@@ -101,6 +101,7 @@
 #if defined(__GNUC__)
 // Compilers supporting C99 or C++0x have inttypes.h defining these integer types
 #include <inttypes.h>
+
 #define INT64_SUPPORTED // Remove this if the compiler doesn't support 64-bit integers
 #elif defined(_WIN16) || defined(__MSDOS__) || defined(_MSDOS)
 // 16 bit systems use long int for 32 bit integer
@@ -139,7 +140,7 @@ Define random number generator classes
 class CRandomMersenne{
 // Choose which version of Mersenne Twister you want:
 #if 0
-// Define constants for type MT11213A:
+    // Define constants for type MT11213A:
 #define MERS_N   351
 #define MERS_M   175
 #define MERS_R   19
@@ -170,6 +171,7 @@ public:
         RandomInit(seed);
         LastInterval = 0;
     }
+
     unsigned long long rngCounter = 0;   //should be enough for 1000 particles * 6 calls/particle * 10^15 timesteps
 
     void RandomInit(int seed);       // Re-seed
@@ -179,7 +181,7 @@ public:
     double Random();                    // Output random float
     uint32_t BRandom();                 // Output random bits
 private:
-    void Init0 (int seed);            // Basic initialization procedure
+    void Init0(int seed);            // Basic initialization procedure
     uint32_t mt[MERS_N];                // State vector
     int mti;                            // Index into mt
     uint32_t LastInterval;              // Last interval length for IRandomX
@@ -195,6 +197,7 @@ public:
     CRandomMother(int seed){          // Constructor
         RandomInit(seed);
     }
+
 protected:
     uint32_t x[5];                      // History buffer
 };

@@ -4,6 +4,7 @@
 
 #include "stress.h"
 #include "boost/format.hpp"
+
 using namespace boost;
 
 STRESS_PRINTER::STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn): PRINTER(STRESSES_OUT){

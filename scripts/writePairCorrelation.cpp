@@ -9,14 +9,13 @@
 using namespace std;
 namespace po = boost::program_options;
 
-int main(int argc, const char *argv[]){
+int main(int argc, const char* argv[]){
     po::options_description description{"Options"};
     po::variables_map variablesMap;
     description.add_options()
             ("help,h", "Help screen")
             ("filename,i", po::value<string>(), "configuration file (particle positions)")
-            ("dr", po::value<double>(),  "resolution dr")
-            ;
+            ("dr", po::value<double>(), "resolution dr");
     po::positional_options_description pos;
     pos.add("filename", 1);
     po::store(po::command_line_parser(argc, argv).options(description).positional(pos).run(), variablesMap);
@@ -25,11 +24,11 @@ int main(int argc, const char *argv[]){
         cout << description << endl;
         exit(0);
     }
-    
+
     string filename = variablesMap["filename"].as<string>();
-    
+
     cout << "#Generated from: " << filename << endl;
-    
+
     CONFINED_BROWNIAN_PARTICLES sys;
     sys.readConfigurationFromFile(filename, false);
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION pairCorrelation(sys);

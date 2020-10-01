@@ -3,6 +3,7 @@
 #include <boost/format.hpp>
 #include <fstream>
 #include <experimental/filesystem>
+
 namespace fs = experimental::filesystem;
 namespace bo = boost;
 
@@ -56,7 +57,7 @@ REAL_C SLIT_PORE_BOX::getDimensions() const{
 
 //Converts coordinates x and y into the scope [-L/2,+L/2] (periodic boundary conditions),
 //where L is the dimension dx or dy respectively.
-REAL_C SLIT_PORE_BOX::convertToBoxPosition(REAL_C &positionIN){
+REAL_C SLIT_PORE_BOX::convertToBoxPosition(REAL_C& positionIN){
     REAL_C boxPosition;
     //x  = X*L + r (x=positionIN.x, X to be integer, L=dimension.x, r to be remainder ([0,L])
     //x' = x - round( x / L ) * L  (x'=boxPosition.x)
@@ -99,7 +100,7 @@ SLIT_PORE_BOX& SLIT_PORE_BOX::readFromFile(string filename){
         cout << filename << " is missing!" << endl;
         exit(0);
     }
-    
+
     ifstream f;
     f.open(filename.c_str());
     double c1, c2;  //containers

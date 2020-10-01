@@ -4,6 +4,7 @@
 
 #include "velocity.h"
 #include "boost/format.hpp"
+
 using namespace boost;
 
 VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn): PRINTER(VELOCITIES_OUT){
@@ -17,7 +18,6 @@ VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filena
 }
 
 VELOCITY_PRINTER::~VELOCITY_PRINTER(){
-
 }
 
 void VELOCITY_PRINTER::printHeader(){

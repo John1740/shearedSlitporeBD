@@ -9,6 +9,7 @@
 #include <vector>
 #include "boost/array.hpp"
 #include <stdexcept>
+
 using namespace std;
 
 //Member function definitions follow after the declaration (to preserve some organization).
@@ -71,9 +72,11 @@ public:
     friend CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
     }
+
     friend CARTESIAN_COORDINATE operator+(const CARTESIAN_COORDINATE& lhs, const dtype& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x + rhs, lhs.y + rhs, lhs.z + rhs);
     }
+
     friend CARTESIAN_COORDINATE operator+(const dtype& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs + rhs.x, lhs + rhs.y, lhs + rhs.z);
     }
@@ -81,9 +84,11 @@ public:
     friend CARTESIAN_COORDINATE operator-(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
     }
+
     friend CARTESIAN_COORDINATE operator-(const CARTESIAN_COORDINATE& lhs, const dtype& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x - rhs, lhs.y - rhs, lhs.z - rhs);
     }
+
     friend CARTESIAN_COORDINATE operator-(const dtype& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs - rhs.x, lhs - rhs.y, lhs - rhs.z);
     }
@@ -91,9 +96,11 @@ public:
     friend CARTESIAN_COORDINATE operator*(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
     }
+
     friend CARTESIAN_COORDINATE operator*(const CARTESIAN_COORDINATE& lhs, const dtype& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
     }
+
     friend CARTESIAN_COORDINATE operator*(const dtype& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z);
     }
@@ -101,24 +108,27 @@ public:
     friend CARTESIAN_COORDINATE operator/(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z);
     }
+
     friend CARTESIAN_COORDINATE operator/(const CARTESIAN_COORDINATE& lhs, const dtype& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs);
     }
+
     friend CARTESIAN_COORDINATE operator/(const dtype& lhs, const CARTESIAN_COORDINATE& rhs){
         return CARTESIAN_COORDINATE<dtype>(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z);
     }
 
     //logical operators
     friend bool operator==(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-        if(lhs.x==rhs.x && lhs.y==rhs.y && lhs.z==rhs.z){
+        if(lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z){
             return true;
         }
         else{
             return false;
         }
     }
+
     friend bool operator!=(const CARTESIAN_COORDINATE& lhs, const CARTESIAN_COORDINATE& rhs){
-        if(lhs.x!=rhs.x || lhs.y!=rhs.y || lhs.z!=rhs.z){
+        if(lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z){
             return true;
         }
         else{
@@ -135,28 +145,28 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(){
     this->x = 0;
     this->y = 0;
     this->z = 0;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(dtype c){
     this->x = c;
     this->y = c;
     this->z = c;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(dtype x, dtype y, dtype z){
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& other){
     this->x = other.x;
     this->y = other.y;
@@ -165,7 +175,7 @@ CARTESIAN_COORDINATE<dtype>::CARTESIAN_COORDINATE(const CARTESIAN_COORDINATE& ot
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 double CARTESIAN_COORDINATE<dtype>::abs() const{
     throw runtime_error(string("abs() is not implemented for the following datatype/class: ") + typeid(x).name());
 }
@@ -198,7 +208,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::imag(const CARTESIAN_C
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //const version for the use in assignment operators (e.g. operator=)
-template <typename dtype>
+template<typename dtype>
 dtype CARTESIAN_COORDINATE<dtype>::operator[](unsigned int i) const{
     switch(i){
         case 0:
@@ -213,7 +223,7 @@ dtype CARTESIAN_COORDINATE<dtype>::operator[](unsigned int i) const{
 }
 
 //non-const version, that can be used for assignment as well
-template <typename dtype>
+template<typename dtype>
 dtype& CARTESIAN_COORDINATE<dtype>::operator[](unsigned int i){
     switch(i){
         case 0:
@@ -229,7 +239,7 @@ dtype& CARTESIAN_COORDINATE<dtype>::operator[](unsigned int i){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator=(const CARTESIAN_COORDINATE<dtype>& other){
     this->x = other.x;
     this->y = other.y;
@@ -237,7 +247,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator=(const CARTES
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator=(const dtype& c){
     this->x = c;
     this->y = c;
@@ -245,7 +255,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator=(const dtype&
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator+=(const CARTESIAN_COORDINATE<dtype>& other){
     this->x += other.x;
     this->y += other.y;
@@ -253,7 +263,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator+=(const CARTE
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator+=(const dtype& c){
     this->x += c;
     this->y += c;
@@ -261,7 +271,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator+=(const dtype
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator-=(const CARTESIAN_COORDINATE<dtype>& other){
     this->x -= other.x;
     this->y -= other.y;
@@ -269,7 +279,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator-=(const CARTE
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator-=(const dtype& c){
     this->x -= c;
     this->y -= c;
@@ -277,7 +287,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator-=(const dtype
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator*=(const CARTESIAN_COORDINATE<dtype>& other){
     this->x *= other.x;
     this->y *= other.y;
@@ -285,7 +295,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator*=(const CARTE
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator*=(const dtype& c){
     this->x *= c;
     this->y *= c;
@@ -293,7 +303,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator*=(const dtype
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator/=(const CARTESIAN_COORDINATE<dtype>& other){
     this->x /= other.x;
     this->y /= other.y;
@@ -301,7 +311,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator/=(const CARTE
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator/=(const dtype& c){
     this->x /= c;
     this->y /= c;
@@ -311,7 +321,7 @@ CARTESIAN_COORDINATE<dtype>& CARTESIAN_COORDINATE<dtype>::operator/=(const dtype
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 vector<dtype> CARTESIAN_COORDINATE<dtype>::asVector() const{
     vector<dtype> v(3);
     v[0] = x;
@@ -320,7 +330,7 @@ vector<dtype> CARTESIAN_COORDINATE<dtype>::asVector() const{
     return v;
 }
 
-template <typename dtype>
+template<typename dtype>
 boost::array<dtype, 3> CARTESIAN_COORDINATE<dtype>::asArray() const{
     boost::array<dtype, 3> v;
     v[0] = x;

@@ -25,20 +25,20 @@ public:
     //constructors
     GENERATE_SQUARE_LAYERS();
     GENERATE_SQUARE_LAYERS(int N, double dWall, double density);
-    
+
     GENERATE_SQUARE_LAYERS& setup(int N, double dWall, double density);
 
     CONFINED_BROWNIAN_PARTICLES generate();
-    
+
     //setter
     GENERATE_SQUARE_LAYERS& setParticleProperties(const CHARGED_PARTICLE& particle);
     GENERATE_SQUARE_LAYERS& setParticleProperties(double charge, double diameter, int species);
-    
+
     //getter
     int getNumberOfParticles() const;
     CHARGED_PARTICLE getParticleTemplate() const;
     SLIT_PORE_BOX getSimBox() const;
-    
+
     friend ostream& operator<<(ostream& os, const GENERATE_SQUARE_LAYERS& gsl);
 };
 

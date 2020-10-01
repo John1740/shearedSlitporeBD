@@ -45,11 +45,11 @@ bool PRINTER::fileIsEmpty(bool ignoreComments){
         if(line.empty()){
             continue;
         }
-        //ignore lines with comments/header-lines
+            //ignore lines with comments/header-lines
         else if(ignoreComments && line[0] == comment){
             continue;
         }
-        //ignore lines with only whitespaces (' ' or '\t')
+            //ignore lines with only whitespaces (' ' or '\t')
         else if(line.find_first_not_of(" \t") == string::npos){
             continue;
         }

@@ -4,21 +4,23 @@
 
 #include <boost/format.hpp>
 #include "intra_layer_pair_correlation_function.h"
+
 namespace b = boost;
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(){
-
 }
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys){
     setup(sys, 0.05);
 }
 
-INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION::INTRA_LAYER_PAIR_CORRELATION_FUNCTION(CONFINED_BROWNIAN_PARTICLES& sys,
+                                                                             double dr){
     setup(sys, dr);
 }
 
-INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION&
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dr){
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     maximalRadius = sqrt(pow(simBox.getDimensions().x / 2, 2) + pow(simBox.getDimensions().y / 2, 2));
@@ -233,7 +235,7 @@ ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& co
         os << "\t" << b::format("%8s") % (b::format("g_%i(r)") % l);
     }
     os << "\n";
-    
+
     //data
     for(int r = 0; r < cor.numberOfBins; r++){
         os << b::format("% 2.5f") % cor.radius[r];

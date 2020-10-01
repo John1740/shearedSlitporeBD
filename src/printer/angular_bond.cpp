@@ -6,6 +6,7 @@
 #include "../order_parameter/angular_bond_parameter.h"
 
 #include "boost/format.hpp"
+
 using namespace boost;
 
 ANGULAR_BOND_PRINTER::ANGULAR_BOND_PRINTER(): PRINTER(ANGULAR_BOND_OUT){
@@ -36,7 +37,7 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
     psi.setN(6);
     *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
-    
+
     //error outputs
     vector<int> erroneousParticles = psi.getIsolatedParticles();
     if(erroneousParticles.size() > 0){
@@ -46,7 +47,8 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
         }
         cout << endl;
         cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
-        cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation() << "[1/diameter]" << endl;
+        cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation()
+             << "[1/diameter]" << endl;
         cout << endl;
         sys.writeConfigurationToFile("erroneousParticles/configuration_" + to_string(sys.getTimestep()) + ".out", true);
         psi.getPairCorrelation().print("erroneousParticles/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");

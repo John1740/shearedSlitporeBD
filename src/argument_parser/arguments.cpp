@@ -7,9 +7,13 @@
 #include <iostream>
 #include "../printer/printer.h"
 #include <boost/algorithm/string.hpp>
+
 namespace bo = boost;
+
 #include <experimental/filesystem>
+
 namespace fs = experimental::filesystem;
+
 #include <cmath>
 
 bool str_is_empty(string str){
@@ -51,7 +55,8 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.temperature != TEMPERATURE) temperature = other.temperature;
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
-    if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH) wallInteractionStrength = other.wallInteractionStrength;
+    if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH)
+        wallInteractionStrength = other.wallInteractionStrength;
     if(other.numberOfTimesteps != 0){
         numberOfTimesteps = other.numberOfTimesteps;
         duration = 0;   //other.numberOfTimesteps has priority
@@ -206,7 +211,7 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("numberOfPeriods") != string::npos){
             numberOfPeriods = stod(linesplit[1]);
         }
-        //needs to be before "printStress"
+            //needs to be before "printStress"
         else if(line.find("printStressFourierDuration") != string::npos){
             printStressFourier.setDuration(stod(linesplit[1]));
         }
@@ -282,7 +287,8 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printStress == PRINT_STRESS && printStress.getDuration() == 0 && printStress.getPeriod() == 0){
             printStress = printAll;
         }
-        if(printStressFourier == PRINT_STRESS_FOURIER && printStressFourier.getDuration() == 0 && printStressFourier.getPeriod() == 0){
+        if(printStressFourier == PRINT_STRESS_FOURIER && printStressFourier.getDuration() == 0 &&
+           printStressFourier.getPeriod() == 0){
             printStressFourier = 1;
         }
         if(printEnergy == PRINT_ENERGY && printEnergy.getDuration() == 0 && printEnergy.getPeriod() == 0){
@@ -291,13 +297,15 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printVelocity == PRINT_VELOCITY && printVelocity.getDuration() == 0 && printVelocity.getPeriod() == 0){
             printVelocity = printAll;
         }
-        if(printAngularBond == PRINT_ANGULAR_BOND && printAngularBond.getDuration() == 0 && printAngularBond.getPeriod() == 0){
+        if(printAngularBond == PRINT_ANGULAR_BOND && printAngularBond.getDuration() == 0 &&
+           printAngularBond.getPeriod() == 0){
             printAngularBond = printAll;
         }
         if(printSnapshots == PRINT_SNAPSHOTS && printSnapshots.getDuration() == 0 && printSnapshots.getPeriod() == 0){
             printSnapshots = printAll;
         }
-        if(printPairCorrelation == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 && printPairCorrelation.getPeriod() == 0){
+        if(printPairCorrelation == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 &&
+           printPairCorrelation.getPeriod() == 0){
             printPairCorrelation = printAll;
         }
     }
@@ -361,7 +369,7 @@ double ARGUMENTS::getNumberOfPeriods() const{
     }
 }
 
-bool ARGUMENTS::isFinalized() const {
+bool ARGUMENTS::isFinalized() const{
     return finalized;
 }
 
@@ -390,7 +398,7 @@ ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
     return *this;
 }
 
-ARGUMENTS& ARGUMENTS::setDefaultDt() {
+ARGUMENTS& ARGUMENTS::setDefaultDt(){
     // minimum due to energy potential (bigger dt lead to particles leaving the box)
     dt = 1e-5;
     // it needs dtDeformation to move the upper wall by the wall distance once

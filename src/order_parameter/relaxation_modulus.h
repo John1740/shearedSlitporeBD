@@ -21,24 +21,23 @@ private:
 public:
     RELAXATION_MODULUS();
     RELAXATION_MODULUS(SHEARED_SLITPORE_SYSTEM& sys);
-    
+
     RELAXATION_MODULUS& reset();
-    
+
     RELAXATION_MODULUS& calculateNext(SHEARED_SLITPORE_SYSTEM& sys);
-    
+
     //getter
     vector<double> getShearRates() const;
     vector<double> getG() const;
     vector<long> getTimesteps() const;
     vector<double> getStress() const;
     double getDt() const;
-    
+
     //setter
     RELAXATION_MODULUS& setDt(double dt);
-    
+
     //printer
     friend ostream& operator<<(ostream& os, const RELAXATION_MODULUS& relaxationModulus);
 };
-
 
 #endif //SHEAREDSLITPOREBD_RELAXATION_MODULUS_H

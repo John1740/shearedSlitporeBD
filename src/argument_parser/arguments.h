@@ -8,6 +8,7 @@
 #include <string>
 #include "../defaults.h"
 #include "print_intervals.h"
+
 using namespace std;
 
 class ARGUMENTS{
@@ -20,7 +21,7 @@ private:
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
-    
+
     string configurationIn = CONFIGURATION_IN;
     string settingsIn = SETTINGS_IN;
 
@@ -45,16 +46,18 @@ public:
     PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
-    
+
     bool clear = CLEAR;
     bool dry = false;
     bool printVersion = false;
-    
+
     // constructors
     ARGUMENTS();
+
     ARGUMENTS(string filename);
+
     ARGUMENTS& setup();
-    
+
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
 
@@ -63,21 +66,28 @@ public:
 
     // getter
     double getDuration() const;
+
     double getNumberOfPeriods() const;
+
     bool isFinalized() const;
+
     string getSeparator() const;
 
     //setter
     ARGUMENTS& setDuration(double duration);
+
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
+
     ARGUMENTS& setDefaultDt();
+
     ARGUMENTS& setSeparator(string sep);
 
     // operators
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
-    
+
     // file-handling
-    bool readFromFile(string filename, char comment='#');
+    bool readFromFile(string filename, char comment = '#');
+
     ARGUMENTS& writeToFile(string filename);
 };
 

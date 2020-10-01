@@ -4,12 +4,12 @@ SHEAR_FORCE::SHEAR_FORCE(){
     direction = REAL_C(1., 0., 0.);
 }
 
-SHEAR_FORCE::SHEAR_FORCE(double shearRate) {
+SHEAR_FORCE::SHEAR_FORCE(double shearRate){
     this->shearRate = shearRate;
     direction = REAL_C(1., 0., 0.);
 }
 
-SHEAR_FORCE::SHEAR_FORCE(double shearRate, const REAL_C& direction) {
+SHEAR_FORCE::SHEAR_FORCE(double shearRate, const REAL_C& direction){
     this->shearRate = shearRate;
     setDirection(direction);
 }

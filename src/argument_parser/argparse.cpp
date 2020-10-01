@@ -1,9 +1,10 @@
 #include "argparse.h"
 
 #include <iostream>
+
 using namespace std;
 
-ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
+ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]){
     try{
         addOptions();
         //decompose command line arguments and put them into variablesMap
@@ -21,81 +22,106 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]) {
 }
 
 //could be divided into logical segments
-void ARGUMENT_PARSER::addOptions() {
+void ARGUMENT_PARSER::addOptions(){
     description.add_options()
             ("help,h", "Help screen")
             ("settings,s", po::value<string>()->default_value(SETTINGS_IN), "settings file")
-            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN), "configuration file (particle positions, simulation box)")
-            ("shearRate", po::value<double>()->default_value(SHEAR_RATE), "(constant) shear rate offset (in units of 1/Brownian time)")
-            ("amplitude,a", po::value<double>()->default_value(AMPLITUDE), "shear rate amplitude (in units of 1/Brownian time)")
-            ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD), "shear rate oscillation period (in units of Brownian time)")
+            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN),
+             "configuration file (particle positions, simulation box)")
+            ("shearRate", po::value<double>()->default_value(SHEAR_RATE),
+             "(constant) shear rate offset (in units of 1/Brownian time)")
+            ("amplitude,a", po::value<double>()->default_value(AMPLITUDE),
+             "shear rate amplitude (in units of 1/Brownian time)")
+            ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD),
+             "shear rate oscillation period (in units of Brownian time)")
             ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
                                                                                 "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
-            ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "strength of softsphere interaction")
-            ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH), "strength of wall interaction")
+            ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH),
+             "strength of softsphere interaction")
+            ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH),
+             "strength of wall interaction")
             ("dt", po::value<double>()->default_value(0), "length of timestep")
             ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
             ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
             ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
-                                               "Overwrites --numberOfTimesteps/-N")
+                                                "Overwrites --numberOfTimesteps/-N")
             ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
-                                               "Overwrites --numberOfTimesteps/-N and --duration/-d")
-            ("seed", po::value<unsigned int>()->default_value(0), "random number generator seed; 0 = random seed will be generated")
-            ("rngCounter", po::value<unsigned long long>()->default_value(0), "initial random number generator counter; 0 = no initial increments")
+                                                     "Overwrites --numberOfTimesteps/-N and --duration/-d")
+            ("seed", po::value<unsigned int>()->default_value(0),
+             "random number generator seed; 0 = random seed will be generated")
+            ("rngCounter", po::value<unsigned long long>()->default_value(0),
+             "initial random number generator counter; 0 = no initial increments")
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
-                                                                           "x<0 -> no print-outs")
-            ("printStressDuration", po::value<double>(), "Same as --printStress but in units of total simulation time.\n"
-                                                              "Overwrites --printStress")
+                                                                              "x<0 -> no print-outs")
+            ("printStressDuration", po::value<double>(),
+             "Same as --printStress but in units of total simulation time.\n"
+             "Overwrites --printStress")
             ("printStressPeriod", po::value<double>(), "Same as --printStress but in units of oscillation periods.\n"
-                                                            "Overwrites --printStress and --printStressDuration")
-            ("printStressFourier", po::value<double>()->default_value(PRINT_STRESS_FOURIER), "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
-                                                                           "x<0 -> no Fourier component calculation")
-            ("printStressFourierDuration", po::value<double>(), "Same as --printStressFourier but in units of total simulation time.\n"
-                                                         "Overwrites --printStressFourier")
-            ("printStressFourierPeriod", po::value<double>(), "Same as --printStressFourier but in units of oscillation periods.\n"
-                                                       "Overwrites --printStressFourier and --printStressFourierDuration")
+                                                       "Overwrites --printStress and --printStressDuration")
+            ("printStressFourier", po::value<double>()->default_value(PRINT_STRESS_FOURIER),
+             "calculate 0-th to 4-th stress Fourier component using stresses from every x-th timestep; "
+             "x<0 -> no Fourier component calculation")
+            ("printStressFourierDuration", po::value<double>(),
+             "Same as --printStressFourier but in units of total simulation time.\n"
+             "Overwrites --printStressFourier")
+            ("printStressFourierPeriod", po::value<double>(),
+             "Same as --printStressFourier but in units of oscillation periods.\n"
+             "Overwrites --printStressFourier and --printStressFourierDuration")
             ("printEnergy", po::value<double>()->default_value(PRINT_ENERGY), "print energies every x-th timestep; "
-                                                                           "x<0 -> no print-outs")
-            ("printEnergyDuration", po::value<double>(), "Same as --printEnergy but in units of total simulation time.\n"
-                                                              "Overwrites --printEnergy")
+                                                                              "x<0 -> no print-outs")
+            ("printEnergyDuration", po::value<double>(),
+             "Same as --printEnergy but in units of total simulation time.\n"
+             "Overwrites --printEnergy")
             ("printEnergyPeriod", po::value<double>(), "Same as --printEnergy but in units of oscillation periods.\n"
-                                                            "Overwrites --printEnergy and --printEnergyDuration")
-            ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY), "print velocities every x-th timestep; "
-                                                                                  "x<0 -> no print-outs")
-            ("printVelocityDuration", po::value<double>(), "Same as --printVelocity but in units of total simulation time.\n"
-                                                              "Overwrites --printVelocity")
-            ("printVelocityPeriod", po::value<double>(), "Same as --printVelocity but in units of oscillation periods.\n"
-                                                            "Overwrites --printVelocity and --printVelocityDuration")
-            ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND), "print the angular bond order parameter every x-th timestep; "
-                                                                                      "x<0 -> no print-outs")
-            ("printAngularBondDuration", po::value<double>(), "Same as --printAngularBond but in units of total simulation time.\n"
-                                                            "Overwrites --printAngularBond")
-            ("printAngularBondPeriod", po::value<double>(), "Same as --printAngularBond but in units of oscillation periods.\n"
-                                                          "Overwrites --printAngularBond and --printAngularBondDuration")
-            ("printSnapshots", po::value<double>()->default_value(PRINT_SNAPSHOTS), "Save a configuration snapshot every x-th timestep; "
-                                                                        "x<0 -> no snapshots")
-            ("printSnapshotsDuration", po::value<double>(), "Same as --printSnapshots but in units of total simulation time.\n"
-                                                            "Overwrites --printSnapshots")
-            ("printSnapshotsPeriod", po::value<double>(), "Same as --printSnapshots but in units of oscillation periods.\n"
-                                                          "Overwrites --printSnapshots and --printSnapshotsDuration")
-            ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION), "print intra-layer pair correlation function every x-th timestep; "
-                                                                        "x<0 -> no print-outs")
-            ("printPairCorrelationDuration", po::value<double>(), "Same as --printPairCorrelation but in units of total simulation time\n"
-                                                                  "Overwrites --printPairCorrelation")
-            ("printPairCorrelationPeriod", po::value<double>(), "Same as --printPairCorrelation but in units of oscillation periods.\n"
-                                                                "Overwrites --printPairCorrelation and --printPairCorrelationDuration")
+                                                       "Overwrites --printEnergy and --printEnergyDuration")
+            ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY),
+             "print velocities every x-th timestep; "
+             "x<0 -> no print-outs")
+            ("printVelocityDuration", po::value<double>(),
+             "Same as --printVelocity but in units of total simulation time.\n"
+             "Overwrites --printVelocity")
+            ("printVelocityPeriod", po::value<double>(),
+             "Same as --printVelocity but in units of oscillation periods.\n"
+             "Overwrites --printVelocity and --printVelocityDuration")
+            ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND),
+             "print the angular bond order parameter every x-th timestep; "
+             "x<0 -> no print-outs")
+            ("printAngularBondDuration", po::value<double>(),
+             "Same as --printAngularBond but in units of total simulation time.\n"
+             "Overwrites --printAngularBond")
+            ("printAngularBondPeriod", po::value<double>(),
+             "Same as --printAngularBond but in units of oscillation periods.\n"
+             "Overwrites --printAngularBond and --printAngularBondDuration")
+            ("printSnapshots", po::value<double>()->default_value(PRINT_SNAPSHOTS),
+             "Save a configuration snapshot every x-th timestep; "
+             "x<0 -> no snapshots")
+            ("printSnapshotsDuration", po::value<double>(),
+             "Same as --printSnapshots but in units of total simulation time.\n"
+             "Overwrites --printSnapshots")
+            ("printSnapshotsPeriod", po::value<double>(),
+             "Same as --printSnapshots but in units of oscillation periods.\n"
+             "Overwrites --printSnapshots and --printSnapshotsDuration")
+            ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION),
+             "print intra-layer pair correlation function every x-th timestep; "
+             "x<0 -> no print-outs")
+            ("printPairCorrelationDuration", po::value<double>(),
+             "Same as --printPairCorrelation but in units of total simulation time\n"
+             "Overwrites --printPairCorrelation")
+            ("printPairCorrelationPeriod", po::value<double>(),
+             "Same as --printPairCorrelation but in units of oscillation periods.\n"
+             "Overwrites --printPairCorrelation and --printPairCorrelationDuration")
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
                                                                         "x<0 -> no print-outs; "
                                                                         "ATTENTION: The calculation will be very slow! "
                                                                         "Gets overwritten by other (non-zero) print-arguments")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
-            ("clear", po::bool_switch()->default_value(CLEAR), "clear all existing output files (before simulation start)")
-            ;
+            ("clear", po::bool_switch()->default_value(CLEAR),
+             "clear all existing output files (before simulation start)");
 }
 
-ARGUMENTS ARGUMENT_PARSER::parseArgs() {
+ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     ARGUMENTS args;
     args.settingsIn = variablesMap["settings"].as<string>();
     args.configurationIn = variablesMap["configuration"].as<string>();
@@ -184,26 +210,33 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs() {
     // overwrite print-statements by printAll if not further specified
     if(args.printAll > 0){
         if(args.printStress == PRINT_STRESS
-            && args.printStress.getDuration() == 0
-            && args.printStress.getPeriod() == 0) args.printStress = args.printAll;
+           && args.printStress.getDuration() == 0
+           && args.printStress.getPeriod() == 0)
+            args.printStress = args.printAll;
         if(args.printStressFourier == PRINT_STRESS_FOURIER
-            && args.printStressFourier.getDuration() == 0
-            && args.printStressFourier.getPeriod() == 0) args.printStressFourier = 1;
+           && args.printStressFourier.getDuration() == 0
+           && args.printStressFourier.getPeriod() == 0)
+            args.printStressFourier = 1;
         if(args.printEnergy == PRINT_ENERGY
            && args.printEnergy.getDuration() == 0
-           && args.printEnergy.getPeriod() == 0) args.printEnergy = args.printAll;
+           && args.printEnergy.getPeriod() == 0)
+            args.printEnergy = args.printAll;
         if(args.printVelocity == PRINT_VELOCITY
            && args.printVelocity.getDuration() == 0
-           && args.printVelocity.getPeriod() == 0) args.printVelocity = args.printAll;
+           && args.printVelocity.getPeriod() == 0)
+            args.printVelocity = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND
-            && args.printAngularBond.getDuration() == 0
-            && args.printAngularBond.getPeriod() == 0) args.printAngularBond = args.printAll;
+           && args.printAngularBond.getDuration() == 0
+           && args.printAngularBond.getPeriod() == 0)
+            args.printAngularBond = args.printAll;
         if(args.printSnapshots == PRINT_SNAPSHOTS
-            && args.printSnapshots.getDuration() == 0
-            && args.printSnapshots.getPeriod() == 0) args.printSnapshots = args.printAll;
+           && args.printSnapshots.getDuration() == 0
+           && args.printSnapshots.getPeriod() == 0)
+            args.printSnapshots = args.printAll;
         if(args.printPairCorrelation == PRINT_PAIR_CORRELATION
-            && args.printPairCorrelation.getDuration() == 0
-            && args.printPairCorrelation.getPeriod() == 0) args.printPairCorrelation = args.printAll;
+           && args.printPairCorrelation.getDuration() == 0
+           && args.printPairCorrelation.getPeriod() == 0)
+            args.printPairCorrelation = args.printAll;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();

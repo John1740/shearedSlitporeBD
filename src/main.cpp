@@ -97,7 +97,7 @@ int main(int argc, const char *argv[]){
     STRESS_FOURIER_COMPONENTS fc(args);
 
     //column description
-    for(int i = 0; i < args.numberOfTimesteps; i++){
+    for(long i = 0; i < args.numberOfTimesteps; i++){
         if(i % (int)ceil(args.numberOfTimesteps / 100.) == 0){
             cout << b::format("Progress: %.1f%% (timestep %ld)")
                     % (100 * i / float(args.numberOfTimesteps))

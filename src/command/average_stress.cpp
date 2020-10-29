@@ -9,7 +9,7 @@ void AVERAGE_STRESS::reset(){
     count = 0;
 }
 
-void AVERAGE_STRESS::doForSystem(SHEARED_SLITPORE_SYSTEM &sysIn){
+void AVERAGE_STRESS::doForSystem(SHEARED_SLITPORE_SYSTEM& sysIn){
     stress += sysIn.getMeanStress();
     ++count;
 }

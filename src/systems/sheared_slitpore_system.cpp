@@ -4,7 +4,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
 //    prepareSystem();
 }
 
-SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFINED_BROWNIAN_PARTICLES(args){
+SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINED_BROWNIAN_PARTICLES(args){
     printStress = args.printStress;
     if(args.printStressFourier > 0){
         printStress = args.printStressFourier;
@@ -15,10 +15,10 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
     oscillationPeriod = args.oscillationPeriod;
     phaseOffset = args.phaseOffset;
     currentShearRate = calculateCurrentShearRate();
-    
+
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(args.ssInteractionStrength);
-    
+
     prepareSystem();
 }
 
@@ -26,7 +26,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args) : CONFIN
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
-    
+
     dlvo.charge1 = particle[0].charge;
     dlvo.charge2 = particle[0].charge;
     dlvo.diameter1 = particle[0].diameter;
@@ -69,7 +69,8 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
 
         particle[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
 
-        if(particle[i].position.z > 0.5 * simBox.getDimensions().z || particle[i].position.z < -0.5 * simBox.getDimensions().z){
+        if(particle[i].position.z > 0.5 * simBox.getDimensions().z ||
+           particle[i].position.z < -0.5 * simBox.getDimensions().z){
             cout << "particle[i].position.z = " << particle[i].position.z << endl;
         }
         particle[i].setBoxPosition(simBox);
@@ -111,7 +112,7 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
         addConfigurationalStress(tmpForce, i, j);
     }
     if(printEnergy > 0){
-        double tmpEnergy = energyFromParticleOnParticle(particle[i],particle[j]);
+        double tmpEnergy = energyFromParticleOnParticle(particle[i], particle[j]);
         energy[i] += tmpEnergy;
         energy[j] += tmpEnergy;
     }
@@ -121,8 +122,8 @@ void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(REAL_C forceIn, int i, in
     REAL_C posDifference = particle[i].boxPosition - particle[j].boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     REAL_M tmpStress(posDifference, forceIn);
-    stressPerParticle[i] += 0.5* tmpStress;
-    stressPerParticle[j] += 0.5* tmpStress;
+    stressPerParticle[i] += 0.5 * tmpStress;
+    stressPerParticle[j] += 0.5 * tmpStress;
 }
 
 void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
@@ -151,10 +152,10 @@ void SHEARED_SLITPORE_SYSTEM::addExternalStress(const REAL_C& forceIn, int i){  
     stressPerParticle[i] += tmpStress;
 }
 
-vector< REAL_M > SHEARED_SLITPORE_SYSTEM::getStressPerParticle(){
+vector<REAL_M> SHEARED_SLITPORE_SYSTEM::getStressPerParticle(){
     vector<REAL_M> tmp = stressPerParticle;
     for(int i = 0; i < tmp.size(); ++i){
-        tmp[i] *= -1/simBox.getVolume();
+        tmp[i] *= -1 / simBox.getVolume();
     }
     return tmp;
 }
@@ -164,7 +165,7 @@ REAL_M SHEARED_SLITPORE_SYSTEM::getMeanStress() const{
     for(int i = 0; i < stressPerParticle.size(); ++i){
         meanStress += stressPerParticle[i];
     }
-    return -1.*meanStress/simBox.getVolume();
+    return -1. * meanStress / simBox.getVolume();
 }
 
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
@@ -182,7 +183,9 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateOffset + shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod + M_PI * phaseOffset);
+    currentShearRate = shearRateOffset +
+                       shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod + M_PI * phaseOffset);
     return currentShearRate;
 }
+
 

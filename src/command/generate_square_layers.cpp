@@ -28,15 +28,15 @@ CONFINED_BROWNIAN_PARTICLES GENERATE_SQUARE_LAYERS::generate(){
     setLatticePeriodicity();
     particle.clear();
 
-    for(int i = 0; i < numberOfLayers - 1; ++i) {
+    for(int i = 0; i < numberOfLayers - 1; ++i){
         addLayer(i);
     }
     addIncommensurableLayer(numberOfLayers - 1);
-    
+
     CONFINED_BROWNIAN_PARTICLES sys;
     *(sys.simulationBox()) = simBox;
     sys.setParticleList(particle);
-    
+
     return sys;
 }
 
@@ -59,7 +59,7 @@ void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
                     dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
                     dy * j + layerIndex * dy / 2, //displaced by dy/2 from lower layer
                     zMin + layerIndex * dz
-                    );
+            );
             newParticle.index = particleIndex;
             particleIndex++;
             particle.push_back(newParticle);
@@ -75,7 +75,7 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
                     dxAdd * k + layerIndex * dxAdd / 2,
                     dyAdd * j + layerIndex * dyAdd / 2,
                     zMin + layerIndex * dz
-                    );
+            );
             newParticle.index = particleIndex;
             particleIndex++;
             particle.push_back(newParticle);
@@ -95,7 +95,7 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setParticleProperties(double cha
     return *this;
 }
 
-int GENERATE_SQUARE_LAYERS::getNumberOfParticles() const {
+int GENERATE_SQUARE_LAYERS::getNumberOfParticles() const{
     int totalNumberOfSites = numberOfSites + numberOfAdditionalSites;
     return totalNumberOfSites * totalNumberOfSites * numberOfLayers;
 }

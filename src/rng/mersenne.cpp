@@ -58,10 +58,10 @@ void CRandomMersenne::RandomInitByArray(int const seeds[], int NumSeeds){
     // Randomize mt[] using whole seeds[] array
     i = 1;
     j = 0;
-    k = (MERS_N > NumSeeds ? MERS_N: NumSeeds);
+    k = (MERS_N > NumSeeds ? MERS_N : NumSeeds);
 
     for(; k; k--){
-        mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL)) + (uint32_t) seeds[j] + j;
+        mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL)) + (uint32_t)seeds[j] + j;
         i++;
         j++;
 
@@ -124,10 +124,10 @@ uint32_t CRandomMersenne::BRandom(){
     y = mt[mti++];
 
     // Tempering (May be omitted):
-    y ^=  y >> MERS_U;
+    y ^= y >> MERS_U;
     y ^= (y << MERS_S) & MERS_B;
     y ^= (y << MERS_T) & MERS_C;
-    y ^=  y >> MERS_L;
+    y ^= y >> MERS_L;
 
     return y;
 }
@@ -136,7 +136,7 @@ double CRandomMersenne::Random(){
     // Output random float number in the interval 0 <= x < 1
     // Multiply by 2^(-32)
     rngCounter++;
-    return (double) BRandom() * (1. / (65536.*65536.));
+    return (double)BRandom() * (1. / (65536. * 65536.));
 }
 
 int CRandomMersenne::IRandom(int min, int max){
@@ -152,7 +152,7 @@ int CRandomMersenne::IRandom(int min, int max){
     }
 
     // Multiply interval with random and truncate
-    int r = int ((double)(uint32_t)(max - min + 1) * Random() + min);
+    int r = int((double)(uint32_t)(max - min + 1) * Random() + min);
 
     if(r > max){
         r = max;
@@ -188,19 +188,18 @@ int CRandomMersenne::IRandomX(int min, int max){
         // Interval length has changed. Must calculate rejection limit
         // Reject when remainder >= 2^32 / interval * interval
         // RLimit will be 0 if interval is a power of 2. No rejection then
-        RLimit = uint32_t(((uint64_t) 1 << 32) / interval) * interval - 1;
+        RLimit = uint32_t(((uint64_t)1 << 32) / interval) * interval - 1;
         LastInterval = interval;
     }
 
     do{   // Rejection loop
-        longran  = (uint64_t) BRandom() * interval;
+        longran = (uint64_t)BRandom() * interval;
         iran = (uint32_t)(longran >> 32);
-        remainder = (uint32_t) longran;
-    }
-    while(remainder > RLimit);
+        remainder = (uint32_t)longran;
+    } while(remainder > RLimit);
 
     // Convert back to signed and return result
-    return (int32_t) iran + min;
+    return (int32_t)iran + min;
 
 #else
     // 64 bit integers not available. Use modulo method

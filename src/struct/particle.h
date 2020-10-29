@@ -28,7 +28,7 @@ public:
     void setBoxPosition(BOX_GEOMETRY& boxGeom);
 
     double getVolume();
-    
+
     friend ostream& operator<<(ostream& os, const PARTICLE& particle);
 };
 

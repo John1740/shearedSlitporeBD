@@ -9,7 +9,7 @@ private:
     REAL_C dimensions;
     REAL_C origin;
     double volume;
-    
+
     void setVolume();
 
 public:
@@ -22,7 +22,7 @@ public:
     void setDwall(double dWallIn);
     void setDimensions(REAL_C dimensionsIn);
     void setOrigin(REAL_C origin);
-    
+
     void setLengthAndDWall(double lengthIN, double dWallIN);    //necessary?
     void setVolumeAndDWall(double volumeIN, double dWallIN);
 
@@ -32,7 +32,7 @@ public:
     double getVolume() const;
 
     REAL_C convertToBoxPosition(REAL_C& positionIN);
-    
+
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox);
     SLIT_PORE_BOX& readFromFile(string filename);

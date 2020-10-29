@@ -7,15 +7,21 @@
 
 #include <string>
 #include "../defaults.h"
+#include "print_intervals.h"
+
 using namespace std;
 
 class ARGUMENTS{
 private:
     string sep = ": ";
+    bool finalized = false;    // toggles whether finalize() needs to be called
+    // placeholders
+    double duration = 0;
+    double numberOfPeriods = 0;
 public:
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
-    
+
     string configurationIn = CONFIGURATION_IN;
     string settingsIn = SETTINGS_IN;
 
@@ -24,49 +30,57 @@ public:
     double oscillationPeriod = OSCILLATION_PERIOD;
     double phaseOffset = PHASE_OFFSET;
 
-    double dt = DELTA_T;
+    double dt = 0;
     double temperature = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
     int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
-    
-    int printVelocity = PRINT_VELOCITY;
-    int printStress = PRINT_STRESS;
-    int printStressFourier = PRINT_STRESS_FOURIER;
-    int printEnergy = PRINT_ENERGY;
-    int printAngularBond = PRINT_ANGULAR_BOND;
-    int printSnapshots = PRINT_SNAPSHOTS;
-    int printPairCorrelation = PRINT_PAIR_CORRELATION;
+
+    PRINT_INTERVAL printStress;
+    PRINT_INTERVAL printStressFourier;
+    PRINT_INTERVAL printEnergy;
+    PRINT_INTERVAL printVelocity;
+    PRINT_INTERVAL printAngularBond;
+    PRINT_INTERVAL printSnapshots;
+    PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
-    
+
     bool clear = CLEAR;
     bool dry = false;
     bool printVersion = false;
-    
+
     // constructors
     ARGUMENTS();
     ARGUMENTS(string filename);
-    
+    ARGUMENTS& setup();
+
     // update with other instance of this class
     ARGUMENTS& update(const ARGUMENTS& other);
 
+    // choose the prioritized print intervals
+    ARGUMENTS& finalize();
+
+    // getter
+    double getDuration() const;
+    double getNumberOfPeriods() const;
+    bool isFinalized() const;
+    string getSeparator() const;
+
+    //setter
+    ARGUMENTS& setDuration(double duration);
+    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
+    ARGUMENTS& setDefaultDt();
+    ARGUMENTS& setSeparator(string sep);
+
+    // operators
     friend ostream& operator<<(ostream& os, const ARGUMENTS& args);
 
-    // setter and getter
-    ARGUMENTS& setDuration(double duration);
-    double getDuration() const;
-    ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
-    double getNumberOfPeriods() const;
-    
-    ARGUMENTS& setSeparator(string sep);
-    string getSeparator() const;
-    
     // file-handling
-    bool readFromFile(string filename, char comment='#', bool twice=true);
+    bool readFromFile(string filename, char comment = '#');
+
     ARGUMENTS& writeToFile(string filename);
 };
-
 
 #endif //SHEAREDSLITPOREBD_ARGUMENTS_H

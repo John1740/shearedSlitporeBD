@@ -10,9 +10,10 @@
 #include <vector>
 #include "boost/array.hpp"
 #include <stdexcept>
+
 using namespace std;
 
-template <typename dtype>
+template<typename dtype>
 class CARTESIAN_MATRIX{
     //This is completely hard-coded to improve performance. Another (slower) concept, that has been tried, is:
     //CARTESIAN_COORDINATE x, y, z, accessing via (*this).x.x
@@ -31,9 +32,12 @@ public:
 
     //constructors
     CARTESIAN_MATRIX(): xx(0), xy(0), xz(0), yx(0), yy(0), yz(0), zx(0), zy(0), zz(0){}
+
     CARTESIAN_MATRIX(const dtype c): xx(c), xy(c), xz(c), yx(c), yy(c), yz(c), zx(c), zy(c), zz(c){}
+
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col);
-    CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1, const CARTESIAN_COORDINATE<dtype>& col2, const CARTESIAN_COORDINATE<dtype>& col3);
+    CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1, const CARTESIAN_COORDINATE<dtype>& col2,
+                     const CARTESIAN_COORDINATE<dtype>& col3);
     CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& r1, const CARTESIAN_COORDINATE<dtype>& r2);
     CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other);
 
@@ -50,7 +54,7 @@ public:
     CARTESIAN_MATRIX& imag(const CARTESIAN_MATRIX<double>& i);
 
     //index operators
-    dtype  operator()(unsigned int row, unsigned int col) const;
+    dtype operator()(unsigned int row, unsigned int col) const;
     dtype& operator()(unsigned int row, unsigned int col);
     //read-only
     CARTESIAN_COORDINATE<dtype> operator[](unsigned int row) const;
@@ -252,9 +256,9 @@ public:
 
     //logical operators
     friend bool operator==(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
-        if(lhs.xx==rhs.xx && lhs.xy==rhs.xy && lhs.xz==rhs.xz &&
-           lhs.yx==rhs.yx && lhs.yy==rhs.yy && lhs.yz==rhs.yz &&
-           lhs.zx==rhs.zx && lhs.zy==rhs.zy && lhs.zz==rhs.zz){
+        if(lhs.xx == rhs.xx && lhs.xy == rhs.xy && lhs.xz == rhs.xz &&
+           lhs.yx == rhs.yx && lhs.yy == rhs.yy && lhs.yz == rhs.yz &&
+           lhs.zx == rhs.zx && lhs.zy == rhs.zy && lhs.zz == rhs.zz){
             return true;
         }
         else{
@@ -263,9 +267,9 @@ public:
     }
 
     friend bool operator!=(const CARTESIAN_MATRIX& lhs, const CARTESIAN_MATRIX& rhs){
-        if(lhs.xx!=rhs.xx && lhs.xy!=rhs.xy && lhs.xz!=rhs.xz &&
-           lhs.yx!=rhs.yx && lhs.yy!=rhs.yy && lhs.yz!=rhs.yz &&
-           lhs.zx!=rhs.zx && lhs.zy!=rhs.zy && lhs.zz!=rhs.zz){
+        if(lhs.xx != rhs.xx && lhs.xy != rhs.xy && lhs.xz != rhs.xz &&
+           lhs.yx != rhs.yx && lhs.yy != rhs.yy && lhs.yz != rhs.yz &&
+           lhs.zx != rhs.zx && lhs.zy != rhs.zy && lhs.zz != rhs.zz){
             return true;
         }
         else{
@@ -286,28 +290,42 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col){
     xx = xy = xz = col.x;
     yx = yy = yz = col.y;
     zx = zy = zz = col.z;
 }
 
-template <typename dtype>
-CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1, const CARTESIAN_COORDINATE<dtype>& col2, const CARTESIAN_COORDINATE<dtype>& col3){
-    xx = col1.x; xy = col2.x; xz = col3.x;
-    yx = col1.y; yy = col2.y; yz = col3.y;
-    zx = col1.z; zy = col2.z; zz = col3.z;
+template<typename dtype>
+CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& col1,
+                                          const CARTESIAN_COORDINATE<dtype>& col2,
+                                          const CARTESIAN_COORDINATE<dtype>& col3){
+    xx = col1.x;
+    xy = col2.x;
+    xz = col3.x;
+    yx = col1.y;
+    yy = col2.y;
+    yz = col3.y;
+    zx = col1.z;
+    zy = col2.z;
+    zz = col3.z;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_COORDINATE<dtype>& r1, const CARTESIAN_COORDINATE<dtype>& r2){
-    xx = r1.x * r2.x; xy = r1.x * r2.y; xz = r1.x * r2.z;
-    yx = r1.y * r2.x; yy = r1.y * r2.y; yz = r1.y * r2.z;
-    zx = r1.z * r2.x; zy = r1.z * r2.y; zz = r1.z * r2.z;
+    xx = r1.x * r2.x;
+    xy = r1.x * r2.y;
+    xz = r1.x * r2.z;
+    yx = r1.y * r2.x;
+    yy = r1.y * r2.y;
+    yz = r1.y * r2.z;
+    zx = r1.z * r2.x;
+    zy = r1.z * r2.y;
+    zz = r1.z * r2.z;
 }
 
-template <class dtype>
+template<class dtype>
 CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
     this->xx = other.xx;
     this->xy = other.xy;
@@ -322,26 +340,32 @@ CARTESIAN_MATRIX<dtype>::CARTESIAN_MATRIX(const CARTESIAN_MATRIX& other){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 dtype CARTESIAN_MATRIX<dtype>::determinant() const{
     return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::diag() const{
     return CARTESIAN_COORDINATE<dtype>(xx, yy, zz);;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::transposeInPlace(){
     dtype tmp;
-    tmp = xy; xy = yx; yx = tmp;
-    tmp = xz; xz = zx; zx = tmp;
-    tmp = yz; yz = zy; zy = tmp;
+    tmp = xy;
+    xy = yx;
+    yx = tmp;
+    tmp = xz;
+    xz = zx;
+    zx = tmp;
+    tmp = yz;
+    yz = zy;
+    zy = tmp;
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype> CARTESIAN_MATRIX<dtype>::transpose() const{
     CARTESIAN_MATRIX result;
     result.xx = xx;
@@ -356,7 +380,7 @@ CARTESIAN_MATRIX<dtype> CARTESIAN_MATRIX<dtype>::transpose() const{
     return result;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype> CARTESIAN_MATRIX<dtype>::dot(const CARTESIAN_MATRIX& rhs){
     CARTESIAN_MATRIX result;
     result.xx = xx * rhs.xx + xy * rhs.yx + xz * rhs.zx;
@@ -371,7 +395,7 @@ CARTESIAN_MATRIX<dtype> CARTESIAN_MATRIX<dtype>::dot(const CARTESIAN_MATRIX& rhs
     return result;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::dot(const CARTESIAN_COORDINATE<dtype>& rhs){
     CARTESIAN_COORDINATE<dtype> result;
     result.x = xx * rhs.x + xy * rhs.y + xz * rhs.z;
@@ -380,12 +404,12 @@ CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::dot(const CARTESIAN_COORDIN
     return result;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<dtype>::real() const{
     throw runtime_error(string("real() is not implemented for the following datatype/class: ") + typeid(xx).name());
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<double> CARTESIAN_MATRIX<dtype>::imag() const{
     throw runtime_error(string("imag() is not implemented for the following datatype/class: ") + typeid(xx).name());
 }
@@ -402,7 +426,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::imag(const CARTESIAN_MATRIX<do
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 dtype CARTESIAN_MATRIX<dtype>::operator()(unsigned int row, unsigned int col) const{
     switch(row){
         case 0:
@@ -443,7 +467,7 @@ dtype CARTESIAN_MATRIX<dtype>::operator()(unsigned int row, unsigned int col) co
     }
 }
 
-template <typename dtype>
+template<typename dtype>
 dtype& CARTESIAN_MATRIX<dtype>::operator()(unsigned int row, unsigned int col){
     switch(row){
         case 0:
@@ -484,7 +508,7 @@ dtype& CARTESIAN_MATRIX<dtype>::operator()(unsigned int row, unsigned int col){
     }
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::operator[](unsigned int row) const{
     switch(row){
         case 0:
@@ -498,7 +522,7 @@ CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::operator[](unsigned int row
     }
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::row(unsigned int i) const{
     switch(i){
         case 0:
@@ -512,7 +536,7 @@ CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::row(unsigned int i) const{
     }
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::col(unsigned int i) const{
     switch(i){
         case 0:
@@ -528,7 +552,7 @@ CARTESIAN_COORDINATE<dtype> CARTESIAN_MATRIX<dtype>::col(unsigned int i) const{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator=(const CARTESIAN_MATRIX& other){
     this->xx = other.xx;
     this->xy = other.xy;
@@ -542,7 +566,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator=(const CARTESIAN_MATR
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator=(const dtype& c){
     this->xx = c;
     this->xy = c;
@@ -556,7 +580,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator=(const dtype& c){
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator+=(const CARTESIAN_MATRIX& other){
     this->xx += other.xx;
     this->xy += other.xy;
@@ -570,7 +594,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator+=(const CARTESIAN_MAT
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator+=(const dtype& c){
     this->xx += c;
     this->xy += c;
@@ -584,7 +608,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator+=(const dtype& c){
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator-=(const CARTESIAN_MATRIX& other){
     this->xx -= other.xx;
     this->xy -= other.xy;
@@ -598,7 +622,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator-=(const CARTESIAN_MAT
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator-=(const dtype& c){
     this->xx -= c;
     this->xy -= c;
@@ -612,7 +636,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator-=(const dtype& c){
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator*=(const CARTESIAN_MATRIX& other){
     this->xx *= other.xx;
     this->xy *= other.xy;
@@ -626,7 +650,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator*=(const CARTESIAN_MAT
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator*=(const dtype& c){
     this->xx *= c;
     this->xy *= c;
@@ -640,7 +664,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator*=(const dtype& c){
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator/=(const CARTESIAN_MATRIX& other){
     this->xx /= other.xx;
     this->xy /= other.xy;
@@ -654,7 +678,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator/=(const CARTESIAN_MAT
     return *this;
 }
 
-template <typename dtype>
+template<typename dtype>
 CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator/=(const dtype& c){
     this->xx /= c;
     this->xy /= c;
@@ -670,7 +694,7 @@ CARTESIAN_MATRIX<dtype>& CARTESIAN_MATRIX<dtype>::operator/=(const dtype& c){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename dtype>
+template<typename dtype>
 boost::array<boost::array<dtype, 3>, 3> CARTESIAN_MATRIX<dtype>::asArray() const{
     boost::array<boost::array<dtype, 3>, 3> v;
     v[0][0] = xx;
@@ -685,7 +709,7 @@ boost::array<boost::array<dtype, 3>, 3> CARTESIAN_MATRIX<dtype>::asArray() const
     return v;
 }
 
-template <typename dtype>
+template<typename dtype>
 boost::array<dtype, 9> CARTESIAN_MATRIX<dtype>::asFlatArray() const{
     boost::array<dtype, 9> v;
     v[0] = xx;
@@ -700,7 +724,7 @@ boost::array<dtype, 9> CARTESIAN_MATRIX<dtype>::asFlatArray() const{
     return v;
 }
 
-template <typename dtype>
+template<typename dtype>
 vector<vector<dtype>> CARTESIAN_MATRIX<dtype>::asVector() const{
     vector<vector<dtype>> v(3);
     v[0] = (*this)[0].asVector();
@@ -709,7 +733,7 @@ vector<vector<dtype>> CARTESIAN_MATRIX<dtype>::asVector() const{
     return v;
 }
 
-template <typename dtype>
+template<typename dtype>
 vector<dtype> CARTESIAN_MATRIX<dtype>::asFlatVector() const{
     vector<dtype> v(9);
     v[0] = xx;

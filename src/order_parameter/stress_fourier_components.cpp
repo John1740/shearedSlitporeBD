@@ -40,12 +40,13 @@ COMPLEX_M STRESS_FOURIER_COMPONENTS::calculate(int n){
     //only consider full cycles (remove uncompleted last cycle if there is one)
     int N = stress.size() / timestepsPerPeriod * timestepsPerPeriod;
     if(N == 0){
-        cout << "Existing data is not large enough (" << stress.size() << "<" << timestepsPerPeriod << ") to compute a Fourier component!" << endl;
+        cout << "Existing data is not large enough (" << stress.size() << "<" << timestepsPerPeriod
+             << ") to compute a Fourier component!" << endl;
         return fc;
     }
     COMPLEX_M complex_stress;
     for(int t = 0; t < N; t++){
-        double phase = - n * 2 * M_PI * (t * dt) / period;
+        double phase = -n * 2 * M_PI * (t * dt) / period;
         complex<double> factor = exp(I * phase); //cos, sin to reduce numerical errors
         complex_stress.real(stress[t]);
         fc += complex_stress * factor;
@@ -73,7 +74,7 @@ double STRESS_FOURIER_COMPONENTS::calculateLossModulus(){
 double STRESS_FOURIER_COMPONENTS::calculateStorageModulusOld(){
     //this is probably some combination of real and imaginary part of the 1st harmonic fourier component if the shear rate is not pure cos()
     double firstHarmonicFC = calculate(1).xz.imag();
-    double storageModulus = - firstHarmonicFC * 2 * M_PI / (period * amplitude);
+    double storageModulus = -firstHarmonicFC * 2 * M_PI / (period * amplitude);
     return storageModulus;
 }
 

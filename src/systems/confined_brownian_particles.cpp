@@ -5,14 +5,15 @@
 
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
+
 namespace bo = boost;
 
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 }
 
-CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) {
+CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS& args){
     configurationIn = args.configurationIn;
-    
+
     readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
     dt = args.dt;
     T = args.temperature;
@@ -20,7 +21,6 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS &args) 
 }
 
 CONFINED_BROWNIAN_PARTICLES::~CONFINED_BROWNIAN_PARTICLES(){
-
 }
 
 void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
@@ -73,7 +73,7 @@ vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getPreviousParticleList(){
     return previousParticle;
 }
 
-vector< REAL_C > CONFINED_BROWNIAN_PARTICLES::getPositionList(){
+vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getPositionList(){
     setPositionInBox();
     vector<REAL_C> positionList(particle.size());
 
@@ -104,11 +104,13 @@ void CONFINED_BROWNIAN_PARTICLES::calculateExternalForce(int i){
     force[i] += forceOnParticleFromExternalFields(particle[i]);
 }
 
-REAL_C CONFINED_BROWNIAN_PARTICLES::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
+REAL_C
+CONFINED_BROWNIAN_PARTICLES::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return REAL_C(0.);
 }
 
-double CONFINED_BROWNIAN_PARTICLES::energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
+double
+CONFINED_BROWNIAN_PARTICLES::energyFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return 0.;
 }
 
@@ -130,13 +132,13 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
         printer.reset();
     }
     const char* fmt = "% .17e\t";
-    
+
     //header
     printer << bo::format("ITEM: TIMESTEP\n%ld\n") % timestep;
-    
+
     //box geometry
     printer << simBox;
-    
+
     //particle positions
     printer << bo::format("ITEM: NUMBER OF ATOMS\n%d\n") % numberOfParticles;
     printer << "ITEM: ATOMS index x y z diameter charge species\n";
@@ -158,15 +160,15 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
 void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool verbose){
     //this also checks if file exists
     simBox.readFromFile(filename);
-    
+
     ifstream f;
     f.open(filename.c_str());
     string line;
-    
+
     //reset metadata (and throw error if essential data is missing in file)
     timestep = 0;
     numberOfParticles = 0;
-    
+
     //read header/metadata
     int found = 0;
     while(getline(f, line)){
@@ -187,17 +189,17 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
         }
     }
     f.close();
-    
+
     // error messages (metadata)
     if(numberOfParticles == 0){
         cout << "numberOfParticles within " + filename + " not valid. Please set accordingly with:" << endl;
         cout << "ITEM: NUMBER OF ATOMS\n<numberOfParticles>" << endl;
         exit(0);
     }
-    
+
     //read particle information
     readParticlesFromFile(filename, true);
-    
+
     if(verbose){
         cout << "Read " << filename << " successfully!" << endl;
     }
@@ -224,25 +226,32 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
             int pIndex = -1, pX = -1, pY = -1, pZ = -1, pDiameter = -1, pCharge = -1, pSpecies = -1;
             for(int i = 0; i < numberOfColumns; i++){
                 if(linesplit[i].compare("index") == 0){
-                    pIndex = i; continue;
+                    pIndex = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("x") == 0){
-                    pX = i; continue;
+                    pX = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("y") == 0){
-                    pY = i; continue;
+                    pY = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("z") == 0){
-                    pZ = i; continue;
+                    pZ = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("diameter") == 0){
-                    pDiameter = i; continue;
+                    pDiameter = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("charge") == 0){
-                    pCharge = i; continue;
+                    pCharge = i;
+                    continue;
                 }
                 else if(linesplit[i].compare("species") == 0){
-                    pSpecies = i; continue;
+                    pSpecies = i;
+                    continue;
                 }
                 else{
                     cout << "Can't recognize the label " << linesplit[i] << " in the configuration file." << endl;
@@ -253,7 +262,7 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
                 cout << keyword << "index x y z diameter charge species" << endl;
                 exit(0);
             }
-            
+
             //read particle positions
             vector<double> c(numberOfColumns);   //container
             int counter = 0;
@@ -360,7 +369,7 @@ REAL_C CONFINED_BROWNIAN_PARTICLES::getMeanVelocity(){
 vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
     LAYERS layers(simBox);
     int numberOfLayers = layers.getNumberOfLayers();
-    
+
     vector<REAL_C> velocities = getVelocities();
     vector<REAL_C> meanLayerVelocities(numberOfLayers);
     vector<int> counter(numberOfLayers);

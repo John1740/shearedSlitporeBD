@@ -15,7 +15,7 @@ string surroundWithSeparator(string str, int length, int numberOfLines, char sig
     int linesBefore = numberOfLines / 2;
     int linesAfter = numberOfLines - linesBefore - 1;
     string new_str;
-    for(int i=0; i < linesBefore; i++){
+    for(int i = 0; i < linesBefore; i++){
         new_str.append(length, sign);
         new_str.append("\n");
     }
@@ -29,7 +29,7 @@ string surroundWithSeparator(string str, int length, int numberOfLines, char sig
     else{
         new_str.append(str);
     }
-    for(int i=0; i < linesAfter; i++){
+    for(int i = 0; i < linesAfter; i++){
         new_str.append("\n");
         new_str.append(length, sign);
     }

@@ -9,7 +9,6 @@
 #include "../struct/charged_particle.h"
 #include "../struct/slit_pore_box.h"
 
-
 #include "../printer/printer.h"
 #include "experimental/filesystem"
 
@@ -21,26 +20,28 @@ namespace fs = experimental::filesystem;
 class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class CALCULATE_FORCES;
+
     friend class GENERATE_SQUARE_LAYERS;
+
     friend class PAIR_CORRELATION;
 
 private:
 
 protected:
     CALCULATE_FORCES calculateForces;
-    
+
 //    CONFIGURATION cfg;
-    
+
     vector<CHARGED_PARTICLE> particle, previousParticle;
     vector<REAL_C> force;
     SLIT_PORE_BOX simBox;
-    
+
     string configurationIn = CONFIGURATION_IN;
 
     int numberOfParticles = NUMBER_OF_PARTICLES;
 
     long timestep = 0;
-    double dt = DELTA_T;
+    double dt = 1e-5;
     double T = TEMPERATURE;
     double D0 = DIFFUSION_CONSTANT;
 
@@ -58,7 +59,7 @@ protected:
     // Non-Public Set-Functions
     virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
     virtual void setPositionInBox();
-    
+
     // Non-Public File-Handling
     virtual CONFINED_BROWNIAN_PARTICLES& readParticlesFromFile(string filename, bool addMissingInfo = false);
 
@@ -77,7 +78,7 @@ public:
 
     // setter
     void setTimestep(long timestepIn);
-    virtual void setTimeStepSize(double timeStepSizeIn, bool verbose=false);
+    virtual void setTimeStepSize(double timeStepSizeIn, bool verbose = false);
 
     // getter
     long getTimestep() const;
@@ -88,14 +89,14 @@ public:
     virtual vector<CHARGED_PARTICLE> getParticleList();
     virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
-    
+
     vector<REAL_C> getVelocities();
     REAL_C getMeanVelocity();
     vector<REAL_C> getMeanLayerVelocities();
-    
+
     // File-Handling
-    virtual void readConfigurationFromFile(string filename, bool verbose=true);
-    virtual void writeConfigurationToFile(string filename, bool overwrite=false, bool verbose=true);
+    virtual void readConfigurationFromFile(string filename, bool verbose = true);
+    virtual void writeConfigurationToFile(string filename, bool overwrite = false, bool verbose = true);
 };
 
 #endif // BROWNIAN_PARTICLES_H

@@ -15,6 +15,7 @@ private:
     po::options_description description{"Brownian Dynamics Simulation with oscillatory (cos) shear protocol\n"
                                         "Options"};
     po::variables_map variablesMap;
+
     void addOptions();
 
 public:

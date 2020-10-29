@@ -15,15 +15,15 @@ private:
     //boxPosition will be overriden here onto position instead by overriding getPosition() and setPosition()
     vector<bool> periodicBoundaryConditions;   //periodic boundary condition
     const BOX_GEOMETRY* simBox;   //store the box geometry in a pointer (content of pointer should be const)
-    
+
 public:
     PERIODIC_COORDINATE();
-    
+
     //getter
     vector<double> getPosition() const;    //0=x, 1=y, 2=z
     BOX_GEOMETRY* getSimBox() const;
     vector<bool> getPeriodicBoundaryConditions() const;
-    
+
     //setter
     void setPosition(const REAL_C& other);
     void setPosition(const PERIODIC_COORDINATE& other);
@@ -31,6 +31,5 @@ public:
     void setSimBox(BOX_GEOMETRY* simBoxIn);
     void setPeriodicBoundaryConditions(bool x, bool y, bool z);
 };
-
 
 #endif //SHEAREDSLITPOREBD_PERIODIC_COORDINATE_H

@@ -2,9 +2,11 @@
 #include "version.h"
 #include "tools/format.h"
 #include "boost/format.hpp"
+
 namespace b = boost;
 
 #include "global.h" //contains random_event definition
+
 extern CRandomMersenne random_event;    //use global instance of random_event
 
 #include "systems/sheared_slitpore_system.h"
@@ -17,11 +19,12 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 
 #include <experimental/filesystem>
+
 namespace fs = experimental::filesystem;
 
-int main(int argc, const char *argv[]){
+int main(int argc, const char* argv[]){
     CLOCK clock;
-    
+
     ARGUMENT_PARSER parser(argc, argv);
     ARGUMENTS argsParsed = parser.parseArgs();
     ARGUMENTS args;
@@ -31,7 +34,8 @@ int main(int argc, const char *argv[]){
     else{
         argsParsed.settingsIn += string(" (not existing)");
     }
-    args.update(argsParsed);
+    args.update(argsParsed);    //argsParsed have priority
+    args.finalize();  //dt-defaulting and matching of numberOfTimesteps
     argsParsed.~ARGUMENTS();
 
     if(args.printVersion){
@@ -47,7 +51,7 @@ int main(int argc, const char *argv[]){
     cout << "Git branch: " << GIT_BRANCH << endl;
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
     cout << "Git version: " << GIT_VERSION << endl << endl;
-    
+
     //generate or read seed
     if(args.seed == 0){
         args.seed = getpid() * time(0); //dunno where getpid()-definition was imported from (unistd.h)
@@ -70,7 +74,7 @@ int main(int argc, const char *argv[]){
 
     SHEARED_SLITPORE_SYSTEM sys(args);
     sys.writeConfigurationToFile("configuration.in.new", true, true);
-    
+
     //clear
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;
@@ -90,7 +94,7 @@ int main(int argc, const char *argv[]){
 
     //Simulation start
     cout << endl << surroundWithSeparator("Simulation start") << endl;
-    
+
     VELOCITY_PRINTER velocity(&sys);
     STRESS_PRINTER stress(&sys);
     ANGULAR_BOND_PRINTER angularBond;
@@ -127,18 +131,18 @@ int main(int argc, const char *argv[]){
     }
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
-    
+
     //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
     sys.simulateForSteps(1);
     if(args.printVelocity > 0 && args.numberOfTimesteps > 0 && (args.numberOfTimesteps - 1) % args.printVelocity == 0){
         velocity.printLine();
     }
-    
+
     if(args.printStress > 0){
-        cout << b::format("Printed stresses to %s") % stress.printer.getFilename().c_str() << endl;
+        cout << b::format("Printed stresses to %s") % stress.getFilename().c_str() << endl;
     }
     if(args.printVelocity > 0){
-        cout << b::format("Printed velocities to %s") % velocity.printer.getFilename().c_str() << endl;
+        cout << b::format("Printed velocities to %s") % velocity.getFilename().c_str() << endl;
     }
     if(args.printAngularBond > 0){
         cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
@@ -146,13 +150,10 @@ int main(int argc, const char *argv[]){
     if(args.printPairCorrelation > 0){
         cout << b::format("Printed pair correlations to %s/") % PAIR_CORRELATIONS_OUT << endl;
     }
-    cout << endl;
     if(args.printStressFourier > 0){
-        cout << fc << endl;
+        cout << endl << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
-//        cout << "Old Storage modulus [kT/d^3]: " << fc.calculateStorageModulusOld() << endl;
-//        cout << "Old Loss modulus [kT/d^3]: " << fc.calculateLossModulusOld() << endl;
         for(int i = 0; i <= 4; i++){
             cout << "Fourier component (xz) (n= " << i << "): " << fc.calculate(i).xz << endl;
             if(i > 0){
@@ -160,13 +161,14 @@ int main(int argc, const char *argv[]){
             }
         }
     }
-    
+
     cout << endl << surroundWithSeparator("Simulation end") << endl;
-    
+
     clock.addTimePoint();
     cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
-    cout << b::format("Task finished in %.3f seconds (%s)") % clock.getDuration(0, -1) % clock.readDuration(0, -1).c_str() << endl;
+    cout << b::format("Task finished in %.3f seconds (%s)") % clock.getDuration(0, -1) %
+            clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
-    
+
     return 0;
 }

@@ -9,6 +9,4 @@
 
 #include "rng/randomc.h"    //CRandomMersenne
 
-//void initSeed (unsigned int seed);
-
 #endif

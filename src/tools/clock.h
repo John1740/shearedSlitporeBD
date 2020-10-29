@@ -32,7 +32,7 @@ public:
 
     //formatting of <iomanip> put_time is used
     //check https://en.cppreference.com/w/cpp/io/manip/put_time
-    string readTimePoint(int i, const char* fmt="%F %T");
+    string readTimePoint(int i, const char* fmt = "%F %T");
 
     //return duration between timePoints i and j in seconds
     //examples: duration(0, -1) returns duration between first and last call of addTimePoint()
@@ -44,10 +44,9 @@ public:
     //two   '%' -> print minutes (int) and seconds (double)
     //three '%' -> print hours (int), minutes (int) and seconds (double)
     //four  '%' -> print days (int), hours (int), minutes (int) and seconds (double)
-    string readDuration(int i, int j, const char* format="%d days %02d:%02d:%06.3f");
+    string readDuration(int i, int j, const char* format = "%d days %02d:%02d:%06.3f");
 
     //overload operator[] to get timePoints
 };
-
 
 #endif //SHEAREDSLITPOREBD_CLOCK_H

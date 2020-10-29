@@ -8,17 +8,15 @@
 #include <string>
 #include "../systems/sheared_slitpore_system.h"
 
-class STRESS_PRINTER{
+class STRESS_PRINTER: public PRINTER{
 private:
     SHEARED_SLITPORE_SYSTEM* sys;
     REAL_M meanStress;    //ensemble average/mean
-
 public:
     STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
     STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename);
     ~STRESS_PRINTER();
-    
-    PRINTER printer;
+
     string format_l = "% 4.5f\t";   //line format
     string format_h = "%8s\t";  //header format
 
@@ -27,6 +25,5 @@ public:
 
     //getter
 };
-
 
 #endif //SHEAREDSLITPOREBD_STRESS_H

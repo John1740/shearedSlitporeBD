@@ -9,6 +9,6 @@
 
 using namespace std;
 
-string surroundWithSeparator(string str, int length=60, int numberOfLines=1, char sign='#', bool spaces=true);
+string surroundWithSeparator(string str, int length = 60, int numberOfLines = 1, char sign = '#', bool spaces = true);
 
 #endif //SHEAREDSLITPOREBD_FORMAT_H

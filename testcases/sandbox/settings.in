@@ -3,7 +3,6 @@ seed: 968071013
 configuration: configuration.in.equilibrium
 
 amplitude: 400
-oscillationPeriod: 1
+oscillationPeriod: 0.01
 
 numberOfTimesteps: 10
-printStress: 1

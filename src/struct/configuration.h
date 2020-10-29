@@ -18,17 +18,16 @@ private:
 public:
     CONFIGURATION();
     CONFIGURATION(const ARGUMENTS& args);
-    
+
     //getter functions
     SLIT_PORE_BOX getBox();
-    
+
     //setter functions
     void setSimBox(SLIT_PORE_BOX boxIn);
-    
+
     //file handling
     void writeConfiguration(string filename);
     void readConfiguration(string filename);
 };
-
 
 #endif //SHEAREDSLITPOREBD_CONFIGURATION_H

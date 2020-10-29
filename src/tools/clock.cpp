@@ -7,48 +7,48 @@
 #include <cmath>
 #include <algorithm>    //needed for count (in strings)
 
-CLOCK::CLOCK() {
+CLOCK::CLOCK(){
     reset();
 }
 
-void CLOCK::reset() {
+void CLOCK::reset(){
     timePoints.clear();
     clockTimes.clear();
     length = timePoints.size();
     addTimePoint();
 }
 
-int CLOCK::addTimePoint() {
+int CLOCK::addTimePoint(){
     timePoints.push_back(time(0));
     clockTimes.push_back(clock());
     return length++;
 }
 
-time_t CLOCK::getTimePoint(int i) {
+time_t CLOCK::getTimePoint(int i){
     return timePoints.at2(i);
 }
 
-clock_t CLOCK::getClockTime(int i) {
+clock_t CLOCK::getClockTime(int i){
     return clockTimes.at2(i);
 }
 
-string CLOCK::readTimePoint(int i, const char* fmt) {
+string CLOCK::readTimePoint(int i, const char* fmt){
     tm* timeStructure = localtime(&timePoints.at2(i));
     stringstream ss;
     ss << put_time(timeStructure, fmt);
     return ss.str();
 }
 
-double CLOCK::getDuration(int i, int j) {
+double CLOCK::getDuration(int i, int j){
     double duration = double(clockTimes.at2(j) - clockTimes.at2(i)) / CLOCKS_PER_SEC;
     return duration;
 }
 
-string CLOCK::readDuration(int i, int j, const char* format) {
+string CLOCK::readDuration(int i, int j, const char* format){
     double seconds = getDuration(i, j);
-    int minutes = seconds/60;
-    int hours = minutes/60;
-    int days = hours/24;
+    int minutes = seconds / 60;
+    int hours = minutes / 60;
+    int days = hours / 24;
     stringstream ss;
     char buffer[50];    //should be large enough in all cases, can be optimized
     string s = string(format);

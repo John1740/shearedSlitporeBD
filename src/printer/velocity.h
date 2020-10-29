@@ -9,7 +9,7 @@
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 
-class VELOCITY_PRINTER{
+class VELOCITY_PRINTER: public PRINTER{
 private:
     SHEARED_SLITPORE_SYSTEM* sys;
     REAL_C meanVelocity;
@@ -19,11 +19,10 @@ public:
     VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
     VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
     ~VELOCITY_PRINTER();
-    
-    PRINTER printer;
+
     string format_l = "% 4.5f\t";   //line format
     string format_h = "%8s\t";  //header format
-    
+
     void printHeader();
     void printLine();
 };

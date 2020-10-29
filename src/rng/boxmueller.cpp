@@ -7,6 +7,7 @@
 #include "boxmueller.h"
 #include <cmath>
 #include "../global.h" //contains random_event definition
+
 extern CRandomMersenne random_event;    //use global instance of random_event
 
 double boxmueller(double mu, double sigma){

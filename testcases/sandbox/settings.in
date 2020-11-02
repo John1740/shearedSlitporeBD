@@ -5,4 +5,6 @@ configuration: configuration.in.equilibrium
 amplitude: 400
 oscillationPeriod: 1.0
 
-numberOfTimesteps: 10
+# numberOfTimesteps: 10
+# numberOfTimesteps: 1000
+numberOfPeriods: 1

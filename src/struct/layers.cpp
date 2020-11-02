@@ -33,10 +33,12 @@ void LAYERS::setNumberOfLayers(const SLIT_PORE_BOX& simBox){
 }
 
 void LAYERS::setZMin(const SLIT_PORE_BOX& simBox){
+//    TODO: needs improvement
     zMin = -0.2 * simBox.getDimensions().z;
 }
 
 double LAYERS::calculateLayerThickness(){
+//    TODO: needs improvement (not simply Lz/numberOfLayers)
     layerThickness = -2 * zMin / (numberOfLayers - 1);
     return layerThickness;
 }

@@ -3,6 +3,7 @@
 //
 
 #include "print_intervals.h"
+#include <cmath>
 
 PRINT_INTERVAL::PRINT_INTERVAL(){
 }
@@ -63,7 +64,7 @@ bool PRINT_INTERVAL::isFinalized() const{
 
 PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration){
     if(finalized){
-        interval = duration * *numberOfTimesteps;
+        interval = round(duration * *numberOfTimesteps);
     }
     else{
         this->duration = duration;
@@ -73,7 +74,7 @@ PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration){
 
 PRINT_INTERVAL& PRINT_INTERVAL::setPeriod(double period){
     if(finalized){
-        interval = period * *oscillationPeriod / *dt;
+        interval = round(period * *oscillationPeriod / *dt);
     }
     else{
         this->period = period;

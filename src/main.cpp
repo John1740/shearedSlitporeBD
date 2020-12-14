@@ -37,7 +37,6 @@ int main(int argc, const char* argv[]){
     }
     args.update(argsParsed);    //argsParsed have priority
     args.finalize();  //dt-defaulting and matching of numberOfTimesteps
-    argsParsed.~ARGUMENTS();
 
     if(args.printVersion){
         cout << PROJECT_VERSION << endl;

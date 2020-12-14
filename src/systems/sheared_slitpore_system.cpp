@@ -27,10 +27,10 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
 
-    dlvo.charge1 = particle[0].charge;
-    dlvo.charge2 = particle[0].charge;
-    dlvo.diameter1 = particle[0].diameter;
-    dlvo.diameter2 = particle[0].diameter;
+    dlvo.charge1 = particles[0].charge;
+    dlvo.charge2 = particles[0].charge;
+    dlvo.diameter1 = particles[0].diameter;
+    dlvo.diameter2 = particles[0].diameter;
     dlvo.density = getDensity();
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
@@ -60,26 +60,26 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
 
     REAL_C randomDisplacement;
     REAL_C shearForce;
-    previousParticle = particle;
+    previousParticles = particles;
     this->shearForce.shearRate = calculateCurrentShearRate();
 
-    for(int i = 0; i < particle.size(); ++i){
+    for(int i = 0; i < particles.size(); ++i){
         randomDisplacement = getRandomDisplacement();
         shearForce = getShearForce(i);
 
-        particle[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
+        particles[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
 
-        if(particle[i].position.z > 0.5 * simBox.getDimensions().z ||
-           particle[i].position.z < -0.5 * simBox.getDimensions().z){
-            cout << "particle[i].position.z = " << particle[i].position.z << endl;
+        if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
+           particles[i].position.z < -0.5 * simBox.getDimensions().z){
+            cout << "particle[i].position.z = " << particles[i].position.z << endl;
         }
-        particle[i].setBoxPosition(simBox);
+        particles[i].setBoxPosition(simBox);
     }
     timestep++;
 }
 
 REAL_C SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
-    return shearForce.forceOnParticle(particle[index]);
+    return shearForce.forceOnParticle(particles[index]);
 }
 
 REAL_C SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
@@ -104,7 +104,7 @@ double SHEARED_SLITPORE_SYSTEM::energyOfParticleFromExternalFields(CHARGED_PARTI
 //}
 
 void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
-    REAL_C tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
+    REAL_C tmpForce = forceFromParticleOnParticle(particles[i], particles[j]);
     force[i] += tmpForce;
     force[j] -= tmpForce;
 
@@ -112,14 +112,14 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
         addConfigurationalStress(tmpForce, i, j);
     }
     if(printEnergy > 0){
-        double tmpEnergy = energyFromParticleOnParticle(particle[i], particle[j]);
+        double tmpEnergy = energyFromParticleOnParticle(particles[i], particles[j]);
         energy[i] += tmpEnergy;
         energy[j] += tmpEnergy;
     }
 }
 
 void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(REAL_C forceIn, int i, int j){
-    REAL_C posDifference = particle[i].boxPosition - particle[j].boxPosition;
+    REAL_C posDifference = particles[i].boxPosition - particles[j].boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     REAL_M tmpStress(posDifference, forceIn);
     stressPerParticle[i] += 0.5 * tmpStress;
@@ -127,7 +127,7 @@ void SHEARED_SLITPORE_SYSTEM::addConfigurationalStress(REAL_C forceIn, int i, in
 }
 
 void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
-    REAL_C tmpForce = forceOnParticleFromExternalFields(particle[i]);
+    REAL_C tmpForce = forceOnParticleFromExternalFields(particles[i]);
     force[i] += tmpForce;
 
     if(printStress > 0){
@@ -135,18 +135,18 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     }
 
     if(printEnergy > 0){
-        energy[i] += energyOfParticleFromExternalFields(particle[i]);
+        energy[i] += energyOfParticleFromExternalFields(particles[i]);
     }
 }
 
 void SHEARED_SLITPORE_SYSTEM::addExternalStress(const REAL_C& forceIn, int i){   //const CARTESIAN_COORDINATE&
     REAL_M tmpStress(0.);
 
-    if(particle[i].boxPosition.z >= 0){
-        tmpStress.zz += forceIn.z * (particle[i].boxPosition.z - 0.5 * simBox.getDimensions().z);
+    if(particles[i].boxPosition.z >= 0){
+        tmpStress.zz += forceIn.z * (particles[i].boxPosition.z - 0.5 * simBox.getDimensions().z);
     }
     else{
-        tmpStress.zz += forceIn.z * (particle[i].boxPosition.z + 0.5 * simBox.getDimensions().z);
+        tmpStress.zz += forceIn.z * (particles[i].boxPosition.z + 0.5 * simBox.getDimensions().z);
     }
 
     stressPerParticle[i] += tmpStress;
@@ -169,8 +169,8 @@ REAL_M SHEARED_SLITPORE_SYSTEM::getMeanStress() const{
 }
 
 void SHEARED_SLITPORE_SYSTEM::convertPositionToBoxPosition(){
-    for(int i = 0; i < particle.size(); ++i){
-        particle[i].position = particle[i].boxPosition;
+    for(int i = 0; i < particles.size(); ++i){
+        particles[i].position = particles[i].boxPosition;
     }
 }
 

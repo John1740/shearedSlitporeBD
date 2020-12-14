@@ -41,7 +41,8 @@ public:
     PRINT_INTERVAL printStress;
     PRINT_INTERVAL printStressFourier;
     PRINT_INTERVAL printEnergy;
-    PRINT_INTERVAL printVelocity;
+    PRINT_INTERVAL printLayerPosition;
+    PRINT_INTERVAL printLayerVelocity;
     PRINT_INTERVAL printAngularBond;
     PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;

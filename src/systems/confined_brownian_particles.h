@@ -23,7 +23,7 @@ class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class GENERATE_SQUARE_LAYERS;
 
-    friend class PAIR_CORRELATION;
+//    friend class PAIR_CORRELATION;
 
 private:
 
@@ -32,7 +32,7 @@ protected:
 
 //    CONFIGURATION cfg;
 
-    vector<CHARGED_PARTICLE> particle, previousParticle;
+    vector<CHARGED_PARTICLE> particles, previousParticles;
     vector<REAL_C> force;
     SLIT_PORE_BOX simBox;
 
@@ -89,6 +89,8 @@ public:
     virtual vector<CHARGED_PARTICLE> getParticleList();
     virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
+
+    vector<REAL_C> getMeanLayerPositions();
 
     vector<REAL_C> getVelocities();
     REAL_C getMeanVelocity();

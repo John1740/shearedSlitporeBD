@@ -32,12 +32,12 @@ void CONFINED_BROWNIAN_PARTICLES::simulateForSteps(int maxSteps){
 void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     calculateForce();
     REAL_C randomDisplacement;
-    previousParticle = particle;
+    previousParticles = particles;
 
-    for(int i = 0; i < particle.size(); ++i){
+    for(int i = 0; i < particles.size(); ++i){
         randomDisplacement = getRandomDisplacement();
 
-        particle[i].position += force[i] * D0 * dt / T + randomDisplacement;
+        particles[i].position += force[i] * D0 * dt / T + randomDisplacement;
     }
     setPositionInBox();
     timestep++;
@@ -66,27 +66,27 @@ SLIT_PORE_BOX* CONFINED_BROWNIAN_PARTICLES::simulationBox(){
 }
 
 vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getParticleList(){
-    return particle;
+    return particles;
 }
 
 vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getPreviousParticleList(){
-    return previousParticle;
+    return previousParticles;
 }
 
 vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getPositionList(){
     setPositionInBox();
-    vector<REAL_C> positionList(particle.size());
+    vector<REAL_C> positionList(particles.size());
 
-    for(int i = 0; i < particle.size(); ++i){
-        positionList[i] = particle[i].boxPosition;
+    for(int i = 0; i < particles.size(); ++i){
+        positionList[i] = particles[i].boxPosition;
     }
 
     return positionList;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setPositionInBox(){
-    for(int i = 0; i < particle.size(); ++i){
-        particle[i].setBoxPosition(simBox);
+    for(int i = 0; i < particles.size(); ++i){
+        particles[i].setBoxPosition(simBox);
     }
 }
 
@@ -95,13 +95,13 @@ double CONFINED_BROWNIAN_PARTICLES::getInteractionLengthScale(){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::calculateInteractionForce(int i, int j){
-    REAL_C tmpForce = forceFromParticleOnParticle(particle[i], particle[j]);
+    REAL_C tmpForce = forceFromParticleOnParticle(particles[i], particles[j]);
     force[i] += tmpForce;
     force[j] -= tmpForce;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::calculateExternalForce(int i){
-    force[i] += forceOnParticleFromExternalFields(particle[i]);
+    force[i] += forceOnParticleFromExternalFields(particles[i]);
 }
 
 REAL_C
@@ -143,13 +143,13 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     printer << bo::format("ITEM: NUMBER OF ATOMS\n%d\n") % numberOfParticles;
     printer << "ITEM: ATOMS index x y z diameter charge species\n";
     for(int i = 0; i < numberOfParticles; ++i){
-        printer << bo::format("%4d\t") % particle[i].index;
-        printer << bo::format(fmt) % particle[i].boxPosition.x;
-        printer << bo::format(fmt) % particle[i].boxPosition.y;
-        printer << bo::format(fmt) % particle[i].boxPosition.z;
-        printer << bo::format("%2.3f\t") % particle[i].diameter;
-        printer << bo::format("%3.2f\t") % particle[i].charge;
-        printer << bo::format("%2d\t") % particle[i].species;
+        printer << bo::format("%4d\t") % particles[i].index;
+        printer << bo::format(fmt) % particles[i].boxPosition.x;
+        printer << bo::format(fmt) % particles[i].boxPosition.y;
+        printer << bo::format(fmt) % particles[i].boxPosition.z;
+        printer << bo::format("%2.3f\t") % particles[i].diameter;
+        printer << bo::format("%3.2f\t") % particles[i].charge;
+        printer << bo::format("%2d\t") % particles[i].species;
         printer << '\n';
     }
     if(verbose){
@@ -327,7 +327,7 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector<CHARGED_PARTICLE> particleListIn){
-    particle = particleListIn;
+    particles = particleListIn;
     numberOfParticles = particleListIn.size();
     setPositionInBox();
 }
@@ -348,7 +348,7 @@ void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn, bool ve
 vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getVelocities(){
     vector<REAL_C> velocities;
     for(int i = 0; i < numberOfParticles; i++){
-        REAL_C positionDifference = particle[i].boxPosition - previousParticle[i].boxPosition;
+        REAL_C positionDifference = particles[i].boxPosition - previousParticles[i].boxPosition;
         positionDifference = simBox.convertToBoxPosition(positionDifference);
         velocities.push_back(positionDifference / dt);
     }
@@ -375,7 +375,7 @@ vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
     vector<int> counter(numberOfLayers);
     int layerNumber;
     for(int i = 0; i < numberOfParticles; i++){
-        layerNumber = layers.tellLayerNumber(previousParticle[i]);
+        layerNumber = layers.tellLayerNumber(previousParticles[i]);
         meanLayerVelocities[layerNumber] += velocities[i];
         counter[layerNumber]++;
     }
@@ -383,6 +383,23 @@ vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerVelocities(){
         meanLayerVelocities[j] /= counter[j];
     }
     return meanLayerVelocities;
+}
+
+vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerPositions(){
+    LAYERS layers(simBox);
+    int numberOfLayers = layers.getNumberOfLayers();
+    vector<REAL_C> meanLayerPositions(numberOfLayers);
+    vector<int> counter(numberOfLayers);
+    int layerNumber;
+    for(int i = 0; i < numberOfParticles; i++){
+        layerNumber = layers.tellLayerNumber(particles[i]);
+        meanLayerPositions[layerNumber] += particles[i].boxPosition;
+        counter[layerNumber]++;
+    }
+    for(int j = 0; j < numberOfLayers; j++){
+        meanLayerPositions[j] /= counter[j];
+    }
+    return meanLayerPositions;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setTimestep(long timestepIn){

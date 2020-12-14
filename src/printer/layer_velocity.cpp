@@ -2,12 +2,12 @@
 // Created by mhuels on 4/30/20.
 //
 
-#include "velocity.h"
+#include "layer_velocity.h"
 #include "boost/format.hpp"
 
 using namespace boost;
 
-VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn): PRINTER(VELOCITIES_OUT){
+VELOCITY_PRINTER::VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn): PRINTER(LAYER_VELOCITIES_OUT){
     sys = sysIn;
     printHeader();
 }

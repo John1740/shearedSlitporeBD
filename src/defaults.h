@@ -13,7 +13,8 @@ const std::string CONFIGURATION_OUT = "configuration.out";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
 const std::string PAIR_CORRELATIONS_OUT = "pairCorrelations";
 const std::string STRESSES_OUT = "stresses.out";
-const std::string VELOCITIES_OUT = "velocities.out";
+const std::string LAYER_POSITIONS_OUT = "layerPositions.out";
+const std::string LAYER_VELOCITIES_OUT = "velocities.out";
 const std::string SNAPSHOTS = "snapshots.out";
 
 const double SHEAR_RATE = 0.0;
@@ -36,7 +37,8 @@ const double DIFFUSION_CONSTANT = 1.0;
 
 const int NUMBER_OF_TIMESTEPS = 10;
 
-const int PRINT_VELOCITY = 0;
+const int PRINT_LAYER_POSITION = 0;
+const int PRINT_LAYER_VELOCITY = 0;
 const int PRINT_STRESS = 0;
 const int PRINT_STRESS_FOURIER = 0;
 const int PRINT_ENERGY = 0;

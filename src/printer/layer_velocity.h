@@ -2,8 +2,8 @@
 // Created by mhuels on 4/30/20.
 //
 
-#ifndef SHEAREDSLITPOREBD_VELOCITY_H
-#define SHEAREDSLITPOREBD_VELOCITY_H
+#ifndef SHEAREDSLITPOREBD_LAYER_VELOCITY_H
+#define SHEAREDSLITPOREBD_LAYER_VELOCITY_H
 
 #include "../struct/cartesian_c.h"
 #include "../systems/sheared_slitpore_system.h"
@@ -27,4 +27,4 @@ public:
     void printLine();
 };
 
-#endif //SHEAREDSLITPOREBD_VELOCITY_H
+#endif //SHEAREDSLITPOREBD_LAYER_VELOCITY_H

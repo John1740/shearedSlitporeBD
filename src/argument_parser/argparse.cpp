@@ -75,7 +75,16 @@ void ARGUMENT_PARSER::addOptions(){
              "Overwrites --printEnergy")
             ("printEnergyPeriod", po::value<double>(), "Same as --printEnergy but in units of oscillation periods.\n"
                                                        "Overwrites --printEnergy and --printEnergyDuration")
-            ("printVelocity", po::value<double>()->default_value(PRINT_VELOCITY),
+            ("printLayerPosition", po::value<double>()->default_value(PRINT_LAYER_POSITION),
+             "print layer positions every x-th timestep; "
+             "x<0 -> no print-outs")
+            ("printLayerPositionDuration", po::value<double>(),
+             "Same as --printLayerPosition but in units of total simulation time.\n"
+             "Overwrites --printLayerPosition")
+            ("printLayerPositionPeriod", po::value<double>(),
+             "Same as --printLayerPosition but in units of oscillation periods.\n"
+             "Overwrites --printLayerPosition and --printLayerPositionDuration")
+            ("printVelocity", po::value<double>()->default_value(PRINT_LAYER_VELOCITY),
              "print velocities every x-th timestep; "
              "x<0 -> no print-outs")
             ("printVelocityDuration", po::value<double>(),
@@ -174,12 +183,20 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
         args.printEnergy.setPeriod(variablesMap["printEnergyPeriod"].as<double>());
     }
     //
-    args.printVelocity = round(variablesMap["printVelocity"].as<double>());
+    args.printLayerPosition = round(variablesMap["printLayerPosition"].as<double>());
+    if(variablesMap.count("printLayerPositionDuration")){
+        args.printLayerPosition.setDuration(variablesMap["printLayerPositionDuration"].as<double>());
+    }
+    if(variablesMap.count("printLayerPositionPeriod")){
+        args.printLayerPosition.setPeriod(variablesMap["printLayerPositionPeriod"].as<double>());
+    }
+    //
+    args.printLayerVelocity = round(variablesMap["printVelocity"].as<double>());
     if(variablesMap.count("printVelocityDuration")){
-        args.printVelocity.setDuration(variablesMap["printVelocityDuration"].as<double>());
+        args.printLayerVelocity.setDuration(variablesMap["printVelocityDuration"].as<double>());
     }
     if(variablesMap.count("printVelocityPeriod")){
-        args.printVelocity.setPeriod(variablesMap["printVelocityPeriod"].as<double>());
+        args.printLayerVelocity.setPeriod(variablesMap["printVelocityPeriod"].as<double>());
     }
     //
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());
@@ -221,10 +238,14 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
            && args.printEnergy.getDuration() == 0
            && args.printEnergy.getPeriod() == 0)
             args.printEnergy = args.printAll;
-        if(args.printVelocity == PRINT_VELOCITY
-           && args.printVelocity.getDuration() == 0
-           && args.printVelocity.getPeriod() == 0)
-            args.printVelocity = args.printAll;
+        if(args.printLayerPosition == PRINT_LAYER_POSITION
+           && args.printLayerPosition.getDuration() == 0
+           && args.printLayerPosition.getPeriod() == 0)
+            args.printLayerVelocity = args.printAll;
+        if(args.printLayerVelocity == PRINT_LAYER_VELOCITY
+           && args.printLayerVelocity.getDuration() == 0
+           && args.printLayerVelocity.getPeriod() == 0)
+            args.printLayerVelocity = args.printAll;
         if(args.printAngularBond == PRINT_ANGULAR_BOND
            && args.printAngularBond.getDuration() == 0
            && args.printAngularBond.getPeriod() == 0)

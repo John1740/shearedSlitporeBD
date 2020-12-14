@@ -87,8 +87,8 @@ add_executable(
         src/printer/printer.cpp
         src/printer/stress.cpp
         src/printer/stress.h
-        src/printer/velocity.cpp
-        src/printer/velocity.h
+        src/printer/layer_velocity.cpp
+        src/printer/layer_velocity.h
         src/printer/angular_bond.cpp
         src/printer/angular_bond.h
 
@@ -116,7 +116,7 @@ add_executable(
 
         src/argument_parser/print_intervals.cpp
         src/argument_parser/print_intervals.h
-)
+        src/printer/layer_position.cpp src/printer/layer_position.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(

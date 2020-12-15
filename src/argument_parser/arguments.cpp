@@ -133,9 +133,9 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printLayerPositionPeriod" << args.sep << args.printLayerPosition.getPeriod() << endl;
     }
     if(args.printLayerVelocity > 0){
-        os << "printVelocity" << args.sep << args.printLayerVelocity << endl;
-        os << "printVelocityDuration" << args.sep << args.printLayerVelocity.getDuration() << endl;
-        os << "printVelocityPeriod" << args.sep << args.printLayerVelocity.getPeriod() << endl;
+        os << "printLayerVelocity" << args.sep << args.printLayerVelocity << endl;
+        os << "printLayerVelocityDuration" << args.sep << args.printLayerVelocity.getDuration() << endl;
+        os << "printLayerVelocityPeriod" << args.sep << args.printLayerVelocity.getPeriod() << endl;
     }
     if(args.printAngularBond > 0){
         os << "printAngularBond" << args.sep << args.printAngularBond << endl;
@@ -255,13 +255,13 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("printLayerPosition") != string::npos){
             printLayerPosition = round(stod(linesplit[1]));
         }
-        else if(line.find("printVelocityDuration") != string::npos){
+        else if(line.find("printLayerVelocityDuration") != string::npos){
             printLayerVelocity.setDuration(stod(linesplit[1]));
         }
-        else if(line.find("printVelocityPeriod") != string::npos){
+        else if(line.find("printLayerVelocityPeriod") != string::npos){
             printLayerVelocity.setPeriod(stod(linesplit[1]));
         }
-        else if(line.find("printVelocity") != string::npos){
+        else if(line.find("printLayerVelocity") != string::npos){
             printLayerVelocity = round(stod(linesplit[1]));
         }
         else if(line.find("printAngularBondDuration") != string::npos){

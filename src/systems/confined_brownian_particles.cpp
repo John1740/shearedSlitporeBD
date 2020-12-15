@@ -393,7 +393,7 @@ vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getMeanLayerPositions(){
     int layerNumber;
     for(int i = 0; i < numberOfParticles; i++){
         layerNumber = layers.tellLayerNumber(particles[i]);
-        meanLayerPositions[layerNumber] += particles[i].boxPosition;
+        meanLayerPositions[layerNumber] += particles[i].position;
         counter[layerNumber]++;
     }
     for(int j = 0; j < numberOfLayers; j++){

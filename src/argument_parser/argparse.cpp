@@ -84,15 +84,15 @@ void ARGUMENT_PARSER::addOptions(){
             ("printLayerPositionPeriod", po::value<double>(),
              "Same as --printLayerPosition but in units of oscillation periods.\n"
              "Overwrites --printLayerPosition and --printLayerPositionDuration")
-            ("printVelocity", po::value<double>()->default_value(PRINT_LAYER_VELOCITY),
+            ("printLayerVelocity", po::value<double>()->default_value(PRINT_LAYER_VELOCITY),
              "print velocities every x-th timestep; "
              "x<0 -> no print-outs")
-            ("printVelocityDuration", po::value<double>(),
-             "Same as --printVelocity but in units of total simulation time.\n"
-             "Overwrites --printVelocity")
-            ("printVelocityPeriod", po::value<double>(),
-             "Same as --printVelocity but in units of oscillation periods.\n"
-             "Overwrites --printVelocity and --printVelocityDuration")
+            ("printLayerVelocityDuration", po::value<double>(),
+             "Same as --printLayerVelocity but in units of total simulation time.\n"
+             "Overwrites --printLayerVelocity")
+            ("printLayerVelocityPeriod", po::value<double>(),
+             "Same as --printLayerVelocity but in units of oscillation periods.\n"
+             "Overwrites --printLayerVelocity and --printLayerVelocityDuration")
             ("printAngularBond", po::value<double>()->default_value(PRINT_ANGULAR_BOND),
              "print the angular bond order parameter every x-th timestep; "
              "x<0 -> no print-outs")
@@ -191,12 +191,12 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
         args.printLayerPosition.setPeriod(variablesMap["printLayerPositionPeriod"].as<double>());
     }
     //
-    args.printLayerVelocity = round(variablesMap["printVelocity"].as<double>());
-    if(variablesMap.count("printVelocityDuration")){
-        args.printLayerVelocity.setDuration(variablesMap["printVelocityDuration"].as<double>());
+    args.printLayerVelocity = round(variablesMap["printLayerVelocity"].as<double>());
+    if(variablesMap.count("printLayerVelocityDuration")){
+        args.printLayerVelocity.setDuration(variablesMap["printLayerVelocityDuration"].as<double>());
     }
-    if(variablesMap.count("printVelocityPeriod")){
-        args.printLayerVelocity.setPeriod(variablesMap["printVelocityPeriod"].as<double>());
+    if(variablesMap.count("printLayerVelocityPeriod")){
+        args.printLayerVelocity.setPeriod(variablesMap["printLayerVelocityPeriod"].as<double>());
     }
     //
     args.printAngularBond = round(variablesMap["printAngularBond"].as<double>());

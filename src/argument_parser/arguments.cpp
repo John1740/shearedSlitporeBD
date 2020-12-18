@@ -421,19 +421,32 @@ ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
 }
 
 ARGUMENTS& ARGUMENTS::setDefaultDt(){
-    // minimum due to energy potential (bigger dt lead to particles leaving the box)
-    dt = 1e-5;
-    // it needs dtDeformation to move the upper wall by the wall distance once
+    ////// identify smallest time scale in the system
+    // Brownian time
+    double tauBrownian = 1 / D0;    // diameter = 1
+    // this is always present
+    double tauMin = tauBrownian;
+    // potential energy landscape
+    // corresponds to substrate relaxation time in the single particle case -> hard to evaluate though
+    // larger timestep sizes would lead to particles jumping out of the box (crossing the walls)
+    double tauPotential = 1e-2;
+    if(tauMin > tauPotential){
+        tauMin = tauPotential;
+    }
+    // deformation time scale
+    // it needs tauDeformation to move the upper wall by the wall distance once
     // need to have at least 1000 sample points for that time
-    double dtDeformation = 1 / (abs(shearRate) + abs(amplitude)) / 1000;
-    if(dt > dtDeformation){
-        dt = dtDeformation;
+    double tauDeformation = 1 / (abs(shearRate) + abs(amplitude));
+    if(tauMin > tauDeformation){
+        tauMin = tauDeformation;
     }
-    // need to have at least 1000 sample points per oscillation period
-    double dtOscillation = oscillationPeriod / 1000;
-    if(dt > dtOscillation){
-        dt = dtOscillation;
+    // oscillation period
+    double tauOscillation = oscillationPeriod;
+    if(tauMin > tauOscillation){
+        tauMin = tauOscillation;
     }
+    // need to have at least 1000 sample points for the smallest time scale
+    dt = tauMin / 1000;
     // make dt even split of oscillationPeriod
     dt = oscillationPeriod / round(oscillationPeriod / dt);
     return *this;

@@ -6,3 +6,4 @@ printAll: 1
 printEnergy: -1
 printSnapshots: 10
 printPairCorrelations: 10
+printStressFourier: -1

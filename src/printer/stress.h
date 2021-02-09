@@ -17,9 +17,6 @@ public:
     STRESS_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename);
     ~STRESS_PRINTER();
 
-    string format_l = "% 4.5f\t";   //line format
-    string format_h = "%8s\t";  //header format
-
     void printHeader();
     void printLine();
 

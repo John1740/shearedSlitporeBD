@@ -1,6 +1,6 @@
 *.out
 *.out.*
 *.png
-configuration.in.new
+configuration.in
 pairCorrelations/
 settings.in

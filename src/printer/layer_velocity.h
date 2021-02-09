@@ -9,19 +9,16 @@
 #include "../systems/sheared_slitpore_system.h"
 #include <vector>
 
-class VELOCITY_PRINTER: public PRINTER{
+class LAYER_VELOCITY_PRINTER: public PRINTER{
 private:
     SHEARED_SLITPORE_SYSTEM* sys;
     REAL_C meanVelocity;
     int numberOfLayers;
     vector<REAL_C> meanLayerVelocities;
 public:
-    VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
-    VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
-    ~VELOCITY_PRINTER();
-
-    string format_l = "% 4.5f\t";   //line format
-    string format_h = "%8s\t";  //header format
+    LAYER_VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
+    LAYER_VELOCITY_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
+    ~LAYER_VELOCITY_PRINTER();
 
     void printHeader();
     void printLine();

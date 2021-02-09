@@ -26,26 +26,26 @@ void STRESS_PRINTER::printHeader(){
     *this << comment << "dy/dt: shear rate [1/tB]" << endl;
     *this << comment << "ij: average stress tensor component (i,j=x,y,z) [kT/d^3]" << endl;
     *this << comment;
-    *this << format("%5s\t") % "i";
-    *this << format(format_h.c_str()) % "dy/dt";
-    *this << format(format_h.c_str()) % "xx";
-    *this << format(format_h.c_str()) % "yy";
-    *this << format(format_h.c_str()) % "zz";
-    *this << format(format_h.c_str()) % "yz";
-    *this << format(format_h.c_str()) % "xz";
-    *this << format(format_h.c_str()) % "xy";
+    *this << format(format_lh) % "i";
+    *this << format(format_fh) % "dy/dt";
+    *this << format(format_fh) % "xx";
+    *this << format(format_fh) % "yy";
+    *this << format(format_fh) % "zz";
+    *this << format(format_fh) % "yz";
+    *this << format(format_fh) % "xz";
+    *this << format(format_fh) % "xy";
     *this << "\n";
 }
 
 void STRESS_PRINTER::printLine(){
-    *this << format("%6ld\t") % (sys->getTimestep() - 1); //equationOfMotion already incremented timestep by 1
+    *this << format(format_l) % (sys->getTimestep() - 1); //equationOfMotion already incremented timestep by 1
     meanStress = sys->getMeanStress();
-    *this << format(format_l.c_str()) % sys->getCurrentShearRate();
-    *this << format(format_l.c_str()) % meanStress.xx;
-    *this << format(format_l.c_str()) % meanStress.yy;
-    *this << format(format_l.c_str()) % meanStress.zz;
-    *this << format(format_l.c_str()) % meanStress.yz;
-    *this << format(format_l.c_str()) % meanStress.xz;
-    *this << format(format_l.c_str()) % meanStress.xy;
+    *this << format(format_f) % sys->getCurrentShearRate();
+    *this << format(format_f) % meanStress.xx;
+    *this << format(format_f) % meanStress.yy;
+    *this << format(format_f) % meanStress.zz;
+    *this << format(format_f) % meanStress.yz;
+    *this << format(format_f) % meanStress.xz;
+    *this << format(format_f) % meanStress.xy;
     *this << "\n";
 }

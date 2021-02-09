@@ -23,20 +23,20 @@ void ANGULAR_BOND_PRINTER::printHeader(){
     *this << comment << "y: shear rate [1/Brownian time]" << endl;
     *this << comment << "psi(n): angular bond parameter (n = integer of symmetry)" << endl;
     *this << comment;
-    *this << format("%11s\t") % "i";
-    *this << format(format_h.c_str()) % "y";
-    *this << format(format_h.c_str()) % "psi(4)";
-    *this << format(format_h.c_str()) % "psi(6)";
+    *this << format(format_lh) % "i";
+    *this << format(format_fh) % "y";
+    *this << format(format_fh) % "psi(4)";
+    *this << format(format_fh) % "psi(6)";
     *this << "\n";
 }
 
 void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
-    *this << format(format_li.c_str()) % sys.getTimestep();
-    *this << format(format_f.c_str()) % sys.getCurrentShearRate();
+    *this << format(format_l) % sys.getTimestep();
+    *this << format(format_f) % sys.getCurrentShearRate();
     ANGULAR_BOND_PARAMETER psi(sys, 4);
-    *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
+    *this << format(format_f) % psi.calculateAverageOverAllParticles();
     psi.setN(6);
-    *this << format(format_f.c_str()) % psi.calculateAverageOverAllParticles();
+    *this << format(format_f) % psi.calculateAverageOverAllParticles();
 
     //error outputs
     vector<int> erroneousParticles = psi.getIsolatedParticles();
@@ -46,8 +46,8 @@ void ANGULAR_BOND_PRINTER::printLine(SHEARED_SLITPORE_SYSTEM& sys){
             cout << erroneousParticles[i] << " ";
         }
         cout << endl;
-        cout << "cutoffRadius: " << format(format_f.c_str()) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
-        cout << "threshold: " << format(format_f.c_str()) % psi.getPairCorrelation().calculateMeanCorrelation()
+        cout << "cutoffRadius: " << format(format_f) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
+        cout << "threshold: " << format(format_f) % psi.getPairCorrelation().calculateMeanCorrelation()
              << "[1/diameter]" << endl;
         cout << endl;
         sys.writeConfigurationToFile("erroneousParticles/configuration_" + to_string(sys.getTimestep()) + ".out", true);

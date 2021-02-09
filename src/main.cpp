@@ -73,7 +73,7 @@ int main(int argc, const char* argv[]){
     }
 
     SHEARED_SLITPORE_SYSTEM sys(args);
-    sys.writeConfigurationToFile("configuration.in.new", true, true);
+//    sys.writeConfigurationToFile("configuration.in.new", true, true);
 
     //clear
     if(args.clear){
@@ -97,7 +97,7 @@ int main(int argc, const char* argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
 
     LAYER_POSITION_PRINTER layerPosition(&sys);
-    VELOCITY_PRINTER layerVelocity(&sys);
+    LAYER_VELOCITY_PRINTER layerVelocity(&sys);
     STRESS_PRINTER stress(&sys);
     ANGULAR_BOND_PRINTER angularBond;
     STRESS_FOURIER_COMPONENTS fc(args);

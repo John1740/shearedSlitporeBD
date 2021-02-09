@@ -131,7 +131,8 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     if(overwrite){
         printer.reset();
     }
-    const char* fmt = "% .17e\t";
+//    const char* fmt = "% .17e\t";
+    const char* fmt = "% .8e\t";
 
     //header
     printer << bo::format("ITEM: TIMESTEP\n%ld\n") % timestep;

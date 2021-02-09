@@ -22,6 +22,12 @@ public:
     PRINTER(fs::path filename);
     ~PRINTER();
 
+    // datatype formats (+ headers)
+    string format_f = "% .8e\t";   //float format
+    string format_fh = "%15s\t";   //float header format
+    string format_l = "%12li\t";   //long (integer) format
+    string format_lh = "%11s\t";   //long (integer) header format
+
     // setters
     void setFilename(fs::path filename);
     void setComment(char comment);

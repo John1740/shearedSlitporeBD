@@ -19,9 +19,6 @@ public:
     LAYER_POSITION_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, string filename);
     ~LAYER_POSITION_PRINTER();
 
-    string format_l = "% 4.5f\t";   //line format
-    string format_h = "%8s\t";  //header format
-
     void printHeader();
     void printLine();
 };

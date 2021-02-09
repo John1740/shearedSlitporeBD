@@ -95,12 +95,14 @@ int main(int argc, const char* argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
 
     //Skip first few steps
+    clock.addTimePoint();
     if(args.skip){
-        cout << "Skipping first " << args.skip << " timesteps ... ";
+        cout << "Skipping first " << args.skip << " timesteps. " << endl;
         long timestep = sys.getTimestep();
         sys.simulateForSteps(args.skip);
         sys.setTimestep(timestep);
-        cout << "Skipping done." << endl;
+        clock.addTimePoint();
+        cout << "Skipping done. - " << clock.readDuration(-2, -1, "%02d:%06.3f").c_str() << endl;
         sys.writeConfigurationToFile("configuration.in.skipped", true, true);
     }
 
@@ -113,9 +115,11 @@ int main(int argc, const char* argv[]){
     //column description
     for(long i = 0; i < args.numberOfTimesteps; i++){
         if(i % (int)ceil(args.numberOfTimesteps / 100.) == 0){
+            clock.addTimePoint();
             cout << b::format("Progress: %.1f%% (timestep %ld)")
                     % (100 * i / float(args.numberOfTimesteps))
-                    % sys.getTimestep() << endl;
+                    % sys.getTimestep()
+                    << " ... " << clock.readDuration(-2, -1, "%02d:%06.3f").c_str() << endl;
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);

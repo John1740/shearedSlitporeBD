@@ -10,13 +10,14 @@
 
 class ANGULAR_BOND_PRINTER: public PRINTER{
 private:
+    SHEARED_SLITPORE_SYSTEM* sys;
 
 public:
-    ANGULAR_BOND_PRINTER();
-    ANGULAR_BOND_PRINTER(fs::path filename);
+    ANGULAR_BOND_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn);
+    ANGULAR_BOND_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::path filename);
 
     void printHeader();
-    void printLine(SHEARED_SLITPORE_SYSTEM& sys);
+    void printLine();
 };
 
 #endif //SHEAREDSLITPOREBD_ANGULAR_BOND_H

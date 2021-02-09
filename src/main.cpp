@@ -99,7 +99,7 @@ int main(int argc, const char* argv[]){
     LAYER_POSITION_PRINTER layerPosition(&sys);
     LAYER_VELOCITY_PRINTER layerVelocity(&sys);
     STRESS_PRINTER stress(&sys);
-    ANGULAR_BOND_PRINTER angularBond;
+    ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
 
     //column description
@@ -116,7 +116,7 @@ int main(int argc, const char* argv[]){
             layerPosition.printLine();
         }
         if(args.printAngularBond > 0 && i % args.printAngularBond == 0){
-            angularBond.printLine(sys);
+            angularBond.printLine();
         }
         if(args.printPairCorrelation > 0 && i % args.printPairCorrelation == 0){
             INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys);

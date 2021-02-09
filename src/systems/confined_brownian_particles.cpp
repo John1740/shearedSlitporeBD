@@ -132,7 +132,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
         printer.reset();
     }
 //    const char* fmt = "% .17e\t";
-    const char* fmt = "% .8e\t";
+//    const char* fmt = "% .8e\t";
 
     //header
     printer << bo::format("ITEM: TIMESTEP\n%ld\n") % timestep;
@@ -145,9 +145,9 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     printer << "ITEM: ATOMS index x y z diameter charge species\n";
     for(int i = 0; i < numberOfParticles; ++i){
         printer << bo::format("%4d\t") % particles[i].index;
-        printer << bo::format(fmt) % particles[i].boxPosition.x;
-        printer << bo::format(fmt) % particles[i].boxPosition.y;
-        printer << bo::format(fmt) % particles[i].boxPosition.z;
+        printer << bo::format(printer.format_f) % particles[i].boxPosition.x;
+        printer << bo::format(printer.format_f) % particles[i].boxPosition.y;
+        printer << bo::format(printer.format_f) % particles[i].boxPosition.z;
         printer << bo::format("%2.3f\t") % particles[i].diameter;
         printer << bo::format("%3.2f\t") % particles[i].charge;
         printer << bo::format("%2d\t") % particles[i].species;

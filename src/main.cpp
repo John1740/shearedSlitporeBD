@@ -73,12 +73,10 @@ int main(int argc, const char* argv[]){
     }
 
     SHEARED_SLITPORE_SYSTEM sys(args);
-//    sys.writeConfigurationToFile("configuration.in.new", true, true);
 
     //clear
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;
-        fs::remove("configuration.in.new");
         fs::remove(CONFIGURATION_OUT);
         fs::remove(SNAPSHOTS);
         fs::remove(STRESSES_OUT);
@@ -95,6 +93,16 @@ int main(int argc, const char* argv[]){
 
     //Simulation start
     cout << endl << surroundWithSeparator("Simulation start") << endl;
+
+    //Skip first few steps
+    if(args.skip){
+        cout << "Skipping first " << args.skip << " timesteps ... ";
+        long timestep = sys.getTimestep();
+        sys.simulateForSteps(args.skip);
+        sys.setTimestep(timestep);
+        cout << "Skipping done." << endl;
+        sys.writeConfigurationToFile("configuration.in.skipped", true, true);
+    }
 
     LAYER_POSITION_PRINTER layerPosition(&sys);
     LAYER_VELOCITY_PRINTER layerVelocity(&sys);

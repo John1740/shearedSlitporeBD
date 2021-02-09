@@ -52,6 +52,12 @@ void ARGUMENT_PARSER::addOptions(){
              "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0),
              "initial random number generator counter; 0 = no initial increments")
+            ("skip", po::value<double>()->default_value(SKIP), "skip the first x timesteps")
+            ("skipDuration", po::value<double>(),
+             "Same as --skip but in units of total simulation time.\n"
+             "Overwrites --skip")
+            ("skipPeriod", po::value<double>(), "Same as --skip but in units of oscillation periods.\n"
+                                                       "Overwrites --skip and --skip")
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
                                                                               "x<0 -> no print-outs")
             ("printStressDuration", po::value<double>(),
@@ -159,6 +165,14 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     args.rngCounter = variablesMap["rngCounter"].as<unsigned long long>();
 
     //doubles are allowed as input for convenience (allows 1e5 float terminology)
+    args.skip = round(variablesMap["skip"].as<double>());
+    if(variablesMap.count("skipDuration")){
+        args.skip.setDuration(variablesMap["skipDuration"].as<double>());
+    }
+    if(variablesMap.count("printStressPeriod")){
+        args.skip.setPeriod(variablesMap["skipPeriod"].as<double>());
+    }
+    //
     args.printStress = round(variablesMap["printStress"].as<double>());
     if(variablesMap.count("printStressDuration")){
         args.printStress.setDuration(variablesMap["printStressDuration"].as<double>());

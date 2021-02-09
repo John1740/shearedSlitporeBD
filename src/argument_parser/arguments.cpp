@@ -30,7 +30,11 @@ ARGUMENTS::ARGUMENTS(string filename){
     settingsIn = filename;
 }
 
+ARGUMENTS::ARGUMENTS(int argc, const char** argv){
+}
+
 ARGUMENTS& ARGUMENTS::setup(){
+    skip = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printStress = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printStressFourier = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printEnergy = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
@@ -69,6 +73,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     }
     if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     if(other.printAll != PRINT_ALL) printAll = other.printAll;
+    skip.update(other.skip);
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
     printEnergy.update(other.printEnergy);
@@ -112,6 +117,11 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "numberOfTimesteps" << args.sep << args.numberOfTimesteps << endl;
     os << "duration" << args.sep << args.getDuration() << endl;
     os << "numberOfPeriods" << args.sep << args.getNumberOfPeriods() << endl;
+    if(args.skip > 0){
+        os << "skip" << args.sep << args.skip << endl;
+        os << "skipDuration" << args.sep << args.skip.getDuration() << endl;
+        os << "skipPeriod" << args.sep << args.skip.getPeriod() << endl;
+    }
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
         os << "printStressDuration" << args.sep << args.printStress.getDuration() << endl;
@@ -217,6 +227,15 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("numberOfPeriods") != string::npos){
             numberOfPeriods = stod(linesplit[1]);
+        }
+        else if(line.find("skipDuration") != string::npos){
+            skip.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("skipPeriod") != string::npos){
+            skip.setPeriod(stod(linesplit[1]));
+        }
+        else if(line.find("skip") != string::npos){
+            skip = round(stod(linesplit[1]));
         }
             //needs to be before "printStress"
         else if(line.find("printStressFourierDuration") != string::npos){
@@ -358,6 +377,7 @@ ARGUMENTS& ARGUMENTS::finalize(){
         setNumberOfPeriods(numberOfPeriods);
         numberOfPeriods = 0;
     }
+    skip.finalize();
     printStress.finalize();
     printStressFourier.finalize();
     printEnergy.finalize();

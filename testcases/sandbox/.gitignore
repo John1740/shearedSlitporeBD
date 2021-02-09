@@ -2,5 +2,6 @@
 *.out.*
 *.png
 configuration.in
+configuration.in.skipped
 pairCorrelations/
 settings.in

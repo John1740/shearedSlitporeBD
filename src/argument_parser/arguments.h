@@ -38,6 +38,7 @@ public:
 
     int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
 
+    PRINT_INTERVAL skip;
     PRINT_INTERVAL printStress;
     PRINT_INTERVAL printStressFourier;
     PRINT_INTERVAL printEnergy;
@@ -55,6 +56,7 @@ public:
     // constructors
     ARGUMENTS();
     ARGUMENTS(string filename);
+    ARGUMENTS(int argc, const char* argv[]);
     ARGUMENTS& setup();
 
     // update with other instance of this class

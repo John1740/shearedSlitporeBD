@@ -2,6 +2,7 @@
 #include "version.h"
 #include "tools/format.h"
 #include "boost/format.hpp"
+#include <boost/progress.hpp>
 
 namespace b = boost;
 
@@ -95,14 +96,18 @@ int main(int argc, const char* argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
 
     //Skip first few steps
-    clock.addTimePoint();
     if(args.skip){
+        clock.addTimePoint();
         cout << "Skipping first " << args.skip << " timesteps. " << endl;
         long timestep = sys.getTimestep();
-        sys.simulateForSteps(args.skip);
+        b::progress_display progress(args.skip);
+        for(int i = 0; i < args.skip; i++){
+            sys.simulateForSteps(1);
+            ++progress;
+        }
         sys.setTimestep(timestep);
         clock.addTimePoint();
-        cout << "Skipping done. - " << clock.readDuration(-2, -1, "%02d:%06.3f").c_str() << endl;
+        cout << "Skipping done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
         sys.writeConfigurationToFile("configuration.in.skipped", true, true);
     }
 
@@ -112,15 +117,11 @@ int main(int argc, const char* argv[]){
     ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
 
-    //column description
+    cout << "Starting simulation with print-outs (" << args.numberOfTimesteps << " timesteps)." << endl;
+    clock.addTimePoint();
+    b::progress_display progress(args.numberOfTimesteps);
+
     for(long i = 0; i < args.numberOfTimesteps; i++){
-        if(i % (int)ceil(args.numberOfTimesteps / 100.) == 0){
-            clock.addTimePoint();
-            cout << b::format("Progress: %.1f%% (timestep %ld)")
-                    % (100 * i / float(args.numberOfTimesteps))
-                    % sys.getTimestep()
-                    << " ... " << clock.readDuration(-2, -1, "%02d:%06.3f").c_str() << endl;
-        }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);
         }
@@ -145,7 +146,10 @@ int main(int argc, const char* argv[]){
         if(args.printLayerVelocity > 0 && i > 0 && (i - 1) % args.printLayerVelocity == 0){
             layerVelocity.printLine();
         }
+        ++progress;
     }
+    clock.addTimePoint();
+    cout << "Simulation done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
 

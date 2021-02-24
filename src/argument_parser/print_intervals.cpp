@@ -1,5 +1,5 @@
 //
-// Created by mhuelsberg on 29.09.20.
+// Created by mhuelsberg on 23.10.20.
 //
 
 #include "print_intervals.h"
@@ -8,8 +8,8 @@
 PRINT_INTERVAL::PRINT_INTERVAL(){
 }
 
-PRINT_INTERVAL::PRINT_INTERVAL(int* numberOfTimestepsIn, double* dt, double* oscillationPeriod){
-    this->numberOfTimesteps = numberOfTimestepsIn;
+PRINT_INTERVAL::PRINT_INTERVAL(long* numberOfTimesteps, double* dt, double* oscillationPeriod){
+    this->numberOfTimesteps = numberOfTimesteps;
     this->dt = dt;
     this->oscillationPeriod = oscillationPeriod;
 }
@@ -43,8 +43,7 @@ PRINT_INTERVAL& PRINT_INTERVAL::finalize(){
 
 double PRINT_INTERVAL::getDuration() const{
     if(duration == 0){
-        if(numberOfTimesteps == 0) return 0;
-        else return double(interval) / *numberOfTimesteps;
+        return double(interval) * *dt;
     }
     else return duration;
 }
@@ -64,7 +63,7 @@ bool PRINT_INTERVAL::isFinalized() const{
 
 PRINT_INTERVAL& PRINT_INTERVAL::setDuration(double duration){
     if(finalized){
-        interval = round(duration * *numberOfTimesteps);
+        interval = round(duration / *dt);
     }
     else{
         this->duration = duration;

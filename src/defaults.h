@@ -35,7 +35,7 @@ const double WALL_INTERACTION_STRENGTH = 1.0;
 const double TEMPERATURE = 1.0;
 const double DIFFUSION_CONSTANT = 1.0;
 
-const int NUMBER_OF_TIMESTEPS = 10;
+const long NUMBER_OF_TIMESTEPS = 10;
 
 const int SKIP = 0;
 const int PRINT_LAYER_POSITION = 0;

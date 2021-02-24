@@ -13,7 +13,7 @@
 
 class STRESS_FOURIER_COMPONENTS{
 private:
-    int numberOfTimesteps;
+    long numberOfTimesteps;
     vector<REAL_M> stress;
     double period;
     double amplitude;

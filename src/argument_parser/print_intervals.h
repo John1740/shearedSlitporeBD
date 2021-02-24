@@ -1,5 +1,5 @@
 //
-// Created by mhuelsberg on 29.09.20.
+// Created by mhuelsberg on 23.10.20.
 //
 
 #ifndef SHEAREDSLITPOREBD_PRINT_INTERVALS_H
@@ -7,7 +7,7 @@
 
 class PRINT_INTERVAL{
 private:
-    int* numberOfTimesteps;
+    long* numberOfTimesteps;
     double* dt;
     double* oscillationPeriod;
     int interval = 0;
@@ -17,7 +17,7 @@ private:
 public:
     // constructors
     PRINT_INTERVAL();
-    PRINT_INTERVAL(int* numberOfTimesteps, double* dt, double* oscillationPeriod);
+    PRINT_INTERVAL(long* numberOfTimesteps, double* dt, double* oscillationPeriod);
 
     // update with other instance of this class
     PRINT_INTERVAL& update(const PRINT_INTERVAL& other);
@@ -39,4 +39,4 @@ public:
     PRINT_INTERVAL& operator=(double interval);
 };
 
-#endif //SHEAREDSLITPOREBD_PRINT_INTERVALS_H
+#endif //DRIVENSINGLEPARTICLE_PRINT_INTERVALS_H

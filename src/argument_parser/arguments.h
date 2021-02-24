@@ -36,7 +36,7 @@ public:
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double wallInteractionStrength = WALL_INTERACTION_STRENGTH;
 
-    int numberOfTimesteps = NUMBER_OF_TIMESTEPS;
+    long numberOfTimesteps = NUMBER_OF_TIMESTEPS;
 
     PRINT_INTERVAL skip;
     PRINT_INTERVAL printStress;

@@ -58,16 +58,34 @@ DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE& part
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
     double meanCharge = (charge1 + charge2) / 2;
-    double chargeConcentration = meanCharge * density;
-    //write down parameters somewhere!
-    kappa = pow(0.07308561551392402 + 0.34524730769230782857 * chargeConcentration, 0.5);
+    double chargeConcentration = meanCharge * density;  //unit: d^-3
+    //e0 = 1.602e-19 C
+    //I = 1e-5 mol l^-1 = 1e-2 mol m^-3
+    //NA = 6.022e23 mol^-1
+    //eps = 78.5
+    //eps0 = 8.854e-12 C^2 J^-1 m^-1
+    //d = 26e-9 m, m = 3.846e7 d
+    //T = 298 K, kT = 4.115e-21 J, J = 2.430e20 kT
+    //x1 = 2 * e0^2 * I * NA / eps / eps0 / kT
+    double x1 = 0.07308561551392402;
+    //x2 = e0^2 / eps / eps0 / kT
+    double x2 = 0.34524730769230782857;
+    kappa = pow(x1 + x2 * chargeConcentration, 0.5);    //unit: d^-1
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
-    double alpha = 0.16575255001233970612;
+    //alpha^2 = e0^2 / 4 / pi / eps / eps0
+    //e0 = 1.602e-19 C
+    //eps = 78.5
+    //eps0 = 8.854e-12 C^2 J^-1 m^-1
+    //d = 26e-9 m, m = 3.846e7 d
+    //T = 298 K, kT = 4.115e-21 J, J = 2.430e20 kT
+    double alpha = 0.16575255001233970612;  //unit: kT^1/2 d^1/2
+    double diameter = (diameter1 + diameter2) / 2;
+    //TODO: should every diameter be the mean diameter?
     double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
     double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
-    interactionStrength = Wp1 * Wp2; //why squared? how is alpha defined?
+    interactionStrength = Wp1 * Wp2 / diameter;
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
@@ -81,9 +99,12 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
     for(int i = 0; i < numberOfSteps; ++i){
         currentRadius = i * rcDelta;
         currentEnergy = energyOnParticles(currentRadius);
-        currentForce = forceOnParticlePerDirection(i * rcDelta) / (i * rcDelta);
+        currentForce = forceOnParticlePerDirection(currentRadius) / (currentRadius);
+        //forceCutOffThreshold would make sure that cutoffRadius is taken on the right side of the minimum of
+        //the Lennard-Jones potential
+        //however, this potential is purely repulsive and the energy is always > 0
         if(abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold){
-            tmpCutOffRadius = i * rcDelta;
+            tmpCutOffRadius = currentRadius;
             break;
         }
     }
@@ -91,15 +112,17 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles(double r){
-    double yukawaEnergy = interactionStrength * exp(-kappa * r) / r;
-    double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter1 / r, 12);
+    double diameter = (diameter1 + diameter2) / 2;
+    double yukawaEnergy = interactionStrength * diameter * exp(-kappa * r) / r;
+    double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter / r, 12);
     double energyOnParticles = yukawaEnergy + softSphereEnergy;
     return energyOnParticles;
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirection(double r){
-    double yukawaForceAbs = interactionStrength * exp(-kappa * r) * (1. / (r * r) + kappa / r);
-    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter1 / r, 13) / diameter1;
+    double diameter = (diameter1 + diameter2) / 2;
+    double yukawaForceAbs = interactionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
+    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
     double forceOnParticlePerDirection = yukawaForceAbs + softSphereForceAbs;
     return forceOnParticlePerDirection;
 }

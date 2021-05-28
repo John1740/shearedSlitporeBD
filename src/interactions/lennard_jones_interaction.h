@@ -24,7 +24,7 @@ public:
     double energyOnParticles(double distance);
     double forceOnParticlePerDirection(double distance);
 
-    void setParametersForParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2);
+    void setParametersForParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
 };
 
 #endif // LENNARD_JONES_INTERACTION_H

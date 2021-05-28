@@ -38,8 +38,7 @@ public:
     double forceCutOffThreshold;
     double cutOffRadius, shift1, shift2, shift3;
 
-    double distance;
-    REAL_C posDifference;
+//    REAL_C posDifference;
 
     void calculateInteractionParameters();
 
@@ -50,6 +49,8 @@ public:
 
     double energyOnParticles(double r);
     double forceOnParticlePerDirection(double r);
+    double energyOnParticlesShifted(double r);
+    double forceOnParticlePerDirectionShifted(double r);
 };
 
 #endif // DLVO_INTERACTION_H

@@ -18,6 +18,21 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
     shift1 = forceOnParticlePerDirection(cutOffRadius);
     shift2 = energyOnParticles(cutOffRadius);
     shift3 = shift1 * cutOffRadius;
+
+    // temporary start
+    int numberOfSteps = 4000;
+    double rcDelta = 3. / numberOfSteps;
+    double currentRadius, currentEnergy, currentForce, shiftedEnergy, shiftedForce;
+    cout << "r \t E \t F \t E_sh \t F_sh" << endl;
+    for(int i = 0; i < numberOfSteps; ++i){
+        currentRadius = i * rcDelta;
+        currentEnergy = energyOnParticles(currentRadius);
+        currentForce = forceOnParticlePerDirection(currentRadius);
+        shiftedEnergy = energyOnParticlesShifted(currentRadius);
+        shiftedForce = forceOnParticlePerDirectionShifted(currentRadius);
+        cout << currentRadius << "\t" << currentEnergy << "\t" << currentForce << "\t" << shiftedEnergy << "\t" << shiftedForce << endl;
+        // temporary end
+    }
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
@@ -87,30 +102,22 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(){
 double
 DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2,
                                                           BOX_GEOMETRY& simBox){
-    posDifference = particle1.boxPosition - particle2.boxPosition;
-    distance = simBox.convertToBoxPosition(posDifference).abs();
-
-    if(distance <= cutOffRadius){
-        return energyOnParticles(distance) + distance * shift1 - (shift2 + shift3);
-//        return energyOnParticles(distance) - distance * shift1 - shift2 + shift3; //should be correct
-    }
-    else{
-        return 0.;
-    }
+    REAL_C posDifference = particle1.boxPosition - particle2.boxPosition;
+    posDifference = simBox.convertToBoxPosition(posDifference);
+    double distance = posDifference.abs();
+    double energy = energyOnParticlesShifted(distance);
+    return energy;
 }
 
 REAL_C
 DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2,
                                                          BOX_GEOMETRY& simBox){
-    REAL_C forceOnParticleFromParticle;
-    posDifference = particle1.boxPosition - particle2.boxPosition;
+    REAL_C force; //defaults to (0,0,0)
+    REAL_C posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
-    distance = posDifference.abs();
-
-    if(distance <= cutOffRadius){
-        forceOnParticleFromParticle = (forceOnParticlePerDirection(distance) - shift1) * posDifference / distance;
-    }
-    return forceOnParticleFromParticle;
+    double distance = posDifference.abs();
+    force = forceOnParticlePerDirectionShifted(distance) * posDifference / distance;
+    return force;
 }
 
 double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles(double r){
@@ -127,4 +134,21 @@ double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirection(double r){
     double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
     double forceOnParticlePerDirection = yukawaForceAbs + softSphereForceAbs;
     return forceOnParticlePerDirection;
+}
+
+double DLVO_SOFTSPHERE_INTERACTION::energyOnParticlesShifted(double r){
+    double energy = 0;
+    if(r <= cutOffRadius){
+        energy = energyOnParticles(r) + r * shift1 - (shift2 + shift3);
+//        energy = energyOnParticles(r) - r * shift1 - shift2 + shift3; //should be correct
+    }
+    return energy;
+}
+
+double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirectionShifted(double r){
+    double force = 0;
+    if(r <= cutOffRadius){
+        force = forceOnParticlePerDirection(r) - shift1;
+    }
+    return force;
 }

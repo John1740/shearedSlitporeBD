@@ -9,7 +9,6 @@
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
-    void calculateInteractionParameters();
     double calculateKappa();
     void calculateInteractionStrength();
     void calculateCutOffThresholds(double rLJ = 3.);
@@ -20,6 +19,7 @@ private:
 public:
     DLVO_SOFTSPHERE_INTERACTION();
     DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength);
+    void calculateInteractionParameters();
 
     double lengthRange = 10;    //needed for cutOff calculation, default questionable
 

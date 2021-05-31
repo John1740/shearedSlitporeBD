@@ -30,6 +30,8 @@ const int CHARGE = 35;
 const double DIAMETER = 1.;
 
 const double SS_INTERACTION_STRENGTH = 1.0;
+const double Y_INTERACTION_STRENGTH = 123.36619402569552;
+const double KAPPA = 3.2162381150765986;
 const double WALL_INTERACTION_STRENGTH = 1.0;
 
 const double TEMPERATURE = 1.0;

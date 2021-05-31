@@ -28,16 +28,16 @@ public:
     double density = DENSITY;
 
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
-    double yInteractionStrength;
-    double kappa;
+    double yInteractionStrength = Y_INTERACTION_STRENGTH;
+    double kappa = KAPPA;
 
     //might need to make these private and create getters/setters
     double energyCutOffThreshold, forceCutOffThreshold;
     double cutOffRadius, forceShift, energyShift;
 
     ///////////////////////////////////// interaction parameters /////////////////////////////////////
-    double calculateKappa();
-    double calculateInteractionStrength();
+    double calculateKappa(int Z = 35, double rho = 0.85, double I = 1e-5, double T = 298, double d = 26e-9, double eps = 78.5);
+    double calculateInteractionStrength(double kappa, int Z = 35, double T = 298, double d = 26e-9);
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 

@@ -13,8 +13,6 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStr
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
-    kappa = 3.2162381150765986;
-    yInteractionStrength = 123.36619402569552;
     calculateCutOffRadius();
     calculateShifts();
 
@@ -34,37 +32,48 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
     // temporary end
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
-    double meanCharge = (charge1 + charge2) / 2;
-    double chargeConcentration = meanCharge * density;  //unit: d^-3
-    //e0 = 1.602e-19 C
-    //I = 1e-5 mol l^-1 = 1e-2 mol m^-3
-    //NA = 6.022e23 mol^-1
-    //eps = 78.5
-    //eps0 = 8.854e-12 C^2 J^-1 m^-1
-    //d = 26e-9 m, m = 3.846e7 d
-    //T = 298 K, kT = 4.115e-21 J, J = 2.430e20 kT
-    //x1 = 2 * e0^2 * I * NA / eps / eps0 / kT
-    double x1 = 0.07308561551392402;
-    //x2 = e0^2 / eps / eps0 / kT
-    double x2 = 0.34524730769230782857;
-    kappa = pow(x1 + x2 * chargeConcentration, 0.5);    //unit: d^-1
+//Z: charge (unit: 1)
+//rho: density (unit: d^-3)
+//I: ionic strength (unit: mol l^-1)
+//T: temperature (unit: K)
+//d: particle diameter (unit: m)
+//eps: permittivity (unit: 1)
+double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(int Z, double rho, double I, double T, double d, double eps){
+    double e0 = 1.602176634e-19;        //unit: C
+    double NA = 6.02214076e23;          //unit: mol^-1
+    double eps0 = 8.8541878128e-12;     //unit: F m^-1 = C^2 J^-1 m^-1
+    double kB = 1.38064852e-23;         //unit: J K^-1
+    double rho_SI = rho / d / d / d;    //unit: m^-3
+    double I_SI = I * 1e3;              //unit: mol m^-3
+    //for comparison with Sascha's code
+//    double x1_SI = 2 * e0 * e0 * I_SI * NA / eps / eps0 / kB / T;   //unit: m^-2
+//    double x1 = x1_SI * d * d;  //unit: d^-2
+//    double x1 = 0.07308561551392402;
+//    double x2_SI = e0 * e0 / eps / eps0 / kB / T;   //unit: m
+//    double x2 = x2_SI / d;  //unit: d
+//    double x2 = 0.34524730769230782857;
+//    kappa = pow(x1 + x2 * Z * rho, 0.5)
+    double prefactor = e0 * e0 / (eps * eps0 * kB * T);
+    double kappa_SI = pow(prefactor * (Z * rho_SI + 2 * I_SI * NA), 0.5);
+    kappa = kappa_SI * d;
     return kappa;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
+double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(double kappa, int Z, double T, double d){
     //alpha^2 = e0^2 / 4 / pi / eps / eps0
     //e0 = 1.602e-19 C
     //eps = 78.5
     //eps0 = 8.854e-12 C^2 J^-1 m^-1
     //d = 26e-9 m, m = 3.846e7 d
     //T = 298 K, kT = 4.115e-21 J, J = 2.430e20 kT
-    double alpha = 0.16575255001233970612;  //unit: kT^1/2 d^1/2
-    double diameter = (diameter1 + diameter2) / 2;
-    //TODO: should every diameter be the mean diameter?
-    double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
-    double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
-    yInteractionStrength = Wp1 * Wp2 / diameter;
+    //for comparison with Sascha's code
+//    double alpha = 0.16575255001233970612;  //unit: kT^1/2 d^1/2
+//    double diameter = (diameter1 + diameter2) / 2;
+//    //TODO: should every diameter be the mean diameter?
+//    double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
+//    double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
+//    yInteractionStrength = Wp1 * Wp2 / diameter;
+    double prefactor = Z * e0 * Z * e0
     return yInteractionStrength;
 }
 
@@ -161,11 +170,12 @@ double DLVO_SOFTSPHERE_INTERACTION::forceAbsShifted(double r){
 }
 
 ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
-    const char* fmt = "% 2.5f\t";
-    os << "kappa: " << bo::format(fmt) % (dlvo.kappa) << endl;
-    os << "yInteractionStrength: " << bo::format(fmt) % (dlvo.yInteractionStrength) << endl;
-    os << "cutOffRadius: " << bo::format(fmt) % (dlvo.cutOffRadius) << endl;
-    os << "energyCutOffThreshold: " << bo::format(fmt) % (dlvo.energyCutOffThreshold) << endl;
-    os << "forceCutOffThreshold: " << bo::format(fmt) % (dlvo.forceCutOffThreshold) << endl;
+    const char* fmt = "% .8f\t";
+    os << "kappa: " << bo::format(fmt) % (dlvo.kappa) << "[d-1]" << endl;
+    os << "yInteractionStrength: " << bo::format(fmt) % (dlvo.yInteractionStrength) << "[kT]" << endl;
+    os << "ssInteractionStrength: " << bo::format(fmt) % (dlvo.ssInteractionStrength) << "[kT]" << endl;
+    os << "cutOffRadius: " << bo::format(fmt) % (dlvo.cutOffRadius) << "[d]" << endl;
+    os << "energyCutOffThreshold: " << bo::format(fmt) % (dlvo.energyCutOffThreshold) << "[kT]" << endl;
+    os << "forceCutOffThreshold: " << bo::format(fmt) % (dlvo.forceCutOffThreshold) << "[kT d-1]" << endl;
     return os;
 }

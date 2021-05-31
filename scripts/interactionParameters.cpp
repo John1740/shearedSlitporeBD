@@ -23,8 +23,8 @@ int main(int argc, const char* argv[]){
     }
 
     DLVO_SOFTSPHERE_INTERACTION dlvo;
-    dlvo.calculateKappa();
-    dlvo.calculateInteractionStrength();
+    double kappa = dlvo.calculateKappa();
+    dlvo.calculateInteractionStrength(kappa);
     cout << dlvo << endl;
     return 0;
 }

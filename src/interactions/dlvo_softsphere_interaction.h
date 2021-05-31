@@ -9,8 +9,6 @@
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
-    double calculateKappa();
-    void calculateInteractionStrength();
     void calculateCutOffThresholds(double rLJ = 3.);
 
     double calculateCutOffRadius();
@@ -30,12 +28,16 @@ public:
     double density = DENSITY;
 
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
-    double YinteractionStrength;
+    double yInteractionStrength;
     double kappa;
 
     //might need to make these private and create getters/setters
     double energyCutOffThreshold, forceCutOffThreshold;
     double cutOffRadius, forceShift, energyShift;
+
+    ///////////////////////////////////// interaction parameters /////////////////////////////////////
+    double calculateKappa();
+    double calculateInteractionStrength();
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
@@ -46,6 +48,9 @@ public:
     double forceAbs(double r);
     double energyShifted(double r);
     double forceAbsShifted(double r);
+
+    //file/stream-handling
+    friend ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo);
 };
 
 #endif // DLVO_INTERACTION_H

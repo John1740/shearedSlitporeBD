@@ -1,4 +1,7 @@
 #include "dlvo_softsphere_interaction.h"
+#include <boost/format.hpp>
+
+namespace bo = boost;
 
 DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
     calculateInteractionParameters();
@@ -10,24 +13,24 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStr
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
-    calculateKappa();
-    calculateInteractionStrength();
+    kappa = 3.2162381150765986;
+    yInteractionStrength = 123.36619402569552;
     calculateCutOffRadius();
     calculateShifts();
 
     // temporary start
-    int numberOfSteps = 4000;
-    double rcDelta = 3. / numberOfSteps;
-    double currentRadius, currentEnergy, currentForce, shiftedEnergy, shiftedForce;
-    cout << "r \t E \t F \t E_sh \t F_sh" << endl;
-    for(int i = 0; i < numberOfSteps; ++i){
-        currentRadius = i * rcDelta;
-        currentEnergy = energy(currentRadius);
-        currentForce = forceAbs(currentRadius);
-        shiftedEnergy = energyShifted(currentRadius);
-        shiftedForce = forceAbsShifted(currentRadius);
-        cout << currentRadius << "\t" << currentEnergy << "\t" << currentForce << "\t" << shiftedEnergy << "\t" << shiftedForce << endl;
-    }
+//    int numberOfSteps = 4000;
+//    double rcDelta = 3. / numberOfSteps;
+//    double currentRadius, currentEnergy, currentForce, shiftedEnergy, shiftedForce;
+//    cout << "r \t E \t F \t E_sh \t F_sh" << endl;
+//    for(int i = 0; i < numberOfSteps; ++i){
+//        currentRadius = i * rcDelta;
+//        currentEnergy = energy(currentRadius);
+//        currentForce = forceAbs(currentRadius);
+//        shiftedEnergy = energyShifted(currentRadius);
+//        shiftedForce = forceAbsShifted(currentRadius);
+//        cout << currentRadius << "\t" << currentEnergy << "\t" << currentForce << "\t" << shiftedEnergy << "\t" << shiftedForce << endl;
+//    }
     // temporary end
 }
 
@@ -49,7 +52,7 @@ double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
     return kappa;
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
+double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
     //alpha^2 = e0^2 / 4 / pi / eps / eps0
     //e0 = 1.602e-19 C
     //eps = 78.5
@@ -61,7 +64,8 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
     //TODO: should every diameter be the mean diameter?
     double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
     double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
-    YinteractionStrength = Wp1 * Wp2 / diameter;
+    yInteractionStrength = Wp1 * Wp2 / diameter;
+    return yInteractionStrength;
 }
 
 //Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
@@ -123,7 +127,7 @@ DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE& parti
 
 double DLVO_SOFTSPHERE_INTERACTION::energy(double r){
     double diameter = 0.5 * (diameter1 + diameter2);
-    double yukawaEnergy = YinteractionStrength * diameter * exp(-kappa * r) / r;
+    double yukawaEnergy = yInteractionStrength * diameter * exp(-kappa * r) / r;
     double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter / r, 12);
     double energy = yukawaEnergy + softSphereEnergy;
     return energy;
@@ -131,7 +135,7 @@ double DLVO_SOFTSPHERE_INTERACTION::energy(double r){
 
 double DLVO_SOFTSPHERE_INTERACTION::forceAbs(double r){
     double diameter = (diameter1 + diameter2) / 2;
-    double yukawaForceAbs = YinteractionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
+    double yukawaForceAbs = yInteractionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
     double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
     double forceAbs = yukawaForceAbs + softSphereForceAbs;
     return forceAbs;
@@ -154,4 +158,14 @@ double DLVO_SOFTSPHERE_INTERACTION::forceAbsShifted(double r){
         force = forceAbs(r) - forceShift;
     }
     return force;
+}
+
+ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
+    const char* fmt = "% 2.5f\t";
+    os << "kappa: " << bo::format(fmt) % (dlvo.kappa) << endl;
+    os << "yInteractionStrength: " << bo::format(fmt) % (dlvo.yInteractionStrength) << endl;
+    os << "cutOffRadius: " << bo::format(fmt) % (dlvo.cutOffRadius) << endl;
+    os << "energyCutOffThreshold: " << bo::format(fmt) % (dlvo.energyCutOffThreshold) << endl;
+    os << "forceCutOffThreshold: " << bo::format(fmt) % (dlvo.forceCutOffThreshold) << endl;
+    return os;
 }

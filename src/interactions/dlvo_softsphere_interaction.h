@@ -9,13 +9,13 @@
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
-    void calculateKappa();
+    void calculateInteractionParameters();
+    double calculateKappa();
     void calculateInteractionStrength();
-    void calculateCutOffThresholds();
+    void calculateCutOffThresholds(double rLJ = 3.);
 
-    //Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
-    //For particles with distance r > r_cutoff, their interaction energy/force is approximated: E(r) = F(r) = 0
-    void calculateCutOffRadius();
+    double calculateCutOffRadius();
+    void calculateShifts();
 
 public:
     DLVO_SOFTSPHERE_INTERACTION();
@@ -30,27 +30,22 @@ public:
     double density = DENSITY;
 
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
+    double YinteractionStrength;
+    double kappa;
 
     //might need to make these private and create getters/setters
-    double kappa;
-    double interactionStrength;
-    double energyCutOffThreshold;
-    double forceCutOffThreshold;
-    double cutOffRadius, shift1, shift2, shift3;
-
-//    REAL_C posDifference;
-
-    void calculateInteractionParameters();
+    double energyCutOffThreshold, forceCutOffThreshold;
+    double cutOffRadius, forceShift, energyShift;
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
     double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
     REAL_C forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
-    double energyOnParticles(double r);
-    double forceOnParticlePerDirection(double r);
-    double energyOnParticlesShifted(double r);
-    double forceOnParticlePerDirectionShifted(double r);
+    double energy(double r);
+    double forceAbs(double r);
+    double energyShifted(double r);
+    double forceAbsShifted(double r);
 };
 
 #endif // DLVO_INTERACTION_H

@@ -7,24 +7,24 @@
 
 class LENNARD_JONES_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<PARTICLE>{
 private:
+    double distance;
+    REAL_C posDifference;
+
+    void setParametersForParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
 public:
     double interactionStrength;
     double diameter;
 
-    double distance;
-    REAL_C positionDifference;
-
     LENNARD_JONES_INTERACTION();
-    LENNARD_JONES_INTERACTION(double interactionStrengthIN);
+    LENNARD_JONES_INTERACTION(double interactionStrength);
+    LENNARD_JONES_INTERACTION(double interactionStrength, double diameter);
 
     REAL_C forceOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
     double energyOnParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
-    double energyOnParticles(double distance);
-    double forceOnParticlePerDirection(double distance);
-
-    void setParametersForParticleFromParticle(PARTICLE& particle1, PARTICLE& particle2, BOX_GEOMETRY& simBox);
+    double energy(double r);
+    double forceAbs(double r);
 };
 
 #endif // LENNARD_JONES_INTERACTION_H

@@ -4,7 +4,6 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
     calculateInteractionParameters();
 }
 
-//not needed?
 DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength){
     this->ssInteractionStrength = ssInteractionStrength;
     calculateInteractionParameters();
@@ -14,10 +13,7 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
     calculateKappa();
     calculateInteractionStrength();
     calculateCutOffRadius();
-    //unclear names!
-    shift1 = forceOnParticlePerDirection(cutOffRadius);
-    shift2 = energyOnParticles(cutOffRadius);
-    shift3 = shift1 * cutOffRadius;
+    calculateShifts();
 
     // temporary start
     int numberOfSteps = 4000;
@@ -26,16 +22,16 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
     cout << "r \t E \t F \t E_sh \t F_sh" << endl;
     for(int i = 0; i < numberOfSteps; ++i){
         currentRadius = i * rcDelta;
-        currentEnergy = energyOnParticles(currentRadius);
-        currentForce = forceOnParticlePerDirection(currentRadius);
-        shiftedEnergy = energyOnParticlesShifted(currentRadius);
-        shiftedForce = forceOnParticlePerDirectionShifted(currentRadius);
+        currentEnergy = energy(currentRadius);
+        currentForce = forceAbs(currentRadius);
+        shiftedEnergy = energyShifted(currentRadius);
+        shiftedForce = forceAbsShifted(currentRadius);
         cout << currentRadius << "\t" << currentEnergy << "\t" << currentForce << "\t" << shiftedEnergy << "\t" << shiftedForce << endl;
-        // temporary end
     }
+    // temporary end
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
+double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
     double meanCharge = (charge1 + charge2) / 2;
     double chargeConcentration = meanCharge * density;  //unit: d^-3
     //e0 = 1.602e-19 C
@@ -50,6 +46,7 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateKappa(){
     //x2 = e0^2 / eps / eps0 / kT
     double x2 = 0.34524730769230782857;
     kappa = pow(x1 + x2 * chargeConcentration, 0.5);    //unit: d^-1
+    return kappa;
 }
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
@@ -64,39 +61,43 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(){
     //TODO: should every diameter be the mean diameter?
     double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
     double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
-    interactionStrength = Wp1 * Wp2 / diameter;
+    YinteractionStrength = Wp1 * Wp2 / diameter;
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
+//Determine the cut-off radius after which (repulsive) particle-particle interactions are truncated.
+//For particles with distance r > rC, their interaction energy/force is approximated: E(r) = F(r) = 0
+//both energy and force need to be smaller than residual energy/force of the Lennard-Jones potential at 3d
+double DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
     calculateCutOffThresholds();
-
     double tmpCutOffRadius;
     double currentRadius, currentEnergy, currentForce;
     int numberOfSteps = 4000;
     double rcDelta = lengthRange / numberOfSteps;
-
     for(int i = 0; i < numberOfSteps; ++i){
         currentRadius = i * rcDelta;
-        currentEnergy = energyOnParticles(currentRadius);
-        currentForce = forceOnParticlePerDirection(currentRadius);
-//        currentForce = forceOnParticlePerDirection(currentRadius) / (currentRadius);
-        //forceCutOffThreshold would make sure that cutoffRadius is taken on the right side of the minimum of
-        //the Lennard-Jones potential
-        //however, this potential is purely repulsive and the energy is always > 0
+        currentEnergy = energy(currentRadius);
+        currentForce = forceAbs(currentRadius);
+        //logical AND (&&) also makes sure that initial zero-crossings of the energy or force (in partly attractive
+        //partly repulsive force fields don't accidentally break the loop too early
         if(abs(currentEnergy) < energyCutOffThreshold && abs(currentForce) < forceCutOffThreshold){
             tmpCutOffRadius = currentRadius;
             break;
         }
     }
     cutOffRadius = tmpCutOffRadius;
+    return cutOffRadius;
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(){
+//choose energy and force thresholds equal to those a Lennard Jones potential would have at r/d = rLJ (default = 3)
+void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(double rLJ){
     LENNARD_JONES_INTERACTION lji;
-    lji.diameter = diameter1;
-    energyCutOffThreshold = abs(lji.energyOnParticles(3.));
-    forceCutOffThreshold = abs(lji.forceOnParticlePerDirection(3.));
-//    forceCutOffThreshold = abs(lji.forceOnParticlePerDirection(3.) / 3.);
+    energyCutOffThreshold = abs(lji.energy(rLJ));
+    forceCutOffThreshold = abs(lji.forceAbs(rLJ));
+}
+
+void DLVO_SOFTSPHERE_INTERACTION::calculateShifts(){
+    forceShift = forceAbs(cutOffRadius);
+    energyShift = energy(cutOffRadius);
 }
 
 double
@@ -105,8 +106,8 @@ DLVO_SOFTSPHERE_INTERACTION::energyOnParticleFromParticle(CHARGED_PARTICLE& part
     REAL_C posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     double distance = posDifference.abs();
-    double energy = energyOnParticlesShifted(distance);
-    return energy;
+    double energyOnParticleFromParticle = energyShifted(distance);
+    return energyOnParticleFromParticle;
 }
 
 REAL_C
@@ -116,39 +117,41 @@ DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE& parti
     REAL_C posDifference = particle1.boxPosition - particle2.boxPosition;
     posDifference = simBox.convertToBoxPosition(posDifference);
     double distance = posDifference.abs();
-    force = forceOnParticlePerDirectionShifted(distance) * posDifference / distance;
+    force = forceAbsShifted(distance) * posDifference / distance;
     return force;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::energyOnParticles(double r){
-    double diameter = (diameter1 + diameter2) / 2;
-    double yukawaEnergy = interactionStrength * diameter * exp(-kappa * r) / r;
+double DLVO_SOFTSPHERE_INTERACTION::energy(double r){
+    double diameter = 0.5 * (diameter1 + diameter2);
+    double yukawaEnergy = YinteractionStrength * diameter * exp(-kappa * r) / r;
     double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter / r, 12);
-    double energyOnParticles = yukawaEnergy + softSphereEnergy;
-    return energyOnParticles;
-}
-
-double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirection(double r){
-    double diameter = (diameter1 + diameter2) / 2;
-    double yukawaForceAbs = interactionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
-    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
-    double forceOnParticlePerDirection = yukawaForceAbs + softSphereForceAbs;
-    return forceOnParticlePerDirection;
-}
-
-double DLVO_SOFTSPHERE_INTERACTION::energyOnParticlesShifted(double r){
-    double energy = 0;
-    if(r <= cutOffRadius){
-        energy = energyOnParticles(r) + r * shift1 - (shift2 + shift3);
-//        energy = energyOnParticles(r) - r * shift1 - shift2 + shift3; //should be correct
-    }
+    double energy = yukawaEnergy + softSphereEnergy;
     return energy;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::forceOnParticlePerDirectionShifted(double r){
+double DLVO_SOFTSPHERE_INTERACTION::forceAbs(double r){
+    double diameter = (diameter1 + diameter2) / 2;
+    double yukawaForceAbs = YinteractionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
+    double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;
+    double forceAbs = yukawaForceAbs + softSphereForceAbs;
+    return forceAbs;
+}
+
+double DLVO_SOFTSPHERE_INTERACTION::energyShifted(double r){
+    double energyShifted = 0;
+    if(r <= cutOffRadius){
+        //remove first and second order terms of Taylor series (around r=rC)
+        //U_shifted(r) = U(r) - U(rC) - U'(rC) * (r - rC)
+        //forceShift = -U'(rC)
+        energyShifted = energy(r) - energyShift + forceShift * (r - cutOffRadius);
+    }
+    return energyShifted;
+}
+
+double DLVO_SOFTSPHERE_INTERACTION::forceAbsShifted(double r){
     double force = 0;
     if(r <= cutOffRadius){
-        force = forceOnParticlePerDirection(r) - shift1;
+        force = forceAbs(r) - forceShift;
     }
     return force;
 }

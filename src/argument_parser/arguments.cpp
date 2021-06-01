@@ -59,6 +59,8 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.dt != 0) dt = other.dt;
     if(other.temperature != TEMPERATURE) temperature = other.temperature;
     if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
+    if(other.kappa != KAPPA) kappa = other.kappa;
+    if(other.yInteractionStrength != Y_INTERACTION_STRENGTH) yInteractionStrength = other.yInteractionStrength;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
     if(other.wallInteractionStrength != WALL_INTERACTION_STRENGTH)
         wallInteractionStrength = other.wallInteractionStrength;
@@ -111,6 +113,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "dt" << args.sep << args.dt << endl;
     os << "temperature" << args.sep << args.temperature << endl;
     os << "D0" << args.sep << args.D0 << endl;
+    os << "kappa" << args.sep << args.kappa << endl;
+    os << "yInteractionStrength" << args.sep << args.yInteractionStrength << endl;
     os << "ssInteractionStrength" << args.sep << args.ssInteractionStrength << endl;
     os << "wallInteractionStrength" << args.sep << args.wallInteractionStrength << endl;
     os << endl;
@@ -212,6 +216,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("D0") != string::npos){
             D0 = stod(linesplit[1]);
+        }
+        else if(line.find("kappa") != string::npos){
+            kappa = stod(linesplit[1]);
+        }
+        else if(line.find("yInteractionStrength") != string::npos){
+            yInteractionStrength = stod(linesplit[1]);
         }
         else if(line.find("ssInteractionStrength") != string::npos){
             ssInteractionStrength = stod(linesplit[1]);

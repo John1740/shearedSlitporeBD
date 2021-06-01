@@ -1,7 +1,6 @@
 #include "sheared_slitpore_system.h"
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-//    prepareSystem();
 }
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINED_BROWNIAN_PARTICLES(args){
@@ -17,7 +16,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
     currentShearRate = calculateCurrentShearRate();
 
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
-    dlvo = DLVO_SOFTSPHERE_INTERACTION(args.ssInteractionStrength);
+    dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, args.ssInteractionStrength, args.yInteractionStrength, args.kappa);
 
     prepareSystem();
 }
@@ -26,8 +25,6 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
-
-//    dlvo.density = getDensity();
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.setup();    //needs to be done anew since lengthRange changed
     reset();

@@ -36,8 +36,12 @@ void ARGUMENT_PARSER::addOptions(){
              "shear rate oscillation period (in units of Brownian time)")
             ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
                                                                                 "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
+            ("kappa", po::value<double>()->default_value(KAPPA),
+             "inverse Debye screening length of the Yukawa potential (in units of d)")
+            ("yInteractionStrength", po::value<double>()->default_value(Y_INTERACTION_STRENGTH),
+             "strength of screened-Coulomb Yukawa potential (in units kT)")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH),
-             "strength of softsphere interaction")
+             "strength of softsphere interaction (in units of kT)")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH),
              "strength of wall interaction")
             ("dt", po::value<double>()->default_value(0), "length of timestep")
@@ -144,6 +148,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     args.amplitude = variablesMap["amplitude"].as<double>();
     args.oscillationPeriod = variablesMap["period"].as<double>();
     args.phaseOffset = variablesMap["phaseOffset"].as<double>();
+    args.kappa = variablesMap["kappa"].as<double>();
+    args.yInteractionStrength = variablesMap["yInteractionStrength"].as<double>();
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
     args.dt = variablesMap["dt"].as<double>();

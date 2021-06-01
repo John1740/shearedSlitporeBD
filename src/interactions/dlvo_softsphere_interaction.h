@@ -9,10 +9,12 @@
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
+    double energyCutOffThreshold, forceCutOffThreshold;
+    double cutOffRadius, forceShift, energyShift;
     void calculateCutOffThresholds(double rLJ = 3.);
 
     double calculateCutOffRadius();
-    void calculateShifts(double cutOffRadius);
+    void calculateShifts(double cutOffRadiusIn);
 
 public:
     DLVO_SOFTSPHERE_INTERACTION();
@@ -21,23 +23,20 @@ public:
 
     double lengthRange = 10;    //needed for cutOff calculation, default questionable
 
-    int charge1 = CHARGE;
-    int charge2 = charge1;
-    double diameter1 = DIAMETER;
-    double diameter2 = diameter1;
-    double density = DENSITY;
+//    int charge1 = CHARGE;
+//    int charge2 = charge1;
+//    double diameter1 = DIAMETER;
+//    double diameter2 = diameter1;
+//    double density = DENSITY;
 
+    double diameter = DIAMETER;
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
     double yInteractionStrength = Y_INTERACTION_STRENGTH;
     double kappa = KAPPA;
 
-    //might need to make these private and create getters/setters
-    double energyCutOffThreshold, forceCutOffThreshold;
-    double cutOffRadius, forceShift, energyShift;
-
     ///////////////////////////////////// interaction parameters /////////////////////////////////////
     double calculateKappa(int Z = 35, double rho = 0.85, double I = 1e-5, double T = 298, double d = 26e-9, double eps = 78.5);
-    double calculateInteractionStrength(double kappa, int Z = 35, double T = 298, double d_SI = 26e-9, double eps = 78.5);
+    double calculateInteractionStrength(double kappaIn, int Z = 35, double T = 298, double d_SI = 26e-9, double eps = 78.5);
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
@@ -46,8 +45,8 @@ public:
 
     double energy(double r) const;
     double forceAbs(double r) const;
-    double energyShifted(double r);
-    double forceAbsShifted(double r);
+    double energyShifted(double r) const;
+    double forceAbsShifted(double r) const;
 
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo);

@@ -27,11 +27,7 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
 
-    dlvo.charge1 = particles[0].charge;
-    dlvo.charge2 = particles[0].charge;
-    dlvo.diameter1 = particles[0].diameter;
-    dlvo.diameter2 = particles[0].diameter;
-    dlvo.density = getDensity();
+//    dlvo.density = getDensity();
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
     reset();

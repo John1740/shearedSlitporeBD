@@ -58,7 +58,8 @@ int main(int argc, const char* argv[]){
     cout << comment << "V_sh: shifted potential energy [kT]" << endl;
     cout << comment << "F: radial force [kT d-1]" << endl;
     cout << comment << "F_sh: shifted radial force [kT d-1]" << endl;
-    cout << bo::format(format_fh) % "r";
+    cout << comment;
+    cout << bo::format("%14s\t") % "r";
     cout << bo::format(format_fh) % "V";
     cout << bo::format(format_fh) % "V_sh";
     cout << bo::format(format_fh) % "F";

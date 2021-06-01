@@ -163,6 +163,17 @@ add_executable(
 )
 
 add_executable(
+        writePotential
+        scripts/writePotential.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/dlvo_softsphere_interaction.h
+
+        src/interactions/lennard_jones_interaction.cpp
+        src/interactions/lennard_jones_interaction.h
+)
+
+add_executable(
         generateSquareLayers
         scripts/generateSquareLayers.cpp
 
@@ -191,6 +202,7 @@ add_executable(
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(interactionParameters ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(writePotential ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(generateSquareLayers ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")

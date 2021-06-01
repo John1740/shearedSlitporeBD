@@ -18,21 +18,6 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double diameter, double
 void DLVO_SOFTSPHERE_INTERACTION::setup(){
     calculateCutOffRadius();
     calculateShifts(cutOffRadius);
-
-    // temporary start
-//    int numberOfSteps = 4000;
-//    double rcDelta = 3. / numberOfSteps;
-//    double currentRadius, currentEnergy, currentForce, shiftedEnergy, shiftedForce;
-//    cout << "r \t E \t F \t E_sh \t F_sh" << endl;
-//    for(int i = 0; i < numberOfSteps; ++i){
-//        currentRadius = i * rcDelta;
-//        currentEnergy = energy(currentRadius);
-//        currentForce = forceAbs(currentRadius);
-//        shiftedEnergy = energyShifted(currentRadius);
-//        shiftedForce = forceAbsShifted(currentRadius);
-//        cout << currentRadius << "\t" << currentEnergy << "\t" << currentForce << "\t" << shiftedEnergy << "\t" << shiftedForce << endl;
-//    }
-    // temporary end
 }
 
 //Z: charge (unit: 1)

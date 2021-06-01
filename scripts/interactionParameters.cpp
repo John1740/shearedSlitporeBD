@@ -22,7 +22,7 @@ int main(int argc, const char* argv[]){
             ("temperature,T", po::value<double>()->default_value(298), "temperature [K]")
             ("diameter,d", po::value<double>()->default_value(26e-9), "macroion diameter [m]")
             ("eps", po::value<double>()->default_value(78.5), "permittivity of the solvent")
-            ("ssInteractionStrength", po::value<double>()->default_value(1.0), "soft-sphere interaction strength [kT]")
+            ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH), "soft-sphere interaction strength [kT]")
             ;
     po::store(parse_command_line(argc, argv, description), vm);
     po::notify(vm);

@@ -172,14 +172,15 @@ double DLVO_SOFTSPHERE_INTERACTION::forceAbsShifted(double r) const{
 
 ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
     const char* fmt = "% .8f\t";
-    os << "diameter: " << bo::format(fmt) % (dlvo.diameter) << "[d]" << endl;
-    os << "kappa: " << bo::format(fmt) % (dlvo.kappa) << "[d-1]" << endl;
-    os << "yInteractionStrength: " << bo::format(fmt) % (dlvo.yInteractionStrength) << "[kT]" << endl;
-    os << "ssInteractionStrength: " << bo::format(fmt) % (dlvo.ssInteractionStrength) << "[kT]" << endl;
-    os << "cutOffRadius: " << bo::format(fmt) % (dlvo.cutOffRadius) << "[d]" << endl;
-    os << "energyCutOffThreshold: " << bo::format(fmt) % (dlvo.energyCutOffThreshold) << "[kT]" << endl;
-    os << "forceCutOffThreshold: " << bo::format(fmt) % (dlvo.forceCutOffThreshold) << "[kT d-1]" << endl;
-    os << "energyShift: " << bo::format(fmt) % (dlvo.energyShift) << "[kT]" << endl;
-    os << "forceShift: " << bo::format(fmt) % (dlvo.forceShift) << "[kT d-1]" << endl;
+    os << "kappa: " << bo::format(fmt) % dlvo.kappa << "[d-1]" << endl;
+    os << "yInteractionStrength: " << bo::format(fmt) % dlvo.yInteractionStrength << "[kT]" << endl;
+    os << "ssInteractionStrength: " << bo::format(fmt) % dlvo.ssInteractionStrength << "[kT]" << endl;
+    os << "diameter: " << bo::format(fmt) % dlvo.diameter << "[d]" << endl;
+    os << endl;
+    os << "cutOffRadius: " << bo::format(fmt) % dlvo.cutOffRadius << "[d]" << endl;
+    os << "energyCutOffThreshold: " << bo::format(fmt) % dlvo.energyCutOffThreshold << "[kT]" << endl;
+    os << "forceCutOffThreshold: " << bo::format(fmt) % dlvo.forceCutOffThreshold << "[kT d-1]" << endl;
+    os << "energyShift: " << bo::format(fmt) % dlvo.energyShift << "[kT]" << endl;
+    os << "forceShift: " << bo::format(fmt) % dlvo.forceShift << "[kT d-1]" << endl;
     return os;
 }

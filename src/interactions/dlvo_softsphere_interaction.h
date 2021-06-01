@@ -43,10 +43,10 @@ public:
     double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox) override;
     REAL_C forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox) override;
 
-    double energy(double r) const;
-    double forceAbs(double r) const;
-    double energyShifted(double r) const;
-    double forceAbsShifted(double r) const;
+    [[nodiscard]] double energy(double r) const;
+    [[nodiscard]] double forceAbs(double r) const;
+    [[nodiscard]] double energyShifted(double r) const;
+    [[nodiscard]] double forceAbsShifted(double r) const;
 
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo);

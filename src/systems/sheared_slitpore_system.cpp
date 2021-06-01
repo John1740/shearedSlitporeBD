@@ -29,7 +29,7 @@ void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
 
 //    dlvo.density = getDensity();
     dlvo.lengthRange = simBox.getDimensions().x;
-    dlvo.calculateInteractionParameters();    //needs to be done anew since lengthRange changed
+    dlvo.setup();    //needs to be done anew since lengthRange changed
     reset();
 }
 

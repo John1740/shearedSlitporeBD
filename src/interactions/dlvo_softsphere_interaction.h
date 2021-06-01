@@ -9,25 +9,13 @@
 
 class DLVO_SOFTSPHERE_INTERACTION: public TWO_BODY_CONSERVATIVE_FORCE<CHARGED_PARTICLE>{
 private:
-    double energyCutOffThreshold, forceCutOffThreshold;
-    double cutOffRadius, forceShift, energyShift;
-    void calculateCutOffThresholds(double rLJ = 3.);
-
-    double calculateCutOffRadius();
-    void calculateShifts(double cutOffRadiusIn);
 
 public:
     DLVO_SOFTSPHERE_INTERACTION();
-    DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength);
-    void calculateInteractionParameters();
+    DLVO_SOFTSPHERE_INTERACTION(double diameter, double ssInteractionStrength, double yInteractionStrength, double kappa);
+    void setup();
 
     double lengthRange = 10;    //needed for cutOff calculation, default questionable
-
-//    int charge1 = CHARGE;
-//    int charge2 = charge1;
-//    double diameter1 = DIAMETER;
-//    double diameter2 = diameter1;
-//    double density = DENSITY;
 
     double diameter = DIAMETER;
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;
@@ -47,6 +35,14 @@ public:
     [[nodiscard]] double forceAbs(double r) const;
     [[nodiscard]] double energyShifted(double r) const;
     [[nodiscard]] double forceAbsShifted(double r) const;
+
+    //semi-private parameters/functions
+    double energyCutOffThreshold, forceCutOffThreshold;
+    double cutOffRadius, forceShift, energyShift;
+    void calculateCutOffThresholds(double rLJ = 3.);
+
+    double calculateCutOffRadius();
+    void calculateShifts(double cutOffRadiusIn);
 
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo);

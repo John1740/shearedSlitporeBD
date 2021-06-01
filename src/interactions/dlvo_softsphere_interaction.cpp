@@ -4,15 +4,18 @@
 namespace bo = boost;
 
 DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(){
-    calculateInteractionParameters();
+    setup();
 }
 
-DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStrength){
+DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double diameter, double ssInteractionStrength, double yInteractionStrength, double kappa){
+    this->diameter = diameter;
     this->ssInteractionStrength = ssInteractionStrength;
-    calculateInteractionParameters();
+    this->yInteractionStrength = yInteractionStrength;
+    this->kappa = kappa;
+    setup();
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
+void DLVO_SOFTSPHERE_INTERACTION::setup(){
     calculateCutOffRadius();
     calculateShifts(cutOffRadius);
 
@@ -176,5 +179,7 @@ ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
     os << "cutOffRadius: " << bo::format(fmt) % (dlvo.cutOffRadius) << "[d]" << endl;
     os << "energyCutOffThreshold: " << bo::format(fmt) % (dlvo.energyCutOffThreshold) << "[kT]" << endl;
     os << "forceCutOffThreshold: " << bo::format(fmt) % (dlvo.forceCutOffThreshold) << "[kT d-1]" << endl;
+    os << "energyShift: " << bo::format(fmt) % (dlvo.energyShift) << "[kT]" << endl;
+    os << "forceShift: " << bo::format(fmt) % (dlvo.forceShift) << "[kT d-1]" << endl;
     return os;
 }

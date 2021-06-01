@@ -14,7 +14,7 @@ DLVO_SOFTSPHERE_INTERACTION::DLVO_SOFTSPHERE_INTERACTION(double ssInteractionStr
 
 void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
     calculateCutOffRadius();
-    calculateShifts();
+    calculateShifts(cutOffRadius);
 
     // temporary start
 //    int numberOfSteps = 4000;
@@ -39,10 +39,6 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateInteractionParameters(){
 //d: particle diameter (unit: m)
 //eps: permittivity (unit: 1)
 double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(int Z, double rho, double I, double T, double d, double eps){
-    double e0 = 1.602176634e-19;        //unit: C
-    double NA = 6.02214076e23;          //unit: mol^-1
-    double eps0 = 8.8541878128e-12;     //unit: F m^-1 = C^2 J^-1 m^-1
-    double kB = 1.38064852e-23;         //unit: J K^-1
     double rho_SI = rho / d / d / d;    //unit: m^-3
     double I_SI = I * 1e3;              //unit: mol m^-3
     //for comparison with Sascha's code
@@ -59,21 +55,25 @@ double DLVO_SOFTSPHERE_INTERACTION::calculateKappa(int Z, double rho, double I, 
     return kappa;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(double kappa, int Z, double T, double d){
+//kappa: inverse Debye screening length (unit: d^-1)
+//Z: charge (unit: 1)
+//T: temperature (unit: K)
+//d_SI: particle diameter (unit: m)
+//eps: permittivity (unit: 1)
+double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(double kappa, int Z, double T, double d_SI, double eps){
     //alpha^2 = e0^2 / 4 / pi / eps / eps0
-    //e0 = 1.602e-19 C
-    //eps = 78.5
-    //eps0 = 8.854e-12 C^2 J^-1 m^-1
-    //d = 26e-9 m, m = 3.846e7 d
-    //T = 298 K, kT = 4.115e-21 J, J = 2.430e20 kT
     //for comparison with Sascha's code
-//    double alpha = 0.16575255001233970612;  //unit: kT^1/2 d^1/2
+//    double alpha_SI = sqrt(e0 * e0 / (4 * M_PI * eps * eps0));    //unit: J^1/2 m^1/2
+//    double alpha = alpha_SI / sqrt(kB * T * d_SI);    //unit: kT^1/2 d^1/2
+//    double alpha = 0.16575255001233970612;
 //    double diameter = (diameter1 + diameter2) / 2;
-//    //TODO: should every diameter be the mean diameter?
 //    double Wp1 = charge1 * alpha * exp(0.5 * kappa * diameter1) / (1 + 0.5 * kappa * diameter1);
 //    double Wp2 = charge2 * alpha * exp(0.5 * kappa * diameter2) / (1 + 0.5 * kappa * diameter2);
 //    yInteractionStrength = Wp1 * Wp2 / diameter;
-    double prefactor = Z * e0 * Z * e0
+    double d = d_SI / d_SI;  //unit: d
+    double prefactor = Z * e0 * Z * e0 / (4 * M_PI * eps * eps0 * d_SI);    //unit: J
+    double yInteractionStrength_SI = prefactor * exp(kappa * d) / pow(1. + 0.5 * kappa * d, 2); //unit: J
+    yInteractionStrength = yInteractionStrength_SI / (kB * T);   //unit: kT
     return yInteractionStrength;
 }
 
@@ -82,7 +82,7 @@ double DLVO_SOFTSPHERE_INTERACTION::calculateInteractionStrength(double kappa, i
 //both energy and force need to be smaller than residual energy/force of the Lennard-Jones potential at 3d
 double DLVO_SOFTSPHERE_INTERACTION::calculateCutOffRadius(){
     calculateCutOffThresholds();
-    double tmpCutOffRadius;
+    double tmpCutOffRadius = lengthRange;   //maximal range in case energy/force doesn't converge
     double currentRadius, currentEnergy, currentForce;
     int numberOfSteps = 4000;
     double rcDelta = lengthRange / numberOfSteps;
@@ -108,7 +108,7 @@ void DLVO_SOFTSPHERE_INTERACTION::calculateCutOffThresholds(double rLJ){
     forceCutOffThreshold = abs(lji.forceAbs(rLJ));
 }
 
-void DLVO_SOFTSPHERE_INTERACTION::calculateShifts(){
+void DLVO_SOFTSPHERE_INTERACTION::calculateShifts(double cutOffRadius){
     forceShift = forceAbs(cutOffRadius);
     energyShift = energy(cutOffRadius);
 }
@@ -134,7 +134,7 @@ DLVO_SOFTSPHERE_INTERACTION::forceOnParticleFromParticle(CHARGED_PARTICLE& parti
     return force;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::energy(double r){
+double DLVO_SOFTSPHERE_INTERACTION::energy(double r) const{
     double diameter = 0.5 * (diameter1 + diameter2);
     double yukawaEnergy = yInteractionStrength * diameter * exp(-kappa * r) / r;
     double softSphereEnergy = 4 * ssInteractionStrength * pow(diameter / r, 12);
@@ -142,7 +142,7 @@ double DLVO_SOFTSPHERE_INTERACTION::energy(double r){
     return energy;
 }
 
-double DLVO_SOFTSPHERE_INTERACTION::forceAbs(double r){
+double DLVO_SOFTSPHERE_INTERACTION::forceAbs(double r) const{
     double diameter = (diameter1 + diameter2) / 2;
     double yukawaForceAbs = yInteractionStrength * diameter * exp(-kappa * r) * (1. / (r * r) + kappa / r);
     double softSphereForceAbs = 48 * ssInteractionStrength * pow(diameter / r, 13) / diameter;

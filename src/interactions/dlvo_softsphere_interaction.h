@@ -12,7 +12,7 @@ private:
     void calculateCutOffThresholds(double rLJ = 3.);
 
     double calculateCutOffRadius();
-    void calculateShifts();
+    void calculateShifts(double cutOffRadius);
 
 public:
     DLVO_SOFTSPHERE_INTERACTION();
@@ -37,15 +37,15 @@ public:
 
     ///////////////////////////////////// interaction parameters /////////////////////////////////////
     double calculateKappa(int Z = 35, double rho = 0.85, double I = 1e-5, double T = 298, double d = 26e-9, double eps = 78.5);
-    double calculateInteractionStrength(double kappa, int Z = 35, double T = 298, double d = 26e-9);
+    double calculateInteractionStrength(double kappa, int Z = 35, double T = 298, double d_SI = 26e-9, double eps = 78.5);
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
 
     double energyOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
     REAL_C forceOnParticleFromParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2, BOX_GEOMETRY& simBox);
 
-    double energy(double r);
-    double forceAbs(double r);
+    double energy(double r) const;
+    double forceAbs(double r) const;
     double energyShifted(double r);
     double forceAbsShifted(double r);
 

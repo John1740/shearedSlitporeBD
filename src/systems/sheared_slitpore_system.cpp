@@ -4,8 +4,6 @@
 namespace bo = boost;
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    OSCILLATORY_SHEAR shearProtocol;
-    sf = SHEAR_FORCE(shearProtocol);
     prepareSystem();
 }
 
@@ -16,7 +14,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
     }
     printEnergy = args.printEnergy;
     OSCILLATORY_SHEAR shearProtocol(args.shearRate, args.amplitude, args.oscillationPeriod, args.phaseOffset);
-    sf = SHEAR_FORCE(shearProtocol);
+    sf = SHEAR_FORCE<OSCILLATORY_SHEAR>(shearProtocol);
 
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, args.ssInteractionStrength,

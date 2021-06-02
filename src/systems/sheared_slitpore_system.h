@@ -18,7 +18,7 @@ private:
 protected:
     DLVO_SOFTSPHERE_INTERACTION dlvo;
     SOFT_WALL_FORCE swf;
-    SHEAR_FORCE sf;
+    SHEAR_FORCE<OSCILLATORY_SHEAR> sf;
 
     vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;

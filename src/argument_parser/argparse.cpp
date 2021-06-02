@@ -8,11 +8,11 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]){
     try{
         addOptions();
         //decompose command line arguments and put them into variablesMap
-        po::store(parse_command_line(argc, argv, description), variablesMap);
+        po::store(parse_command_line(argc, argv, options), variablesMap);
         po::notify(variablesMap);
 
         if(variablesMap.count("help")){
-            cout << description << endl;
+            cout << options << endl;
             exit(0);
         }
     }
@@ -23,11 +23,26 @@ ARGUMENT_PARSER::ARGUMENT_PARSER(int argc, const char* argv[]){
 
 //could be divided into logical segments
 void ARGUMENT_PARSER::addOptions(){
-    description.add_options()
+    options.add_options()
             ("help,h", "Help screen")
             ("settings,s", po::value<string>()->default_value(SETTINGS_IN), "settings file")
-            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN),
-             "configuration file (particle positions, simulation box)")
+            ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
+            ("dry", po::bool_switch()->default_value(false), "do a dry run")
+            ("clear", po::bool_switch()->default_value(CLEAR),
+             "clear all existing output files (before simulation start)")
+            ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
+            ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
+                                                "Overwrites --numberOfTimesteps/-N")
+            ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
+                                                     "Overwrites --numberOfTimesteps/-N and --duration/-d")
+            ("skip", po::value<double>()->default_value(SKIP), "skip the first x timesteps")
+            ("skipDuration", po::value<double>(),
+             "Same as --skip but in units of total simulation time.\n"
+             "Overwrites --skip")
+            ("skipPeriod", po::value<double>(), "Same as --skip but in units of oscillation periods.\n"
+                                                       "Overwrites --skip and --skip")
+             ;
+    main.add_options()
             ("shearRate", po::value<double>()->default_value(SHEAR_RATE),
              "(constant) shear rate offset (in units of 1/Brownian time)")
             ("amplitude,a", po::value<double>()->default_value(AMPLITUDE),
@@ -36,6 +51,12 @@ void ARGUMENT_PARSER::addOptions(){
              "shear rate oscillation period (in units of Brownian time)")
             ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
                                                                                 "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
+            ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN),
+             "configuration file (particle positions, simulation box)")
+             ;
+    secondary.add_options()
+            ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
+            ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
             ("kappa", po::value<double>()->default_value(KAPPA),
              "inverse Debye screening length of the Yukawa potential (in units of d)")
             ("yInteractionStrength", po::value<double>()->default_value(Y_INTERACTION_STRENGTH),
@@ -44,24 +65,16 @@ void ARGUMENT_PARSER::addOptions(){
              "strength of softsphere interaction (in units of kT)")
             ("wallInteractionStrength", po::value<double>()->default_value(WALL_INTERACTION_STRENGTH),
              "strength of wall interaction")
+             ;
+    numerical.add_options()
             ("dt", po::value<double>()->default_value(0), "length of timestep")
-            ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
-            ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
-            ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
-            ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
-                                                "Overwrites --numberOfTimesteps/-N")
-            ("numberOfPeriods", po::value<double>(), "Number of oscillation periods the simulations runs for.\n"
-                                                     "Overwrites --numberOfTimesteps/-N and --duration/-d")
             ("seed", po::value<unsigned int>()->default_value(0),
              "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0),
              "initial random number generator counter; 0 = no initial increments")
-            ("skip", po::value<double>()->default_value(SKIP), "skip the first x timesteps")
-            ("skipDuration", po::value<double>(),
-             "Same as --skip but in units of total simulation time.\n"
-             "Overwrites --skip")
-            ("skipPeriod", po::value<double>(), "Same as --skip but in units of oscillation periods.\n"
-                                                       "Overwrites --skip and --skip")
+             ;
+    observables.add_options()
+
             ("printStress", po::value<double>()->default_value(PRINT_STRESS), "print stresses every x-th timestep; "
                                                                               "x<0 -> no print-outs")
             ("printStressDuration", po::value<double>(),
@@ -134,10 +147,8 @@ void ARGUMENT_PARSER::addOptions(){
                                                                         "x<0 -> no print-outs; "
                                                                         "ATTENTION: The calculation will be very slow! "
                                                                         "Gets overwritten by other (non-zero) print-arguments")
-            ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
-            ("dry", po::bool_switch()->default_value(false), "do a dry run")
-            ("clear", po::bool_switch()->default_value(CLEAR),
-             "clear all existing output files (before simulation start)");
+            ;
+    options.add(main).add(secondary).add(numerical).add(observables);
 }
 
 ARGUMENTS ARGUMENT_PARSER::parseArgs(){

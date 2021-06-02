@@ -12,8 +12,12 @@ namespace po = boost::program_options;
 
 class ARGUMENT_PARSER{
 private:
-    po::options_description description{"Brownian Dynamics Simulation with oscillatory (cos) shear protocol\n"
-                                        "Options"};
+    po::options_description options{"Brownian Dynamics Simulation with oscillatory (cos) shear protocol\n"
+                                    "Options"};
+    po::options_description main{"Main control parameters"};
+    po::options_description secondary{"Secondary control parameters"};
+    po::options_description numerical{"Numerical parameters"};
+    po::options_description observables{"Observables"};
     po::variables_map variablesMap;
 
     void addOptions();

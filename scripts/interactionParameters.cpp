@@ -32,7 +32,7 @@ int main(int argc, const char* argv[]){
     }
 
     cout << "#Input parameters:" << endl;
-    const char* fmt = "% .8f\t";
+    const char* fmt = "% .8e\t";
     cout << "charge: " << bo::format(fmt) % vm["charge"].as<int>() << endl;
     cout << "density: " << bo::format(fmt) % vm["density"].as<double>() << "[d-3]" << endl;
     cout << "ionicStrength: " << bo::format(fmt) % vm["ionicStrength"].as<double>() << "[mol l-1]" << endl;

@@ -4,6 +4,8 @@
 namespace bo = boost;
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
+    OSCILLATORY_SHEAR shearProtocol;
+    sf = SHEAR_FORCE(shearProtocol);
     prepareSystem();
 }
 

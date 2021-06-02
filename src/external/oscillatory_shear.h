@@ -20,8 +20,8 @@ public:
     OSCILLATORY_SHEAR(double shearRateOffset, double shearRateAmplitude, double oscillationPeriod, double phaseOffset);
 
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
-    double calculateShearStrain(double t);
-    double calculateShearRate(double t);
+    [[nodiscard]] double calculateShearStrain(double t) const override;
+    [[nodiscard]] double calculateShearRate(double t) const override;
 };
 
 #endif //SHEAREDSLITPOREBD_OSCILLATORY_SHEAR_H

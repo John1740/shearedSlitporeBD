@@ -19,14 +19,14 @@ OSCILLATORY_SHEAR::OSCILLATORY_SHEAR(double shearRateOffset, double shearRateAmp
     this->phaseOffset = phaseOffset;
 }
 
-double OSCILLATORY_SHEAR::calculateShearStrain(double t){
+double OSCILLATORY_SHEAR::calculateShearStrain(double t) const{
     double shearStrain = shearRateOffset * t +
                          shearRateAmplitude * oscillationPeriod / (2 * M_PI) *
                          cos(2 * M_PI * t / oscillationPeriod + M_PI * phaseOffset);
     return shearStrain;
 }
 
-double OSCILLATORY_SHEAR::calculateShearRate(double t){
+double OSCILLATORY_SHEAR::calculateShearRate(double t) const{
     double shearRate = shearRateOffset +
                        shearRateAmplitude * cos(2 * M_PI * t / oscillationPeriod + M_PI * phaseOffset);
     return shearRate;

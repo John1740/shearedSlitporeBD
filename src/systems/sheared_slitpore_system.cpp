@@ -4,7 +4,6 @@
 namespace bo = boost;
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
-    currentShearRate = calculateCurrentShearRate();
     prepareSystem();
 }
 
@@ -15,8 +14,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
     }
     printEnergy = args.printEnergy;
     OSCILLATORY_SHEAR shearProtocol(args.shearRate, args.amplitude, args.oscillationPeriod, args.phaseOffset);
-    shearForce = SHEAR_FORCE(shearProtocol);
-//    currentShearRate = calculateCurrentShearRate();
+    sf = SHEAR_FORCE(shearProtocol);
 
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, args.ssInteractionStrength,
@@ -27,7 +25,6 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
 
 //needs to be done after input variables have been changed
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
-    shearForce = SHEAR_FORCE(currentShearRate);
     //update lengthRange and then invoke all following setup calculations again
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.setup();    //needs to be done anew since lengthRange changed
@@ -58,11 +55,11 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     REAL_C randomDisplacement;
     REAL_C shearForce;
     previousParticles = particles;
-    this->shearForce.shearRate = calculateCurrentShearRate();
+    currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
 
     for(int i = 0; i < particles.size(); ++i){
         randomDisplacement = getRandomDisplacement();
-        shearForce = getShearForce(i);
+        shearForce = sf.forceOnParticle(particles[i], timestep * dt);
 
         particles[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
 
@@ -75,9 +72,9 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
     timestep++;
 }
 
-REAL_C SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
-    return shearForce.forceOnParticle(particles[index]);
-}
+//REAL_C SHEARED_SLITPORE_SYSTEM::getShearForce(int index){
+//    return shearForce.forceOnParticle(particles[index]);
+//}
 
 REAL_C SHEARED_SLITPORE_SYSTEM::forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2){
     return dlvo.forceOnParticleFromParticle(particle1, particle2, simBox);
@@ -180,8 +177,7 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    currentShearRate = shearRateOffset +
-                       shearRateAmplitude * cos(2 * M_PI * timestep * dt / oscillationPeriod + M_PI * phaseOffset);
+    double currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
     return currentShearRate;
 }
 

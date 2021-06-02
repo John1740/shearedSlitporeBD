@@ -5,18 +5,18 @@
 #include "../struct/particle.h"
 #include "../struct/cartesian_c.h"
 #include "../defaults.h"
-#include "../interfaces/shear_protocol.h"
+//#include "../interfaces/shear_protocol.h"
+#include "oscillatory_shear.h"
 
-template<class SHEAR_PROTOCOL_T>
 class SHEAR_FORCE: TIME_DEPENDENT_FORCE<PARTICLE>{
 private:
     REAL_C direction;
 public:
-    SHEAR_PROTOCOL_T shearProtocol;
+    OSCILLATORY_SHEAR shearProtocol;
 
     SHEAR_FORCE();
-    SHEAR_FORCE(const SHEAR_PROTOCOL_T& shearProtocol);
-    SHEAR_FORCE(const SHEAR_PROTOCOL_T& shearProtocol, const REAL_C& direction);
+    SHEAR_FORCE(const OSCILLATORY_SHEAR& shearProtocol);
+    SHEAR_FORCE(const OSCILLATORY_SHEAR& shearProtocol, const REAL_C& direction);
 
     //setter functions
     void setDirection(const REAL_C& directionIn);
@@ -27,7 +27,7 @@ public:
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
     REAL_C forceOnParticle(PARTICLE& particle, double t) override;
 
-    [[nodiscard]] double forceAbs(double z, double t) const;
+    double forceAbs(double z, double t);
 };
 
 #endif // SHEAR_FORCE_H

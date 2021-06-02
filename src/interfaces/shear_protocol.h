@@ -7,8 +7,8 @@
 
 class SHEAR_PROTOCOL{
 public:
-    virtual double calculateShearStrain(double t) const = 0;
-    virtual double calculateShearRate(double t) const = 0;
+    virtual double calculateShearStrain(double t) = 0;
+    virtual double calculateShearRate(double t) = 0;
 };
 
 #endif //SHEAREDSLITPOREBD_SHEAR_PROTOCOL_H

@@ -18,23 +18,18 @@ private:
 protected:
     DLVO_SOFTSPHERE_INTERACTION dlvo;
     SOFT_WALL_FORCE swf;
-    SHEAR_FORCE<OSCILLATORY_SHEAR> shearForce;
+    SHEAR_FORCE sf;
 
     vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
-
-//    double shearRateOffset = SHEAR_RATE;
-//    double shearRateAmplitude = AMPLITUDE;
-//    double oscillationPeriod = OSCILLATION_PERIOD;
-//    double phaseOffset = PHASE_OFFSET;
     double currentShearRate;
 
     virtual double getInteractionLengthScale();
 
     virtual void reset();
 
-    virtual REAL_C getShearForce(int index);
+//    virtual REAL_C getShearForce(int index);
 
     virtual void equationOfMotion();
     virtual void calculateInteractionForce(int i, int j);

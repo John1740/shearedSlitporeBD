@@ -75,6 +75,8 @@ int main(int argc, const char* argv[]){
 
     SHEARED_SLITPORE_SYSTEM sys(args);
 
+    cout << sys << endl << endl;
+
     //clear
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;

@@ -21,6 +21,9 @@ public:
     double energyOnParticle(PARTICLE& particle);
 
     double forceInZDirection(double zPositionIn, double diameterIn);
+
+    //file/stream-handling
+    friend ostream& operator<<(ostream& os, const SOFT_WALL_FORCE& swf);
 };
 
 #endif // SOFT_WALL_FORCE_H

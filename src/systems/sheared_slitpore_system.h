@@ -70,6 +70,9 @@ public:
     double getCurrentShearRate();
 
     vector<double> getEnergyPerParticle();
+
+    //file/stream-handling
+    friend ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys);
 };
 
 #endif // SHEARED_SLITPORE_SYSTEM_H

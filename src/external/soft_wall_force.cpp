@@ -1,4 +1,7 @@
 #include "soft_wall_force.h"
+#include <boost/format.hpp>
+
+namespace bo = boost;
 
 SOFT_WALL_FORCE::SOFT_WALL_FORCE(){
 }
@@ -31,3 +34,9 @@ double SOFT_WALL_FORCE::forceInZDirection(double zPositionIn, double diameterIn)
     return forceZ;
 }
 
+ostream& operator<<(ostream& os, const SOFT_WALL_FORCE& swf){
+    const char* fmt = "% .8f\t";
+    os << "wallInteractionStrength: " << bo::format(fmt) % swf.wallInteractionStrength << "[kT]" << endl;
+    os << "dWall: " << bo::format(fmt) % swf.dWall << "[d]";
+    return os;
+}

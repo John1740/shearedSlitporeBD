@@ -1,4 +1,7 @@
 #include "sheared_slitpore_system.h"
+#include <boost/format.hpp>
+
+namespace bo = boost;
 
 SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(){
     currentShearRate = calculateCurrentShearRate();
@@ -184,4 +187,15 @@ double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
     return currentShearRate;
 }
 
-
+ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys){
+    const char* fmt = "% .8f\t";
+    os << "numberOfParticles: " << bo::format(fmt) % sys.numberOfParticles << endl;
+    os << endl;
+    os << "DLVO_SOFTSPHERE_INTERACTION: " << endl;
+    os << sys.dlvo << endl;
+    os << endl;
+    os << "SOFT_WALL_INTERACTION: " << endl;
+    os << sys.swf;
+    //...
+    return os;
+}

@@ -166,6 +166,6 @@ ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
     os << "energyCutOffThreshold: " << bo::format(fmt) % dlvo.energyCutOffThreshold << "[kT]" << endl;
     os << "forceCutOffThreshold: " << bo::format(fmt) % dlvo.forceCutOffThreshold << "[kT d-1]" << endl;
     os << "energyShift: " << bo::format(fmt) % dlvo.energyShift << "[kT]" << endl;
-    os << "forceShift: " << bo::format(fmt) % dlvo.forceShift << "[kT d-1]" << endl;
+    os << "forceShift: " << bo::format(fmt) % dlvo.forceShift << "[kT d-1]";
     return os;
 }

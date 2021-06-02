@@ -116,7 +116,12 @@ add_executable(
 
         src/argument_parser/print_intervals.cpp
         src/argument_parser/print_intervals.h
-        src/printer/layer_position.cpp src/printer/layer_position.h)
+        src/printer/layer_position.cpp
+        src/printer/layer_position.h
+        src/interfaces/shear_protocol.h
+        src/external/oscillatory_shear.cpp
+        src/external/oscillatory_shear.h
+)
 
 #build a library first if you want to have multiple executable files!
 add_executable(

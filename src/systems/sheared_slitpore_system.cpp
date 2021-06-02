@@ -14,11 +14,9 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
         printStress = args.printStressFourier;
     }
     printEnergy = args.printEnergy;
-    shearRateOffset = args.shearRate;
-    shearRateAmplitude = args.amplitude;
-    oscillationPeriod = args.oscillationPeriod;
-    phaseOffset = args.phaseOffset;
-    currentShearRate = calculateCurrentShearRate();
+    OSCILLATORY_SHEAR shearProtocol(args.shearRate, args.amplitude, args.oscillationPeriod, args.phaseOffset);
+    shearForce = SHEAR_FORCE(shearProtocol);
+//    currentShearRate = calculateCurrentShearRate();
 
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, args.ssInteractionStrength,

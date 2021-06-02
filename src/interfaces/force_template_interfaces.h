@@ -17,6 +17,12 @@ public:
 };
 
 template<class PARTICLE_T>
+class TIME_DEPENDENT_FORCE{
+public:
+    virtual REAL_C forceOnParticle(PARTICLE_T& particle, double t) = 0;
+};
+
+template<class PARTICLE_T>
 class TWO_BODY_FORCE{
 public:
     virtual REAL_C forceOnParticleFromParticle(PARTICLE_T& particle1, PARTICLE_T& particle2, BOX_GEOMETRY& simBox) = 0;

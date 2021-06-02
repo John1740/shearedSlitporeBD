@@ -6,6 +6,7 @@
 #include "../interactions/dlvo_softsphere_interaction.h"
 #include "../external/soft_wall_force.h"
 #include "../external/shear_force.h"
+#include "../external/oscillatory_shear.h"
 
 #include "../argument_parser/argparse.h"
 
@@ -17,16 +18,16 @@ private:
 protected:
     DLVO_SOFTSPHERE_INTERACTION dlvo;
     SOFT_WALL_FORCE swf;
-    SHEAR_FORCE shearForce;
+    SHEAR_FORCE<OSCILLATORY_SHEAR> shearForce;
 
     vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
 
-    double shearRateOffset = SHEAR_RATE;
-    double shearRateAmplitude = AMPLITUDE;
-    double oscillationPeriod = OSCILLATION_PERIOD;
-    double phaseOffset = PHASE_OFFSET;
+//    double shearRateOffset = SHEAR_RATE;
+//    double shearRateAmplitude = AMPLITUDE;
+//    double oscillationPeriod = OSCILLATION_PERIOD;
+//    double phaseOffset = PHASE_OFFSET;
     double currentShearRate;
 
     virtual double getInteractionLengthScale();

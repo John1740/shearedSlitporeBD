@@ -8,6 +8,8 @@
 #include "../defaults.h"
 #include <cmath>
 
+using namespace std;
+
 class OSCILLATORY_SHEAR: public SHEAR_PROTOCOL{
 public:
     double shearRateOffset = SHEAR_RATE;
@@ -22,6 +24,10 @@ public:
     ////////////////////////////////////////// Calculators ///////////////////////////////////////////
     [[nodiscard]] double calculateShearStrain(double t) const override;
     [[nodiscard]] double calculateShearRate(double t) const override;
+
+    //file/stream-handling
+    void print(ostream& os) const override;
+//    friend ostream& operator<<(ostream& os, const OSCILLATORY_SHEAR& obj);
 };
 
 #endif //SHEAREDSLITPOREBD_OSCILLATORY_SHEAR_H

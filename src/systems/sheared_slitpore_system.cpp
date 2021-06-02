@@ -176,20 +176,18 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
     return currentShearRate;
 }
 
-double SHEARED_SLITPORE_SYSTEM::calculateCurrentShearRate(){
-    double currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
-    return currentShearRate;
-}
-
 ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys){
     const char* fmt = "% .8f\t";
     os << "numberOfParticles: " << bo::format(fmt) % sys.numberOfParticles << endl;
     os << endl;
-    os << "DLVO_SOFTSPHERE_INTERACTION: " << endl;
+    os << "DLVO_SOFTSPHERE_INTERACTION:" << endl;
     os << sys.dlvo << endl;
     os << endl;
-    os << "SOFT_WALL_INTERACTION: " << endl;
-    os << sys.swf;
+    os << "SOFT_WALL_INTERACTION:" << endl;
+    os << sys.swf << endl;
+    os << endl;
+    os << "SHEAR_FORCE:" << endl;
+    os << sys.sf;
     //...
     return os;
 }

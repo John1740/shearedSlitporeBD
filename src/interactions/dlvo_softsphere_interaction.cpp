@@ -156,7 +156,7 @@ double DLVO_SOFTSPHERE_INTERACTION::forceAbsShifted(double r) const{
 }
 
 ostream& operator<<(ostream& os, const DLVO_SOFTSPHERE_INTERACTION& dlvo){
-    const char* fmt = "% .8f\t";
+    const char* fmt = "% .8e\t";
     os << "kappa: " << bo::format(fmt) % dlvo.kappa << "[d-1]" << endl;
     os << "yInteractionStrength: " << bo::format(fmt) % dlvo.yInteractionStrength << "[kT]" << endl;
     os << "ssInteractionStrength: " << bo::format(fmt) % dlvo.ssInteractionStrength << "[kT]" << endl;

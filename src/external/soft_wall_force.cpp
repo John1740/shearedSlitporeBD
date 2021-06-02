@@ -35,7 +35,7 @@ double SOFT_WALL_FORCE::forceInZDirection(double zPositionIn, double diameterIn)
 }
 
 ostream& operator<<(ostream& os, const SOFT_WALL_FORCE& swf){
-    const char* fmt = "% .8f\t";
+    const char* fmt = "% .8e\t";
     os << "wallInteractionStrength: " << bo::format(fmt) % swf.wallInteractionStrength << "[kT]" << endl;
     os << "dWall: " << bo::format(fmt) % swf.dWall << "[d]";
     return os;

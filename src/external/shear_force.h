@@ -28,6 +28,12 @@ public:
     REAL_C forceOnParticle(PARTICLE& particle, double t) override;
 
     double forceAbs(double z, double t);
+
+    //file/stream-handling
+    friend ostream& operator<<(ostream& os, const SHEAR_FORCE<SHEAR_PROTOCOL_T>& sf){
+        os << sf.shearProtocol;
+        return os;
+    };
 };
 
 template<class SHEAR_PROTOCOL_T>

@@ -20,7 +20,7 @@ protected:
     SOFT_WALL_FORCE swf;
     SHEAR_FORCE<OSCILLATORY_SHEAR> sf;
 
-    vector<REAL_C> randomForces, shearFlowForces;
+//    vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
     double currentShearRate;
@@ -29,18 +29,12 @@ protected:
 
     virtual void reset();
 
-//    virtual REAL_C getShearForce(int index);
-
     virtual void equationOfMotion();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
 
-//    virtual void setParticleList(vector<CHARGED_PARTICLE> particleListIn);
-
     virtual void addConfigurationalStress(REAL_C forceIn, int i, int j);
     virtual void addExternalStress(const REAL_C& forceIn, int i);
-
-    double calculateCurrentShearRate();
 
 public:
     SHEARED_SLITPORE_SYSTEM();

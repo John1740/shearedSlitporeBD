@@ -176,19 +176,19 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
     return currentShearRate;
 }
 
-ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys){
+void SHEARED_SLITPORE_SYSTEM::print(ostream& os) const{
     const char* fmt = "% .8e\t";
-    os << "numberOfParticles: " << bo::format(fmt) % sys.numberOfParticles << endl;
-    os << "printStress: " << bo::format(fmt) % sys.printStress << endl;
-    os << "printEnergy: " << bo::format(fmt) % sys.printEnergy << endl;
+    CONFINED_BROWNIAN_PARTICLES::print(os);
+    os << endl;
+    os << "printStress: " << bo::format(fmt) % printStress << endl;
+    os << "printEnergy: " << bo::format(fmt) % printEnergy << endl;
     os << endl;
     os << "DLVO_SOFTSPHERE_INTERACTION:" << endl;
-    os << sys.dlvo << endl;
+    os << dlvo << endl;
     os << endl;
     os << "SOFT_WALL_INTERACTION:" << endl;
-    os << sys.swf << endl;
+    os << swf << endl;
     os << endl;
     os << "SHEAR_FORCE:" << endl;
-    os << sys.sf;
-    return os;
+    os << sf;
 }

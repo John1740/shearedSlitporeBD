@@ -415,3 +415,13 @@ double CONFINED_BROWNIAN_PARTICLES::getDensity() const{
     double density = numberOfParticles / simBox.getVolume();
     return density;
 }
+
+void CONFINED_BROWNIAN_PARTICLES::print(ostream& os) const{
+    const char* fmt = "% .8e\t";
+    os << "configurationIn: " << bo::format(fmt) % configurationIn << endl;
+    os << "numberOfParticles: " << bo::format(fmt) % numberOfParticles << endl;
+    os << "timestep: " << bo::format(fmt) % timestep << endl;
+    os << "dt: " << bo::format(fmt) % dt << "[tB-1]" << endl;
+    os << "temperature: " << bo::format(fmt) % T << "[kT]" << endl;
+    os << "D0: " << bo::format(fmt) % D0 << "[?]";
+}

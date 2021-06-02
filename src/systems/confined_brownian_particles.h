@@ -99,6 +99,7 @@ public:
     // File-Handling
     virtual void readConfigurationFromFile(string filename, bool verbose = true);
     virtual void writeConfigurationToFile(string filename, bool overwrite = false, bool verbose = true);
+    virtual void print(ostream& os) const;
 };
 
 #endif // BROWNIAN_PARTICLES_H

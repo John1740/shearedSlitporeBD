@@ -15,6 +15,15 @@ public:
 
     virtual vector<REAL_C> getPositionList() = 0;
     virtual vector<CHARGED_PARTICLE> getParticleList() = 0;
+
+    //file/stream-handling
+    virtual void print(ostream& os) const{
+        os << "operator<</print not implemented in the base class SYSTEM_INTERFACE";
+    };
+    friend ostream& operator<<(ostream& os, const SYSTEM_INTERFACE& sys){
+        sys.print(os);
+        return os;
+    };
 };
 
 #endif // SYSTEM_INTERFACE_H

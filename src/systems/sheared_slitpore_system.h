@@ -62,7 +62,7 @@ public:
     vector<double> getEnergyPerParticle();
 
     //file/stream-handling
-    friend ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys);
+    virtual void print(ostream& os) const override;
 };
 
 #endif // SHEARED_SLITPORE_SYSTEM_H

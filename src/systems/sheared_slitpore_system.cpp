@@ -177,8 +177,10 @@ double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
 }
 
 ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys){
-    const char* fmt = "% .8f\t";
+    const char* fmt = "% .8e\t";
     os << "numberOfParticles: " << bo::format(fmt) % sys.numberOfParticles << endl;
+    os << "printStress: " << bo::format(fmt) % sys.printStress << endl;
+    os << "printEnergy: " << bo::format(fmt) % sys.printEnergy << endl;
     os << endl;
     os << "DLVO_SOFTSPHERE_INTERACTION:" << endl;
     os << sys.dlvo << endl;
@@ -188,6 +190,5 @@ ostream& operator<<(ostream& os, const SHEARED_SLITPORE_SYSTEM& sys){
     os << endl;
     os << "SHEAR_FORCE:" << endl;
     os << sys.sf;
-    //...
     return os;
 }

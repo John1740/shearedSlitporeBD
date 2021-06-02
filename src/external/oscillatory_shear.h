@@ -8,7 +8,7 @@
 #include "../defaults.h"
 #include <cmath>
 
-class OSCILLATORY_SHEAR : SHEAR_PROTOCOL{
+class OSCILLATORY_SHEAR: public SHEAR_PROTOCOL{
 public:
     double shearRateOffset = SHEAR_RATE;
     double shearRateAmplitude = AMPLITUDE;

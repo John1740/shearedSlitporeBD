@@ -4,12 +4,12 @@ SHEAR_FORCE::SHEAR_FORCE(){
     direction = REAL_C(1., 0., 0.);
 }
 
-SHEAR_FORCE::SHEAR_FORCE(const OSCILLATORY_SHEAR& shearProtocol){
+SHEAR_FORCE::SHEAR_FORCE(const SHEAR_PROTOCOL& shearProtocol){
     this->shearProtocol = shearProtocol;
     direction = REAL_C(1., 0., 0.);
 }
 
-SHEAR_FORCE::SHEAR_FORCE(const OSCILLATORY_SHEAR& shearProtocol, const REAL_C& direction){
+SHEAR_FORCE::SHEAR_FORCE(const SHEAR_PROTOCOL& shearProtocol, const REAL_C& direction){
     this->shearProtocol = shearProtocol;
     setDirection(direction);
 }

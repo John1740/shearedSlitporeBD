@@ -55,8 +55,8 @@ void ARGUMENT_PARSER::addOptions(){
              "configuration file (particle positions, simulation box)")
              ;
     secondary.add_options()
-            ("temperature,T", po::value<double>()->default_value(TEMPERATURE), "temperature")
-            ("D0", po::value<double>()->default_value(DIFFUSION_CONSTANT), "diffusion constant")
+            ("mu", po::value<double>()->default_value(MU), "mobility")
+            ("kT", po::value<double>()->default_value(KT), "thermal energy")
             ("kappa", po::value<double>()->default_value(KAPPA),
              "inverse Debye screening length of the Yukawa potential (in units of d)")
             ("yInteractionStrength", po::value<double>()->default_value(Y_INTERACTION_STRENGTH),
@@ -164,8 +164,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     args.ssInteractionStrength = variablesMap["ssInteractionStrength"].as<double>();
     args.wallInteractionStrength = variablesMap["wallInteractionStrength"].as<double>();
     args.dt = variablesMap["dt"].as<double>();
-    args.temperature = variablesMap["temperature"].as<double>();
-    args.D0 = variablesMap["D0"].as<double>();
+    args.kT = variablesMap["kT"].as<double>();
+    args.mu = variablesMap["mu"].as<double>();
     if(variablesMap.count("numberOfTimesteps")){
         args.numberOfTimesteps = round(variablesMap["numberOfTimesteps"].as<double>());
     }

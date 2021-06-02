@@ -46,8 +46,8 @@ const double KAPPA = 3.21623656e+00;
 //const double KAPPA = 3.2162381150765986;
 const double WALL_INTERACTION_STRENGTH = 1.0;
 
-const double TEMPERATURE = 1.0;
-const double DIFFUSION_CONSTANT = 1.0;
+const double KT = 1.0;
+const double MU = 1.0;
 
 //intervals
 const long NUMBER_OF_TIMESTEPS = 10;

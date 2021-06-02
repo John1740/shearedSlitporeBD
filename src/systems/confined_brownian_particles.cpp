@@ -16,8 +16,8 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS& args){
 
     readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
     dt = args.dt;
-    T = args.temperature;
-    D0 = args.D0;
+    kT = args.kT;
+    mu = args.mu;
 }
 
 CONFINED_BROWNIAN_PARTICLES::~CONFINED_BROWNIAN_PARTICLES(){
@@ -37,7 +37,7 @@ void CONFINED_BROWNIAN_PARTICLES::equationOfMotion(){
     for(int i = 0; i < particles.size(); ++i){
         randomDisplacement = getRandomDisplacement();
 
-        particles[i].position += force[i] * D0 * dt / T + randomDisplacement;
+        particles[i].position += mu * force[i] * dt + randomDisplacement;
     }
     setPositionInBox();
     timestep++;
@@ -55,9 +55,9 @@ void CONFINED_BROWNIAN_PARTICLES::reset(){
 
 REAL_C CONFINED_BROWNIAN_PARTICLES::getRandomDisplacement(){
     REAL_C randomForce;
-    randomForce.x = sqrt(2 * D0 * dt) * boxmueller(0, 1);
-    randomForce.y = sqrt(2 * D0 * dt) * boxmueller(0, 1);
-    randomForce.z = sqrt(2 * D0 * dt) * boxmueller(0, 1);
+    randomForce.x = sqrt(2 * mu * kT * dt) * boxmueller(0, 1);
+    randomForce.y = sqrt(2 * mu * kT * dt) * boxmueller(0, 1);
+    randomForce.z = sqrt(2 * mu * kT * dt) * boxmueller(0, 1);
     return randomForce;
 }
 
@@ -422,6 +422,6 @@ void CONFINED_BROWNIAN_PARTICLES::print(ostream& os) const{
     os << "numberOfParticles: " << bo::format(fmt) % numberOfParticles << endl;
     os << "timestep: " << bo::format(fmt) % timestep << endl;
     os << "dt: " << bo::format(fmt) % dt << "[tB-1]" << endl;
-    os << "temperature: " << bo::format(fmt) % T << "[kT]" << endl;
-    os << "D0: " << bo::format(fmt) % D0 << "[?]";
+    os << "kT: " << bo::format(fmt) % kT << "[kT]" << endl;
+    os << "mu: " << bo::format(fmt) % mu << "[d2 tB-1 kT-1]";
 }

@@ -15,6 +15,7 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
     printEnergy = args.printEnergy;
     OSCILLATORY_SHEAR shearProtocol(args.shearRate, args.amplitude, args.oscillationPeriod, args.phaseOffset);
     sf = SHEAR_FORCE<OSCILLATORY_SHEAR>(shearProtocol);
+    sf.mu = args.mu;
 
     swf = SOFT_WALL_FORCE(args.wallInteractionStrength, simBox.getDimensions().z);
     dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, args.ssInteractionStrength,
@@ -61,7 +62,7 @@ void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
         randomDisplacement = getRandomDisplacement();
         shearForce = sf.forceOnParticle(particles[i], timestep * dt);
 
-        particles[i].position += force[i] * D0 * dt / T + randomDisplacement + shearForce * dt;
+        particles[i].position += mu * (force[i] + shearForce) * dt + randomDisplacement;
 
         if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
            particles[i].position.z < -0.5 * simBox.getDimensions().z){

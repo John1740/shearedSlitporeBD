@@ -42,8 +42,8 @@ protected:
 
     long timestep = 0;
     double dt = 1e-5;
-    double T = TEMPERATURE;
-    double D0 = DIFFUSION_CONSTANT;
+    double kT = KT;
+    double mu = MU;
 
     // Allow Children to modify simulation box
     SLIT_PORE_BOX* simulationBox();

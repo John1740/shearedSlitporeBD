@@ -13,6 +13,7 @@ private:
     REAL_C direction;
 public:
     SHEAR_PROTOCOL_T shearProtocol;
+    double mu = MU;
 
     SHEAR_FORCE();
     SHEAR_FORCE(const SHEAR_PROTOCOL_T& shearProtocol);
@@ -62,7 +63,7 @@ REAL_C SHEAR_FORCE<SHEAR_PROTOCOL_T>::forceOnParticle(PARTICLE& particle, double
 template<class SHEAR_PROTOCOL_T>
 double SHEAR_FORCE<SHEAR_PROTOCOL_T>::forceAbs(double z, double t) {
     double shearRate = shearProtocol.calculateShearRate(t);
-    double force = shearRate * z;
+    double force = 1. / mu * shearRate * z;
     return force;
 }template<class SHEAR_PROTOCOL_T>
 void SHEAR_FORCE<SHEAR_PROTOCOL_T>::setDirection(const REAL_C& directionIn){

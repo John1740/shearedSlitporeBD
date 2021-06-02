@@ -31,8 +31,8 @@ public:
     double phaseOffset = PHASE_OFFSET;
 
     double dt = 0;
-    double temperature = TEMPERATURE;
-    double D0 = DIFFUSION_CONSTANT;
+    double kT = KT;
+    double mu = MU;
     double kappa = KAPPA;
     double yInteractionStrength = Y_INTERACTION_STRENGTH;
     double ssInteractionStrength = SS_INTERACTION_STRENGTH;

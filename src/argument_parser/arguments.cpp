@@ -57,8 +57,8 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.oscillationPeriod != OSCILLATION_PERIOD) oscillationPeriod = other.oscillationPeriod;
     if(other.phaseOffset != PHASE_OFFSET) phaseOffset = other.phaseOffset;
     if(other.dt != 0) dt = other.dt;
-    if(other.temperature != TEMPERATURE) temperature = other.temperature;
-    if(other.D0 != DIFFUSION_CONSTANT) D0 = other.D0;
+    if(other.kT != KT) kT = other.kT;
+    if(other.mu != MU) mu = other.mu;
     if(other.kappa != KAPPA) kappa = other.kappa;
     if(other.yInteractionStrength != Y_INTERACTION_STRENGTH) yInteractionStrength = other.yInteractionStrength;
     if(other.ssInteractionStrength != SS_INTERACTION_STRENGTH) ssInteractionStrength = other.ssInteractionStrength;
@@ -111,8 +111,8 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     os << "oscillationPeriod" << args.sep << args.oscillationPeriod << endl;
     os << "phaseOffset" << args.sep << args.phaseOffset << endl;
     os << "dt" << args.sep << args.dt << endl;
-    os << "temperature" << args.sep << args.temperature << endl;
-    os << "D0" << args.sep << args.D0 << endl;
+    os << "kT" << args.sep << args.kT << endl;
+    os << "mu" << args.sep << args.mu << endl;
     os << "kappa" << args.sep << args.kappa << endl;
     os << "yInteractionStrength" << args.sep << args.yInteractionStrength << endl;
     os << "ssInteractionStrength" << args.sep << args.ssInteractionStrength << endl;
@@ -211,11 +211,11 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("dt") != string::npos){
             dt = stod(linesplit[1]);
         }
-        else if(line.find("temperature") != string::npos){
-            temperature = stod(linesplit[1]);
+        else if(line.find("kT") != string::npos){
+            kT = stod(linesplit[1]);
         }
-        else if(line.find("D0") != string::npos){
-            D0 = stod(linesplit[1]);
+        else if(line.find("mu") != string::npos){
+            mu = stod(linesplit[1]);
         }
         else if(line.find("kappa") != string::npos){
             kappa = stod(linesplit[1]);
@@ -453,7 +453,7 @@ ARGUMENTS& ARGUMENTS::setNumberOfPeriods(double numberOfPeriods){
 ARGUMENTS& ARGUMENTS::setDefaultDt(){
     ////// identify smallest time scale in the system
     // Brownian time
-    double tauBrownian = 1 / D0;    // diameter = 1
+    double tauBrownian = 1 / mu;    // diameter = 1
     // this is always present
     double tauMin = tauBrownian;
     // potential energy landscape

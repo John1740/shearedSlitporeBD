@@ -18,9 +18,10 @@ private:
 
     int n;  //integer of angular bond symmetry
     double nextNeighborShellRadius;
+    double calculateNextNeighborShellRadius();
 
     double angleBetweenParticles(const PARTICLE& particle1, const PARTICLE& particle2);
-    vector<int> getNeighborIndices(int i);
+    vector<int> getNearestNeighborIndices(int i);
 
     //warnings
     vector<int> isolatedParticles;
@@ -33,8 +34,9 @@ public:
     ANGULAR_BOND_PARAMETER& setup(CONFINED_BROWNIAN_PARTICLES& sysIn);
 
     double calculateForSingleParticle(int i);
-    double calculateAverageOverAllParticles();
-    double calculateNextNeighborShellRadius();
+    double calculateLayerAverage(int m);
+    vector<double> calculateLayerAverages();
+    double calculateSystemAverage();
 
     //setter
     ANGULAR_BOND_PARAMETER& setN(int n);

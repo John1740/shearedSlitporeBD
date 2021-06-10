@@ -24,12 +24,13 @@ ANGULAR_BOND_PARAMETER& ANGULAR_BOND_PARAMETER::setup(CONFINED_BROWNIAN_PARTICLE
     layers = LAYERS(simBox);
     pairCorrelation = INTRA_LAYER_PAIR_CORRELATION_FUNCTION(sys, 0.05);
     pairCorrelation.calculateAverageLayerCorrelation();
+    calculateNextNeighborShellRadius();
     isolatedParticles.clear();
     return *this;
 }
 
-vector<int> ANGULAR_BOND_PARAMETER::getNeighborIndices(int i){
-    vector<int> neighborIndices;
+vector<int> ANGULAR_BOND_PARAMETER::getNearestNeighborIndices(int i){
+    vector<int> nearestNeighborIndices;
     for(int j = 0; j < particle.size(); j++){
         if(i == j){
             continue;
@@ -39,17 +40,17 @@ vector<int> ANGULAR_BOND_PARAMETER::getNeighborIndices(int i){
             relative = simBox.convertToBoxPosition(relative);
             double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
             if(distance <= nextNeighborShellRadius){
-                neighborIndices.push_back(j);
+                nearestNeighborIndices.push_back(j);
             }
         }
     }
-    return neighborIndices;
+    return nearestNeighborIndices;
 }
 
 double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
     complex<double> psi = 0;
     complex<double> I(0, 1);
-    vector<int> neighborIndices = getNeighborIndices(i);
+    vector<int> neighborIndices = getNearestNeighborIndices(i);
     for(int j = 0; j < neighborIndices.size(); j++){
         double angle = angleBetweenParticles(particle[i], particle[neighborIndices[j]]);
         psi += exp(I * double(n) * angle);
@@ -63,12 +64,14 @@ double ANGULAR_BOND_PARAMETER::calculateForSingleParticle(int i){
     }
 }
 
-double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
+double ANGULAR_BOND_PARAMETER::calculateLayerAverage(int m){
     double average = 0;
     int counter = 0;
-    isolatedParticles.clear();
-    calculateNextNeighborShellRadius();
-    for(int i = 0; i < particle.size(); i++){
+    vector<vector<int>> particleLayerMap = layers.getParticleLayerMap(particle);
+    vector<int> particleIndices = particleLayerMap[m];
+    int i;
+    for(int idx = 0; idx < particleIndices.size(); idx++){
+        i = particleIndices[idx];   //index in particle
         double increment = calculateForSingleParticle(i);
         //ignore particles which have no adjacent particles (should only happen at low densities)
         if(isnan(increment)){
@@ -82,7 +85,27 @@ double ANGULAR_BOND_PARAMETER::calculateAverageOverAllParticles(){
             isolatedParticles.push_back(i);
         }
     }
-    average /= counter;
+    average /= counter; //counter should always be equal to particleIndices.size()
+    return average;
+}
+
+vector<double> ANGULAR_BOND_PARAMETER::calculateLayerAverages(){
+    int numberOfLayers = layers.getNumberOfLayers();
+    vector<double> layerAverages(numberOfLayers, 0.);
+    isolatedParticles.clear();
+    for(int m = 0; m < numberOfLayers; m++){
+        layerAverages[m] = calculateLayerAverage(m);
+    }
+    return layerAverages;
+}
+
+double ANGULAR_BOND_PARAMETER::calculateSystemAverage(){
+    vector<double> layerAverages = calculateLayerAverages();
+    double average = 0;
+    for(int m = 0; m < layerAverages.size(); m++){
+        average += layerAverages[m];
+    }
+    average /= layerAverages.size();
     return average;
 }
 

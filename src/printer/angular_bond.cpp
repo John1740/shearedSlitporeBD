@@ -34,9 +34,9 @@ void ANGULAR_BOND_PRINTER::printHeader(){
 void ANGULAR_BOND_PRINTER::printLine(){
     *this << format(format_l) % sys->getTimestep();
     ANGULAR_BOND_PARAMETER psi(*sys, 4);
-    *this << format(format_f) % psi.calculateAverageOverAllParticles();
+    *this << format(format_f) % psi.calculateSystemAverage();
     psi.setN(6);
-    *this << format(format_f) % psi.calculateAverageOverAllParticles();
+    *this << format(format_f) % psi.calculateSystemAverage();
 
     //error outputs
     vector<int> erroneousParticles = psi.getIsolatedParticles();

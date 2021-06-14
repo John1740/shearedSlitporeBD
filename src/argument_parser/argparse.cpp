@@ -37,7 +37,7 @@ void ARGUMENT_PARSER::addOptions(){
                                                      "Overwrites --numberOfTimesteps/-N and --duration/-d")
             ("skip", po::value<double>()->default_value(SKIP), "skip the first x timesteps")
             ("skipDuration", po::value<double>(),
-             "Same as --skip but in units of total simulation time.\n"
+             "Same as --skip but in units of Brownian time.\n"
              "Overwrites --skip")
             ("skipPeriod", po::value<double>(), "Same as --skip but in units of oscillation periods.\n"
                                                        "Overwrites --skip and --skip")
@@ -58,7 +58,7 @@ void ARGUMENT_PARSER::addOptions(){
             ("mu", po::value<double>()->default_value(MU), "mobility")
             ("kT", po::value<double>()->default_value(KT), "thermal energy")
             ("kappa", po::value<double>()->default_value(KAPPA),
-             "inverse Debye screening length of the Yukawa potential (in units of d)")
+             "inverse Debye screening length of the Yukawa potential (in units of 1/particle diameter)")
             ("yInteractionStrength", po::value<double>()->default_value(Y_INTERACTION_STRENGTH),
              "strength of screened-Coulomb Yukawa potential (in units kT)")
             ("ssInteractionStrength", po::value<double>()->default_value(SS_INTERACTION_STRENGTH),
@@ -67,7 +67,7 @@ void ARGUMENT_PARSER::addOptions(){
              "strength of wall interaction")
              ;
     numerical.add_options()
-            ("dt", po::value<double>()->default_value(0), "length of timestep")
+            ("dt", po::value<double>()->default_value(0), "length of timestep (in units of Brownian time)")
             ("seed", po::value<unsigned int>()->default_value(0),
              "random number generator seed; 0 = random seed will be generated")
             ("rngCounter", po::value<unsigned long long>()->default_value(0),

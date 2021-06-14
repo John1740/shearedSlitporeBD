@@ -113,6 +113,7 @@ double ANGULAR_BOND_PARAMETER::angleBetweenParticles(const PARTICLE& particle1, 
     REAL_C relative = particle2.boxPosition - particle1.boxPosition;
     relative = simBox.convertToBoxPosition(relative);
     double distance = sqrt(pow(relative.x, 2) + pow(relative.y, 2));
+    //distance can't be zero, else particles would overlap
     double angle;
     if(relative.y >= 0){
         angle = acos(relative.x / distance);

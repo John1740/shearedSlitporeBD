@@ -123,7 +123,7 @@ double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findPositionOfMinimum(int n, int s
 }
 
 //returns -1 if there is no next up-crossing
-//if there are multiple crossings in quick succession (due to noice), the average value between the first and the last
+//if there are multiple crossings in quick succession (due to noise), the average value between the first and the last
 //crossing within the range of <averageRange> is returned
 int INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findNextUpCrossing(int pos, double threshold, int averageRange){
     for(int i = pos + 1; i < numberOfBins; i++){

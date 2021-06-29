@@ -39,19 +39,20 @@ int main(int argc, const char* argv[]){
     args.update(argsParsed);    //argsParsed have priority
     args.finalize();  //dt-defaulting and matching of numberOfTimesteps
 
-    if(args.printVersion){
-        cout << PROJECT_VERSION << endl;
-        exit(0);
-    }
     cout << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
-    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
     //print version details
     cout << surroundWithSeparator("Version Details") << endl;
     cout << "Version: " << PROJECT_VERSION << endl;
     cout << "Git branch: " << GIT_BRANCH << endl;
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
-    cout << "Git version: " << GIT_VERSION << endl << endl;
+    cout << "Git version: " << GIT_VERSION << endl;
+    cout << surroundWithSeparator("", 60, 1, '#', false) << endl << endl;
+    if(args.printVersion){
+        exit(0);
+    }
+
+    cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
     //generate or read seed
     if(args.seed == 0){

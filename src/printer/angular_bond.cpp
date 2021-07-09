@@ -21,7 +21,6 @@ ANGULAR_BOND_PRINTER::ANGULAR_BOND_PRINTER(SHEARED_SLITPORE_SYSTEM* sysIn, fs::p
 
 void ANGULAR_BOND_PRINTER::printHeader(){
     char comment = getComment();
-    *this << comment << "i: timestep" << endl;
     *this << comment << "i: timestep (dt = " << sys->getTimeStepSize() << " tB)" << endl;
     *this << comment << "psi(n): angular bond parameter (n = integer of symmetry)" << endl;
     *this << comment;

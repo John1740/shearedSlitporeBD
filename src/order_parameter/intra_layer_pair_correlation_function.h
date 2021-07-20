@@ -50,7 +50,7 @@ public:
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION& setResolution(double dr);
 
     //printer
-    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& print(string filename);
+    INTRA_LAYER_PAIR_CORRELATION_FUNCTION& print(string filename, bool overwrite=false, string header="");
     friend ostream& operator<<(ostream& os, const INTRA_LAYER_PAIR_CORRELATION_FUNCTION& pairCorrelation);
 };
 

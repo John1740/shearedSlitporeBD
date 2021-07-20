@@ -218,10 +218,15 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::se
     return *this;
 }
 
-INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::print(string filename){
+INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::print(string filename, bool overwrite, string header){
     PRINTER printer(filename);
-    printer.reset();
-    printer << *this << endl;
+    if(overwrite){
+        printer.reset();
+    }
+    if(header.size() > 0){
+        printer << string(3, printer.getComment()) << header << endl;
+    }
+    printer << *this;
     return *this;
 }
 

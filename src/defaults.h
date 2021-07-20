@@ -18,11 +18,12 @@ const std::string SETTINGS_IN = "settings.in";
 const std::string CONFIGURATION_IN = "configuration.in";
 const std::string CONFIGURATION_OUT = "configuration.out";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
-const std::string PAIR_CORRELATIONS_OUT = "pairCorrelations";
+const std::string PAIR_CORRELATION_OUT = "pairCorrelation.out";
 const std::string STRESSES_OUT = "stresses.out";
 const std::string LAYER_POSITIONS_OUT = "layerPositions.out";
 const std::string LAYER_VELOCITIES_OUT = "layerVelocities.out";
 const std::string SNAPSHOTS = "snapshots.out";
+const std::string ERRONEOUS = "erroneous";
 
 //control parameters
 const double SHEAR_RATE = 0.0;

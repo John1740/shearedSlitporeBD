@@ -87,7 +87,8 @@ int main(int argc, const char* argv[]){
         fs::remove(LAYER_POSITIONS_OUT);
         fs::remove(LAYER_VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
-        fs::remove_all(PAIR_CORRELATIONS_OUT);
+        fs::remove(PAIR_CORRELATION_OUT);
+        fs::remove_all(ERRONEOUS);
     }
 
     if(args.dry){
@@ -137,7 +138,7 @@ int main(int argc, const char* argv[]){
         if(args.printPairCorrelation > 0 && i % args.printPairCorrelation == 0){
             INTRA_LAYER_PAIR_CORRELATION_FUNCTION pC(sys);
             pC.calculateAverageLayerCorrelation();
-            pC.print(PAIR_CORRELATIONS_OUT + "/pairCorrelation_" + to_string(sys.getTimestep()) + ".out");
+            pC.print(PAIR_CORRELATION_OUT, false, "timestep: " + to_string(i));
         }
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
@@ -176,7 +177,7 @@ int main(int argc, const char* argv[]){
         cout << b::format("Printed angular bond parameters to %s") % angularBond.getFilename().c_str() << endl;
     }
     if(args.printPairCorrelation > 0){
-        cout << b::format("Printed pair correlations to %s/") % PAIR_CORRELATIONS_OUT << endl;
+        cout << b::format("Printed pair correlations to %s") % PAIR_CORRELATION_OUT << endl;
     }
     if(args.printStressFourier > 0){
         cout << endl << fc << endl;

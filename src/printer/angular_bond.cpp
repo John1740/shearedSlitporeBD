@@ -39,18 +39,10 @@ void ANGULAR_BOND_PRINTER::printLine(){
 
     //error outputs
     vector<int> erroneousParticles = psi.getIsolatedParticles();
-    if(erroneousParticles.size() > 0){
-        cout << "erroneous particles in timestep " << sys->getTimestep() << ": ";
-        for(int i = 0; i < erroneousParticles.size(); i++){
-            cout << erroneousParticles[i] << " ";
-        }
-        cout << endl;
-        cout << "cutoffRadius: " << format(format_f) % psi.getNextNeighborShellRadius() << "[diameter]" << endl;
-        cout << "threshold: " << format(format_f) % psi.getPairCorrelation().calculateMeanCorrelation()
-             << "[1/diameter]" << endl;
-        cout << endl;
-        sys->writeConfigurationToFile("erroneousParticles/configuration_" + to_string(sys->getTimestep()) + ".out", true);
-        psi.getPairCorrelation().print("erroneousParticles/pairCorrelation_" + to_string(sys->getTimestep()) + ".out");
+    if(erroneousParticles.size() >= 0){
+        sys->writeConfigurationToFile(ERRONEOUS + "/" + SNAPSHOTS, false, false);
+        psi.getPairCorrelation().print(ERRONEOUS + "/" + PAIR_CORRELATION_OUT, false,
+                                       "timestep: " + to_string(sys->getTimestep()));
     }
     *this << '\n';
 }

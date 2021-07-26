@@ -39,7 +39,7 @@ void ANGULAR_BOND_PRINTER::printLine(){
 
     //error outputs
     vector<int> erroneousParticles = psi.getIsolatedParticles();
-    if(erroneousParticles.size() >= 0){
+    if(erroneousParticles.size() > 0){
         sys->writeConfigurationToFile(ERRONEOUS + "/" + SNAPSHOTS, false, false);
         psi.getPairCorrelation().print(ERRONEOUS + "/" + PAIR_CORRELATION_OUT, false,
                                        "timestep: " + to_string(sys->getTimestep()));

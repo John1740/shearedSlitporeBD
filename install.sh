@@ -1,8 +1,8 @@
-mkdir build
+mkdir -p build
 
 rm -rv build/*
 
-cmake -j 6 -B build .
+cmake -B build .
 
 cd build && make
 

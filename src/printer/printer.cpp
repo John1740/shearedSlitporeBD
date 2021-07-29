@@ -5,19 +5,26 @@
 PRINTER::PRINTER(){
 }
 
-PRINTER::PRINTER(fs::path filename){
-    setFilename(filename);
+PRINTER::PRINTER(fs::path filename, bool reset){
+//    setFilename(filename);
+    this->filename = filename;
+    openFile(reset);
 }
 
 PRINTER::~PRINTER(){
     closeFile();
 }
 
-void PRINTER::openFile(){
+void PRINTER::openFile(bool overwrite){
     if(filename.has_parent_path()){
         fs::create_directory(filename.parent_path());
     }
-    file.open(filename.c_str(), ios::app);  //app=append
+    if(overwrite){
+        file.open(filename.c_str(), ios::trunc); //trunc=truncate
+    }
+    else{
+        file.open(filename.c_str(), ios::app);  //app=append
+    }
 }
 
 void PRINTER::closeFile(){
@@ -63,15 +70,18 @@ bool PRINTER::fileIsEmpty(bool ignoreComments){
 }
 
 //returns true if the file needed to be deleted
-bool PRINTER::reset(){
+bool PRINTER::reset() {
     closeFile();
-    bool removed = fs::remove(filename);
-    openFile();
-    return removed;
+//    bool removed = fs::remove(filename);
+//    openFile();
+//    file.close();
+    openFile(true);
+    return true;
 }
 
 //should only be used if the filename wasn't set during constructing
 //otherwise, use a new instance of PRINTER instead
+//DEPRECATED: does not support the ios::trunc method
 void PRINTER::setFilename(fs::path filename){
     closeFile();
     this->filename = filename;

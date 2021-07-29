@@ -127,10 +127,10 @@ double CONFINED_BROWNIAN_PARTICLES::getTimeStepSize(){
 }
 
 void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool overwrite, bool verbose){
-    PRINTER printer(filename);
-    if(overwrite){
-        printer.reset();
-    }
+    PRINTER printer(filename, overwrite);
+//    if(overwrite){
+//        printer.reset();
+//    }
 //    const char* fmt = "% .17e\t";
 //    const char* fmt = "% .8e\t";
 

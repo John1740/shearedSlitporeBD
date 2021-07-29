@@ -14,12 +14,12 @@ class PRINTER{
     ofstream file;
     char comment = '#';
 
-    void openFile();
+    void openFile(bool overwrite=false);
     void closeFile();
 
 public:
     PRINTER();
-    PRINTER(fs::path filename);
+    PRINTER(fs::path filename, bool reset=false);
     ~PRINTER();
 
     // datatype formats (+ headers)

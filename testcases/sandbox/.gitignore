@@ -3,5 +3,6 @@
 *.png
 configuration.in
 configuration.in.skipped
+configuration.restart*
 pairCorrelations/
 settings.in

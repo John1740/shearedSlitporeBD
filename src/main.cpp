@@ -102,7 +102,10 @@ int main(int argc, const char* argv[]){
     //restarts
     long timestepIn = sys.getTimestep();
     if(args.restart){
-        restartSimulation(sys, args.numberOfTimesteps);
+        bool restarted = restartSimulation(sys, args.numberOfTimesteps);
+        if(!restarted){
+            cout << "Restart failed. Starting over from the beginning." << endl;
+        }
     }
     long finishedTimesteps = sys.getTimestep() - timestepIn;
     long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;

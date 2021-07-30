@@ -14,7 +14,11 @@ CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(){
 CONFINED_BROWNIAN_PARTICLES::CONFINED_BROWNIAN_PARTICLES(const ARGUMENTS& args){
     configurationIn = args.configurationIn;
 
-    readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
+    bool successful = readConfigurationFromFile(configurationIn, true); //reads (or creates) simBox and particle positions
+    if(!successful){
+        cout << "Reading " << configurationIn << " failed!" << endl;
+        exit(0);
+    }
     dt = args.dt;
     kT = args.kT;
     mu = args.mu;
@@ -160,6 +164,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
 
 bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool verbose){
     //this also checks if file exists
+    SLIT_PORE_BOX simBox;
     bool successful = simBox.readFromFile(filename);
     if(!successful){
         return false;
@@ -170,8 +175,8 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     string line;
 
     //reset metadata (and throw error if essential data is missing in file)
-    timestep = 0;
-    numberOfParticles = 0;
+    long timestep = 0;
+    int numberOfParticles = 0;
 
     //read header/metadata
     int found = 0;
@@ -206,7 +211,14 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     //read particle information
     successful = readParticlesFromFile(filename, true, verbose);
 
-    if(verbose){
+    //only make permanent changes if everything was read successfully
+    if(successful){
+        this->simBox = simBox;
+        this->timestep = timestep;
+        this->numberOfParticles = numberOfParticles;
+    }
+
+    if(successful && verbose){
         cout << "Read " << filename << " successfully!" << endl;
     }
     return successful;

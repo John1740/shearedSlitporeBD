@@ -1,7 +1,7 @@
 *.out
 *.out.*
 *.png
-configuration.in
+configuration.in.equilibrium
 configuration.in.skipped
 configuration.restart*
 pairCorrelations/

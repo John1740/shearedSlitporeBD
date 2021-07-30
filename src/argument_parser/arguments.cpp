@@ -79,6 +79,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     skip.update(other.skip);
     milestone.update(other.milestone);
     if(other.milestoneRuntime != MILESTONE_RUNTIME) milestoneRuntime = other.milestoneRuntime;
+    if(other.restart == true) restart = other.restart;
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
     printEnergy.update(other.printEnergy);
@@ -89,7 +90,6 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     printPairCorrelation.update(other.printPairCorrelation);
 
     //defaults don't matter for these options
-    restart = other.restart;
     clear = other.clear;
     dry = other.dry;
     printVersion = other.printVersion;

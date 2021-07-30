@@ -117,3 +117,7 @@ ostream& operator<<(ostream& os, const PRINTER& printer){
     os << ")";
     return os;
 }
+
+void PRINTER::flush(){
+    file.flush();
+}

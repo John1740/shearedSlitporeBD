@@ -40,6 +40,8 @@ public:
     bool fileIsEmpty(bool ignoreComments = true);
     bool reset();
 
+    void flush();
+
     //don't use this! better use << to write to stream
     template<typename T>
     void print(T t){

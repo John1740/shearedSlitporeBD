@@ -156,6 +156,7 @@ int main(int argc, const char* argv[]){
 
     double timeSinceLastMilestone;
     double milestoneTimingOffset = 0.2 * args.milestoneRuntime;  //interval stays the same, but milestone timing is shifted forward
+    bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
         // write restart configuration file every x timesteps or every x (runtime) seconds
         timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
@@ -168,6 +169,15 @@ int main(int argc, const char* argv[]){
                 clock.addTimePoint();
                 milestoneTimingOffset = 0;
             }
+            flushPrinters = true;
+        }
+        //flush all printers after saving milestones (but before executing any more prints for that timestep
+        if(flushPrinters){
+            layerPosition.flush();
+            layerVelocity.flush();
+            stress.flush();
+            angularBond.flush();
+            flushPrinters = false;
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);

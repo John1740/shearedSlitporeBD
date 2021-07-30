@@ -78,6 +78,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.printAll != PRINT_ALL) printAll = other.printAll;
     skip.update(other.skip);
     milestone.update(other.milestone);
+    if(other.milestoneRuntime != MILESTONE_RUNTIME) milestoneRuntime = other.milestoneRuntime;
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
     printEnergy.update(other.printEnergy);
@@ -133,6 +134,9 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "milestone" << args.sep << args.milestone << endl;
         os << "milestoneDuration" << args.sep << args.milestone.getDuration() << endl;
         os << "milestonePeriod" << args.sep << args.milestone.getPeriod() << endl;
+    }
+    if(args.milestoneRuntime > 0){
+        os << "milestoneRuntime" << args.sep << args.milestoneRuntime << endl;
     }
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
@@ -254,6 +258,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("skip") != string::npos){
             skip = round(stod(linesplit[1]));
+        }
+        else if(line.find("milestoneRuntime") != string::npos){
+            milestoneRuntime = stod(linesplit[1]);
         }
         else if(line.find("milestoneDuration") != string::npos){
             milestone.setDuration(stod(linesplit[1]));

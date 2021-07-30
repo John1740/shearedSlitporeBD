@@ -71,3 +71,25 @@ string CLOCK::readDuration(int i, int j, const char* format){
     ss << buffer;
     return ss.str();
 }
+
+double CLOCK::operator()(int j){
+    clock_t now = clock();
+    double duration = double(now - clockTimes.at2(j)) / CLOCKS_PER_SEC;
+    return duration;
+}
+
+string CLOCK::operator()(const char* fmt){
+    time_t t = time(0);
+    tm* timeStructure = localtime(&t);
+    stringstream ss;
+    ss << put_time(timeStructure, fmt);
+    return ss.str();
+}
+
+double CLOCK::operator()(int i, int j){
+    return getDuration(i, j);
+}
+
+string CLOCK::operator[](int i){
+    return readTimePoint(i);
+}

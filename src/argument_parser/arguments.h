@@ -52,6 +52,7 @@ public:
     int printAll = PRINT_ALL;
 
     PRINT_INTERVAL milestone;
+    double milestoneRuntime = MILESTONE_RUNTIME;
 
     bool restart = RESTART;
     bool clear = CLEAR;

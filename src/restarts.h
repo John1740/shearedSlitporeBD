@@ -6,6 +6,7 @@
 #define SHEAREDSLITPOREBD_RESTARTS_H
 
 #include "systems/confined_brownian_particles.h"
+#include "tools/clock.h"
 using namespace std;
 
 bool restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys, long timestepIn, long numberOfTimesteps, bool verbose=true);

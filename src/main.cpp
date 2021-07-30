@@ -148,20 +148,26 @@ int main(int argc, const char* argv[]){
         cout << "Starting";
     }
     cout << " simulation with print-outs (" << timestepsToGo << " timesteps)." << endl;
-    clock.addTimePoint();
+    int tSimulationStart = clock.addTimePoint();
     b::progress_display progress(args.numberOfTimesteps);
     for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
     }
 
+    double timeSinceLastMilestone;
+    double milestoneTimingOffset = 0.2 * args.milestoneRuntime;  //interval stays the same, but milestone timing is shifted forward
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
-        // write restart configuration file every x timesteps
-        // TODO: also every x seconds
-        if(args.milestone > 0 && i % args.milestone == 0){
+        // write restart configuration file every x timesteps or every x (runtime) seconds
+        timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
+        if((args.milestone > 0 && i % args.milestone == 0) || (timeSinceLastMilestone > args.milestoneRuntime)){
             if(fs::exists(CONFIGURATION_RESTART)){
                 fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
             }
             sys.writeConfigurationToFile(CONFIGURATION_RESTART, true, false);
+            if(timeSinceLastMilestone > args.milestoneRuntime){
+                clock.addTimePoint();
+                milestoneTimingOffset = 0;
+            }
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);
@@ -190,7 +196,7 @@ int main(int argc, const char* argv[]){
         ++progress;
     }
     clock.addTimePoint();
-    cout << "Simulation done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
+    cout << "Simulation done ... " << clock.readDuration(tSimulationStart, -1, "%02d:%02d:%06.3f").c_str() << endl;
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
 

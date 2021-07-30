@@ -57,6 +57,7 @@ const double MU = 1.0;
 const long NUMBER_OF_TIMESTEPS = 10;
 const int SKIP = 0;
 const int MILESTONE = 0;
+const double MILESTONE_RUNTIME = 600;   //10min
 const int PRINT_LAYER_POSITION = 0;
 const int PRINT_LAYER_VELOCITY = 0;
 const int PRINT_STRESS = 0;

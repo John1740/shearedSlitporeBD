@@ -7,8 +7,8 @@
 * Download cmake source from https://cmake.org/download/
 * Extract tar.gz via `tar -xvzf cmake*.tar.gz`
 * Follow installation instructions on https://cmake.org/install/
-    * `./bootstrap`
-    * `make`
+    * `./bootstrap` or `cmake` if an older version is already installed (e.g. via `sudo apt-get install cmake`)
+    * `make` (install before with `sudo apt-get install make` if missing)
     * binary lies in folder `bin`, add it to the `PATH`-variable
 
 #### Boost Program Options
@@ -38,3 +38,5 @@
 environment variables to solve this issue: `export CC=<path/to/gcc>`, `export CXX=<path/to/g++>`
 (for example in `~/.bashrc`)
     * remove any files in the `build`-directory before trying to reinstall
+* `cmake` sometimes needs `libssl-dev` installed
+    * `sudo apt-get install libssl-dev`

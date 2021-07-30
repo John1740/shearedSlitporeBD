@@ -4,6 +4,8 @@
 
 #include "restarts.h"
 #include "defaults.h"
+#include "boost/format.hpp"
+namespace b = boost;
 
 long restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps, bool verbose){
     if(verbose){
@@ -16,7 +18,7 @@ long restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys,
     float progress = double(skip) / numberOfTimesteps;
     if(verbose){
         cout << "Restarting from timestep " << timestepNow;
-        cout << " (" << 100 * progress << "% done)" << endl;
+        cout << b::format(" (%.0f%% done)") % (100 * progress) << endl;
     }
     if(skip >= numberOfTimesteps){
         cout << "The timestep in " << filename << " is already too advanced (" << skip << "/" << numberOfTimesteps << "). Exiting..." << endl;

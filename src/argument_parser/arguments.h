@@ -51,6 +51,9 @@ public:
     PRINT_INTERVAL printPairCorrelation;
     int printAll = PRINT_ALL;
 
+    PRINT_INTERVAL milestone;
+
+    bool restart = RESTART;
     bool clear = CLEAR;
     bool dry = false;
     bool printVersion = false;
@@ -77,6 +80,7 @@ public:
     ARGUMENTS& setDuration(double duration);
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     ARGUMENTS& setDefaultDt();
+    ARGUMENTS& setDefaultMilestone();
     ARGUMENTS& setSeparator(string sep);
 
     // operators

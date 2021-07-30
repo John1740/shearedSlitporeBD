@@ -81,11 +81,9 @@ int main(int argc, const char* argv[]){
     cout << sys << endl << endl;
 
     //clear
-    bool restart = true;
-    long restartInterval = 10;
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;
-        if(restart){
+        if(args.restart){
             cout << "Restarts (--restart) are not invoked because --clear is active." << endl;
         }
         fs::remove(CONFIGURATION_OUT);
@@ -103,7 +101,10 @@ int main(int argc, const char* argv[]){
 
     //restarts
     long timestepIn = sys.getTimestep();
-    long finishedTimesteps = restartSimulation(sys, args.numberOfTimesteps);
+    if(args.restart){
+        restartSimulation(sys, args.numberOfTimesteps);
+    }
+    long finishedTimesteps = sys.getTimestep() - timestepIn;
     long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;
 
     if(args.dry){
@@ -137,7 +138,7 @@ int main(int argc, const char* argv[]){
     ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
 
-    if(restart && timestepsToGo != args.numberOfTimesteps){
+    if(args.restart && timestepsToGo != args.numberOfTimesteps){
         cout << "Continuing";
     }
     else{
@@ -151,9 +152,9 @@ int main(int argc, const char* argv[]){
     }
 
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
-        // write restart configuration file every x timesteps/seconds
-//        if(args.numberOfTimesteps < restartInterval || i % (args.numberOfTimesteps / restartInterval) == 0){
-        if(restart && restartInterval > 0 && i % restartInterval == 0){
+        // write restart configuration file every x timesteps
+        // TODO: also every x seconds
+        if(args.milestone > 0 && i % args.milestone == 0){
             if(fs::exists(CONFIGURATION_RESTART)){
                 fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
             }

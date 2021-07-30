@@ -56,6 +56,7 @@ const double MU = 1.0;
 //intervals
 const long NUMBER_OF_TIMESTEPS = 10;
 const int SKIP = 0;
+const int MILESTONE = 0;
 const int PRINT_LAYER_POSITION = 0;
 const int PRINT_LAYER_VELOCITY = 0;
 const int PRINT_STRESS = 0;
@@ -68,5 +69,6 @@ const int PRINT_ALL = 0;
 
 //misc
 const bool CLEAR = false;
+const bool RESTART = false;
 
 #endif //SHEAREDSLITPOREBD_DEFAULTS_H

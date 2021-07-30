@@ -40,7 +40,15 @@ void ARGUMENT_PARSER::addOptions(){
              "Same as --skip but in units of Brownian time.\n"
              "Overwrites --skip")
             ("skipPeriod", po::value<double>(), "Same as --skip but in units of oscillation periods.\n"
-                                                       "Overwrites --skip and --skip")
+                                                       "Overwrites --skip and --skipDuration")
+            ("restart", po::bool_switch()->default_value(RESTART),
+             "try to restart a previously aborted simulation")
+            ("milestone", po::value<double>()->default_value(MILESTONE), "save restart snapshots every x timesteps")
+            ("milestoneDuration", po::value<double>(),
+             "Same as --milestone but in units of Brownian time.\n"
+             "Overwrites --milestone")
+            ("milestonePeriod", po::value<double>(), "Same as --milestone but in units of oscillation periods.\n"
+                                                       "Overwrites --milestone and --milestoneDuration")
              ;
     main.add_options()
             ("shearRate", po::value<double>()->default_value(SHEAR_RATE),
@@ -186,8 +194,16 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     if(variablesMap.count("skipDuration")){
         args.skip.setDuration(variablesMap["skipDuration"].as<double>());
     }
-    if(variablesMap.count("printStressPeriod")){
+    if(variablesMap.count("skipPeriod")){
         args.skip.setPeriod(variablesMap["skipPeriod"].as<double>());
+    }
+    //
+    args.milestone = round(variablesMap["milestone"].as<double>());
+    if(variablesMap.count("milestoneDuration")){
+        args.milestone.setDuration(variablesMap["milestoneDuration"].as<double>());
+    }
+    if(variablesMap.count("milestonePeriod")){
+        args.milestone.setPeriod(variablesMap["milestonePeriod"].as<double>());
     }
     //
     args.printStress = round(variablesMap["printStress"].as<double>());
@@ -292,6 +308,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();
+    args.restart = variablesMap["restart"].as<bool>();
     args.clear = variablesMap["clear"].as<bool>();
     return args;
 }

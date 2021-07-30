@@ -158,9 +158,12 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool verbose){
+bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, bool verbose){
     //this also checks if file exists
-    simBox.readFromFile(filename);
+    bool successful = simBox.readFromFile(filename);
+    if(!successful){
+        return false;
+    }
 
     ifstream f;
     f.open(filename.c_str());
@@ -193,21 +196,24 @@ void CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
 
     // error messages (metadata)
     if(numberOfParticles == 0){
-        cout << "numberOfParticles within " + filename + " not valid. Please set accordingly with:" << endl;
-        cout << "ITEM: NUMBER OF ATOMS\n<numberOfParticles>" << endl;
-        exit(0);
+        if(verbose){
+            cout << "numberOfParticles within " + filename + " not valid. Please set accordingly with:" << endl;
+            cout << "ITEM: NUMBER OF ATOMS\n<numberOfParticles>" << endl;
+        }
+        return false;
     }
 
     //read particle information
-    readParticlesFromFile(filename, true);
+    successful = readParticlesFromFile(filename, true, verbose);
 
     if(verbose){
         cout << "Read " << filename << " successfully!" << endl;
     }
+    return successful;
 }
 
 //numberOfParticles needs to be set
-CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, bool addMissingInfo){
+bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, bool addMissingInfo, bool verbose){
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();
     ifstream f;
@@ -267,7 +273,7 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
             //read particle positions
             vector<double> c(numberOfColumns);   //container
             int counter = 0;
-            while(counter < numberOfParticles){
+            while(!f.eof()){    //this will enter the loop one time too often
                 for(int i = 0; i < numberOfColumns; i++){
                     f >> c[i];
                 }
@@ -311,6 +317,9 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
                 else{
                     newParticle.species = 0;
                 }
+                if(f.eof()){    //abort if end of file is reached
+                    break;
+                }
                 particleIn.push_back(newParticle);
                 counter++;
             }
@@ -319,12 +328,14 @@ CONFINED_BROWNIAN_PARTICLES& CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(
     }
     f.close();
     if(particleIn.size() != numberOfParticles){
-        cout << "Number of particles deviates from expected number: ";
-        cout << particleIn.size() << " != " << numberOfParticles << endl;
-        exit(0);
+        if(verbose){
+            cout << "Number of particles deviates from expected number: ";
+            cout << particleIn.size() << " != " << numberOfParticles << endl;
+        }
+        return false;
     }
     setParticleList(particleIn);
-    return *this;
+    return true;
 }
 
 void CONFINED_BROWNIAN_PARTICLES::setParticleList(vector<CHARGED_PARTICLE> particleListIn){

@@ -94,12 +94,18 @@ ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox){
     return os;
 }
 
-SLIT_PORE_BOX& SLIT_PORE_BOX::readFromFile(string filename){
+// TODO: doesn't recognize a lot of errors in the input files
+bool SLIT_PORE_BOX::readFromFile(string filename, bool verbose){
     //check for existance
     if(fs::exists(filename) == false){
-        cout << filename << " is missing!" << endl;
-        exit(0);
+        if(verbose){
+            cout << filename << " is missing!" << endl;
+        }
+        return false;
     }
+    REAL_C dimensions;
+    REAL_C origin;
+    double volume = 0;
 
     ifstream f;
     f.open(filename.c_str());
@@ -117,15 +123,20 @@ SLIT_PORE_BOX& SLIT_PORE_BOX::readFromFile(string filename){
             f >> c1 >> c2;
             dimensions.z = c2 - c1;
             origin.z = (c1 + c2) / 2;
-            setVolume();
+            volume = dimensions.x * dimensions.y * dimensions.z;
             success = true;
         }
     }
     f.close();
     if(!success || volume <= 0){
-        cout << "Simulation box boundaries within " + filename + " not valid. Please set accordingly with:" << endl;
-        cout << "ITEM: BOX BOUNDS xx yy zz\nxMin xMax\nyMin yMax\nzMin zMax" << endl;
-        exit(0);
+        if(verbose){
+            cout << "Simulation box boundaries within " + filename + " not valid. Please set accordingly with:" << endl;
+            cout << "ITEM: BOX BOUNDS xx yy zz\nxMin xMax\nyMin yMax\nzMin zMax" << endl;
+        }
+        return false;
     }
-    return *this;
+    this->dimensions = dimensions;
+    this->origin = origin;
+    setVolume();
+    return success;
 }

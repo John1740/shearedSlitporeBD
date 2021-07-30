@@ -102,24 +102,8 @@ int main(int argc, const char* argv[]){
     }
 
     //restarts
-    //read configuration.out and exit if simulation is already finished
     long timestepIn = sys.getTimestep();
-    if(fs::exists(CONFIGURATION_OUT)){
-        restartFromConfiguration(CONFIGURATION_OUT, sys, args.numberOfTimesteps);
-    }
-    long timestepOut = sys.getTimestep();
-
-    //read configuration.restart and exit if simulation is already finished
-    if(restart && fs::exists(CONFIGURATION_RESTART)){
-        restartFromConfiguration(CONFIGURATION_RESTART, sys, args.numberOfTimesteps);
-    }
-    long timestepRestart = sys.getTimestep();
-
-    //choose the latest version between configuration.out/configuration.restart
-    if(timestepRestart < timestepOut){  //use the newer one
-        restartFromConfiguration(CONFIGURATION_OUT, sys, args.numberOfTimesteps);
-    }
-    long finishedTimesteps = sys.getTimestep() - timestepIn;
+    long finishedTimesteps = restartSimulation(sys, args.numberOfTimesteps);
     long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;
 
     if(args.dry){

@@ -10,4 +10,6 @@ using namespace std;
 
 long restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps, bool verbose=true);
 
+long restartSimulation(CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps, bool verbose=true);
+
 #endif //SHEAREDSLITPOREBD_RESTARTS_H

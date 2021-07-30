@@ -121,7 +121,7 @@ add_executable(
         src/interfaces/shear_protocol.h
         src/external/oscillatory_shear.cpp
         src/external/oscillatory_shear.h
-)
+        src/restarts.cpp src/restarts.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(

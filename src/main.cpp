@@ -24,25 +24,7 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 
 namespace fs = experimental::filesystem;
 
-long restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps, bool verbose=true){
-    if(verbose){
-        cout << "Invoking restart." << endl;
-    }
-    long originalTimestep = sys.getTimestep();
-    sys.readConfigurationFromFile(filename, false);
-    long timestepNow = sys.getTimestep();
-    long skip = timestepNow - originalTimestep;
-    float progress = double(skip) / numberOfTimesteps;
-    if(verbose){
-        cout << "Restarting from timestep " << timestepNow;
-        cout << " (" << 100 * progress << "% done)" << endl;
-    }
-    if(skip >= numberOfTimesteps){
-        cout << "The timestep in " << filename << " is already too advanced (" << skip << "/" << numberOfTimesteps << "). Exiting..." << endl;
-        exit(0);
-    }
-    return skip;
-}
+#include "restarts.h"
 
 int main(int argc, const char* argv[]){
     CLOCK clock;
@@ -100,37 +82,45 @@ int main(int argc, const char* argv[]){
 
     //clear
     bool restart = true;
+    long restartInterval = 10;
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;
         if(restart){
             cout << "Restarts (--restart) are not invoked because --clear is active." << endl;
         }
         fs::remove(CONFIGURATION_OUT);
+        fs::remove(CONFIGURATION_RESTART);
+        fs::remove(CONFIGURATION_RESTART + BACKUP_EXTENSION);
+        fs::remove(CONFIGURATION_SKIPPED);
         fs::remove(SNAPSHOTS);
         fs::remove(STRESSES_OUT);
         fs::remove(LAYER_POSITIONS_OUT);
         fs::remove(LAYER_VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
         fs::remove(PAIR_CORRELATION_OUT);
-        fs::remove("configuration.restart");
         fs::remove_all(ERRONEOUS);
     }
 
-    //check if calculation was already finished and needs to be extended
-    long timestepOriginal = sys.getTimestep();
+    //restarts
+    //read configuration.out and exit if simulation is already finished
+    long timestepIn = sys.getTimestep();
     if(fs::exists(CONFIGURATION_OUT)){
         restartFromConfiguration(CONFIGURATION_OUT, sys, args.numberOfTimesteps);
     }
-    long timestepNew = sys.getTimestep();
+    long timestepOut = sys.getTimestep();
 
-    //restart
-    if(restart && fs::exists("configuration.restart")){
-        restartFromConfiguration("configuration.restart", sys, args.numberOfTimesteps);
+    //read configuration.restart and exit if simulation is already finished
+    if(restart && fs::exists(CONFIGURATION_RESTART)){
+        restartFromConfiguration(CONFIGURATION_RESTART, sys, args.numberOfTimesteps);
     }
     long timestepRestart = sys.getTimestep();
-    if(timestepRestart < timestepNew){  //use the newer one
+
+    //choose the latest version between configuration.out/configuration.restart
+    if(timestepRestart < timestepOut){  //use the newer one
         restartFromConfiguration(CONFIGURATION_OUT, sys, args.numberOfTimesteps);
     }
+    long finishedTimesteps = sys.getTimestep() - timestepIn;
+    long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;
 
     if(args.dry){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
@@ -154,7 +144,7 @@ int main(int argc, const char* argv[]){
         sys.setTimestep(timestep);
         clock.addTimePoint();
         cout << "Skipping done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
-        sys.writeConfigurationToFile("configuration.in.skipped", true, true);
+        sys.writeConfigurationToFile(CONFIGURATION_SKIPPED, true, true);
     }
 
     LAYER_POSITION_PRINTER layerPosition(&sys);
@@ -163,18 +153,27 @@ int main(int argc, const char* argv[]){
     ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
 
-    cout << "Starting simulation with print-outs (" << args.numberOfTimesteps << " timesteps)." << endl;
+    if(restart && timestepsToGo != args.numberOfTimesteps){
+        cout << "Continuing";
+    }
+    else{
+        cout << "Starting";
+    }
+    cout << " simulation with print-outs (" << timestepsToGo << " timesteps)." << endl;
     clock.addTimePoint();
-    long skip = sys.getTimestep() - timestepOriginal;
     b::progress_display progress(args.numberOfTimesteps);
-    for(long i = 0; i < skip; i++){     //skip to correct progress if restart was invoked
+    for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
     }
 
-    for(long i = skip; i < args.numberOfTimesteps; i++){
+    for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
         // write restart configuration file every x timesteps/seconds
-        if(args.numberOfTimesteps < 10 || i % (args.numberOfTimesteps / 10) == 0){
-            sys.writeConfigurationToFile("configuration.restart", true, false);
+//        if(args.numberOfTimesteps < restartInterval || i % (args.numberOfTimesteps / restartInterval) == 0){
+        if(restart && restartInterval > 0 && i % restartInterval == 0){
+            if(fs::exists(CONFIGURATION_RESTART)){
+                fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
+            }
+            sys.writeConfigurationToFile(CONFIGURATION_RESTART, true, false);
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);

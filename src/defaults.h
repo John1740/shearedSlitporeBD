@@ -17,6 +17,9 @@ const double kB = 1.38064852e-23;         //unit: J K^-1
 const std::string SETTINGS_IN = "settings.in";
 const std::string CONFIGURATION_IN = "configuration.in";
 const std::string CONFIGURATION_OUT = "configuration.out";
+const std::string CONFIGURATION_RESTART = "configuration.restart";
+const std::string CONFIGURATION_SKIPPED = "configuration.skipped";
+const std::string BACKUP_EXTENSION = ".bak";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
 const std::string PAIR_CORRELATION_OUT = "pairCorrelation.out";
 const std::string STRESSES_OUT = "stresses.out";
@@ -53,6 +56,8 @@ const double MU = 1.0;
 //intervals
 const long NUMBER_OF_TIMESTEPS = 10;
 const int SKIP = 0;
+const int MILESTONE = 0;
+const double MILESTONE_RUNTIME = 600;   //10min
 const int PRINT_LAYER_POSITION = 0;
 const int PRINT_LAYER_VELOCITY = 0;
 const int PRINT_STRESS = 0;
@@ -65,5 +70,6 @@ const int PRINT_ALL = 0;
 
 //misc
 const bool CLEAR = false;
+const bool RESTART = false;
 
 #endif //SHEAREDSLITPOREBD_DEFAULTS_H

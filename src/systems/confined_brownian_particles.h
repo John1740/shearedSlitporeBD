@@ -61,7 +61,7 @@ protected:
     virtual void setPositionInBox();
 
     // Non-Public File-Handling
-    virtual CONFINED_BROWNIAN_PARTICLES& readParticlesFromFile(string filename, bool addMissingInfo = false);
+    virtual bool readParticlesFromFile(string filename, bool addMissingInfo = false, bool verbose=true);
 
 public:
     CONFINED_BROWNIAN_PARTICLES();
@@ -97,7 +97,7 @@ public:
     vector<REAL_C> getMeanLayerVelocities();
 
     // File-Handling
-    virtual void readConfigurationFromFile(string filename, bool verbose = true);
+    virtual bool readConfigurationFromFile(string filename, bool verbose = true);
     virtual void writeConfigurationToFile(string filename, bool overwrite = false, bool verbose = true);
     virtual void print(ostream& os) const;
 };

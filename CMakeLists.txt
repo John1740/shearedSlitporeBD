@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(shearedSlitporeBD VERSION 0.8)
+project(shearedSlitporeBD VERSION 0.9)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -121,7 +121,7 @@ add_executable(
         src/interfaces/shear_protocol.h
         src/external/oscillatory_shear.cpp
         src/external/oscillatory_shear.h
-)
+        src/restarts.cpp src/restarts.h)
 
 #build a library first if you want to have multiple executable files!
 add_executable(

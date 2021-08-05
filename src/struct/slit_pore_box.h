@@ -35,7 +35,7 @@ public:
 
     //file/stream-handling
     friend ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox);
-    SLIT_PORE_BOX& readFromFile(string filename);
+    bool readFromFile(string filename, bool verbose=true);
 };
 
 #endif // SLIT_PORE_BOX_H

@@ -35,6 +35,7 @@ ARGUMENTS::ARGUMENTS(int argc, const char** argv){
 
 ARGUMENTS& ARGUMENTS::setup(){
     skip = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
+    milestone = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printStress = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printStressFourier = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printEnergy = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
@@ -76,6 +77,9 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.numberOfPeriods != 0) numberOfPeriods = other.numberOfPeriods;
     if(other.printAll != PRINT_ALL) printAll = other.printAll;
     skip.update(other.skip);
+    milestone.update(other.milestone);
+    if(other.milestoneRuntime != MILESTONE_RUNTIME) milestoneRuntime = other.milestoneRuntime;
+    if(other.restart == true) restart = other.restart;
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
     printEnergy.update(other.printEnergy);
@@ -125,6 +129,14 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "skip" << args.sep << args.skip << endl;
         os << "skipDuration" << args.sep << args.skip.getDuration() << endl;
         os << "skipPeriod" << args.sep << args.skip.getPeriod() << endl;
+    }
+    if(args.milestone > 0){
+        os << "milestone" << args.sep << args.milestone << endl;
+        os << "milestoneDuration" << args.sep << args.milestone.getDuration() << endl;
+        os << "milestonePeriod" << args.sep << args.milestone.getPeriod() << endl;
+    }
+    if(args.milestoneRuntime > 0){
+        os << "milestoneRuntime" << args.sep << args.milestoneRuntime << endl;
     }
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
@@ -247,7 +259,22 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("skip") != string::npos){
             skip = round(stod(linesplit[1]));
         }
-            //needs to be before "printStress"
+        else if(line.find("milestoneRuntime") != string::npos){
+            milestoneRuntime = stod(linesplit[1]);
+        }
+        else if(line.find("milestoneDuration") != string::npos){
+            milestone.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("milestonePeriod") != string::npos){
+            milestone.setPeriod(stod(linesplit[1]));
+        }
+        else if(line.find("milestone") != string::npos){
+            milestone = round(stod(linesplit[1]));
+        }
+        else if(line.find("restart") != string::npos){
+            restart = true;
+        }
+        //needs to be before "printStress"
         else if(line.find("printStressFourierDuration") != string::npos){
             printStressFourier.setDuration(stod(linesplit[1]));
         }
@@ -388,6 +415,10 @@ ARGUMENTS& ARGUMENTS::finalize(){
         numberOfPeriods = 0;
     }
     skip.finalize();
+    milestone.finalize();
+    if(milestone == 0){
+        setDefaultMilestone();
+    }
     printStress.finalize();
     printStressFourier.finalize();
     printEnergy.finalize();
@@ -479,5 +510,10 @@ ARGUMENTS& ARGUMENTS::setDefaultDt(){
     dt = tauMin / 1000;
     // make dt even split of oscillationPeriod
     dt = oscillationPeriod / round(oscillationPeriod / dt);
+    return *this;
+}
+
+ARGUMENTS& ARGUMENTS::setDefaultMilestone(){
+    milestone = numberOfTimesteps / 10;
     return *this;
 }

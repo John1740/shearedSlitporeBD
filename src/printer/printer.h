@@ -14,12 +14,12 @@ class PRINTER{
     ofstream file;
     char comment = '#';
 
-    void openFile();
+    void openFile(bool overwrite=false);
     void closeFile();
 
 public:
     PRINTER();
-    PRINTER(fs::path filename);
+    PRINTER(fs::path filename, bool reset=false);
     ~PRINTER();
 
     // datatype formats (+ headers)
@@ -39,6 +39,8 @@ public:
 
     bool fileIsEmpty(bool ignoreComments = true);
     bool reset();
+
+    void flush();
 
     //don't use this! better use << to write to stream
     template<typename T>

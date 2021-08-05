@@ -47,6 +47,10 @@ public:
     string readDuration(int i, int j, const char* format = "%d days %02d:%02d:%06.3f");
 
     //overload operator[] to get timePoints
+    double operator()(int j);
+    string operator()(const char* fmt="%F %T");
+    double operator()(int i, int j);
+    string operator[](int i);
 };
 
 #endif //SHEAREDSLITPOREBD_CLOCK_H

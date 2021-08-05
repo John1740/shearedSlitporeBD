@@ -24,6 +24,8 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 
 namespace fs = experimental::filesystem;
 
+#include "restarts.h"
+
 int main(int argc, const char* argv[]){
     CLOCK clock;
 
@@ -81,7 +83,13 @@ int main(int argc, const char* argv[]){
     //clear
     if(args.clear){
         cout << "Clearing all existing output-files!" << endl;
+        if(args.restart){
+            cout << "Restarts (--restart) are not invoked because --clear is active." << endl;
+        }
         fs::remove(CONFIGURATION_OUT);
+        fs::remove(CONFIGURATION_RESTART);
+        fs::remove(CONFIGURATION_RESTART + BACKUP_EXTENSION);
+        fs::remove(CONFIGURATION_SKIPPED);
         fs::remove(SNAPSHOTS);
         fs::remove(STRESSES_OUT);
         fs::remove(LAYER_POSITIONS_OUT);
@@ -90,6 +98,17 @@ int main(int argc, const char* argv[]){
         fs::remove(PAIR_CORRELATION_OUT);
         fs::remove_all(ERRONEOUS);
     }
+
+    //restarts
+    long timestepIn = sys.getTimestep();
+    if(args.restart){
+        bool restarted = restartSimulation(sys, args.numberOfTimesteps);
+        if(!restarted){
+            cout << "Restart failed. Starting over from the beginning." << endl;
+        }
+    }
+    long finishedTimesteps = sys.getTimestep() - timestepIn;
+    long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;
 
     if(args.dry){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
@@ -100,6 +119,7 @@ int main(int argc, const char* argv[]){
     cout << endl << surroundWithSeparator("Simulation start") << endl;
 
     //Skip first few steps
+    //TODO: implement restarts
     if(args.skip){
         clock.addTimePoint();
         cout << "Skipping first " << args.skip << " timesteps. " << endl;
@@ -112,7 +132,7 @@ int main(int argc, const char* argv[]){
         sys.setTimestep(timestep);
         clock.addTimePoint();
         cout << "Skipping done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
-        sys.writeConfigurationToFile("configuration.in.skipped", true, true);
+        sys.writeConfigurationToFile(CONFIGURATION_SKIPPED, true, true);
     }
 
     LAYER_POSITION_PRINTER layerPosition(&sys);
@@ -121,11 +141,44 @@ int main(int argc, const char* argv[]){
     ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
 
-    cout << "Starting simulation with print-outs (" << args.numberOfTimesteps << " timesteps)." << endl;
-    clock.addTimePoint();
+    if(args.restart && timestepsToGo != args.numberOfTimesteps){
+        cout << "Continuing";
+    }
+    else{
+        cout << "Starting";
+    }
+    cout << " simulation with print-outs (" << timestepsToGo << " timesteps)." << endl;
+    int tSimulationStart = clock.addTimePoint();
     b::progress_display progress(args.numberOfTimesteps);
+    for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
+        ++progress;
+    }
 
-    for(long i = 0; i < args.numberOfTimesteps; i++){
+    double timeSinceLastMilestone;
+    double milestoneTimingOffset = 0.2 * args.milestoneRuntime;  //interval stays the same, but milestone timing is shifted forward
+    bool flushPrinters = false;
+    for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
+        // write restart configuration file every x timesteps or every x (runtime) seconds
+        timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
+        if((args.milestone > 0 && i % args.milestone == 0) || (timeSinceLastMilestone > args.milestoneRuntime)){
+            if(fs::exists(CONFIGURATION_RESTART)){
+                fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
+            }
+            sys.writeConfigurationToFile(CONFIGURATION_RESTART, true, false);
+            if(timeSinceLastMilestone > args.milestoneRuntime){
+                clock.addTimePoint();
+                milestoneTimingOffset = 0;
+            }
+            flushPrinters = true;
+        }
+        //flush all printers after saving milestones (but before executing any more prints for that timestep
+        if(flushPrinters){
+            layerPosition.flush();
+            layerVelocity.flush();
+            stress.flush();
+            angularBond.flush();
+            flushPrinters = false;
+        }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
             sys.writeConfigurationToFile("snapshots.out", false, false);
         }
@@ -153,7 +206,7 @@ int main(int argc, const char* argv[]){
         ++progress;
     }
     clock.addTimePoint();
-    cout << "Simulation done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
+    cout << "Simulation done ... " << clock.readDuration(tSimulationStart, -1, "%02d:%02d:%06.3f").c_str() << endl;
     sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     cout << "rngCounter: " << random_event.rngCounter << endl;
 

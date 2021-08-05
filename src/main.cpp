@@ -26,6 +26,8 @@ namespace fs = experimental::filesystem;
 
 #include "restarts.h"
 
+#include "cpuinfo.h"
+
 int main(int argc, const char* argv[]){
     CLOCK clock;
 
@@ -41,7 +43,7 @@ int main(int argc, const char* argv[]){
     args.update(argsParsed);    //argsParsed have priority
     args.finalize();  //dt-defaulting and matching of numberOfTimesteps
 
-    cout << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
+    cout << endl << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
 
     //print version details
     cout << surroundWithSeparator("Version Details") << endl;
@@ -49,10 +51,19 @@ int main(int argc, const char* argv[]){
     cout << "Git branch: " << GIT_BRANCH << endl;
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
     cout << "Git version: " << GIT_VERSION << endl;
-    cout << surroundWithSeparator("", 60, 1, '#', false) << endl << endl;
     if(args.printVersion){
         exit(0);
     }
+
+    //CPU information
+    cout << surroundWithSeparator("Machine details") << endl;
+    cout << "host: " << getHostName() << endl;
+    cout << "user: " << getUserName() << endl;
+    cout << "CPU: " << getCPUInfo() << endl;
+    cout << "Architecture: " << sizeof(void* ) * 8 << "-bit" << endl;
+    cout << "Total memory: " << getRAMInfo() << endl;
+    cout << surroundWithSeparator("", 60, 1, '#', false) << endl << endl;
+//    exit(0);
 
     cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 

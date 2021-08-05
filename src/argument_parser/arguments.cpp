@@ -15,10 +15,7 @@ namespace bo = boost;
 namespace fs = experimental::filesystem;
 
 #include <cmath>
-
-bool str_is_empty(string str){
-    return str.empty();
-}
+#include "../tools/string.h"
 
 ARGUMENTS::ARGUMENTS(){
     setup();

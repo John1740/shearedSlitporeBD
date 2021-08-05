@@ -209,7 +209,7 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     }
 
     //read particle information
-    successful = readParticlesFromFile(filename, true, verbose);
+    successful = readParticlesFromFile(filename, numberOfParticles, true, verbose);
 
     //only make permanent changes if everything was read successfully
     if(successful){
@@ -225,7 +225,7 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
 }
 
 //numberOfParticles needs to be set
-bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, bool addMissingInfo, bool verbose){
+bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int numberOfParticles, bool addMissingInfo, bool verbose){
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();
     ifstream f;

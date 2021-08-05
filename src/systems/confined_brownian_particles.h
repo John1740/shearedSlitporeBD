@@ -61,7 +61,7 @@ protected:
     virtual void setPositionInBox();
 
     // Non-Public File-Handling
-    virtual bool readParticlesFromFile(string filename, bool addMissingInfo = false, bool verbose=true);
+    virtual bool readParticlesFromFile(string filename, int numberOfParticles, bool addMissingInfo = false, bool verbose=true);
 
 public:
     CONFINED_BROWNIAN_PARTICLES();

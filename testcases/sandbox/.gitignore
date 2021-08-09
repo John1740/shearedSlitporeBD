@@ -1,8 +1,6 @@
 *.out
 *.out.*
 *.png
-configuration.in.equilibrium
 configuration.in.skipped
 configuration.restart*
-pairCorrelations/
 settings.in

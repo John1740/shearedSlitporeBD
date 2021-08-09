@@ -22,10 +22,6 @@ bool restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys,
         cout << "Restarting from timestep " << timestepOut;
         cout << b::format(" (%.0f%% done)") % (100 * progress) << endl;
     }
-    if(skip >= numberOfTimesteps){
-        cout << "The timestep in " << filename << " is already too advanced (" << skip << "/" << numberOfTimesteps << "). Exiting..." << endl;
-        exit(0);
-    }
     return successful;
 }
 

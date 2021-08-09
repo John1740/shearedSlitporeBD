@@ -52,7 +52,7 @@ int main(int argc, const char* argv[]){
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
     cout << "Git version: " << GIT_VERSION << endl;
     if(args.printVersion){
-        exit(0);
+        return 0;
     }
 
     //CPU information
@@ -63,7 +63,6 @@ int main(int argc, const char* argv[]){
     cout << "Architecture: " << sizeof(void* ) * 8 << "-bit" << endl;
     cout << "Total memory: " << getRAMInfo() << endl;
     cout << surroundWithSeparator("", 60, 1, '#', false) << endl << endl;
-//    exit(0);
 
     cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
@@ -110,6 +109,14 @@ int main(int argc, const char* argv[]){
         fs::remove_all(ERRONEOUS);
     }
 
+    //moved up here, to be able to remove empty files with --dry and already finished --restart runs
+    //can be moved down infront of actual for-loop again, if the buffered printers have been implemented
+    LAYER_POSITION_PRINTER layerPosition(&sys);
+    LAYER_VELOCITY_PRINTER layerVelocity(&sys);
+    STRESS_PRINTER stress(&sys);
+    ANGULAR_BOND_PRINTER angularBond(&sys);
+    STRESS_FOURIER_COMPONENTS fc(args);
+
     //restarts
     long timestepIn = sys.getTimestep();
     if(args.restart){
@@ -120,10 +127,15 @@ int main(int argc, const char* argv[]){
     }
     long finishedTimesteps = sys.getTimestep() - timestepIn;
     long timestepsToGo = args.numberOfTimesteps - finishedTimesteps;
+    //exit, if already finished
+    if(timestepsToGo <= 0){
+        cout << "The timestep is already too advanced (" << finishedTimesteps << "/" << args.numberOfTimesteps << "). Exiting..." << endl;
+        return 0;
+    }
 
     if(args.dry){
         cout << "This was a dry run. To do an actual run, remove the '--dry' option!" << endl;
-        exit(0);
+        return 0;
     }
 
     //Simulation start
@@ -145,12 +157,6 @@ int main(int argc, const char* argv[]){
         cout << "Skipping done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
         sys.writeConfigurationToFile(CONFIGURATION_SKIPPED, true, true);
     }
-
-    LAYER_POSITION_PRINTER layerPosition(&sys);
-    LAYER_VELOCITY_PRINTER layerVelocity(&sys);
-    STRESS_PRINTER stress(&sys);
-    ANGULAR_BOND_PRINTER angularBond(&sys);
-    STRESS_FOURIER_COMPONENTS fc(args);
 
     if(args.restart && timestepsToGo != args.numberOfTimesteps){
         cout << "Continuing";

@@ -209,13 +209,17 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     }
 
     //read particle information
+    SLIT_PORE_BOX simBoxOld = this->simBox;
+    this->simBox = simBox;  //readParticleFromFile needs this->simBox information
     successful = readParticlesFromFile(filename, numberOfParticles, true, verbose);
 
     //only make permanent changes if everything was read successfully
     if(successful){
-        this->simBox = simBox;
         this->timestep = timestep;
         this->numberOfParticles = numberOfParticles;
+    }
+    else{
+        this->simBox = simBoxOld;
     }
 
     if(successful && verbose){
@@ -224,7 +228,7 @@ bool CONFINED_BROWNIAN_PARTICLES::readConfigurationFromFile(string filename, boo
     return successful;
 }
 
-//numberOfParticles needs to be set
+//needs simBox to be set
 bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int numberOfParticles, bool addMissingInfo, bool verbose){
     vector<CHARGED_PARTICLE> particleIn;
     particleIn.clear();

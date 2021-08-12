@@ -77,6 +77,8 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     milestone.update(other.milestone);
     if(other.milestoneRuntime != MILESTONE_RUNTIME) milestoneRuntime = other.milestoneRuntime;
     if(other.milestoneRuntimeOffset != MILESTONE_RUNTIME_OFFSET) milestoneRuntimeOffset = other.milestoneRuntimeOffset;
+    if(other.watchdog != WATCHDOG) watchdog = other.watchdog;
+    if(other.watchdogOffset != WATCHDOG_OFFSET) watchdogOffset = other.watchdogOffset;
     if(other.restart == true) restart = other.restart;
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
@@ -138,6 +140,10 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         if(args.milestoneRuntimeOffset >= 0){
             os << "milestoneRuntimeOffset" << args.sep << args.milestoneRuntimeOffset << endl;
         }
+    }
+    if(args.watchdog > 0){
+        os << "watchdog" << args.sep << args.watchdog << endl;
+        os << "watchdogOffset" << args.sep << args.watchdogOffset << endl;
     }
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
@@ -274,6 +280,12 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("milestone") != string::npos){
             milestone = round(stod(linesplit[1]));
+        }
+        else if(line.find("watchdogOffset") != string::npos){
+            watchdogOffset = stod(linesplit[1]);
+        }
+        else if(line.find("watchdog") != string::npos){
+            watchdog = stod(linesplit[1]);
         }
         else if(line.find("restart") != string::npos){
             restart = true;

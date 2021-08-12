@@ -54,6 +54,12 @@ void ARGUMENT_PARSER::addOptions(){
             ("milestoneRuntimeOffset", po::value<double>()->default_value(MILESTONE_RUNTIME_OFFSET),
                     "shifts the --milestoneRuntime forward by x (runtime) seconds;\n"
                     "defaults to 0.2 * milestoneRuntime")
+            ("watchdog", po::value<double>()->default_value(WATCHDOG),
+                    "interrupt simulation after x (runtime) seconds;\n"
+                    "3600=1h, 14400=4h, 86400=1d, 172800=2d")
+            ("watchdogOffset", po::value<double>()->default_value(WATCHDOG_OFFSET),
+                    "interrupt simulation x seconds before --watchdog;"
+                    "grants some buffer to finish the calculation")
              ;
     main.add_options()
             ("shearRate", po::value<double>()->default_value(SHEAR_RATE),
@@ -212,6 +218,8 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     }
     args.milestoneRuntime = variablesMap["milestoneRuntime"].as<double>();
     args.milestoneRuntimeOffset = variablesMap["milestoneRuntimeOffset"].as<double>();
+    args.watchdog = variablesMap["watchdog"].as<double>();
+    args.watchdogOffset = variablesMap["watchdogOffset"].as<double>();
     //
     args.printStress = round(variablesMap["printStress"].as<double>());
     if(variablesMap.count("printStressDuration")){

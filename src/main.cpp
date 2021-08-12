@@ -170,7 +170,6 @@ int main(int argc, const char* argv[]){
     for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
     }
-    double watchdogRuntime = 2;
     bool finished = false;
     string status = "running";
 
@@ -179,8 +178,8 @@ int main(int argc, const char* argv[]){
     bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
         // interrupt simulation if watchdog time is over
-        if(clock(0) > watchdogRuntime){
-            cout << "\nTime is up: " << clock(0) << "/" << watchdogRuntime << endl;
+        if(args.watchdog > 0 && clock(0) > (args.watchdog - args.watchdogOffset)){
+            cout << "\nWatchdog barks! Time left to shut down: " << args.watchdog - clock(0) << "s" << endl;
             break;
         }
         // write restart configuration file every x timesteps or every x (runtime) seconds

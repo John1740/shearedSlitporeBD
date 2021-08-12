@@ -170,25 +170,30 @@ int main(int argc, const char* argv[]){
     for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
     }
+    double watchdogTime = 2;
+    bool finished = false;
+    string status = "running";
 
     double timeSinceLastMilestone;
     double milestoneTimingOffset = 0.2 * args.milestoneRuntime;  //interval stays the same, but milestone timing is shifted forward
     bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
+        // interrupt simulation if watchdog time is over
+        if(clock(0) > watchdogTime){
+            cout << "\nTime is up: " << clock(0) << "/" << watchdogTime << endl;
+            break;
+        }
         // write restart configuration file every x timesteps or every x (runtime) seconds
         timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
         if((args.milestone > 0 && i % args.milestone == 0) || (timeSinceLastMilestone > args.milestoneRuntime)){
-            if(fs::exists(CONFIGURATION_RESTART)){
-                fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
-            }
-            sys.writeConfigurationToFile(CONFIGURATION_RESTART, true, false);
+            saveMilestone(sys);
             if(timeSinceLastMilestone > args.milestoneRuntime){
                 clock.addTimePoint();
                 milestoneTimingOffset = 0;
             }
             flushPrinters = true;
         }
-        //flush all printers after saving milestones (but before executing any more prints for that timestep
+        //flush all printers after saving milestones (but before doing any more print-outs for that timestep)
         if(flushPrinters){
             layerPosition.flush();
             layerVelocity.flush();
@@ -222,9 +227,23 @@ int main(int argc, const char* argv[]){
         }
         ++progress;
     }
+    //check if finished
+    if(progress.count() == progress.expected_count()){
+        finished = true;
+        status = "finished";
+    }
+    else{
+        finished = false;
+        status = "interrupted";
+    }
     clock.addTimePoint();
-    cout << "Simulation done ... " << clock.readDuration(tSimulationStart, -1, "%02d:%02d:%06.3f").c_str() << endl;
-    sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
+    cout << "Simulation " << status << " ... " << clock.readDuration(tSimulationStart, -1, "%02d:%02d:%06.3f").c_str() << endl;
+    if(finished){
+        sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
+    }
+    else{
+        saveMilestone(sys, true);
+    }
     cout << "rngCounter: " << random_event.rngCounter << endl;
 
     //one more iteration for last velocity step (might cause minor problems if simulation is restarted without same seed and correct RNG counter)
@@ -249,7 +268,7 @@ int main(int argc, const char* argv[]){
     if(args.printPairCorrelation > 0){
         cout << b::format("Printed pair correlations to %s") % PAIR_CORRELATION_OUT << endl;
     }
-    if(args.printStressFourier > 0){
+    if(finished && args.printStressFourier > 0){
         cout << endl << fc << endl;
         cout << "Storage modulus [kT/d^3]: " << fc.calculateStorageModulus() << endl;
         cout << "Loss modulus [kT/d^3]: " << fc.calculateLossModulus() << endl;
@@ -264,8 +283,9 @@ int main(int argc, const char* argv[]){
     cout << endl << surroundWithSeparator("Simulation end") << endl;
 
     clock.addTimePoint();
-    cout << endl << "Task finished at " << clock.readTimePoint(-1) << endl;
-    cout << b::format("Task finished in %.3f seconds (%s)") % clock.getDuration(0, -1) %
+    cout << endl;
+    cout << "Task " << status << " at " << clock.readTimePoint(-1) << endl;
+    cout << b::format("Task %s after %.3f seconds (%s)") % status % clock.getDuration(0, -1) %
             clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
 

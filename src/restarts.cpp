@@ -55,3 +55,10 @@ bool restartSimulation(CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps,
     successful = successfulOut || successfulRestart;
     return successful;
 }
+
+void saveMilestone(CONFINED_BROWNIAN_PARTICLES& sys, bool verbose){
+    if(fs::exists(CONFIGURATION_RESTART)){
+        fs::rename(CONFIGURATION_RESTART, CONFIGURATION_RESTART + BACKUP_EXTENSION);
+    }
+    sys.writeConfigurationToFile(CONFIGURATION_RESTART, true, verbose);
+}

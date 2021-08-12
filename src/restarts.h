@@ -13,4 +13,6 @@ bool restartFromConfiguration(string filename, CONFINED_BROWNIAN_PARTICLES& sys,
 
 bool restartSimulation(CONFINED_BROWNIAN_PARTICLES& sys, long numberOfTimesteps, bool verbose=true);
 
+void saveMilestone(CONFINED_BROWNIAN_PARTICLES& sys, bool verbose=false);
+
 #endif //SHEAREDSLITPOREBD_RESTARTS_H

@@ -170,22 +170,22 @@ int main(int argc, const char* argv[]){
     for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
     }
-    double watchdogTime = 2;
+    double watchdogRuntime = 2;
     bool finished = false;
     string status = "running";
 
     double timeSinceLastMilestone;
-    double milestoneTimingOffset = 0.2 * args.milestoneRuntime;  //interval stays the same, but milestone timing is shifted forward
+    double milestoneTimingOffset = args.milestoneRuntimeOffset;  //interval stays the same, but milestone timing is shifted forward
     bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
         // interrupt simulation if watchdog time is over
-        if(clock(0) > watchdogTime){
-            cout << "\nTime is up: " << clock(0) << "/" << watchdogTime << endl;
+        if(clock(0) > watchdogRuntime){
+            cout << "\nTime is up: " << clock(0) << "/" << watchdogRuntime << endl;
             break;
         }
         // write restart configuration file every x timesteps or every x (runtime) seconds
         timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
-        if((args.milestone > 0 && i % args.milestone == 0) || (timeSinceLastMilestone > args.milestoneRuntime)){
+        if((args.milestone > 0 && i % args.milestone == 0) || (args.milestoneRuntime > 0 && timeSinceLastMilestone > args.milestoneRuntime)){ //milestoneRuntime = 0 disables it
             saveMilestone(sys);
             if(timeSinceLastMilestone > args.milestoneRuntime){
                 clock.addTimePoint();

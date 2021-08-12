@@ -53,6 +53,7 @@ public:
 
     PRINT_INTERVAL milestone;
     double milestoneRuntime = MILESTONE_RUNTIME;
+    double milestoneRuntimeOffset = MILESTONE_RUNTIME_OFFSET;
 
     bool restart = RESTART;
     bool clear = CLEAR;
@@ -82,6 +83,7 @@ public:
     ARGUMENTS& setNumberOfPeriods(double numberOfPeriods);
     ARGUMENTS& setDefaultDt();
     ARGUMENTS& setDefaultMilestone();
+    ARGUMENTS& setDefaultMilestoneRuntimeOffset();
     ARGUMENTS& setSeparator(string sep);
 
     // operators

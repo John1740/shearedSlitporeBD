@@ -76,6 +76,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     skip.update(other.skip);
     milestone.update(other.milestone);
     if(other.milestoneRuntime != MILESTONE_RUNTIME) milestoneRuntime = other.milestoneRuntime;
+    if(other.milestoneRuntimeOffset != MILESTONE_RUNTIME_OFFSET) milestoneRuntimeOffset = other.milestoneRuntimeOffset;
     if(other.restart == true) restart = other.restart;
     printStress.update(other.printStress);
     printStressFourier.update(other.printStressFourier);
@@ -134,6 +135,9 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
     }
     if(args.milestoneRuntime > 0){
         os << "milestoneRuntime" << args.sep << args.milestoneRuntime << endl;
+        if(args.milestoneRuntimeOffset >= 0){
+            os << "milestoneRuntimeOffset" << args.sep << args.milestoneRuntimeOffset << endl;
+        }
     }
     if(args.printStress > 0){
         os << "printStress" << args.sep << args.printStress << endl;
@@ -255,6 +259,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("skip") != string::npos){
             skip = round(stod(linesplit[1]));
+        }
+        else if(line.find("milestoneRuntimeOffset") != string::npos){
+            milestoneRuntimeOffset = stod(linesplit[1]);
         }
         else if(line.find("milestoneRuntime") != string::npos){
             milestoneRuntime = stod(linesplit[1]);
@@ -416,6 +423,12 @@ ARGUMENTS& ARGUMENTS::finalize(){
     if(milestone == 0){
         setDefaultMilestone();
     }
+    if(milestoneRuntime <= 0){
+        milestoneRuntimeOffset = 0;
+    }
+    else if(milestoneRuntime > 0 && milestoneRuntimeOffset < 0){
+        setDefaultMilestoneRuntimeOffset();
+    }
     printStress.finalize();
     printStressFourier.finalize();
     printEnergy.finalize();
@@ -512,5 +525,10 @@ ARGUMENTS& ARGUMENTS::setDefaultDt(){
 
 ARGUMENTS& ARGUMENTS::setDefaultMilestone(){
     milestone = numberOfTimesteps / 10;
+    return *this;
+}
+
+ARGUMENTS& ARGUMENTS::setDefaultMilestoneRuntimeOffset(){
+    milestoneRuntimeOffset = 0.2 * milestoneRuntime;
     return *this;
 }

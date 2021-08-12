@@ -51,6 +51,9 @@ void ARGUMENT_PARSER::addOptions(){
                                                        "Overwrites --milestone and --milestoneDuration")
             ("milestoneRuntime", po::value<double>()->default_value(MILESTONE_RUNTIME),
                     "save restart snapshots every x (runtime) seconds")
+            ("milestoneRuntimeOffset", po::value<double>()->default_value(MILESTONE_RUNTIME_OFFSET),
+                    "shifts the --milestoneRuntime forward by x (runtime) seconds;\n"
+                    "defaults to 0.2 * milestoneRuntime")
              ;
     main.add_options()
             ("shearRate", po::value<double>()->default_value(SHEAR_RATE),
@@ -208,6 +211,7 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
         args.milestone.setPeriod(variablesMap["milestonePeriod"].as<double>());
     }
     args.milestoneRuntime = variablesMap["milestoneRuntime"].as<double>();
+    args.milestoneRuntimeOffset = variablesMap["milestoneRuntimeOffset"].as<double>();
     //
     args.printStress = round(variablesMap["printStress"].as<double>());
     if(variablesMap.count("printStressDuration")){

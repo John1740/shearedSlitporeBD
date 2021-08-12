@@ -80,8 +80,9 @@ void SLIT_PORE_BOX::setOrigin(REAL_C origin){
 }
 
 ostream& operator<<(ostream& os, const SLIT_PORE_BOX& simBox){
-    const char* fmt = "% 2.5f\t";
-    os << "ITEM: BOX BOUNDS xx yy zz\n";
+//    const char* fmt = "% 2.5f\t";
+    const char* fmt = "% .8e\t";
+    os << "ITEM: BOX BOUNDS pp pp ff\n";    //p=periodic, f=fixed (boundary conditions)
     os << bo::format(fmt) % (simBox.getOrigin().x - simBox.getDimensions().x / 2);
     os << bo::format(fmt) % (simBox.getOrigin().x + simBox.getDimensions().x / 2);
     os << '\n';
@@ -113,7 +114,7 @@ bool SLIT_PORE_BOX::readFromFile(string filename, bool verbose){
     string line;
     bool success = false;
     while(getline(f, line)){
-        if(line.find("BOX BOUNDS xx yy zz") != string::npos){
+        if(line.find("BOX BOUNDS") != string::npos){
             f >> c1 >> c2;
             dimensions.x = c2 - c1;
             origin.x = (c1 + c2) / 2;

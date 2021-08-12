@@ -155,7 +155,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
         printer << bo::format("%2.3f\t") % particles[i].diameter;
         printer << bo::format("%3.2f\t") % particles[i].charge;
         printer << bo::format("%2d\t") % particles[i].species;
-        printer << '\n';
+        printer << '\n';    //this leads to an empty last line
     }
     if(verbose){
         cout << "Wrote configuration to " << filename << endl;
@@ -289,10 +289,14 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
             //read particle positions
             vector<double> c(numberOfColumns);   //container
             int counter = 0;
-            while(!f.eof()){    //this will enter the loop one time too often
+            while(!f.eof()){    //enters the loop one time too often because of trailing last line
                 for(int i = 0; i < numberOfColumns; i++){
                     f >> c[i];
                 }
+                if(f.eof()){    //abort if end of file is reached
+                    break;
+                }
+                // it might be better to read the file line by line (easier to catch an empty line)
                 if(pIndex != -1){
                     newParticle.index = c[pIndex];
                 }
@@ -332,9 +336,6 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
                 }
                 else{
                     newParticle.species = 0;
-                }
-                if(f.eof()){    //abort if end of file is reached
-                    break;
                 }
                 particleIn.push_back(newParticle);
                 counter++;

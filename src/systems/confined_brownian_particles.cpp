@@ -149,9 +149,9 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     printer << "ITEM: ATOMS index x y z diameter charge species\n";
     for(int i = 0; i < numberOfParticles; ++i){
         printer << bo::format("%4d\t") % particles[i].index;
-        printer << bo::format(printer.format_f) % particles[i].boxPosition.x;
-        printer << bo::format(printer.format_f) % particles[i].boxPosition.y;
-        printer << bo::format(printer.format_f) % particles[i].boxPosition.z;
+        printer << bo::format(printer.format_f) % particles[i].position.x;
+        printer << bo::format(printer.format_f) % particles[i].position.y;
+        printer << bo::format(printer.format_f) % particles[i].position.z;
         printer << bo::format("%2.3f\t") % particles[i].diameter;
         printer << bo::format("%3.2f\t") % particles[i].charge;
         printer << bo::format("%2d\t") % particles[i].species;
@@ -277,13 +277,13 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
                     continue;
                 }
                 else{
-                    cout << "Can't recognize the label " << linesplit[i] << " in the configuration file." << endl;
+                    cout << "Can't recognize the label " << linesplit[i] << " in the configuration file " << filename << endl;
                 }
             }
             if(pX == -1 || pY == -1 || pZ == -1){
-                cout << "Missing a x-, y- or z-position column. Please use the following header:" << endl;
+                cout << "Missing a x-, y- or z-position column in" << filename << ". Please use the following header:" << endl;
                 cout << keyword << "index x y z diameter charge species" << endl;
-                exit(0);
+                return false;
             }
 
             //read particle positions
@@ -309,9 +309,9 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
                         newParticle.diameter = 1.0;
                     }
                     else{
-                        cout << "Missing a particle diameter column. Please provide one via:" << endl;
+                        cout << "Missing a particle diameter column in " << filename << ". Please provide one via:" << endl;
                         cout << keyword << "index x y z diameter charge species" << endl;
-                        exit(0);
+                        return false;
                     }
                 }
                 if(pCharge != -1){
@@ -322,9 +322,9 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
                         newParticle.charge = 35;
                     }
                     else{
-                        cout << "Missing a particle charge column. Please provide one via:" << endl;
+                        cout << "Missing a particle charge column in " << filename << ". Please provide one via:" << endl;
                         cout << keyword << "index x y z diameter charge species" << endl;
-                        exit(0);
+                        return false;
                     }
                 }
                 if(pSpecies != -1){

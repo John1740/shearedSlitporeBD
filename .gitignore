@@ -1,5 +1,7 @@
 /build*
+/cmake-build*
 /bin
 /output
+/out
 /venv
 *_bak

@@ -12,6 +12,8 @@ namespace bo = boost;
 #include <experimental/filesystem>
 namespace fs = experimental::filesystem;
 #include "tools/string.h"
+#include <iostream>
+using namespace std;
 
 string getCPUInfo(){
     char CPUBrandString[0x40];
@@ -69,6 +71,7 @@ string getHostName(){
 
 string getUserName(){
     char username[LOGIN_NAME_MAX];
-    getlogin_r(username, LOGIN_NAME_MAX);
-    return string(username);
+    size_t ret = getlogin_r(username, LOGIN_NAME_MAX);  //will return 0 if successful, 2 if not
+    if (ret == 0) return string(username);
+    else return string("");
 }

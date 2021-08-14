@@ -1,4 +1,4 @@
 amplitude: 400
 oscillationPeriod: 1
 
-totalNumberOfTimesteps: 100
+numberOfTimesteps: 100

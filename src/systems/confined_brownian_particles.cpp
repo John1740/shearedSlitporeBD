@@ -277,6 +277,7 @@ bool CONFINED_BROWNIAN_PARTICLES::readParticlesFromFile(string filename, int num
                     continue;
                 }
                 else{
+                    // causes weird behaviour in WSL2
                     cout << "Can't recognize the label " << linesplit[i] << " in the configuration file " << filename << endl;
                 }
             }

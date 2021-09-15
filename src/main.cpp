@@ -12,7 +12,6 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 
 #include "systems/sheared_slitpore_system.h"
 
-//#include "printer/printer.h"
 #include "printer/stress.h"
 #include "printer/layer_position.h"
 #include "printer/layer_velocity.h"
@@ -27,8 +26,20 @@ namespace fs = experimental::filesystem;
 #include "restarts.h"
 
 #include "cpuinfo.h"
+#include <csignal>
+
+volatile int exit_code = 0; //volatile keyword just to be sure
+
+void signalHandler(int signum){
+    cout << endl << "Interrupt signal (" << signum << ") received." << endl;
+    exit_code = signum;
+}
 
 int main(int argc, const char* argv[]){
+    //signals that should shut down the simulation
+    signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
+    signal(SIGKILL, signalHandler);
     CLOCK clock;
 
     ARGUMENT_PARSER parser(argc, argv);
@@ -178,9 +189,14 @@ int main(int argc, const char* argv[]){
     double milestoneTimingOffset = args.milestoneRuntimeOffset;  //interval stays the same, but milestone timing is shifted forward
     bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
-        // interrupt simulation if watchdog time is over
+        //interrupt simulation if terminate signal was caught
+        if(exit_code != 0){
+            break;
+        }
+        //interrupt simulation if watchdog time is over
         if(args.watchdog > 0 && clock(0, true) > (args.watchdog - args.watchdogOffset)){
             cout << "\nWatchdog barks! Time left to shut down: " << args.watchdog - clock(0, true) << "s" << endl;
+            exit_code = 2;
             break;
         }
         // write restart configuration file every x timesteps or every x (runtime) seconds
@@ -290,10 +306,5 @@ int main(int argc, const char* argv[]){
             clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
 
-    if(finished){
-        return 0;
-    }
-    else{
-        return 2;
-    }
+    return exit_code;
 }

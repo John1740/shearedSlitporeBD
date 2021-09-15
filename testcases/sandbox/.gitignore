@@ -4,3 +4,4 @@
 configuration.in.skipped
 configuration.restart*
 settings.in
+*.sh

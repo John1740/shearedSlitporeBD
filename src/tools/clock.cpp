@@ -13,14 +13,14 @@ CLOCK::CLOCK(){
 
 void CLOCK::reset(){
     timePoints.clear();
-    clockTimes.clear();
+    clockTicks.clear();
     length = timePoints.size();
-    addTimePoint();
+    lap();
 }
 
-int CLOCK::addTimePoint(){
+int CLOCK::lap(){
     timePoints.push_back(time(0));
-    clockTimes.push_back(clock());
+    clockTicks.push_back(clock());
     return length++;
 }
 
@@ -28,8 +28,8 @@ time_t CLOCK::getTimePoint(int i){
     return timePoints.at2(i);
 }
 
-clock_t CLOCK::getClockTime(int i){
-    return clockTimes.at2(i);
+clock_t CLOCK::getClockTick(int i){
+    return clockTicks.at2(i);
 }
 
 string CLOCK::readTimePoint(int i, const char* fmt){
@@ -39,13 +39,19 @@ string CLOCK::readTimePoint(int i, const char* fmt){
     return ss.str();
 }
 
-double CLOCK::getDuration(int i, int j){
-    double duration = double(clockTimes.at2(j) - clockTimes.at2(i)) / CLOCKS_PER_SEC;
+double CLOCK::getDuration(int i, int j, bool walltime){
+    double duration;
+    if(walltime){
+        duration = timePoints.at2(j) - timePoints.at2(i);
+    }
+    else{
+        duration = double(clockTicks.at2(j) - clockTicks.at2(i)) / CLOCKS_PER_SEC;
+    }
     return duration;
 }
 
-string CLOCK::readDuration(int i, int j, const char* format){
-    double seconds = getDuration(i, j);
+string CLOCK::readDuration(int i, int j, bool walltime, const char* format){
+    double seconds = getDuration(i, j, walltime);
     int minutes = seconds / 60;
     int hours = minutes / 60;
     int days = hours / 24;
@@ -72,9 +78,15 @@ string CLOCK::readDuration(int i, int j, const char* format){
     return ss.str();
 }
 
-double CLOCK::operator()(int j){
-    clock_t now = clock();
-    double duration = double(now - clockTimes.at2(j)) / CLOCKS_PER_SEC;
+double CLOCK::operator()(int j, bool walltime){
+    double duration;
+    if(walltime){
+        duration = time(0) - timePoints.at2(j);
+    }
+    else{
+        clock_t now = clock();
+        duration = double(now - clockTicks.at2(j)) / CLOCKS_PER_SEC;
+    }
     return duration;
 }
 
@@ -86,8 +98,8 @@ string CLOCK::operator()(const char* fmt){
     return ss.str();
 }
 
-double CLOCK::operator()(int i, int j){
-    return getDuration(i, j);
+double CLOCK::operator()(int i, int j, bool walltime){
+    return getDuration(i, j, walltime);
 }
 
 string CLOCK::operator[](int i){

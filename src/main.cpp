@@ -144,7 +144,7 @@ int main(int argc, const char* argv[]){
     //Skip first few steps
     //TODO: implement restarts
     if(args.skip){
-        clock.addTimePoint();
+        clock.lap();
         cout << "Skipping first " << args.skip << " timesteps. " << endl;
         long timestep = sys.getTimestep();
         b::progress_display progress(args.skip);
@@ -153,7 +153,7 @@ int main(int argc, const char* argv[]){
             ++progress;
         }
         sys.setTimestep(timestep);
-        clock.addTimePoint();
+        clock.lap();
         cout << "Skipping done ... " << clock.readDuration(-2, -1, "%02d:%02d:%06.3f").c_str() << endl;
         sys.writeConfigurationToFile(CONFIGURATION_SKIPPED, true, true);
     }
@@ -165,7 +165,7 @@ int main(int argc, const char* argv[]){
         cout << "Starting";
     }
     cout << " simulation with print-outs (" << timestepsToGo << " timesteps)." << endl;
-    int tSimulationStart = clock.addTimePoint();
+    int tSimulationStart = clock.lap();
     b::progress_display progress(args.numberOfTimesteps);
     for(long i = 0; i < finishedTimesteps; i++){     //skip to correct progress if restart was invoked
         ++progress;
@@ -178,16 +178,16 @@ int main(int argc, const char* argv[]){
     bool flushPrinters = false;
     for(long i = finishedTimesteps; i < args.numberOfTimesteps; i++){
         // interrupt simulation if watchdog time is over
-        if(args.watchdog > 0 && clock(0) > (args.watchdog - args.watchdogOffset)){
-            cout << "\nWatchdog barks! Time left to shut down: " << args.watchdog - clock(0) << "s" << endl;
+        if(args.watchdog > 0 && clock(0, true) > (args.watchdog - args.watchdogOffset)){
+            cout << "\nWatchdog barks! Time left to shut down: " << args.watchdog - clock(0, true) << "s" << endl;
             break;
         }
         // write restart configuration file every x timesteps or every x (runtime) seconds
-        timeSinceLastMilestone = clock(-1) + milestoneTimingOffset;
+        timeSinceLastMilestone = clock(-1, true) + milestoneTimingOffset;
         if((args.milestone > 0 && i % args.milestone == 0) || (args.milestoneRuntime > 0 && timeSinceLastMilestone > args.milestoneRuntime)){ //milestoneRuntime = 0 disables it
             saveMilestone(sys);
             if(timeSinceLastMilestone > args.milestoneRuntime){
-                clock.addTimePoint();
+                clock.lap();
                 milestoneTimingOffset = 0;
             }
             flushPrinters = true;
@@ -235,8 +235,8 @@ int main(int argc, const char* argv[]){
         finished = false;
         status = "interrupted";
     }
-    clock.addTimePoint();
-    cout << "Simulation " << status << " ... " << clock.readDuration(tSimulationStart, -1, "%02d:%02d:%06.3f").c_str() << endl;
+    clock.lap();
+    cout << "Simulation " << status << " ... " << clock.readDuration(tSimulationStart, -1, false,"%02d:%02d:%06.3f").c_str() << endl;
     if(finished){
         sys.writeConfigurationToFile(CONFIGURATION_OUT, true);
     }
@@ -281,12 +281,19 @@ int main(int argc, const char* argv[]){
 
     cout << endl << surroundWithSeparator("Simulation end") << endl;
 
-    clock.addTimePoint();
+    clock.lap();
     cout << endl;
     cout << "Task " << status << " at " << clock.readTimePoint(-1) << endl;
+    cout << "Walltime: " << clock.readDuration(0, -1, true, "%02d:%02d:%02.0f").c_str() << endl;
     cout << b::format("Task %s after %.3f seconds (%s)") % status % clock.getDuration(0, -1) %
             clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
 
+    if(finished){
+        return 0;
+    }
+    else{
+        return 2;
+    }
     return 0;
 }

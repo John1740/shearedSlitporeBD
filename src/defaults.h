@@ -27,6 +27,7 @@ const std::string LAYER_POSITIONS_OUT = "layerPositions.out";
 const std::string LAYER_VELOCITIES_OUT = "layerVelocities.out";
 const std::string SNAPSHOTS = "snapshots.out";
 const std::string ERRONEOUS = "erroneous";
+const std::string OUTFILE = "shearedSlitporeBD.out";
 
 //control parameters
 const double SHEAR_RATE = 0.0;

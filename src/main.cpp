@@ -107,6 +107,7 @@ int main(int argc, const char* argv[]){
         fs::remove(ANGULAR_BOND_OUT);
         fs::remove(PAIR_CORRELATION_OUT);
         fs::remove_all(ERRONEOUS);
+        fs::remove(OUTFILE);
     }
 
     //moved up here, to be able to remove empty files with --dry and already finished --restart runs
@@ -295,5 +296,4 @@ int main(int argc, const char* argv[]){
     else{
         return 2;
     }
-    return 0;
 }

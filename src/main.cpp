@@ -36,10 +36,12 @@ void signalHandler(int signum){
 }
 
 int main(int argc, const char* argv[]){
-    //signals that should shut down the simulation
-    signal(SIGINT, signalHandler);
-    signal(SIGTERM, signalHandler);
-    signal(SIGKILL, signalHandler);
+    //signals that should shut down the simulation (controlledly)
+    signal(SIGINT, signalHandler);  //keyboard interrupt (Ctrl+C in terminal)
+    signal(SIGTERM, signalHandler); //terminate (used by pbspro for example)
+    signal(SIGUSR1, signalHandler); //user-defined signal (job suspension on math cluster)
+    signal(SIGUSR2, signalHandler); //user-defined signal (notification before SIGKILL on math cluster)
+    signal(SIGKILL, signalHandler); //kill (this error cannot be caught usually)
     CLOCK clock;
 
     ARGUMENT_PARSER parser(argc, argv);

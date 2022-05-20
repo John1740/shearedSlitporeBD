@@ -48,21 +48,53 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
         energy.assign(numberOfParticles, 0.);
     }
 }
-
 void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
+    equationOfMotion2();
+}
+
+void SHEARED_SLITPORE_SYSTEM::equationOfMotion2(){
+    force1.assign(numberOfParticles, REAL_C(0.));
+    // initialize randomDisplacement     // muss global sein
+    //REAL_C shearForce;
+
+    calculateForce();
+    force1=force;
+    equationOfMotion1();
+    calculateForce();
+    timestep--;
+    particles=previousParticles;
+
+    for(int i = 0; i < particles.size(); ++i){
+        //randomDisplacement[i] = getRandomDisplacement();
+        force[i] += sf.forceOnParticle(particles[i], timestep * dt);
+
+        particles[i].position += mu / 2 * (force[i] + force1[i]) * dt + randomDisplacement[i];
+
+        if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
+           particles[i].position.z < -0.5 * simBox.getDimensions().z){
+            cout << "particle[i].position.z = " << particles[i].position.z << endl;
+        }
+        particles[i].setBoxPosition(simBox);
+    }
+    timestep++;
+
+
+}
+
+void SHEARED_SLITPORE_SYSTEM::equationOfMotion1(){
     // Force calculation
     calculateForce();
-
-    REAL_C randomDisplacement;
-    REAL_C shearForce;
+    randomDisplacement.assign(numberOfParticles, REAL_C(0.));
+    //REAL_C randomDisplacement;
+    //REAL_C shearForce;
     previousParticles = particles;
     currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
 
     for(int i = 0; i < particles.size(); ++i){
-        randomDisplacement = getRandomDisplacement();
-        shearForce = sf.forceOnParticle(particles[i], timestep * dt);
+        randomDisplacement[i] = getRandomDisplacement();
+        force[i] += sf.forceOnParticle(particles[i], timestep * dt);
 
-        particles[i].position += mu * (force[i] + shearForce) * dt + randomDisplacement;
+        particles[i].position += mu * (force[i]) * dt + randomDisplacement[i];
 
         if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
            particles[i].position.z < -0.5 * simBox.getDimensions().z){

@@ -23,6 +23,9 @@ protected:
 //    vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
+
+    vector<REAL_C> force1;
+    vector<REAL_C> randomDisplacement;
     double currentShearRate;
 
     virtual double getInteractionLengthScale();
@@ -30,6 +33,8 @@ protected:
     virtual void reset();
 
     virtual void equationOfMotion();
+    virtual void equationOfMotion1();
+    virtual void equationOfMotion2();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
 

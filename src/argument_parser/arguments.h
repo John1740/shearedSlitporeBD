@@ -49,6 +49,7 @@ public:
     PRINT_INTERVAL printAngularBond;
     PRINT_INTERVAL printSnapshots;
     PRINT_INTERVAL printPairCorrelation;
+    PRINT_INTERVAL printZDensity;
     int printAll = PRINT_ALL;
 
     PRINT_INTERVAL milestone;

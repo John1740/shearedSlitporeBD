@@ -11,14 +11,15 @@ Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(){
 }
 
 Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys){
-    setup(sys, 10000);
+    setup(sys, 200);
 }
 
-Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys,double nOB){
-    setup(sys, nOB);
+Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys,int nob){
+    setup(sys, nob);
 }
 Z_DENSITY_DISTRIBUTION&
-Z_DENSITY_DISTRIBUTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double nob){
+Z_DENSITY_DISTRIBUTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, int nob){
+    this->nob = nob;
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
     particle = sys.getParticleList();
@@ -36,15 +37,25 @@ Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::calculateZDensityDistribution(){
     db = nob / zrange;
     dr = zrange / nob;
     numberOfParitcles = particle.size();
+
+
     for(int i = 0; i < numberOfParitcles; i++){
         currentZ = particle[i].boxPosition.z;
         int j = round((currentZ + zrange / 2) * db);
         zDensityDistribution[j] += 1;
-        zCoordinate[i]=-zrange/2+dr*i;
+
     }
+    for(int r = 0; r < nob; r++){
+        zCoordinate[r]=-zrange/2+dr*r;
+        zDensityDistribution[r] /= numberOfParitcles;
+    }
+    /*
+  */
+    return *this;
 }
 
 Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::print(string filename, bool overwrite, string header){
+
     PRINTER printer(filename);
     if(overwrite){
         printer.reset();
@@ -57,8 +68,8 @@ Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::print(string filename, bool over
 }
 
 ostream& operator<<(ostream& os, const Z_DENSITY_DISTRIBUTION& zdis){
-    os << "first line: z coordinate [diameter]" << endl;
-    os << "second line: particle density at z [1/diameter]" << endl;
+    os << "# first line: z coordinate [diameter]" << endl;
+    os << "# second line: particle density at z [1/diameter]" << endl;
 
     //data
     for(int r = 0; r < zdis.nob; r++){
@@ -74,8 +85,5 @@ ostream& operator<<(ostream& os, const Z_DENSITY_DISTRIBUTION& zdis){
     os << "\n";
 
     return os;
-
-
-
 
 }

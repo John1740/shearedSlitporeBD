@@ -105,6 +105,8 @@ add_executable(
         src/tools/format.cpp src/tools/format.h
         src/tools/analysis.cpp src/tools/analysis.h
 
+        src/order_parameter/z_density_distribution.cpp
+        src/order_parameter/z_density_distribution.h
         src/order_parameter/intra_layer_pair_correlation_function.cpp
         src/order_parameter/intra_layer_pair_correlation_function.h
         src/order_parameter/angular_bond_parameter.cpp
@@ -154,6 +156,9 @@ add_executable(
 
         src/order_parameter/intra_layer_pair_correlation_function.cpp
         src/order_parameter/intra_layer_pair_correlation_function.h
+        
+        src/order_parameter/z_density_distribution.cpp
+        src/order_parameter/z_density_distribution.h
 )
 
 add_executable(

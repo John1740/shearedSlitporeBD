@@ -162,6 +162,17 @@ void ARGUMENT_PARSER::addOptions(){
             ("printPairCorrelationPeriod", po::value<double>(),
              "Same as --printPairCorrelation but in units of oscillation periods.\n"
              "Overwrites --printPairCorrelation and --printPairCorrelationDuration")
+
+            ("printZDensity", po::value<double>()->default_value(PRINT_Z_Density),
+             "print particle density distribution over Z every x-th timestep; "
+             "x<0 -> no print-outs")
+            ("printZDensityDuration", po::value<double>(),
+             "Same as --printZDensity but in units of total simulation time\n"
+             "Overwrites --printZDensity")
+            ("printZDensityPeriod", po::value<double>(),
+             "Same as --printZDensity but in units of oscillation periods.\n"
+             "Overwrites --printZDensity and --printZDensityDuration")
+
             ("printAll", po::value<double>()->default_value(PRINT_ALL), "print all properties every x-th timestep; "
                                                                         "x<0 -> no print-outs; "
                                                                         "ATTENTION: The calculation will be very slow! "
@@ -277,6 +288,14 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
         args.printSnapshots.setPeriod(variablesMap["printSnapshotsPeriod"].as<double>());
     }
     //
+    args.printZDensity = round(variablesMap["printZDensity"].as<double>());
+    if(variablesMap.count("printZDensityDuration")){
+        args.printZDensity.setDuration(variablesMap["printZDensityDuration"].as<double>());
+    }
+    if(variablesMap.count("printZDensityPeriod")){
+        args.printZDensity.setPeriod(variablesMap["printZDensityPeriod"].as<double>());
+    }
+    //
     args.printPairCorrelation = round(variablesMap["printPairCorrelation"].as<double>());
     if(variablesMap.count("printPairCorrelationDuration")){
         args.printPairCorrelation.setDuration(variablesMap["printPairCorrelationDuration"].as<double>());
@@ -320,6 +339,10 @@ ARGUMENTS ARGUMENT_PARSER::parseArgs(){
            && args.printPairCorrelation.getDuration() == 0
            && args.printPairCorrelation.getPeriod() == 0)
             args.printPairCorrelation = args.printAll;
+        if(args.printZDensity == PRINT_Z_Density
+           && args.printZDensity.getDuration() == 0
+           && args.printZDensity.getPeriod() == 0)
+            args.printZDensity = args.printAll;
     }
     args.printVersion = variablesMap["version"].as<bool>();
     args.dry = variablesMap["dry"].as<bool>();

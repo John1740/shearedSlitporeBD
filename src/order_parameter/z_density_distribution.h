@@ -13,7 +13,7 @@ private:
     LAYERS layers;
     SLIT_PORE_BOX simBox;
     vector<CHARGED_PARTICLE> particle;
-    double nob;
+    int nob;
     double db;
     double dr;
     double zrange;
@@ -24,9 +24,8 @@ private:
 public:
     Z_DENSITY_DISTRIBUTION();
     Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys);
-    Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys, double nob);
-
-    Z_DENSITY_DISTRIBUTION& setup(CONFINED_BROWNIAN_PARTICLES& sys, double bob);
+    Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys, int nob);
+    Z_DENSITY_DISTRIBUTION& setup(CONFINED_BROWNIAN_PARTICLES& sys, int nob);
     Z_DENSITY_DISTRIBUTION& calculateZDensityDistribution();
 
     Z_DENSITY_DISTRIBUTION& print(string filename, bool overwrite=false, string header="");

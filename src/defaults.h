@@ -22,6 +22,7 @@ const std::string CONFIGURATION_SKIPPED = "configuration.skipped";
 const std::string BACKUP_EXTENSION = ".bak";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
 const std::string PAIR_CORRELATION_OUT = "pairCorrelation.out";
+const std::string Z_DENSITY_OUT = "zDensity.out";
 const std::string STRESSES_OUT = "stresses.out";
 const std::string LAYER_POSITIONS_OUT = "layerPositions.out";
 const std::string LAYER_VELOCITIES_OUT = "layerVelocities.out";
@@ -70,6 +71,7 @@ const int PRINT_ENERGY = 0;
 const int PRINT_ANGULAR_BOND = 0;
 const int PRINT_SNAPSHOTS = 0;
 const int PRINT_PAIR_CORRELATION = 0;
+const int PRINT_Z_Density = 0;
 const int PRINT_ALL = 0;
 
 //misc

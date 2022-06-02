@@ -18,6 +18,7 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 #include "printer/angular_bond.h"
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
+#include "order_parameter/z_density_distribution.h"
 
 #include <experimental/filesystem>
 
@@ -119,6 +120,7 @@ int main(int argc, const char* argv[]){
         fs::remove(LAYER_VELOCITIES_OUT);
         fs::remove(ANGULAR_BOND_OUT);
         fs::remove(PAIR_CORRELATION_OUT);
+        fs::remove(Z_DENSITY_OUT);
         fs::remove_all(ERRONEOUS);
         fs::remove(OUTFILE);
     }
@@ -233,6 +235,13 @@ int main(int argc, const char* argv[]){
             pC.calculateAverageLayerCorrelation();
             pC.print(PAIR_CORRELATION_OUT, false, "timestep: " + to_string(i));
         }
+        if(args.printZDensity > 0 && i % args.printZDensity == 0){
+            Z_DENSITY_DISTRIBUTION pZD(sys);
+            pZD.calculateZDensityDistribution();
+            pZD.print(Z_DENSITY_OUT, false, "timestep: " + to_string(i));
+        }
+
+
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
             stress.printLine();

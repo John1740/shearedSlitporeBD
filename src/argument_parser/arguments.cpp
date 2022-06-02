@@ -41,6 +41,7 @@ ARGUMENTS& ARGUMENTS::setup(){
     printAngularBond = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printSnapshots = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     printPairCorrelation = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
+    printZDensity = PRINT_INTERVAL(&numberOfTimesteps, &dt, &oscillationPeriod);
     return *this;
 }
 
@@ -88,6 +89,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     printAngularBond.update(other.printAngularBond);
     printSnapshots.update(other.printSnapshots);
     printPairCorrelation.update(other.printPairCorrelation);
+    printZDensity.update(other.printZDensity);
 
     //defaults don't matter for these options
     clear = other.clear;
@@ -184,6 +186,11 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printPairCorrelation" << args.sep << args.printPairCorrelation << endl;
         os << "printPairCorrelationDuration" << args.sep << args.printPairCorrelation.getDuration() << endl;
         os << "printPairCorrelationPeriod" << args.sep << args.printPairCorrelation.getPeriod() << endl;
+    }
+    if(args.printZDensity > 0){
+        os << "printZDensity" << args.sep << args.printZDensity << endl;
+        os << "printZDensityDuration" << args.sep << args.printZDensity.getDuration() << endl;
+        os << "printZDensityPeriod" << args.sep << args.printZDensity.getPeriod() << endl;
     }
     return os;
 }
@@ -363,6 +370,15 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("printPairCorrelation") != string::npos){
             printPairCorrelation = round(stod(linesplit[1]));
         }
+        else if(line.find("printZDensityDuration") != string::npos){
+            printZDensity.setDuration(stod(linesplit[1]));
+        }
+        else if(line.find("printZDensityPeriod") != string::npos){
+            printZDensity.setPeriod(stod(linesplit[1]));
+        }
+        else if(line.find("printZDensity") != string::npos){
+            printZDensity = round(stod(linesplit[1]));
+        }
         else if(line.find("printAll") != string::npos){
             printAll = round(stod(linesplit[1]));
         }
@@ -400,6 +416,10 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         if(printPairCorrelation == PRINT_PAIR_CORRELATION && printPairCorrelation.getDuration() == 0 &&
            printPairCorrelation.getPeriod() == 0){
             printPairCorrelation = printAll;
+        }
+        if(printZDensity == PRINT_Z_Density && printZDensity.getDuration() == 0 &&
+                printZDensity.getPeriod() == 0){
+            printZDensity = printAll;
         }
     }
     f.close();
@@ -449,6 +469,7 @@ ARGUMENTS& ARGUMENTS::finalize(){
     printAngularBond.finalize();
     printSnapshots.finalize();
     printPairCorrelation.finalize();
+    printZDensity.finalize();
     return *this;
 }
 

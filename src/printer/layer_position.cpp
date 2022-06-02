@@ -25,7 +25,7 @@ void LAYER_POSITION_PRINTER::printHeader(){
     *this << comment << "i: timestep (dt = " << sys->getTimeStepSize() << " tB)" << endl;
     *this << comment << "R_i(n): position of layer n (in direction i=x,y,z) [d]" << endl;
     *this << comment << format(format_lh) % "i";
-    numberOfLayers = round(sys->getSimulationBox().getDimensions().z);
+    numberOfLayers = 2;//round(sys->getSimulationBox().getDimensions().z);
     vector<string> dir{"x", "y", "z"};
     for(int i = 0; i < numberOfLayers; i++){
         for(int j = 0; j < dir.size(); j++){

@@ -15,7 +15,7 @@ GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(int N, double dWall, double densi
 GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setup(int N, double dWall, double density){
     simBox = SLIT_PORE_BOX(N / density, dWall);
     particle.resize(N);
-    numberOfLayers = round(simBox.getDimensions().z);
+    numberOfLayers = 2;//round(simBox.getDimensions().z);
     numberOfSites = sqrt(particle.size() / numberOfLayers);
     particleTemplate.charge = CHARGE;
     particleTemplate.diameter = DIAMETER;
@@ -74,7 +74,7 @@ void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
             newParticle.position = REAL_C(
                     dxAdd * k + layerIndex * dxAdd / 2,
                     dyAdd * j + layerIndex * dyAdd / 2,
-                    zMin + layerIndex * dz
+                    zMin + layerIndex *dz
             );
             newParticle.index = particleIndex;
             particleIndex++;

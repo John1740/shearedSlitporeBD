@@ -29,7 +29,7 @@ double LAYERS::getLayerThickness() const{
 }
 
 void LAYERS::setNumberOfLayers(const SLIT_PORE_BOX& simBox){
-    numberOfLayers = round(simBox.getDimensions().z);
+    numberOfLayers = 2;//round(simBox.getDimensions().z);
 }
 
 void LAYERS::setZMin(const SLIT_PORE_BOX& simBox){

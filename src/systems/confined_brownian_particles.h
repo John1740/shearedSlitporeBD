@@ -23,6 +23,8 @@ class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class GENERATE_SQUARE_LAYERS;
 
+    friend class GENERATE_HEXAGONAL_LAYERS;
+
 //    friend class PAIR_CORRELATION;
 
 private:
@@ -35,6 +37,12 @@ protected:
     vector<CHARGED_PARTICLE> particles, previousParticles;
     vector<REAL_C> force;
     SLIT_PORE_BOX simBox;
+
+    // Vectors to store properties for the Runge Kutta Methode within one time step
+    vector<REAL_C> force1; // Vector to store the force on each particle after the first force calculation
+    vector<REAL_C> shearforce1; // Vector to store the shear force on each particle for CBD step
+    vector<REAL_C> shearforce2; // Vector to store the shear force on each particle for SRK step
+    vector<REAL_C> randomDisplacement;  // Vector to store the random displacement for every particle
 
     string configurationIn = CONFIGURATION_IN;
 

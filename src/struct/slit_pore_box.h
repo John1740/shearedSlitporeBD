@@ -17,6 +17,7 @@ public:
     SLIT_PORE_BOX();
     SLIT_PORE_BOX(REAL_C dimensionsIn);
     SLIT_PORE_BOX(double volume, double dWallIN);
+    SLIT_PORE_BOX(double volume, double dWallIN, double Xlength , double Ylength);
 
     //setter functions
     void setDwall(double dWallIn);

@@ -5,10 +5,17 @@
 #include "../struct/slit_pore_box.h"
 
 class GENERATE_HEXAGONAL_LAYERS{
+    // Class to calculate particle positions for Hexagonal Layers with given parameters
+    // Used in executable generateHexagonalLayers. Input is number of particles, density
+    // and wall diameter. After initialisation particle positions are stored in
+    // particles[i].position.
 public:
     int numberOfLayers;
     int numberOfSites;
     int numberOfAdditionalSites;
+    int Nx;
+    int Ny;
+    double SitesLength;
 private:
     vector<CHARGED_PARTICLE> particle;
     SLIT_PORE_BOX simBox;

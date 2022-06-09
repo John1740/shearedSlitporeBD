@@ -12,6 +12,10 @@ using namespace std;
 namespace po = boost::program_options;
 
 int main(int argc, const char* argv[]){
+    // Generates (as of now 2) hexagonal layers of particles within the given parameters e.g. density, wall diameter,
+    // and number of particles. Saves particle positions in outputfile(-o).
+
+    // Options(-h)
     po::options_description description{"Options"};
     po::variables_map vm;
     description.add_options()
@@ -36,6 +40,7 @@ int main(int argc, const char* argv[]){
 
     string filename = vm["filename"].as<string>();
 
+    // Class to calculate Particle Positions at given parameters
     GENERATE_HEXAGONAL_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>());
 
     cout << "Generating a hexagonal-layer configuration with" << endl;
@@ -43,6 +48,7 @@ int main(int argc, const char* argv[]){
     cout << "density: " << vm["density"].as<double>() << " [diameters^-3]" << endl;
     cout << "dWall: " << vm["dWall"].as<double>() << " [diameters]" << endl << endl;
 
+    // Set particle properties to given or default Values
     gen.setParticleProperties(vm["charge"].as<double>(), vm["diameter"].as<double>(), vm["species"].as<int>());
     cout << "Simulation box:" << endl;
     cout << gen.getSimBox() << endl;
@@ -50,6 +56,8 @@ int main(int argc, const char* argv[]){
     cout << gen.getParticleTemplate() << endl << endl;
     CONFINED_BROWNIAN_PARTICLES sys = gen.generate();
     cout << gen << endl;
+
+    //Write configuration to output file
     if(!vm["dry"].as<bool>()){
         sys.writeConfigurationToFile(filename, true);
     }

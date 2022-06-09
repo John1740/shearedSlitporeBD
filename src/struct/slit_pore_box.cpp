@@ -19,6 +19,15 @@ SLIT_PORE_BOX::SLIT_PORE_BOX(double volume, double dWallIN){
     setVolumeAndDWall(volume, dWallIN);
 }
 
+SLIT_PORE_BOX::SLIT_PORE_BOX(double volumeIN, double dWallIN, double Xlength , double Ylength){
+    // For Hexagonal Layer because they have unequal particles in X an Y as well as unequal space between particles
+    volume = volumeIN;
+    dimensions.z = dWallIN;
+    dimensions.x = Xlength;
+    dimensions.y = Ylength;
+}
+
+
 void SLIT_PORE_BOX::setDwall(double dWallIn){
     dimensions.z = dWallIn;
     setVolume();

@@ -14,6 +14,10 @@ message("Boost_LIBRARY_DIRS is ${Boost_LIBRARY_DIRS}")
 message("Boost_LIBRARIES is ${Boost_LIBRARIES}")
 message("Boost_VERSION is ${Boost_VERSION}")
 
+#find_package(PkgConfig)
+#pkg_check_modules(HDF5PP REQUIRED HDF5pp)
+#include_directories(${HDF5PP_INCLUDE_DIRS})
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 # Get the current working branch
 execute_process(
@@ -63,6 +67,7 @@ add_executable(
         src/command/average_stress.cpp
         src/command/calculate_forces.cpp
         src/command/generate_square_layers.cpp
+        src/command/generate_hexagonal_layers.cpp
 
         src/struct/cartesian_c.h
         src/struct/cartesian_coordinate.cpp
@@ -91,6 +96,7 @@ add_executable(
         src/printer/layer_velocity.h
         src/printer/angular_bond.cpp
         src/printer/angular_bond.h
+        src/printer/outputPrinter.h
 
         src/argument_parser/argparse.cpp
         src/argument_parser/argparse.h
@@ -136,6 +142,7 @@ add_executable(
 
         src/command/calculate_forces.cpp
         src/command/generate_square_layers.cpp
+        src/command/generate_hexagonal_layers.cpp
 
         src/struct/cartesian_c.h
         src/struct/cartesian_coordinate.cpp
@@ -187,6 +194,9 @@ add_executable(
         generateSquareLayers
         scripts/generateSquareLayers.cpp
 
+        #generateHexagonalLayers
+        #scripts/generateHexagonalLayers.cpp
+
         src/rng/boxmueller.cpp
         src/rng/mersenne.cpp
         src/global.cpp
@@ -209,11 +219,38 @@ add_executable(
         src/printer/printer.cpp
 )
 
+add_executable(
+        generateHexagonalLayers
+        scripts/generateHexagonalLayers.cpp
+
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
+        src/global.cpp
+
+        src/command/calculate_forces.cpp
+        src/command/generate_hexagonal_layers.cpp
+
+        src/struct/cartesian_c.h
+        src/struct/cartesian_coordinate.cpp
+        src/struct/cartesian_coordinate.h
+
+        src/struct/particle.cpp
+        src/struct/charged_particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/layers.cpp
+        src/struct/layers.h
+
+        src/systems/confined_brownian_particles.cpp
+
+        src/printer/printer.cpp
+)
+
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(interactionParameters ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(writePotential ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(generateSquareLayers ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(generateHexagonalLayers ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

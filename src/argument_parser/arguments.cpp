@@ -50,6 +50,8 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.seed != 0) seed = other.seed;
     if(other.rngCounter != 0) rngCounter = other.rngCounter;
     if(other.settingsIn != SETTINGS_IN) settingsIn = other.settingsIn;
+    if(other.outfile != OUTFILE) outfile= other.outfile;
+    if(other.suppressOut != SUPPRESS_OUT) suppressOut= other.suppressOut;
     if(other.configurationIn != CONFIGURATION_IN) configurationIn = other.configurationIn;
     if(other.shearRate != SHEAR_RATE) shearRate = other.shearRate;
     if(other.amplitude != AMPLITUDE) amplitude = other.amplitude;
@@ -100,6 +102,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
 }
 
 ostream& operator<<(ostream& os, const ARGUMENTS& args){
+    os << "outputfile" << args.sep << args.outfile << endl;
     os << "settings" << args.sep << args.settingsIn << endl;
     os << endl;
     if(args.seed == 0){

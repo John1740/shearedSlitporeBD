@@ -75,6 +75,7 @@ const int PRINT_Z_Density = 0;
 const int PRINT_ALL = 0;
 
 //misc
+const bool SUPPRESS_OUT = false;
 const bool CLEAR = false;
 const bool RESTART = false;
 

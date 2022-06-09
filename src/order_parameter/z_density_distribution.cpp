@@ -11,31 +11,32 @@ Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(){
 }
 
 Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys){
-    setup(sys, 200);
+    setup(sys, 0.014);
 }
 
-Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys,int nob){
-    setup(sys, nob);
+Z_DENSITY_DISTRIBUTION::Z_DENSITY_DISTRIBUTION(CONFINED_BROWNIAN_PARTICLES& sys,double dz){
+    setup(sys, dz);
 }
 Z_DENSITY_DISTRIBUTION&
-Z_DENSITY_DISTRIBUTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, int nob){
-    this->nob = nob;
+Z_DENSITY_DISTRIBUTION::setup(CONFINED_BROWNIAN_PARTICLES& sys, double dz){
+    // sets up parameters needed for calculation
+    this->dz = dz;
     simBox = sys.getSimulationBox();
     layers = LAYERS(simBox);
+    zrange = simBox.getDimensions().z;
+    nob =round(zrange/dz)+1;
     particle = sys.getParticleList();
     return *this;
 }
 
 Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::calculateZDensityDistribution(){
-    //int numberOfLayers = layers.getNumberOfLayers();
+    // calculates z density by dividing z in bins according to dz and counts particles in bins.
+
     double currentZ;
-    //zDensityDistribution.clear();
-    //zDensityDistribution.resize(nob);
-    zDensityDistribution.assign(nob, double(0.));
-    zCoordinate.assign(nob, double(0.));
-    zrange = simBox.getDimensions().z;
+    zDensityDistribution.assign(nob, double(0.));   // Vector to store density
+    zCoordinate.assign(nob, double(0.));            // Vector to store associated z coordinates
+
     db = nob / zrange;
-    dr = zrange / nob;
     numberOfParitcles = particle.size();
 
 
@@ -45,9 +46,10 @@ Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::calculateZDensityDistribution(){
         zDensityDistribution[j] += 1;
 
     }
+
     for(int r = 0; r < nob; r++){
-        zCoordinate[r]=-zrange/2+dr*r;
-        zDensityDistribution[r] /= numberOfParitcles;
+        zCoordinate[r]=-zrange/2+dz*r;
+        zDensityDistribution[r] /= numberOfParitcles; // Normalization
     }
     /*
   */
@@ -68,21 +70,18 @@ Z_DENSITY_DISTRIBUTION& Z_DENSITY_DISTRIBUTION::print(string filename, bool over
 }
 
 ostream& operator<<(ostream& os, const Z_DENSITY_DISTRIBUTION& zdis){
-    os << "# first line: z coordinate [diameter]" << endl;
-    os << "# second line: particle density at z [1/diameter]" << endl;
+    os << "# Number of Bins: " << zdis.nob <<endl;
+    os << "# first col: z coordinate [diameter]" << endl;
+    os << "# second col: particle density at z [1/diameter]" << endl;
 
     //data
     for(int r = 0; r < zdis.nob; r++){
         os << b::format("% 2.5f") % zdis.zCoordinate[r];
         os << "\t";
-    }
-    os << "\n";
-
-    for(int r = 0; r < zdis.nob; r++){
         os << b::format("% 2.5f") % zdis.zDensityDistribution[r];
-        os << "\t";
+        os << "\n";
     }
-    os << "\n";
+
 
     return os;
 

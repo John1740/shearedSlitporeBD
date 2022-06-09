@@ -26,10 +26,12 @@ void ARGUMENT_PARSER::addOptions(){
     options.add_options()
             ("help,h", "Help screen")
             ("settings,s", po::value<string>()->default_value(SETTINGS_IN), "settings file")
+            ("outputfile,o", po::value<string>()->default_value(OUTFILE), "output file")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ("clear", po::bool_switch()->default_value(CLEAR),
              "clear all existing output files (before simulation start)")
+            ("suppressOutput", po::bool_switch()->default_value(SUPPRESS_OUT), "true suppresses output")
             ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
             ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
                                                 "Overwrites --numberOfTimesteps/-N")
@@ -68,7 +70,7 @@ void ARGUMENT_PARSER::addOptions(){
              "shear rate amplitude (in units of 1/Brownian time)")
             ("period,p", po::value<double>()->default_value(OSCILLATION_PERIOD),
              "shear rate oscillation period (in units of Brownian time)")
-            ("phaseOffset,o", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
+            ("phaseOffset", po::value<double>()->default_value(PHASE_OFFSET), "phase offset (in units of Pi)"
                                                                                 "(0->cos, -0.5->sin, 1->-cos, 0.5->-sin)")
             ("configuration,c", po::value<string>()->default_value(CONFIGURATION_IN),
              "configuration file (particle positions, simulation box)")
@@ -184,6 +186,8 @@ void ARGUMENT_PARSER::addOptions(){
 ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     ARGUMENTS args;
     args.settingsIn = variablesMap["settings"].as<string>();
+    args.outfile = variablesMap["outputfile"].as<string>();
+    args.suppressOut = variablesMap["suppressOutput"].as<bool>();
     args.configurationIn = variablesMap["configuration"].as<string>();
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.amplitude = variablesMap["amplitude"].as<double>();

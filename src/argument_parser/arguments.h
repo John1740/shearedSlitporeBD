@@ -19,11 +19,13 @@ private:
     double duration = 0;
     double numberOfPeriods = 0;
 public:
+    bool suppressOut = SUPPRESS_OUT;
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
 
     string configurationIn = CONFIGURATION_IN;
     string settingsIn = SETTINGS_IN;
+    string outfile = OUTFILE;
 
     double shearRate = SHEAR_RATE;
     double amplitude = AMPLITUDE;

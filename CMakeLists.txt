@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(shearedSlitporeBD VERSION 1.1)
+project(shearedSlitporeBD VERSION 1.0)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -13,10 +13,6 @@ message("Boost_INCLUDE_DIRS is ${Boost_INCLUDE_DIRS}")
 message("Boost_LIBRARY_DIRS is ${Boost_LIBRARY_DIRS}")
 message("Boost_LIBRARIES is ${Boost_LIBRARIES}")
 message("Boost_VERSION is ${Boost_VERSION}")
-
-#find_package(PkgConfig)
-#pkg_check_modules(HDF5PP REQUIRED HDF5pp)
-#include_directories(${HDF5PP_INCLUDE_DIRS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 # Get the current working branch
@@ -67,7 +63,6 @@ add_executable(
         src/command/average_stress.cpp
         src/command/calculate_forces.cpp
         src/command/generate_square_layers.cpp
-        src/command/generate_hexagonal_layers.cpp
 
         src/struct/cartesian_c.h
         src/struct/cartesian_coordinate.cpp
@@ -96,7 +91,6 @@ add_executable(
         src/printer/layer_velocity.h
         src/printer/angular_bond.cpp
         src/printer/angular_bond.h
-        src/printer/outputPrinter.h
 
         src/argument_parser/argparse.cpp
         src/argument_parser/argparse.h
@@ -111,8 +105,6 @@ add_executable(
         src/tools/format.cpp src/tools/format.h
         src/tools/analysis.cpp src/tools/analysis.h
 
-        src/order_parameter/z_density_distribution.cpp
-        src/order_parameter/z_density_distribution.h
         src/order_parameter/intra_layer_pair_correlation_function.cpp
         src/order_parameter/intra_layer_pair_correlation_function.h
         src/order_parameter/angular_bond_parameter.cpp
@@ -121,10 +113,6 @@ add_executable(
         src/order_parameter/relaxation_modulus.h
         src/order_parameter/stress_fourier_components.cpp
         src/order_parameter/stress_fourier_components.h
-        src/order_parameter/system_energy.cpp
-        src/order_parameter/system_energy.h
-        src/order_parameter/particle_angular_bond.cpp
-        src/order_parameter/particle_angular_bond.h
 
         src/argument_parser/print_intervals.cpp
         src/argument_parser/print_intervals.h
@@ -146,7 +134,6 @@ add_executable(
 
         src/command/calculate_forces.cpp
         src/command/generate_square_layers.cpp
-        src/command/generate_hexagonal_layers.cpp
 
         src/struct/cartesian_c.h
         src/struct/cartesian_coordinate.cpp
@@ -167,9 +154,6 @@ add_executable(
 
         src/order_parameter/intra_layer_pair_correlation_function.cpp
         src/order_parameter/intra_layer_pair_correlation_function.h
-        
-        src/order_parameter/z_density_distribution.cpp
-        src/order_parameter/z_density_distribution.h
 )
 
 add_executable(
@@ -198,9 +182,6 @@ add_executable(
         generateSquareLayers
         scripts/generateSquareLayers.cpp
 
-        #generateHexagonalLayers
-        #scripts/generateHexagonalLayers.cpp
-
         src/rng/boxmueller.cpp
         src/rng/mersenne.cpp
         src/global.cpp
@@ -223,39 +204,11 @@ add_executable(
         src/printer/printer.cpp
 )
 
-add_executable(
-        generateHexagonalLayers
-        scripts/generateHexagonalLayers.cpp
-
-        src/rng/boxmueller.cpp
-        src/rng/mersenne.cpp
-        src/global.cpp
-
-        src/command/calculate_forces.cpp
-        src/command/generate_hexagonal_layers.cpp
-
-        src/struct/cartesian_c.h
-        src/struct/cartesian_coordinate.cpp
-        src/struct/cartesian_coordinate.h
-
-        src/struct/particle.cpp
-        src/struct/charged_particle.cpp
-        src/struct/slit_pore_box.cpp
-        src/struct/layers.cpp
-        src/struct/layers.h
-
-        src/systems/confined_brownian_particles.cpp
-
-        src/printer/printer.cpp
-)
-
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
 target_link_libraries(writePairCorrelation ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(interactionParameters ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(writePotential ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(generateSquareLayers ${Boost_LIBRARIES} stdc++fs)
-target_link_libraries(generateHexagonalLayers ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)
-#include_directories(/home/ckahriman/local/HDF5/hdf/HDF5-1.12.2-Linux/HDF_Group/HDF5/1.12.2/include)

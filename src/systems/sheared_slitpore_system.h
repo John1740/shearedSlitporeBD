@@ -13,6 +13,8 @@
 #include "../defaults.h"
 
 class SHEARED_SLITPORE_SYSTEM: public CONFINED_BROWNIAN_PARTICLES{
+
+    friend class SYSTEM_ENERGY;
 private:
 
 protected:
@@ -24,8 +26,8 @@ protected:
     vector<double> energy;
     vector<REAL_M> stressPerParticle;
 
-    vector<REAL_C> force1;
-    vector<REAL_C> randomDisplacement;
+
+
     double currentShearRate;
 
     virtual double getInteractionLengthScale();
@@ -33,8 +35,8 @@ protected:
     virtual void reset();
 
     virtual void equationOfMotion();
-    virtual void equationOfMotion1();
-    virtual void equationOfMotion2();
+    virtual void equationOfMotionRK();
+    virtual void equationOfMotionCBD();
     virtual void calculateInteractionForce(int i, int j);
     virtual void calculateExternalForce(int i);
 

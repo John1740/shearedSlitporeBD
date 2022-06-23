@@ -26,6 +26,10 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
 
 //needs to be done after input variables have been changed
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
+    force1.assign(numberOfParticles, REAL_C(0.)); // Temporary vector to store the force at the initial pos
+    randomDisplacement.assign(numberOfParticles, REAL_C(0.)); // Vector to Store current randomDisplacement
+    shearforce1.assign(numberOfParticles, REAL_C(0.)); //Vector to store shear force for CBD step
+    shearforce2.assign(numberOfParticles, REAL_C(0.)); //Vector to store shear force for SRK step
     //update lengthRange and then invoke all following setup calculations again
     dlvo.lengthRange = simBox.getDimensions().x;
     dlvo.setup();    //needs to be done anew since lengthRange changed
@@ -38,7 +42,8 @@ double SHEARED_SLITPORE_SYSTEM::getInteractionLengthScale(){
 
 //reset forces, stresses and energy
 void SHEARED_SLITPORE_SYSTEM::reset(){
-    force.assign(numberOfParticles, REAL_C(0.));
+    force.assign(numberOfParticles, REAL_C(0.));  // Vector to Store current force for each particle
+
 
     if(printStress > 0){
         stressPerParticle.assign(numberOfParticles, REAL_M(0.));
@@ -49,52 +54,56 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
     }
 }
 void SHEARED_SLITPORE_SYSTEM::equationOfMotion(){
-    equationOfMotion2();
+    equationOfMotionCBD();
 }
 
-void SHEARED_SLITPORE_SYSTEM::equationOfMotion2(){
-    force1.assign(numberOfParticles, REAL_C(0.));
-    // initialize randomDisplacement     // muss global sein
-    //REAL_C shearForce;
+void SHEARED_SLITPORE_SYSTEM::equationOfMotionRK(){
+    // Calculates new positions via a 2. Order statistical Runge Kutta(SRK) Methode by calculating
+    // the force and temporarily positions via the conventional BD Methode and then calculate forces on the temporary
+    // positions to finally calculate the final positions with the average of the forces.
 
-    calculateForce();
+
+    equationOfMotionCBD();// Calculate force and  temporary positions via conventional BD Methode
     force1=force;
-    equationOfMotion1();
-    calculateForce();
-    timestep--;
-    particles=previousParticles;
+
+    calculateForce();   // Calculate force at temporary positions
+
+    currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
+    for(int i = 0; i < particles.size(); ++i){
+        shearforce2[i] = sf.forceOnParticle(particles[i], timestep * dt);    // Get shear force
+    }
+
+    timestep--;         // Go back to initial time step
+    particles=previousParticles;    // Go back to initial position
 
     for(int i = 0; i < particles.size(); ++i){
-        //randomDisplacement[i] = getRandomDisplacement();
-        force[i] += sf.forceOnParticle(particles[i], timestep * dt);
 
-        particles[i].position += mu / 2 * (force[i] + force1[i]) * dt + randomDisplacement[i];
-
+        // Calculate final position via SRK
+        particles[i].position += mu / 2 * (force[i] + shearforce2[i] + force1[i] + shearforce1[i]) * dt + randomDisplacement[i];
         if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
            particles[i].position.z < -0.5 * simBox.getDimensions().z){
             cout << "particle[i].position.z = " << particles[i].position.z << endl;
         }
-        particles[i].setBoxPosition(simBox);
+        particles[i].setBoxPosition(simBox);    // Convert new Positions to Position in Simulation Box
     }
     timestep++;
 
 
 }
 
-void SHEARED_SLITPORE_SYSTEM::equationOfMotion1(){
-    // Force calculation
-    calculateForce();
-    randomDisplacement.assign(numberOfParticles, REAL_C(0.));
-    //REAL_C randomDisplacement;
-    //REAL_C shearForce;
+void SHEARED_SLITPORE_SYSTEM::equationOfMotionCBD(){
+    // Calculates new positions via a conventional BD Methode by calculating the forces with calculateForce()
+
+    calculateForce();  // Calculate force at the initial position
+
     previousParticles = particles;
     currentShearRate = sf.shearProtocol.calculateShearRate(timestep * dt);
 
     for(int i = 0; i < particles.size(); ++i){
         randomDisplacement[i] = getRandomDisplacement();
-        force[i] += sf.forceOnParticle(particles[i], timestep * dt);
+        shearforce1[i] = sf.forceOnParticle(particles[i], timestep * dt);
 
-        particles[i].position += mu * (force[i]) * dt + randomDisplacement[i];
+        particles[i].position += mu * (force[i]+shearforce1[i]) * dt + randomDisplacement[i];
 
         if(particles[i].position.z > 0.5 * simBox.getDimensions().z ||
            particles[i].position.z < -0.5 * simBox.getDimensions().z){

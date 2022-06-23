@@ -96,7 +96,6 @@ add_executable(
         src/printer/layer_velocity.h
         src/printer/angular_bond.cpp
         src/printer/angular_bond.h
-        src/printer/outputPrinter.h
 
         src/argument_parser/argparse.cpp
         src/argument_parser/argparse.h

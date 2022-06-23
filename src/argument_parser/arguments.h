@@ -20,6 +20,7 @@ private:
     double numberOfPeriods = 0;
 public:
     bool suppressOut = SUPPRESS_OUT;
+    bool printSnapshotsAngularBond = SNAPSHOT_ANGULAR_BOND;
     unsigned int seed = 0;
     unsigned long long rngCounter = 0;
 

@@ -10,6 +10,7 @@
 #include "intra_layer_pair_correlation_function.h"
 
 class ANGULAR_BOND_PARAMETER{
+    friend class PARTICLE_ANGULAR_BOND;
 private:
     vector<CHARGED_PARTICLE> particle;
     SLIT_PORE_BOX simBox;

@@ -26,12 +26,12 @@ void ARGUMENT_PARSER::addOptions(){
     options.add_options()
             ("help,h", "Help screen")
             ("settings,s", po::value<string>()->default_value(SETTINGS_IN), "settings file")
-            ("outputfile,o", po::value<string>()->default_value(OUTFILE), "output file")
+           // ("outputfile,o", po::value<string>()->default_value(OUTFILE), "output file")
             ("version,v", po::bool_switch()->default_value(false), "print version number and exit")
             ("dry", po::bool_switch()->default_value(false), "do a dry run")
             ("clear", po::bool_switch()->default_value(CLEAR),
              "clear all existing output files (before simulation start)")
-            ("suppressOutput", po::bool_switch()->default_value(SUPPRESS_OUT), "true suppresses output")
+           // ("suppressOutput", po::bool_switch()->default_value(SUPPRESS_OUT), "true suppresses output")
             ("numberOfTimesteps,N", po::value<double>(), "Number of timesteps the simulations runs for")
             ("duration,d", po::value<double>(), "Duration (in Brownian times) the simulations runs for.\n"
                                                 "Overwrites --numberOfTimesteps/-N")
@@ -155,6 +155,9 @@ void ARGUMENT_PARSER::addOptions(){
             ("printSnapshotsPeriod", po::value<double>(),
              "Same as --printSnapshots but in units of oscillation periods.\n"
              "Overwrites --printSnapshots and --printSnapshotsDuration")
+            ("printSnapAngularBond", po::bool_switch()->default_value(SNAPSHOT_ANGULAR_BOND),
+                    "additionally prints Angular Bond parameter for every particle in Snapshots.\n"
+                    "Needs printSnapshots > 1 to do something.")
             ("printPairCorrelation", po::value<double>()->default_value(PRINT_PAIR_CORRELATION),
              "print intra-layer pair correlation function every x-th timestep; "
              "x<0 -> no print-outs")
@@ -186,8 +189,9 @@ void ARGUMENT_PARSER::addOptions(){
 ARGUMENTS ARGUMENT_PARSER::parseArgs(){
     ARGUMENTS args;
     args.settingsIn = variablesMap["settings"].as<string>();
-    args.outfile = variablesMap["outputfile"].as<string>();
-    args.suppressOut = variablesMap["suppressOutput"].as<bool>();
+    //args.outfile = variablesMap["outputfile"].as<string>();
+    //args.suppressOut = variablesMap["suppressOutput"].as<bool>();
+    args.printSnapshotsAngularBond= variablesMap["printSnapAngularBond"].as<bool>();
     args.configurationIn = variablesMap["configuration"].as<string>();
     args.shearRate = variablesMap["shearRate"].as<double>();
     args.amplitude = variablesMap["amplitude"].as<double>();

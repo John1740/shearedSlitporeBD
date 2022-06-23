@@ -107,6 +107,7 @@ public:
     // File-Handling
     virtual bool readConfigurationFromFile(string filename, bool verbose = true);
     virtual void writeConfigurationToFile(string filename, bool overwrite = false, bool verbose = true);
+    virtual void writeConfigurationToFile(string filename,vector<double> angularBond4, vector<double> angularBond6, vector<double> nearestNeighbors, bool overwrite = false, bool verbose = true);
     virtual void print(ostream& os) const;
 };
 

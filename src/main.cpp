@@ -16,10 +16,14 @@ extern CRandomMersenne random_event;    //use global instance of random_event
 #include "printer/layer_position.h"
 #include "printer/layer_velocity.h"
 #include "printer/angular_bond.h"
+//#include "printer/outputPrinter.h"
 #include "order_parameter/stress_fourier_components.h"
 #include "order_parameter/intra_layer_pair_correlation_function.h"
 #include "order_parameter/z_density_distribution.h"
-
+#include "order_parameter/system_energy.h"
+#include "order_parameter/particle_angular_bond.h"
+//#include "hdf5.h"
+//#include "H5Cpp.h"
 #include <experimental/filesystem>
 
 namespace fs = experimental::filesystem;
@@ -35,6 +39,7 @@ void signalHandler(int signum){
     cout << endl << "Interrupt signal (" << signum << ") received." << endl;
     exit_code = signum;
 }
+
 
 int main(int argc, const char* argv[]){
     //signals that should shut down the simulation (controlledly)
@@ -57,10 +62,23 @@ int main(int argc, const char* argv[]){
     args.update(argsParsed);    //argsParsed have priority
     args.finalize();  //dt-defaulting and matching of numberOfTimesteps
 
+
+
+
+    if(args.clear){
+        fs::remove(args.outfile);
+    }
+
+
+
+    //std::ofstream outputFile(args.outfile);
+    //STEAM_OUTPUT dout(outputFile,args.suppressOut);
+
     cout << endl << surroundWithSeparator("shearedSlitporeBD") << endl << endl;
 
     //print version details
     cout << surroundWithSeparator("Version Details") << endl;
+
     cout << "Version: " << PROJECT_VERSION << endl;
     cout << "Git branch: " << GIT_BRANCH << endl;
     cout << "Git commit: " << GIT_COMMIT_HASH << endl;
@@ -70,14 +88,14 @@ int main(int argc, const char* argv[]){
     }
 
     //CPU information
+
     cout << surroundWithSeparator("Machine details") << endl;
     cout << "host: " << getHostName() << endl;
     cout << "user: " << getUserName() << endl;
     cout << "CPU: " << getCPUInfo() << endl;
-    cout << "Architecture: " << sizeof(void* ) * 8 << "-bit" << endl;
+    cout << "Architecture: " << sizeof(void*) * 8 << "-bit" << endl;
     cout << "Total memory: " << getRAMInfo() << endl;
     cout << surroundWithSeparator("", 60, 1, '#', false) << endl << endl;
-
     cout << "Task started at " << clock.readTimePoint(0) << endl << endl;
 
     //generate or read seed
@@ -86,11 +104,14 @@ int main(int argc, const char* argv[]){
     }
 
     //print parsed arguments
+
     cout << surroundWithSeparator("Parsed arguments/System parameters") << endl;
     cout << args << endl;
 
     //initialize Slitpore System
+
     cout << surroundWithSeparator("System Initialization") << endl;
+
     //initialize RNG with seed (and skip steps if asked for)
     random_event.RandomInit(args.seed);
     if(args.rngCounter != 0){
@@ -121,8 +142,9 @@ int main(int argc, const char* argv[]){
         fs::remove(ANGULAR_BOND_OUT);
         fs::remove(PAIR_CORRELATION_OUT);
         fs::remove(Z_DENSITY_OUT);
+        fs::remove(ENERGY_OUT);
         fs::remove_all(ERRONEOUS);
-        fs::remove(OUTFILE);
+        fs::remove_all(NN_RADIUS_OUT);
     }
 
     //moved up here, to be able to remove empty files with --dry and already finished --restart runs
@@ -132,6 +154,11 @@ int main(int argc, const char* argv[]){
     STRESS_PRINTER stress(&sys);
     ANGULAR_BOND_PRINTER angularBond(&sys);
     STRESS_FOURIER_COMPONENTS fc(args);
+    std::ofstream NNRadiusFile(NN_RADIUS_OUT); //temporary
+    if(!args.printSnapshotsAngularBond){
+        NNRadiusFile.close();
+    }
+
 
     //restarts
     long timestepIn = sys.getTimestep();
@@ -213,6 +240,7 @@ int main(int argc, const char* argv[]){
             }
             flushPrinters = true;
         }
+
         //flush all printers after saving milestones (but before doing any more print-outs for that timestep)
         if(flushPrinters){
             layerPosition.flush();
@@ -222,7 +250,15 @@ int main(int argc, const char* argv[]){
             flushPrinters = false;
         }
         if(args.printSnapshots > 0 && i % args.printSnapshots == 0){
-            sys.writeConfigurationToFile("snapshots.out", false, false);
+            if(args.printSnapshotsAngularBond){
+                PARTICLE_ANGULAR_BOND PAB(sys);
+                PAB.calculateParticleAngularBond(sys);
+                sys.writeConfigurationToFile("snapshots.out", PAB.angularBond4,PAB.angularBond6,PAB.nearestNeighbors,false, false);
+                NNRadiusFile << i << ": " << PAB.NNRadius<< endl;
+            }
+            else{
+                sys.writeConfigurationToFile("snapshots.out", false, false);
+            }
         }
         if(args.printLayerPosition > 0 && i % args.printLayerPosition == 0){
             layerPosition.printLine();
@@ -240,7 +276,11 @@ int main(int argc, const char* argv[]){
             pZD.calculateZDensityDistribution();
             pZD.print(Z_DENSITY_OUT, false, "timestep: " + to_string(i));
         }
-
+        if(args.printEnergy > 0 && i % args.printEnergy == 0){
+            //if (i==0){sys.calculateForce();}
+            SYSTEM_ENERGY sE(sys);
+            sE.print(ENERGY_OUT, false, "timestep: " + to_string(i));
+        }
 
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){
@@ -316,6 +356,7 @@ int main(int argc, const char* argv[]){
     cout << b::format("Task %s after %.3f seconds (%s)") % status % clock.getDuration(0, -1) %
             clock.readDuration(0, -1).c_str() << endl;
     cout << endl;
+
 
     return exit_code;
 }

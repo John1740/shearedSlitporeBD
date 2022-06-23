@@ -23,12 +23,14 @@ const std::string BACKUP_EXTENSION = ".bak";
 const std::string ANGULAR_BOND_OUT = "angularBond.out";
 const std::string PAIR_CORRELATION_OUT = "pairCorrelation.out";
 const std::string Z_DENSITY_OUT = "zDensity.out";
+const std::string ENERGY_OUT = "energy.out";
 const std::string STRESSES_OUT = "stresses.out";
 const std::string LAYER_POSITIONS_OUT = "layerPositions.out";
 const std::string LAYER_VELOCITIES_OUT = "layerVelocities.out";
 const std::string SNAPSHOTS = "snapshots.out";
 const std::string ERRONEOUS = "erroneous";
 const std::string OUTFILE = "shearedSlitporeBD.out";
+const std::string NN_RADIUS_OUT = "NNRadius.out";
 
 //control parameters
 const double SHEAR_RATE = 0.0;
@@ -70,6 +72,7 @@ const int PRINT_STRESS_FOURIER = 0;
 const int PRINT_ENERGY = 0;
 const int PRINT_ANGULAR_BOND = 0;
 const int PRINT_SNAPSHOTS = 0;
+const int SNAPSHOT_ANGULAR_BOND = false;
 const int PRINT_PAIR_CORRELATION = 0;
 const int PRINT_Z_Density = 0;
 const int PRINT_ALL = 0;

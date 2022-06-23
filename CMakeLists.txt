@@ -121,6 +121,10 @@ add_executable(
         src/order_parameter/relaxation_modulus.h
         src/order_parameter/stress_fourier_components.cpp
         src/order_parameter/stress_fourier_components.h
+        src/order_parameter/system_energy.cpp
+        src/order_parameter/system_energy.h
+        src/order_parameter/particle_angular_bond.cpp
+        src/order_parameter/particle_angular_bond.h
 
         src/argument_parser/print_intervals.cpp
         src/argument_parser/print_intervals.h
@@ -254,3 +258,4 @@ target_link_libraries(generateHexagonalLayers ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)
+#include_directories(/home/ckahriman/local/HDF5/hdf/HDF5-1.12.2-Linux/HDF_Group/HDF5/1.12.2/include)

@@ -52,6 +52,7 @@ ARGUMENTS& ARGUMENTS::update(const ARGUMENTS& other){
     if(other.settingsIn != SETTINGS_IN) settingsIn = other.settingsIn;
     if(other.outfile != OUTFILE) outfile= other.outfile;
     if(other.suppressOut != SUPPRESS_OUT) suppressOut= other.suppressOut;
+    if(other.printSnapshotsAngularBond != SNAPSHOT_ANGULAR_BOND) printSnapshotsAngularBond= other.printSnapshotsAngularBond;
     if(other.configurationIn != CONFIGURATION_IN) configurationIn = other.configurationIn;
     if(other.shearRate != SHEAR_RATE) shearRate = other.shearRate;
     if(other.amplitude != AMPLITUDE) amplitude = other.amplitude;
@@ -161,9 +162,9 @@ ostream& operator<<(ostream& os, const ARGUMENTS& args){
         os << "printStressFourierPeriod" << args.sep << args.printStressFourier.getPeriod() << endl;
     }
     if(args.printEnergy > 0){
-        os << "printEnergy" << args.sep << args.printEnergy << " (not yet implemented)" << endl;
-        os << "printEnergyDuration" << args.sep << args.printEnergy.getDuration() << " (not yet implemented)" << endl;
-        os << "printEnergyPeriod" << args.sep << args.printEnergy.getPeriod() << " (not yet implemented)" << endl;
+        os << "printEnergy" << args.sep << args.printEnergy  << endl;
+        os << "printEnergyDuration" << args.sep << args.printEnergy.getDuration() << endl;
+        os << "printEnergyPeriod" << args.sep << args.printEnergy.getPeriod() << endl;
     }
     if(args.printLayerPosition > 0){
         os << "printLayerPosition" << args.sep << args.printLayerPosition << endl;
@@ -300,6 +301,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         else if(line.find("restart") != string::npos){
             restart = true;
         }
+        else if(line.find("suppressOutput") != string::npos){
+            suppressOut = true;
+        }
         //needs to be before "printStress"
         else if(line.find("printStressFourierDuration") != string::npos){
             printStressFourier.setDuration(stod(linesplit[1]));
@@ -363,6 +367,9 @@ bool ARGUMENTS::readFromFile(string filename, char comment){
         }
         else if(line.find("printSnapshots") != string::npos){
             printSnapshots = round(stod(linesplit[1]));
+        }
+        else if(line.find("printSnapAngularBond") != string::npos){
+            printSnapshotsAngularBond = true;
         }
         else if(line.find("printPairCorrelationDuration") != string::npos){
             printPairCorrelation.setDuration(stod(linesplit[1]));

@@ -1,6 +1,6 @@
 //
 // Created by mhuels on 5/20/20.
-//
+// Test
 
 #include <boost/format.hpp>
 #include "intra_layer_pair_correlation_function.h"
@@ -43,7 +43,7 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
     for(int l = 0; l < numberOfLayers; l++){
         for(const int& i: particleLayerMap[l]){
             for(const int& j: particleLayerMap[l]){
-                if(i == j){
+                if(i <= j){
                     continue;
                 }
                 REAL_C relative = particle[i].boxPosition - particle[j].boxPosition;
@@ -51,17 +51,27 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
                 //distance within layer
                 double currentRadius = sqrt(pow(relative.x, 2.0) + pow(relative.y, 2.0));
                 //assign current radius to nearest index (only works for intervals starting at 0)
-                int r = round(currentRadius / dr);
-                layerCorrelation[l][r] += 1;
+                int r = floor(currentRadius / dr);
+                if(r>= numberOfBins){r=numberOfBins-1;}
+                layerCorrelation[l][r] += 2;
+                currentRadius=ParticlesAreWithinRadiusTwice(abs(relative.x),abs(relative.y));
+                if(currentRadius){
+                    int r = floor(currentRadius / dr);
+                    if(r>= numberOfBins){
+                        r=numberOfBins-1;}
+                    layerCorrelation[l][r] += 2;
+                }
+
             }
         }
     }
     //add prefactor and set radii
     for(int l = 0; l < numberOfLayers; l++){
         for(int r = 0; r < numberOfBins; r++){
-            radius[r] = r * dr;
+            radius[r] = (r) * dr;
             //NEEDED: add correction to radii beyond L/2
-            double annulusArea = 2 * M_PI * radius[r] * dr;
+            //double annulusArea = 2 * M_PI * radius[r] * dr;
+            double annulusArea = calculateAnnulus(radius[r], dr);
             double averageParticleDensity = particleLayerMap[l].size() / layers.getLayerArea();
             // average over all particles in layer (1/numberOfParticlesInLayer[i])
             // so far: layerCorrelation[i][j] = numberOfParticlesInAnnulus
@@ -71,6 +81,51 @@ INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ca
         }
     }
     return *this;
+}
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::ParticlesAreWithinRadiusTwice(double dx, double dy){
+    double currentRadius =0;
+    double X = simBox.getDimensions().x / 2;
+    double Y = simBox.getDimensions().y / 2;
+    if((Y-dy)<sqrt(maximalRadius*maximalRadius-dx*dx)-Y){
+        currentRadius =sqrt(pow(dx, 2.0) + pow(2*Y-dy, 2.0));
+    }
+    if((X-dx)<sqrt(maximalRadius*maximalRadius-dy*dy)-X){
+        currentRadius =sqrt(pow(2*X-dx, 2.0) + pow(dy, 2.0));
+    }
+    return currentRadius;
+}
+
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateAnnulus(double radius, double dr){
+    double Annulus = M_PI * (pow(radius+dr,2)-pow(radius,2));//calculateCircleSquareArea(radius)-calculateCircleSquareArea(radius+dr);
+    return Annulus;
+}
+
+
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateCircleSquareArea(double radius){
+// Not needed with ParticlesAreWithinRadiusTwice
+    double x = simBox.getDimensions().x/2;
+    double y = simBox.getDimensions().y/2;
+
+    double q1x;
+    double q2y;
+
+    if (radius<x){q2y=0;}
+    else {q2y = radius*sin(acos(x/radius));}
+    if (radius<y){q1x=0;}
+    else {q1x = radius*cos(asin(y/radius));}
+
+    if (x<q1x){q1x=x;}
+    if (y<q2y){q2y=y;}
+
+    double squareArea= x * y;
+    double triangle1 = 0.5 * y * q1x;
+    double triangle2 = 0.5 * x * q2y;
+
+    double alpha = atan(y/q1x)- atan(q2y/x);
+    double circlePart = radius*radius/2.0*alpha;
+    double area = 4*(squareArea-triangle1-triangle2-circlePart);
+
+    return area;
 }
 
 INTRA_LAYER_PAIR_CORRELATION_FUNCTION& INTRA_LAYER_PAIR_CORRELATION_FUNCTION::calculateAverageLayerCorrelation(){
@@ -116,10 +171,38 @@ double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findPositionOfMinimum(int n, int s
     for(int i = 0; i < n; i++){
         //start looking for next crossing after the smoothRange to avoid posDown > posUp cases
         posDown = findNextDownCrossing(posUp + skip, threshold, smoothRange);
-        posUp = findNextUpCrossing(posDown + skip, threshold, smoothRange);
+        //posUp = findNextUpCrossing(posDown + skip, threshold, smoothRange);
     }
-    double minimumPosition = (radius[posUp] + radius[posDown]) / 2;
+    //double minimumPosition = (radius[posUp] + radius[posDown]) / 2;
+    double minimumPosition = radius[posDown];
     return minimumPosition;
+}
+double INTRA_LAYER_PAIR_CORRELATION_FUNCTION::findPositionOfMinimumNew(){
+    int minimumWidth = 1;
+    int minTolerance = 1;
+    int leftBigger;
+    int rightBigger;
+    int firstNonZero = 0;
+    for(int i=0;i<minimumWidth;i++){
+        if(averageLayerCorrelation[i]){firstNonZero=1;}
+    }
+
+    for(int i=minimumWidth;i<numberOfBins-minimumWidth;i++){
+        if(firstNonZero){
+            leftBigger = 0;
+            rightBigger = 0;
+            for(int j = 1; j <= minimumWidth; j++){
+                if(averageLayerCorrelation[i] <= averageLayerCorrelation[i - j]){ leftBigger++; }
+                if(averageLayerCorrelation[i] <= averageLayerCorrelation[i + j]){ rightBigger++; }
+            }
+            if(leftBigger >= minTolerance && rightBigger >= minTolerance){
+                return radius[i];
+            }
+        }
+        else if(averageLayerCorrelation[i]){firstNonZero=1;}
+
+    }
+    return -1;
 }
 
 //returns -1 if there is no next up-crossing

@@ -33,7 +33,12 @@ public:
 
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculateLayerCorrelation();
     INTRA_LAYER_PAIR_CORRELATION_FUNCTION& calculateAverageLayerCorrelation();
+
+    double ParticlesAreWithinRadiusTwice(double dx,double dy);
+    double calculateAnnulus(double radius, double dr);
+    double calculateCircleSquareArea(double radius);
     double findPositionOfMinimum(int n, int smoothRange = 0, double lowerBound = 0);
+    double findPositionOfMinimumNew();
 
     double calculateMeanCorrelation();
 

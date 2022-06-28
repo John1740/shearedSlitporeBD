@@ -163,7 +163,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, bool
     }
 }
 
-void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, vector<double> angularBond4, vector<double> angularBond6,vector<double> nearestNeighbors, bool overwrite, bool verbose){
+void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, vector<double> angularBond4, vector<double> angularBond6, bool overwrite, bool verbose){
     PRINTER printer(filename, overwrite);
 //    if(overwrite){
 //        printer.reset();
@@ -179,7 +179,7 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, vect
 
     //particle positions
     printer << bo::format("ITEM: NUMBER OF ATOMS\n%d\n") % numberOfParticles;
-    printer << "ITEM: ATOMS index x y z diameter charge species angularBP4 angularBP6 NumberOfNN\n";
+    printer << "ITEM: ATOMS index x y z diameter charge species angularBP4 angularBP6\n";
     for(int i = 0; i < numberOfParticles; ++i){
         printer << bo::format("%4d\t") % particles[i].index;
         printer << bo::format(printer.format_f) % particles[i].position.x;
@@ -188,9 +188,8 @@ void CONFINED_BROWNIAN_PARTICLES::writeConfigurationToFile(string filename, vect
         printer << bo::format("%2.3f\t") % particles[i].diameter;
         printer << bo::format("%3.2f\t") % particles[i].charge;
         printer << bo::format("%2d\t") % particles[i].species;
-        printer << bo::format("%2.5f\t") % angularBond4[i];
-        printer << bo::format("%2.5f\t") % angularBond6[i];
-        printer << bo::format("%2.5f\t") % nearestNeighbors[i];
+        printer << bo::format("%2.4f\t") % angularBond4[i];
+        printer << bo::format("%2.4f\t") % angularBond6[i];
         printer << '\n';    //this leads to an empty last line
     }
     if(verbose){

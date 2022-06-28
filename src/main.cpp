@@ -253,7 +253,7 @@ int main(int argc, const char* argv[]){
             if(args.printSnapshotsAngularBond){
                 PARTICLE_ANGULAR_BOND PAB(sys);
                 PAB.calculateParticleAngularBond(sys);
-                sys.writeConfigurationToFile("snapshots.out", PAB.angularBond4,PAB.angularBond6,PAB.nearestNeighbors,false, false);
+                sys.writeConfigurationToFile("snapshots.out", PAB.angularBond4,PAB.angularBond6,false, false);
                 NNRadiusFile << i << ": " << PAB.NNRadius<< endl;
             }
             else{

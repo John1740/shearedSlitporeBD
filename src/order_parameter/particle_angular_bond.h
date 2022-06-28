@@ -14,7 +14,7 @@ public:
     double NNRadius;
     vector<double> angularBond4;
     vector<double> angularBond6;
-    vector<double> nearestNeighbors;
+    //vector<double> nearestNeighbors;
     PARTICLE_ANGULAR_BOND();
     PARTICLE_ANGULAR_BOND(CONFINED_BROWNIAN_PARTICLES& sysIn);
     PARTICLE_ANGULAR_BOND& setup(CONFINED_BROWNIAN_PARTICLES& sysIn);

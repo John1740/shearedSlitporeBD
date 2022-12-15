@@ -25,6 +25,7 @@ class CONFINED_BROWNIAN_PARTICLES: public SYSTEM_INTERFACE{
 
     friend class GENERATE_HEXAGONAL_LAYERS;
 
+    friend class GENERATE_RANDOM_LAYERS;
 //    friend class PAIR_CORRELATION;
 
 private:
@@ -95,6 +96,7 @@ public:
     virtual double getInteractionLengthScale();
     virtual vector<REAL_C> getPositionList();
     virtual vector<CHARGED_PARTICLE> getParticleList();
+    virtual REAL_C getDimentionsOfSymbox();
     virtual vector<CHARGED_PARTICLE> getPreviousParticleList();
     virtual SLIT_PORE_BOX getSimulationBox();
 

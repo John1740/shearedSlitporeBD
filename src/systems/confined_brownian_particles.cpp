@@ -74,6 +74,11 @@ vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getParticleList(){
     return particles;
 }
 
+REAL_C CONFINED_BROWNIAN_PARTICLES::getDimentionsOfSymbox(){
+    return simBox.getDimensions();
+}
+
+
 vector<CHARGED_PARTICLE> CONFINED_BROWNIAN_PARTICLES::getPreviousParticleList(){
     return previousParticles;
 }
@@ -413,8 +418,8 @@ void CONFINED_BROWNIAN_PARTICLES::setTimeStepSize(double timeStepSizeIn, bool ve
 vector<REAL_C> CONFINED_BROWNIAN_PARTICLES::getVelocities(){
     vector<REAL_C> velocities;
     for(int i = 0; i < numberOfParticles; i++){
-        REAL_C positionDifference = particles[i].boxPosition - previousParticles[i].boxPosition;
-        positionDifference = simBox.convertToBoxPosition(positionDifference);
+        REAL_C positionDifference = particles[i].position - previousParticles[i].position;
+        //positionDifference = simBox.convertToBoxPosition(positionDifference);
         velocities.push_back(positionDifference / dt);
     }
     return velocities;

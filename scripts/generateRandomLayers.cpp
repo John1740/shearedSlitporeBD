@@ -29,7 +29,8 @@ int main(int argc, const char* argv[]){
             ("N,N", po::value<int>()->default_value(NUMBER_OF_PARTICLES), "number of particles")
             ("charge", po::value<double>()->default_value(CHARGE), "charge of particles")
             ("diameter", po::value<double>()->default_value(DIAMETER), "diameter of particles")
-            ("species", po::value<int>()->default_value(0), "species number of particles");
+            ("species", po::value<int>()->default_value(0), "species number of particles")
+            ("layers", po::bool_switch()->default_value(false), "if set to true creates random layers");
     po::positional_options_description pos;
     pos.add("filename", 1);
     po::store(po::command_line_parser(argc, argv).options(description).positional(pos).run(), vm);
@@ -42,7 +43,7 @@ int main(int argc, const char* argv[]){
     string filename = vm["filename"].as<string>();
 
     // Class to calculate Particle Positions at given parameters
-    GENERATE_RANDOM_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>());
+    GENERATE_RANDOM_LAYERS gen(vm["N"].as<int>(), vm["dWall"].as<double>(), vm["density"].as<double>(),vm["layers"].as<bool>());
 
     cout << "Generating a random configuration with" << endl;
     cout << "numberOfParticles: " << vm["N"].as<int>() << " -> " << gen.getNumberOfParticles() << endl;

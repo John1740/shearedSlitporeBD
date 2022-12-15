@@ -7,8 +7,9 @@ GENERATE_RANDOM_LAYERS::GENERATE_RANDOM_LAYERS(){
     setup(NUMBER_OF_PARTICLES, D_WALL, DENSITY);
 }
 
-GENERATE_RANDOM_LAYERS::GENERATE_RANDOM_LAYERS(int N, double dWall, double density){
+GENERATE_RANDOM_LAYERS::GENERATE_RANDOM_LAYERS(int N, double dWall, double density,bool layers){
     numberOfAdditionalSites = 0;
+    randomLayers=layers;
     setup(N, dWall, density);
 }
 
@@ -16,11 +17,11 @@ GENERATE_RANDOM_LAYERS& GENERATE_RANDOM_LAYERS::setup(int N, double dWall, doubl
 
     numberOfLayers = 2;//round(simBox.getDimensions().z);
     //numberOfSites = sqrt(particle.size() / numberOfLayers);
-    numberOfSitesX= round(sqrt(N/2));
+    numberOfSitesX= round(sqrt(N/numberOfLayers));
     numberOfSitesY=numberOfSitesX;
     //numberOfSitesX=28;
     //numberOfSitesY=26;
-    N=2*numberOfSitesX*numberOfSitesY;
+    N=numberOfLayers*numberOfSitesX*numberOfSitesY;
     double sitesLength=sqrt(2/density/dWall);
     simBox = SLIT_PORE_BOX(N / density, dWall,numberOfSitesX*sitesLength,numberOfSitesY*sitesLength);
     numberOfParticles=N;
@@ -39,8 +40,14 @@ GENERATE_RANDOM_LAYERS& GENERATE_RANDOM_LAYERS::setup(int N, double dWall, doubl
 SHEARED_SLITPORE_SYSTEM  GENERATE_RANDOM_LAYERS::generate(){
     setLatticePeriodicity();
     particle.clear();
+    if (randomLayers== true){
+        placeRandomLayers();
+    }
+    else{
+        placeRandomParticles();
+    }
 
-    placeRandomParticles();
+
 
     SHEARED_SLITPORE_SYSTEM  sys;
     *(sys.simulationBox()) = simBox;
@@ -55,6 +62,15 @@ SHEARED_SLITPORE_SYSTEM  GENERATE_RANDOM_LAYERS::generate(){
 
 void GENERATE_RANDOM_LAYERS::setLatticePeriodicity(){
     LAYERS layers(simBox);
+    dz = simBox.getDimensions().z/(numberOfLayers+1);
+    zMin = -simBox.getDimensions().z/2.0+dz;
+
+    //dxAdd = simBox.getDimensions().x / (numberOfSites + numberOfAdditionalSites);
+    //dyAdd = dxAdd;
+}
+
+void GENERATE_RANDOM_LAYERS::placeRandomParticles(){
+
     srand(time(NULL));
     double xPos,yPos,zPos;
     for(int i = 0; i < numberOfParticles; ++i){
@@ -76,71 +92,60 @@ void GENERATE_RANDOM_LAYERS::setLatticePeriodicity(){
 
 
     }
-    //dxAdd = simBox.getDimensions().x / (numberOfSites + numberOfAdditionalSites);
-    //dyAdd = dxAdd;
-}
-
-void GENERATE_RANDOM_LAYERS::placeRandomParticles(){
-
-
 
 }
+
+void GENERATE_RANDOM_LAYERS::placeRandomLayers(){
+
+    srand(time(NULL));
+    double xPos,yPos,zPos;
+    for(int i = 0; i < numberOfLayers; ++i){
+        int z=0;
+        while(z<numberOfParticles/numberOfLayers){
+            xPos = (double)rand() / (double)RAND_MAX * simBox.getDimensions().x - simBox.getDimensions().x / 2.0;
+            yPos = (double)rand() / (double)RAND_MAX * simBox.getDimensions().y - simBox.getDimensions().y / 2.0;
+            zPos = zMin + i * dz;
+            CHARGED_PARTICLE newParticle(particleTemplate);
+            newParticle.position = REAL_C(
+                    xPos, //displaced by dx/2 from lower layer
+                    yPos, //displaced by dy/4 from lower layer
+                    zPos
+            );
+            double NearestN = 0;
+            for(int j = 0; j < particle.size(); ++j){
+                REAL_C posDifference = particle[j].position - newParticle.position;
+                posDifference = simBox.convertToBoxPosition(posDifference);
+                double distance = posDifference.abs();
+                if (distance<0.75){
+                    NearestN=1;
+
+                    break;
+                }
+            }
+            if(NearestN==0){
+
+                newParticle.index = particleIndex;
+                particleIndex++;
+                particle.push_back(newParticle);
+                z++;
+            }
+        }
+
+    }
+
+
+}
+
 
 
 void GENERATE_RANDOM_LAYERS::addLayer(int layerIndex){
-    for(int j = 0; j < Ny; ++j){ //j=index in y-direction
-        for(int k = 0; k < Nx; ++k){ //k=index in x-direction
 
-            CHARGED_PARTICLE newParticle(particleTemplate);
-            newParticle.position = REAL_C(
-                    dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
-                    dy * j + layerIndex * dy / 4, //displaced by dy/4 from lower layer
-                    zMin + layerIndex * dz
-            );
-            newParticle.index = particleIndex;
-            particleIndex++;
-            particle.push_back(newParticle);
-
-            CHARGED_PARTICLE newParticle2(particleTemplate);
-            newParticle2.position = REAL_C(
-                    dx * (k + 0.5) + layerIndex * dx / 2, //displaced by dx/2 from lower layer
-                    dy * (j + 0.5) + layerIndex * dy / 4, //displaced by dy/4 from lower layer
-                    zMin + layerIndex * dz
-            );
-            newParticle2.index = particleIndex;
-            particleIndex++;
-            particle.push_back(newParticle2);
-        }
-    }
 }
 
 
 
 void GENERATE_RANDOM_LAYERS::addIncommensurableLayer(int layerIndex){
-    for(int j = 0; j < Ny; ++j){ //j=index in y-direction
-        for(int k = 0; k < Nx; ++k){ //k=index in x-direction
 
-            CHARGED_PARTICLE newParticle(particleTemplate);
-            newParticle.position = REAL_C(
-                    dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
-                    dy * j + layerIndex * dy / 4, //displaced by dy/4 from lower layer
-                    zMin + layerIndex * dz
-            );
-            newParticle.index = particleIndex;
-            particleIndex++;
-            particle.push_back(newParticle);
-
-            CHARGED_PARTICLE newParticle2(particleTemplate);
-            newParticle2.position = REAL_C(
-                    dx * (k + 0.5) + layerIndex * dx / 2, //displaced by dx/2 from lower layer
-                    dy * (j + 0.5) + layerIndex * dy / 4, //displaced by dy/4 from lower layer
-                    zMin + layerIndex * dz
-            );
-            newParticle2.index = particleIndex;
-            particleIndex++;
-            particle.push_back(newParticle2);
-        }
-    }
 }
 
 

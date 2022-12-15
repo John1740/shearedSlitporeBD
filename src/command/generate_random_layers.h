@@ -20,18 +20,21 @@ private:
     vector<CHARGED_PARTICLE> particle;
     SLIT_PORE_BOX simBox;
     double zMin;
+    double dz;
     CHARGED_PARTICLE particleTemplate;
     int particleIndex = 0;
 
     void setLatticePeriodicity();
     void placeRandomParticles();
+    void placeRandomLayers();
     void addLayer(int layerIndex);
     void addIncommensurableLayer(int layerIndex);
+    bool randomLayers= false;
 
 public:
     //constructors
     GENERATE_RANDOM_LAYERS();
-    GENERATE_RANDOM_LAYERS(int N, double dWall, double density);
+    GENERATE_RANDOM_LAYERS(int N, double dWall, double density, bool layers=false);
 
     GENERATE_RANDOM_LAYERS& setup(int N, double dWall, double density);
 

@@ -281,6 +281,21 @@ int main(int argc, const char* argv[]){
             SYSTEM_ENERGY sE(sys);
             sE.print(ENERGY_OUT, false, "timestep: " + to_string(i));
         }
+        if(args.printEnergy > 0 && (i+1) % args.printEnergy == 0){
+           sys.printEnergy=1;
+        }
+        else{
+            sys.printEnergy=0;
+        }
+
+        if((args.printStress > 0 && (i) % args.printStress == 0) || (args.printStressFourier > 0 && (i) % args.printStressFourier == 0)){
+            sys.printStress=1;
+        }
+        else{
+            sys.printStress=0;
+        }
+
+
 
         sys.simulateForSteps(1);
         if(args.printStress > 0 && i % args.printStress == 0){

@@ -144,8 +144,7 @@ add_executable(
         src/global.cpp
 
         src/command/calculate_forces.cpp
-        src/command/generate_square_layers.cpp
-        src/command/generate_hexagonal_layers.cpp
+
 
         src/struct/cartesian_c.h
         src/struct/cartesian_coordinate.cpp
@@ -218,6 +217,21 @@ add_executable(
         src/struct/layers.h
 
         src/systems/confined_brownian_particles.cpp
+        src/systems/sheared_slitpore_system.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+        src/argument_parser/print_intervals.cpp
+        src/argument_parser/print_intervals.h
+        src/printer/layer_position.cpp
+        src/printer/layer_position.h
+        src/interfaces/shear_protocol.h
+        src/external/oscillatory_shear.cpp
+        src/external/oscillatory_shear.h
 
         src/printer/printer.cpp
 )
@@ -244,8 +258,119 @@ add_executable(
         src/struct/layers.h
 
         src/systems/confined_brownian_particles.cpp
+        src/systems/sheared_slitpore_system.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+        src/argument_parser/print_intervals.cpp
+        src/argument_parser/print_intervals.h
+        src/printer/layer_position.cpp
+        src/printer/layer_position.h
+        src/interfaces/shear_protocol.h
+        src/external/oscillatory_shear.cpp
+        src/external/oscillatory_shear.h
 
         src/printer/printer.cpp
+)
+
+
+add_executable(
+        generateRandomLayers
+        scripts/generateRandomLayers.cpp
+
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
+        src/global.cpp
+
+        src/command/calculate_forces.cpp
+        src/command/generate_random_layers.cpp
+
+        src/struct/cartesian_c.h
+        src/struct/cartesian_coordinate.cpp
+        src/struct/cartesian_coordinate.h
+
+        src/struct/particle.cpp
+        src/struct/charged_particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/layers.cpp
+        src/struct/layers.h
+
+        src/systems/confined_brownian_particles.cpp
+        src/systems/sheared_slitpore_system.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+        src/argument_parser/print_intervals.cpp
+        src/argument_parser/print_intervals.h
+        src/printer/layer_position.cpp
+        src/printer/layer_position.h
+        src/interfaces/shear_protocol.h
+        src/external/oscillatory_shear.cpp
+        src/external/oscillatory_shear.h
+
+        src/printer/printer.cpp
+)
+
+
+
+add_executable(
+        monteCarlo
+        scripts/moneCarlo.cpp
+
+
+        src/rng/boxmueller.cpp
+        src/rng/mersenne.cpp
+        src/global.cpp
+
+        src/command/calculate_forces.cpp
+        src/command/generate_hexagonal_layers.cpp
+        src/command/generate_square_layers.cpp
+        src/command/generate_random_layers.cpp
+
+        src/struct/cartesian_c.h
+        src/struct/cartesian_coordinate.cpp
+        src/struct/cartesian_coordinate.h
+
+        src/struct/particle.cpp
+        src/struct/charged_particle.cpp
+        src/struct/slit_pore_box.cpp
+        src/struct/layers.cpp
+        src/struct/layers.h
+
+        src/systems/confined_brownian_particles.cpp
+        src/systems/sheared_slitpore_system.cpp
+
+        src/interactions/dlvo_softsphere_interaction.cpp
+        src/interactions/lennard_jones_interaction.cpp
+
+        src/external/shear_force.cpp
+        src/external/soft_wall_force.cpp
+
+        src/argument_parser/print_intervals.cpp
+        src/argument_parser/print_intervals.h
+        src/printer/layer_position.cpp
+        src/printer/layer_position.h
+        src/interfaces/shear_protocol.h
+        src/external/oscillatory_shear.cpp
+        src/external/oscillatory_shear.h
+
+        src/printer/printer.cpp
+        src/printer/stress.cpp
+        src/printer/stress.h
+        src/printer/layer_velocity.cpp
+        src/printer/layer_velocity.h
+        src/printer/angular_bond.cpp
+        src/printer/angular_bond.h
+        src/order_parameter/angular_bond_parameter.cpp
+        src/order_parameter/angular_bond_parameter.h
 )
 
 target_link_libraries(shearedSlitporeBD ${Boost_LIBRARIES} stdc++fs)    # stdc++fs for filesystem support
@@ -254,6 +379,8 @@ target_link_libraries(interactionParameters ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(writePotential ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(generateSquareLayers ${Boost_LIBRARIES} stdc++fs)
 target_link_libraries(generateHexagonalLayers ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(generateRandomLayers ${Boost_LIBRARIES} stdc++fs)
+target_link_libraries(monteCarlo ${Boost_LIBRARIES} stdc++fs)
 
 # Enables finding the version number in the code (#include "version.h")
 include_directories(${CMAKE_BINARY_DIR}/generated)

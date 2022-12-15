@@ -24,6 +24,10 @@ SHEARED_SLITPORE_SYSTEM::SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args): CONFINE
     prepareSystem();
 }
 
+SHEARED_SLITPORE_SYSTEM::~SHEARED_SLITPORE_SYSTEM(){
+    prepareSystem();
+}
+
 //needs to be done after input variables have been changed
 void SHEARED_SLITPORE_SYSTEM::prepareSystem(){
     force1.assign(numberOfParticles, REAL_C(0.)); // Temporary vector to store the force at the initial pos
@@ -50,6 +54,8 @@ void SHEARED_SLITPORE_SYSTEM::reset(){
     }
 
     if(printEnergy > 0){
+        energyParticleParticle.assign(numberOfParticles, 0.);
+        energyExternal.assign(numberOfParticles, 0.);
         energy.assign(numberOfParticles, 0.);
     }
 }
@@ -151,6 +157,8 @@ void SHEARED_SLITPORE_SYSTEM::calculateInteractionForce(int i, int j){
         double tmpEnergy = energyFromParticleOnParticle(particles[i], particles[j]);
         energy[i] += tmpEnergy;
         energy[j] += tmpEnergy;
+        energyParticleParticle[i]+=tmpEnergy;
+        energyParticleParticle[j]+=tmpEnergy;
     }
 }
 
@@ -171,7 +179,9 @@ void SHEARED_SLITPORE_SYSTEM::calculateExternalForce(int i){
     }
 
     if(printEnergy > 0){
-        energy[i] += energyOfParticleFromExternalFields(particles[i]);
+        double tmpEnergy = energyOfParticleFromExternalFields(particles[i]);
+        energy[i] += tmpEnergy;
+        energyExternal[i] += tmpEnergy;
     }
 }
 
@@ -214,8 +224,64 @@ vector<double> SHEARED_SLITPORE_SYSTEM::getEnergyPerParticle(){
     return energy;
 }
 
+REAL_C SHEARED_SLITPORE_SYSTEM::getParticlePosition(int i){
+    return particles[i].position;
+}
+
+double SHEARED_SLITPORE_SYSTEM::getEnergyForParticle(int i){
+    if(i>particles.size()-1){
+        return 0;
+    }
+    double particleEnergy= 0;
+    particleEnergy +=energyOfParticleFromExternalFields(particles[i]);
+    for(int j = 0; j < numberOfParticles; ++j){
+        if(i != j){
+            particleEnergy += energyFromParticleOnParticle(particles[i], particles[j]);
+        }
+    }
+    return particleEnergy;
+    }
+
+
+void SHEARED_SLITPORE_SYSTEM::shiftParticle(int i,double dx,double dy,double dz){
+    particles[i].position.x+=dx;
+    particles[i].position.y+=dy;
+    particles[i].position.z+=dz;
+    particles[i].setBoxPosition(simBox);
+}
+
+double SHEARED_SLITPORE_SYSTEM::getSystemEnergy(){
+    calculateForce();
+    double systemEnergy=0;
+    for(int i = 0; i < numberOfParticles; ++i){
+        systemEnergy+=energyExternal[i]+0.5*energyParticleParticle[i];
+    }
+    return systemEnergy;
+}
+
 double SHEARED_SLITPORE_SYSTEM::getCurrentShearRate(){
     return currentShearRate;
+}
+
+int SHEARED_SLITPORE_SYSTEM::getNumberOfParticles(){
+    return numberOfParticles;
+}
+
+void SHEARED_SLITPORE_SYSTEM::setSWF(double wallInteractionStrength,double dWall){
+    swf = SOFT_WALL_FORCE(wallInteractionStrength, simBox.getDimensions().z);
+
+}
+
+void SHEARED_SLITPORE_SYSTEM::setDLVO(double ss_interactionStrength,double yInteractionStrength,double kappa){
+    dlvo = DLVO_SOFTSPHERE_INTERACTION(particles[0].diameter, ss_interactionStrength,
+    yInteractionStrength, kappa);
+    dlvo.lengthRange = simBox.getDimensions().x;
+    dlvo.setup();    //needs to be done anew since lengthRange changed
+}
+
+void SHEARED_SLITPORE_SYSTEM::publicCalculateForce(){
+
+    calculateForce();
 }
 
 void SHEARED_SLITPORE_SYSTEM::print(ostream& os) const{

@@ -19,7 +19,7 @@ SYSTEM_ENERGY::setup(SHEARED_SLITPORE_SYSTEM& sys){
     int len = sys.energy.size();
     potentialEnergy=0;
     for(int i = 0; i < len; i++){
-        potentialEnergy+=sys.energy[i];
+        potentialEnergy+=0.5*sys.energyParticleParticle[i]+sys.energyExternal[i];
     }
     return *this;
 }

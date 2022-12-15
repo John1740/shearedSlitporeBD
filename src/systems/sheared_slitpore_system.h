@@ -24,6 +24,8 @@ protected:
 
 //    vector<REAL_C> randomForces, shearFlowForces;
     vector<double> energy;
+    vector<double> energyParticleParticle;
+    vector<double> energyExternal;
     vector<REAL_M> stressPerParticle;
 
 
@@ -46,11 +48,14 @@ protected:
 public:
     SHEARED_SLITPORE_SYSTEM();
     SHEARED_SLITPORE_SYSTEM(const ARGUMENTS& args);
+    ~SHEARED_SLITPORE_SYSTEM();
 
     int printStress = PRINT_STRESS;
     int printEnergy = PRINT_ENERGY;
 
     virtual void prepareSystem();
+    virtual void shiftParticle(int i,double dx,double dy,double dz);
+    virtual double getSystemEnergy();
 
     virtual REAL_C forceFromParticleOnParticle(CHARGED_PARTICLE& particle1, CHARGED_PARTICLE& particle2);
     virtual REAL_C forceOnParticleFromExternalFields(CHARGED_PARTICLE& particle);
@@ -58,14 +63,19 @@ public:
     virtual double energyOfParticleFromExternalFields(CHARGED_PARTICLE& particle);
 
     virtual void convertPositionToBoxPosition();
+    virtual void publicCalculateForce();
 
     //setter functions
+    void setSWF(double wallInteractionStrength,double dWall);
+    void setDLVO(double ss_interactionStrength,double yInteractionStrength,double kappa);
 
     //getter functions
     virtual vector<REAL_M> getStressPerParticle();
     virtual REAL_M getMeanStress() const;
     double getCurrentShearRate();
-
+    double getEnergyForParticle(int i);
+    int getNumberOfParticles();
+    REAL_C getParticlePosition(int i);
     vector<double> getEnergyPerParticle();
 
     //file/stream-handling

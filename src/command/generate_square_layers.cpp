@@ -13,10 +13,17 @@ GENERATE_SQUARE_LAYERS::GENERATE_SQUARE_LAYERS(int N, double dWall, double densi
 }
 
 GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setup(int N, double dWall, double density){
-    simBox = SLIT_PORE_BOX(N / density, dWall);
+
     particle.resize(N);
     numberOfLayers = 2;//round(simBox.getDimensions().z);
-    numberOfSites = sqrt(particle.size() / numberOfLayers);
+    //numberOfSites = sqrt(particle.size() / numberOfLayers);
+    numberOfSitesX= round(sqrt(N/2));
+    numberOfSitesY=numberOfSitesX;
+    //numberOfSitesX=28;
+    //numberOfSitesY=26;
+    N=2*numberOfSitesX*numberOfSitesY;
+    double sitesLength=sqrt(2/density/dWall);
+    simBox = SLIT_PORE_BOX(N / density, dWall,numberOfSitesX*sitesLength,numberOfSitesY*sitesLength);
     particleTemplate.charge = CHARGE;
     particleTemplate.diameter = DIAMETER;
     particleTemplate.species = 0;
@@ -24,7 +31,7 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setup(int N, double dWall, doubl
     return *this;
 }
 
-CONFINED_BROWNIAN_PARTICLES GENERATE_SQUARE_LAYERS::generate(){
+SHEARED_SLITPORE_SYSTEM GENERATE_SQUARE_LAYERS::generate(){
     setLatticePeriodicity();
     particle.clear();
 
@@ -33,27 +40,42 @@ CONFINED_BROWNIAN_PARTICLES GENERATE_SQUARE_LAYERS::generate(){
     }
     addIncommensurableLayer(numberOfLayers - 1);
 
-    CONFINED_BROWNIAN_PARTICLES sys;
+
+    SHEARED_SLITPORE_SYSTEM sys;
     *(sys.simulationBox()) = simBox;
     sys.setParticleList(particle);
-
+    for(int i = 0; i < sys.getNumberOfParticles(); ++i){
+        sys.particles[i].setBoxPosition(simBox);
+        sys.particles[i].position = sys.particles[i].boxPosition;
+    }
+    //double angle= 1.2;
+    //double newx;
+    //double newy;
+    //for(int i = 0; i < sys.getNumberOfParticles(); ++i){
+    //    newx = sys.particles[i].position.x * cos(angle) - sys.particles[i].position.y * sin(angle)+ simBox.getDimensions().x/2;
+    //    newy =sys.particles[i].position.x * sin(angle) + sys.particles[i].position.y * cos(angle)- simBox.getDimensions().y/2 ;
+    //    sys.particles[i].position.x=newx;
+    //    sys.particles[i].position.y=newy;
+    //    sys.particles[i].setBoxPosition(simBox);
+    //    sys.particles[i].position = sys.particles[i].boxPosition;
+    //}
     return sys;
 }
 
 void GENERATE_SQUARE_LAYERS::setLatticePeriodicity(){
     LAYERS layers(simBox);
     zMin = layers.getZMin();
-    dx = simBox.getDimensions().x / numberOfSites;
-    dy = simBox.getDimensions().y / numberOfSites;
+    dx = simBox.getDimensions().x / numberOfSitesX;
+    dy = simBox.getDimensions().y / numberOfSitesY;
     dz = layers.getLayerThickness();
 
-    dxAdd = simBox.getDimensions().x / (numberOfSites + numberOfAdditionalSites);
-    dyAdd = dxAdd;
+    dxAdd = simBox.getDimensions().x / (numberOfSitesX + numberOfAdditionalSites);
+    dyAdd = simBox.getDimensions().y / (numberOfSitesY + numberOfAdditionalSites);
 }
 
 void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
-    for(int j = 0; j < numberOfSites; ++j){ //j=index in y-direction
-        for(int k = 0; k < numberOfSites; ++k){ //k=index in x-direction
+    for(int j = 0; j < numberOfSitesY; ++j){ //j=index in y-direction
+        for(int k = 0; k < numberOfSitesX; ++k){ //k=index in x-direction
             CHARGED_PARTICLE newParticle(particleTemplate);
             newParticle.position = REAL_C(
                     dx * k + layerIndex * dx / 2, //displaced by dx/2 from lower layer
@@ -68,8 +90,8 @@ void GENERATE_SQUARE_LAYERS::addLayer(int layerIndex){
 }
 
 void GENERATE_SQUARE_LAYERS::addIncommensurableLayer(int layerIndex){
-    for(int j = 0; j < numberOfSites + numberOfAdditionalSites; ++j){
-        for(int k = 0; k < numberOfSites + numberOfAdditionalSites; ++k){
+    for(int j = 0; j < numberOfSitesY + numberOfAdditionalSites; ++j){
+        for(int k = 0; k < numberOfSitesX + numberOfAdditionalSites; ++k){
             CHARGED_PARTICLE newParticle(particleTemplate);
             newParticle.position = REAL_C(
                     dxAdd * k + layerIndex * dxAdd / 2,
@@ -96,7 +118,7 @@ GENERATE_SQUARE_LAYERS& GENERATE_SQUARE_LAYERS::setParticleProperties(double cha
 }
 
 int GENERATE_SQUARE_LAYERS::getNumberOfParticles() const{
-    int totalNumberOfSites = numberOfSites + numberOfAdditionalSites;
+    int totalNumberOfSites = numberOfSitesX + numberOfAdditionalSites;
     return totalNumberOfSites * totalNumberOfSites * numberOfLayers;
 }
 
@@ -111,7 +133,7 @@ SLIT_PORE_BOX GENERATE_SQUARE_LAYERS::getSimBox() const{
 ostream& operator<<(ostream& os, const GENERATE_SQUARE_LAYERS& gsl){
     os << "GENERATE_SQUARE_LAYERS(";
     os << "numberOfLayers: " << gsl.numberOfLayers;
-    os << ", numberOfSites: " << gsl.numberOfSites;
+    os << ", numberOfSites: " << gsl.numberOfSitesX;
     os << ", numberOfAdditionalSites: " << gsl.numberOfAdditionalSites;
     os << ")";
     return os;

@@ -2,12 +2,14 @@
 #define GENERATE_SQUARE_LAYERS_H
 
 #include "../systems/confined_brownian_particles.h"
+#include "../systems/sheared_slitpore_system.h"
 #include "../struct/slit_pore_box.h"
 
 class GENERATE_SQUARE_LAYERS{
 public:
     int numberOfLayers;
-    int numberOfSites;
+    int numberOfSitesX;
+    int numberOfSitesY;
     int numberOfAdditionalSites;
 private:
     vector<CHARGED_PARTICLE> particle;
@@ -28,7 +30,7 @@ public:
 
     GENERATE_SQUARE_LAYERS& setup(int N, double dWall, double density);
 
-    CONFINED_BROWNIAN_PARTICLES generate();
+    SHEARED_SLITPORE_SYSTEM generate();
 
     //setter
     GENERATE_SQUARE_LAYERS& setParticleProperties(const CHARGED_PARTICLE& particle);

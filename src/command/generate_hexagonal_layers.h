@@ -3,6 +3,7 @@
 
 #include "../systems/confined_brownian_particles.h"
 #include "../struct/slit_pore_box.h"
+#include "../systems/sheared_slitpore_system.h"
 
 class GENERATE_HEXAGONAL_LAYERS{
     // Class to calculate particle positions for Hexagonal Layers with given parameters
@@ -35,7 +36,7 @@ public:
 
     GENERATE_HEXAGONAL_LAYERS& setup(int N, double dWall, double density);
 
-    CONFINED_BROWNIAN_PARTICLES generate();
+    SHEARED_SLITPORE_SYSTEM generate();
 
     //setter
     GENERATE_HEXAGONAL_LAYERS& setParticleProperties(const CHARGED_PARTICLE& particle);

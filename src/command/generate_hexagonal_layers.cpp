@@ -13,15 +13,17 @@ GENERATE_HEXAGONAL_LAYERS::GENERATE_HEXAGONAL_LAYERS(int N, double dWall, double
 }
 
 GENERATE_HEXAGONAL_LAYERS& GENERATE_HEXAGONAL_LAYERS::setup(int N, double dWall, double density){
-    numberOfLayers = 2; // The number of generated Layers, could be changed but ShearedSliporeBD only works with 2
+    numberOfLayers = 2; // Works for all positive integers,but ShearedSliporeBD currently only works with 2 Layers
 
     // Hexagonal 2D unit-cell is not square with dx*sqrt(3)=dy and includes 2 particles one at (0,0)
     // one at (0.5*dx,0.5*dy). Therefore the number of unit cells in x and y must first be calculated
     // to be as square as possible and to keep the given number of particles N close to its original
     // value.
 
-    Nx= round(sqrt(N/2/numberOfLayers* sqrt(3))); // Number of unit cells in x direction in one layer
-    Ny= round(Nx / sqrt(3));                         // Number of unit cells in y direction in one layer
+    Nx= ceil(sqrt(N/2/numberOfLayers* sqrt(3))); // Number of unit cells in x direction in one layer
+    Ny= floor(Nx / sqrt(3));                         // Number of unit cells in y direction in one layer
+    //Nx=26;
+    //SNy=14;
     N=Nx*Ny*2*numberOfLayers;                                             // New total Number of Particles
 
     //N=((round(sqrt(N/2)/2)*2)*(round(sqrt(N/2)/2)*2))*2;
@@ -43,7 +45,7 @@ GENERATE_HEXAGONAL_LAYERS& GENERATE_HEXAGONAL_LAYERS::setup(int N, double dWall,
 
 }
 
-CONFINED_BROWNIAN_PARTICLES GENERATE_HEXAGONAL_LAYERS::generate(){
+SHEARED_SLITPORE_SYSTEM  GENERATE_HEXAGONAL_LAYERS::generate(){
     setLatticePeriodicity();
     particle.clear();
 
@@ -52,9 +54,13 @@ CONFINED_BROWNIAN_PARTICLES GENERATE_HEXAGONAL_LAYERS::generate(){
     }
     addIncommensurableLayer(numberOfLayers - 1);
 
-    CONFINED_BROWNIAN_PARTICLES sys;
+    SHEARED_SLITPORE_SYSTEM  sys;
     *(sys.simulationBox()) = simBox;
     sys.setParticleList(particle);
+    for(int i = 0; i < sys.getNumberOfParticles(); ++i){
+        sys.particles[i].setBoxPosition(simBox);
+        sys.particles[i].position = sys.particles[i].boxPosition;
+    }
 
     return sys;
 }
@@ -64,7 +70,7 @@ void GENERATE_HEXAGONAL_LAYERS::setLatticePeriodicity(){
     zMin = layers.getZMin();
     dx = SitesLength;
     dy = SitesLength * sqrt(3);
-    dz = layers.getLayerThickness();
+    dz = simBox.getDimensions().z/(numberOfLayers+1);
 
     //dxAdd = simBox.getDimensions().x / (numberOfSites + numberOfAdditionalSites);
     //dyAdd = dxAdd;
@@ -139,8 +145,7 @@ GENERATE_HEXAGONAL_LAYERS& GENERATE_HEXAGONAL_LAYERS::setParticleProperties(doub
 }
 
 int GENERATE_HEXAGONAL_LAYERS::getNumberOfParticles() const{
-    int totalNumberOfSites = numberOfSites + numberOfAdditionalSites;
-    return totalNumberOfSites * totalNumberOfSites * numberOfLayers;
+    return Nx*Ny*2*numberOfLayers;
 }
 
 CHARGED_PARTICLE GENERATE_HEXAGONAL_LAYERS::getParticleTemplate() const{

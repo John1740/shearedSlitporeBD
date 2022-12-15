@@ -6,6 +6,7 @@
 #include "boost/program_options.hpp"
 #include "../src/command/generate_square_layers.h"
 #include "../src/systems/confined_brownian_particles.h"
+#include "../src/systems/sheared_slitpore_system.h"
 #include "../src/defaults.h"
 
 using namespace std;
@@ -48,7 +49,7 @@ int main(int argc, const char* argv[]){
     cout << gen.getSimBox() << endl;
     cout << "Particle template: " << endl;
     cout << gen.getParticleTemplate() << endl << endl;
-    CONFINED_BROWNIAN_PARTICLES sys = gen.generate();
+    SHEARED_SLITPORE_SYSTEM sys = gen.generate();
     cout << gen << endl;
     if(!vm["dry"].as<bool>()){
         sys.writeConfigurationToFile(filename, true);

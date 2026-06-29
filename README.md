@@ -1,6 +1,6 @@
 # shearedSlitporeBD
 
-Brownian dynamics simulations of charged colloidal particles confined to a sheared slit pore. The code was developed to study how strongly confined colloidal layers lose their crystalline order, depin, and reorganize under shear.
+Brownian dynamics simulations of charged colloidal particles confined to a sheared slit pore. The code was developed to study how strongly confined colloidal layers lose their crystalline order, depin, and reorganize under shear. The Simulation was originally developed by Sascha Gerloff & Marcel Hülsberg and refined and expanded by me. 
 
 <p align="center">
   <img src="images/slitpore.gif" width="650" alt="Simulation of a sheared colloidal bilayer in a slit pore">
